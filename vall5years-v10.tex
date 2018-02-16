@@ -1,0 +1,209 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[12pt]{report}
+\usepackage[a4paper]{geometry}
+\usepackage[myheadings]{fullpage}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{graphicx, wrapfig, subcaption, setspace, booktabs}
+\usepackage[T1]{fontenc}
+\usepackage[font=small, labelfont=bf]{caption}
+\usepackage{fourier}
+\usepackage[protrusion=true, expansion=true]{microtype}
+\usepackage[english]{babel}
+\usepackage{sectsty}
+\usepackage{url, lipsum}
+
+
+\newcommand{\HRule}[1]{\rule{\linewidth}{#1}}
+\onehalfspacing
+\setcounter{tocdepth}{5}
+\setcounter{secnumdepth}{5}
+
+%-------------------------------------------------------------------------------
+% HEADER & FOOTER
+%-------------------------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\setlength\headheight{15pt}
+\fancyhead[L]{Jaime G\'omez-Ram\'irez }
+\fancyhead[R]{Fundaci\'on Reina Sof\'ia}
+\fancyfoot[R]{Page \thepage\ of \pageref{LastPage}}
+%-------------------------------------------------------------------------------
+% TITLE PAGE
+%-------------------------------------------------------------------------------
+
+\begin{document}
+
+\title{ \normalsize \textsc{5 years of the Vallecas Project}
+		\\ [2.0cm]
+		\HRule{0.5pt} \\
+		\LARGE \textbf{\uppercase{Machine Learning in the Vallecas Project}}
+		\HRule{2pt} \\ [0.5cm]
+		\normalsize \today \vspace*{5\baselineskip}}
+
+\date{}
+
+\author{
+		Jaime G\'omez-Ram\'irez \\ 
+		Fundaci\'on Reina Sof\'ia \\
+		Centre for Research in Neurodegenarative Diseases }
+
+\maketitle
+\tableofcontents
+\newpage
+
+%-------------------------------------------------------------------------------
+% Section title formatting
+\sectionfont{\scshape}
+%-------------------------------------------------------------------------------
+
+%-------------------------------------------------------------------------------
+% BODY
+%-------------------------------------------------------------------------------
+
+\section*{Abstract}
+
+We utilize Machine Learning techniques, in particular, Deep Networks to perfom predictive analytics on The Vallecas Project dataset that covers five years of data collection.
+
+
+\section{Introduction}
+The Vallecas Project for early detection of AD is the most ambitious population-based study in Spain. The project is carried out in the Queen Sofia Foundation Alzheimer Center by a multidisciplinary team of researchers from the CIEN Foundation. The main objective of the Vallecas Project is to elucidate, through tracking of progression of the cohort, the best combination of  parameters, clinical and others \footnote{Note in the inception of the project only clinical parameters were considered, here we advocate for a more inclusive set of parameters including neuropsychological, and also features related to the lifestyle such as nutrition and physical exercise} , that are informative about the medium and long-term features that distinguish individuals who will develop future cognitive impairment from those who will not. Thus, it intends to identify various markers to eventually determine the potential risk that each individual could have to develop the disease in the future.
+
+\section{CRISP-DM model}
+%James Wu, Foundations of predictive analytics
+The voluminous and complex (heterogeneity and dimensionality) dataset collected in the Vallecas Project make it particularly to build analytics of any kind, let alone predictive analytics.
+In order to try to cope with this difficulty, we use a methodology well suited for machine learning analytics called CRISP-DM model (CRoss Industry Standard Process for Data Mining). 
+The CRISP-DM model consists of 5 phases:
+\begin{enumerate}
+%1. Problem understanding
+\item 
+\item Definition of the problem. The data set is contains a number of features and we want to clarify the relationships between those inputs and most importantly which if any and in which measure have predictive power about conversion to MCI and dementia.
+\item Assessment of scenarios for analysis. The main resource available are spreadsheets that contain demographic e.g age, school years etc. genetic: APOE, cognitive performance metrics from neuropsychological tests together with features related to life style  including nutrition and physical exercise among others. MRI and fMRI are also available but need ti be integrated with the above mentioned features, in this we will not deal with neuroimaging data.
+%2. Data Understanding
+\iem Data understanding:
+\item Data understanding
+\iem Data collection
+\iem Data description: format, volume, description of attributes \footnote{Here we will refer indistinctly features, attributes, inputs and dimensions}
+\iem Exploratory data analysis (EDA): charts, plots to visualize data features find associations and correlations. This task comprises: explore and visualize data, select attributes (most important, remove redundant or dependent attributes), test hypothesis about correlations and associations.
+\ierm Data quality analysis: Deal with missing values, inconsistent values   
+%3. Data preparation
+\item Clean, wrangle and curate the dataset before the learning machinery is launched to build models. The most time consuming $(60\%) of the time$
+\item Data integration : multiple. datasets, this will have to be taken care of when we integrate with the imaging dataset.
+\item Data wrangling: handle missing values (remove rows, handle missing values), formatting into csv, json etc.
+% 4. Modelling
+% 5. Evaluation
+% 6. Deployment 
+ 
+ \end{enumerate}
+In the next section we describe the work done in point 3, \emph{Data preparation}
+
+\subsection{Data preparation}
+% Transformation including Scaling and discretize continuous variables (binning) 
+Most techniques are sensitive to scaling \cite{wu2012foundations} and this is because there used to be an implicit metric or definition of nearness in the dataset. The most common scaling is z-scaling which is easily performed as $x'_i=\fraq{x_i -\mu}{\sigma_i}$, that is, the set of variables $X= x_i, i=1..n$ are scaled to be centered and have the same spread \footnote{Note that we may want to use a lognormal rather than normal as a reasonable distribution. The Benford law is pertinent here: in many naturally occurring collections of numbers, the leading significant digit is likely to be small. This law is reminiscent of Pareto or Zipf law of numbers. For such variables perform a log transform, $x'_i = \log x_i$}.
+z-scale and log transform are example of linear transformations but we may need nonlinear transformations, for example discretize a continuous variable. For example we can discretize the age variable in bins of 3 or 5 years. Although machine learning techniques are perfectly able to deal with continuous variable the reason we still may be a good idea to discretize is that in doing so we will be helping the model to learn the relationship between inputs and output, binning can also provide statistical smoothing and robustness in the modeling process (The cutpoint of the variable can be calculated with Gini index, entropy, chi squared or KS criteria). 
+
+Praxis: always encode your data as best as possible to reduce the work of the model as much as possible.
+
+% Variable Selection:
+Variable Selection consists of filtering the most important features and remove those that are not needed - Feature selection and wrapper.
+Note that it could be always possible to select all the features and let the model do the job of finding the best predictive model, but this is not a good idea in practical terms and the reason is \emph{stability}. Remove variables that have a spurious or non consistent relationship with the target, also the principle of parsimony applies: careful variable selection and elimination.
+%Detection of Multicollinearity
+Another important issue if multicollinearity, we need to identify and remove correlated variables (crucial for model building). We can do this in two steps, foirst remove variables that produce another one, for example if A = B + C + D we can remove B, C and D.
+In a second step we deal with pair wise collinearity which is not exactely multicollinearity. For that we calculate the correlation between all pairs (build correlation matrix) and remove those with a large value (above some threshold). To do this systematically we can build a graph, in the node note the correlation with the target and in the edges the correlation value with the adjacent components. We will select variables with largest corr with target and remove its correlated variables. (page 211, \cite{wu2012foundations}).
+%(Belsey's 80) approach is based on covariance matrix of the least squares coefficient vector. Decaying importance of the variables as ordered by the eigenvalues
+
+
+
+% Missing data imputation
+
+
+
+
+\section{Methods}
+\cite{patania2017topological}
+
+
+\section{Appendix}
+
+
+
+%-------------------------------------------------------------------------------
+% REFERENCES
+%-------------------------------------------------------------------------------
+\newpage
+\section*{References}
+\addcontentsline{toc}{section}{References}
+
+
+% BibTeX users please use
+\bibliographystyle{spmpsci}
+\bibliography{../bibliography-jgr/bibliojgr} 
+
+\end{document}
+
+%-------------------------------------------------------------------------------
+% SNIPPETS
+%-------------------------------------------------------------------------------
+
+%\begin{figure}[!ht]
+%	\centering
+%	\includegraphics[width=0.8\textwidth]{file_name}
+%	\caption{}
+%	\centering
+%	\label{label:file_name}
+%\end{figure}
+
+%\begin{figure}[!ht]
+%	\centering
+%	\includegraphics[width=0.8\textwidth]{graph}
+%	\caption{Blood pressure ranges and associated level of hypertension (American Heart Association, 2013).}
+%	\centering
+%	\label{label:graph}
+%\end{figure}
+
+%\begin{wrapfigure}{r}{0.30\textwidth}
+%	\vspace{-40pt}
+%	\begin{center}
+%		\includegraphics[width=0.29\textwidth]{file_name}
+%	\end{center}
+%	\vspace{-20pt}
+%	\caption{}
+%	\label{label:file_name}
+%\end{wrapfigure}
+
+%\begin{wrapfigure}{r}{0.45\textwidth}
+%	\begin{center}
+%		\includegraphics[width=0.29\textwidth]{manometer}
+%	\end{center}
+%	\caption{Aneroid sphygmomanometer with stethoscope (Medicalexpo, 2012).}
+%	\label{label:manometer}
+%\end{wrapfigure}
+
+%\begin{table}[!ht]\footnotesize
+%	\centering
+%	\begin{tabular}{cccccc}
+%	\toprule
+%	\multicolumn{2}{c} {Pearson's correlation test} & \multicolumn{4}{c} {Independent t-test} \\
+%	\midrule	
+%	\multicolumn{2}{c} {Gender} & \multicolumn{2}{c} {Activity level} & \multicolumn{2}{c} {Gender} \\
+%	\midrule
+%	Males & Females & 1st level & 6th level & Males & Females \\
+%	\midrule
+%	\multicolumn{2}{c} {BMI vs. SP} & \multicolumn{2}{c} {Systolic pressure} & \multicolumn{2}{c} {Systolic Pressure} \\
+%	\multicolumn{2}{c} {BMI vs. DP} & \multicolumn{2}{c} {Diastolic pressure} & \multicolumn{2}{c} {Diastolic pressure} \\
+%	\multicolumn{2}{c} {BMI vs. MAP} & \multicolumn{2}{c} {MAP} & \multicolumn{2}{c} {MAP} \\
+%	\multicolumn{2}{c} {W:H ratio vs. SP} & \multicolumn{2}{c} {BMI} & \multicolumn{2}{c} {BMI} \\
+%	\multicolumn{2}{c} {W:H ratio vs. DP} & \multicolumn{2}{c} {W:H ratio} & \multicolumn{2}{c} {W:H ratio} \\
+%	\multicolumn{2}{c} {W:H ratio vs. MAP} & \multicolumn{2}{c} {\% Body fat} & \multicolumn{2}{c} {\% Body fat} \\
+%	\multicolumn{2}{c} {} & \multicolumn{2}{c} {Height} & \multicolumn{2}{c} {Height} \\
+%	\multicolumn{2}{c} {} & \multicolumn{2}{c} {Weight} & \multicolumn{2}{c} {Weight} \\
+%	\multicolumn{2}{c} {} & \multicolumn{2}{c} {Heart rate} & \multicolumn{2}{c} {Heart rate} \\
+%	\bottomrule
+%	\end{tabular}
+%	\caption{Parameters that were analysed and related statistical test performed for current study. BMI - body mass index; SP - systolic pressure; DP - diastolic pressure; MAP - mean arterial pressure; W:H ratio - waist to hip ratio.}
+%	\label{label:tests}
+%\end{table}

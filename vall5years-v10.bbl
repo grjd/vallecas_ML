@@ -1,0 +1,13 @@
+\begin{thebibliography}{1}
+\providecommand{\url}[1]{{#1}}
+\providecommand{\urlprefix}{URL }
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{DOI~\discretionary{}{}{}#1}\else
+  \providecommand{\doi}{DOI~\discretionary{}{}{}\begingroup
+  \urlstyle{rm}\Url}\fi
+
+\bibitem{patania2017topological}
+Patania, A., Vaccarino, F., Petri, G.: Topological analysis of data.
+\newblock EPJ Data Science \textbf{6}(1), 7 (2017)
+
+\end{thebibliography}
