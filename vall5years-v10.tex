@@ -30,7 +30,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \setlength\headheight{15pt}
-\fancyhead[L]{Jaime G\'omez-Ram\'irez }
+\fancyhead[L]{Five years of the Vallecas Project}
 \fancyhead[R]{Fundaci\'on Reina Sof\'ia}
 \fancyfoot[R]{Page \thepage\ of \pageref{LastPage}}
 %-------------------------------------------------------------------------------
@@ -39,7 +39,7 @@
 
 \begin{document}
 
-\title{ \normalsize \textsc{5 years of the Vallecas Project}
+\title{ \normalsize \textsc{Five years of the Vallecas Project}
 		\\ [2.0cm]
 		\HRule{0.5pt} \\
 		\LARGE \textbf{\uppercase{Machine Learning in the Vallecas Project}}
@@ -49,7 +49,7 @@
 \date{}
 
 \author{
-		Jaime G\'omez-Ram\'irez \\
+		Jaime G\'omez-Ram\'irez, Marina \'Avila and Miguel \'Angel Fern\'andez-Bl\'azquez   \\
 		Fundaci\'on Reina Sof\'ia \\
 		Centre for Research in Neurodegenarative Diseases }
 
@@ -68,11 +68,41 @@
 
 \section*{Abstract}
 
-We utilize Machine Learning techniques, in particular, Deep Networks to perfom predictive analytics on The Vallecas Project dataset that covers five years of data collection.
+We utilize Machine Learning techniques, in particular, Deep Networks to perform predictive analytics on The Vallecas Project dataset that covers five years of data collection.
 
 
 \section{Introduction}
 The Vallecas Project for early detection of AD is the most ambitious population-based study in Spain. The project is carried out in the Queen Sofia Foundation Alzheimer Center by a multidisciplinary team of researchers from the CIEN Foundation. The main objective of the Vallecas Project is to elucidate, through tracking of progression of the cohort, the best combination of  parameters, clinical and others \footnote{Note in the inception of the project only clinical parameters were considered, here we advocate for a more inclusive set of parameters including neuropsychological, and also features related to the lifestyle such as nutrition and physical exercise} , that are informative about the medium and long-term features that distinguish individuals who will develop future cognitive impairment from those who will not. Thus, it intends to identify various markers to eventually determine the potential risk that each individual could have to develop the disease in the future.
+There are four branches in Machien Learning:
+\begin{itemize}
+\item Supervised learning: map between input data to known targets (labels, annotations) 
+\item Unsupervised learning: finding interesting transformations of input data (without the help of any target) for the purpose of compression, denoising, visualization or to better understand the correlations in the input data. UL is the bread and butter of Data analytics and it is often advisable to perform UL (eg. clustering, dimensionality reduction PCA) before doing SL. 
+\item Self supervised learning: SL without humans in the loop, labels are generated from the input data (eg. autoencoders)
+\item Reinforcement learning: model agent-environment interactions the goal is to learn actions that maximize some reward. for example,a network that looks at a video game screen and outputs the game actions that will maximize the score (Atari games)
+\end{itemize}
+In machine learning, the goal is to achieve models that generalize —that perform well on never-before-seen data—and overfitting is the central obstacle. Evaluating a model always boils down to splitting the available data into three sets: training, validation, and test. You train on the training data and evaluate your model on the validation data. Once your model is ready for prime time, you test it one final time on the test data. 
+But why not just two sets: training and testing? Because adjusting the optimal configuration of the model (parameter and hyperparameters) is a feedback loop, the performance of the model on the validation set is the feedback signal.
+
+%chollet book pg216
+% why machine learning
+Machine learning is in essence a form of applied statistics where the emphasis is placed on estimate complicated functions rather than providing confidence intervals around those functions \footnote{the p-hacking crisis is absolutely irrelevant for scientists working on ML and a symptom of the obsolescence of that approach}. Machine learning is not only interesting from an engineering point of view (fabricating a system with a desired behavior) but also from the standpoint of psychology because principle-based approach of machine learning necessarily informs and is informed by the principles that underlie human intelligence.
+The classification problem we are trying to solve here is to build a function $f:R^n \to \{0,1\}$, y=f(x), the input x has n dimensions it follows that we can obtain $2^n$ different classification functions  but we only need to learn one, the optimal describing the joint probability distribution.
+
+What separates machine learning from optimization is that optimization business is about reducing the training error  while in machine business we do that and also reduce the generalization or test error (expected error on a new input) as well. For example, in the simplest case of machine learning, linear regression, we train the model by minimizing the training error -train and test tests are identically distributed, that is, drawn from the same probability distribution. Thus, if we have a probability distribution p(X,y) and we sample it repeatedly to obtain the training set and the test set, the expected error for either sets should be the same because both expectations are built using identical sampling process.
+
+No free lunch theorem in search an optimization \cite{wolpert1997no} (No ML algorithm is universally any better than any other) it follows that the goal of ML is not to seek an universal earning algorithm, instead the goal must be to understand what kinds of distributions are relevant to the real world that an AI agent is experiencing. Thus, we must develop an algorithm to perform well in a particular task and we do by adding preference (regularization) in the algorithm which if they are aligned with the problem at hand will perform optimally.
+
+
+\begin{equation}
+min \frac{1}{m^{(train)}} ||X^{(train)}w - y^{(train)}||
+\end{equation}
+
+but we actually care about minimizing the test error:
+\begin{equation}
+min \frac{1}{m^{(test)}} ||X^{(test)}w - y^{(test)}||
+\end{equation}
+But how is it possible to affect performance in the test set when we get only observations on the training set? If training and test sets were collected arbitrarily the whole enterprise of statistical learning would not stand, the reason why the field exists is because exists the assumption that both the trainign and test sets are generated by the same data generative process.
+
 
 \section{CRISP-DM model}
 %James Wu, Foundations of predictive analytics
@@ -123,13 +153,70 @@ In a second step we deal with pair wise collinearity which is not exactly multic
 %tensorflow/production/descriptive_stats.py
 \subsection{Feature engineering}
 Feature engineering is the process of transforming the gathered data into features that better represent the problem that we are trying to solve to the model, to improve its performance and accuracy. In feature engineering we create additional features for example by combining features to feed into the model. The rationale of feature engineering is to bring into the modeling process the domain expertise, it may also help with overfitting. 
+There is no a formal method to deal with feature engineering but it is one of the most important processes and if not done properly it will hamper success. It is worth noting that success in the predictive model built depends on three things: the model selection, , the dataset available and the engineered features. With well engineered features, it is possible to choose suboptimal models, and or suboptimal parameters and still obtain good results. Feature engineering is the process of transforming raw data into features that better represent the underlying problem to the predictive models, resulting in improved model accuracy on unseen data. Feature engineering is manually designing what the input x’s should be. Feature engineering asks: what is the best representation of the sample data to learn a solution to your problem?
+%It is an art like engineering is an art, like programming is an art, like medicine is an art.
+
+Feature engineering is what makes us distinguish attributes from features, attributes is just any column in our tabular dataset,a feature on the other hand is an attribute that is useful or meaningful to your problem
+%Feature importance scores:A feature may be important if it is highly correlated with the dependent variable (the thing being predicted). Correlation coefficients and other univariate (each attribute is considered independently) methods are common methods
+Complex predictive modeling algorithms perform feature importance and selection internally while constructing their mode Random Forest and Gradient Boosted Machines.
+
+Feature selection addresses automatically selecting a subset that are most useful to the problem. Feature selection algorithms may use a scoring method to rank and choose features, such as correlation or other feature importance methods.Regularization methods like LASSO and ridge regression may also be considered algorithms with feature selection baked in, as they actively seek to remove or discount the contribution of features as part of the model building process
+
+The group the features that belong to the same category reducing the dimensionality from 115 features to 20 features.
+the resulting set of features are : 
+\begin{center}
+\textit{sex, education (nivel educativo),apoe, edad visita, scd (aggregate of 9 features related to subjective cognitive complaints), cognitive complaints (aggregate of 15 features), psychiatric syndromes (aggregate of 5 features), cognitive performance (aggregate of 11 features), quality of life (aggregate of 10 features), social engagement (aggregate of 4 features), physical exercise (aggregate of 2 features), diet(aggregate of 14 features), intellectual activity (aggregate of 14 features), demographics (aggregate of 6 features: married/singles, sons, perceived socioeconomic status), professional life(aggregate of 3 features), health (aggregate of 15 features: smoker, cardiac,lipids, glucose,diabetes, ictus, heart.. ), psychiatric history(aggregate of 15 features: depression and anxiety), sleep (aggregate of 12 features), family dementia history (aggregate of 4 features), sensory disturbances (auditive and visual disturbance) } 
+
+\end{center}
+
+We can also "test" using clustering (K-means, hierarchical clustering) our domain specific partition. Clustering is associated with unsupervised learning but it could be useful to exploit out domain specific knowledge tin order to obtain more discriminant features (distributional clustering) \cite{guyon2003introduction}. Distributional clustering is related to information bottleneck \cite{tishby2015deep} searches for the solution that achieves the largest possible compression while retaining the essential information about the target.
+Another method of feature construction is single value decomposition (SVD) an unsupervised method of feature construction, the goal of SVD is to form a set of features that are liner combinations of the original variables which provide the best reconstruction in the least square sense \cite{duda2012pattern}.  
+
+Supervised methods: Filters: maximize the mutual information between the features and the target
 
 \subsection{Data leakage}
 Data leakage describes the situation in which data you are including to train the machine learning algorithm includes the very thing you are trying to predict, for example if I am trying to predict conversion and I include conversion in a given year as a feature, another example of data leakage is having test data in the training data set this will lead to overfitting. Data leakage can happen in ways more subtle than those just described, for example in time series using features from the future not available for the current prediction using. To eliminate leakage, before building the  model look for features highly correlated with the target, after building the model look for surprising feature behavior (large information gains). The proof that there is leakage is obtained by comparing the deployment performance versus the train and evaluation performance. 
 
+The features to be removed are obviously the target variable conversion, tiempo (time to convert), tpo1.1..5 (time from year 1 to conversion), dx visita1
+%Dummy features to remove: id, fecha nacimiento, fecha_visita
+
+\section{Descriptive statistics}
+
+\section{Data visualization (dimensionality reduction)}
+
+computers can deal with as many dimensions as they like, humans on the other hand we are limited to 3. To visualize large (larger than 3) dimensionality datasets we need to reduce the dimensionality. The rationale is that despite the apparent large dimensionality the intrinsic dimensionality is low, or at least lower. For example a 10 mega pixels video camera rotating to film some scene build a 10 million dimensional space and yet the images approximately lie in a 3D space (yaw, pitch, roll), this embedding is certainly complex and nonlinear.
+Manifold learning also called nonlinear dimensional reduction is an unsupervised method that deals with discovering the hidden simpler structure in a high dimensional dataset.
+A popular algorithm is t-distributed stochastic neighbor embedding (t-SNE) \cite{maaten2008visualizing}.
+Let us briefly explain the algorithm, first some definitions:
+A \textbf{data point} is a point $x_i$ in the original space $\mathbf{R}^D$, where D is the number of dimension (features). A map point is a point $y_i$ in the map space $y \in \mathbf{R}^2$ (if we want to map the original space in 2D). The map space will contain the final representation of the original data space (b:X -> Y , where b is a isomorphic from the original space (X) to the Map space (Y), that is, for every map point y there is one point x. 
+Now, how this map is built? we want to preserve the structure of the original data, that is, if two points are close together in X their images in Y must be closed together as well. We need to define a distance that quantifies closeness, for example, the Euclidean distance. Thus, 
+\(p_{j|i} = \frac{\exp\left(-\left| x_i - x_j\right|^2 \big/ 2\sigma_i^2\right)}{\displaystyle\sum_{k \neq i} \exp\left(-\left| x_i - x_k\right|^2 \big/ 2\sigma_i^2\right)}\)
+which measures how close x_i is from x_j if we assume a Gaussian distribution around x_i. Note tht the variance $$ is different for every point, it is chosen such as in dense areas is smaller than in sparse areas (closed by need to be really close by to be friends). 
+Finally, the similarity $p_{ij}$ needs to be a symmetric measure of the conditional probability, then:
+\(p_{ij} = \frac{p_{j|i} + p_{i|j}}{2N}\)
+with the similarty we obrain the similarity matrix for the original dataset (the similarity matrix can be calcualted for siumplicity with constant $\sigma$ or using a different $\sigma_i$ per point i).
+Bellow we show the distance (Euclidean) matrix and the similarity matrix both for constant and variable $\sigma$.
+
+%images here: https://github.com/oreillymedia/t-SNE-tutorial/blob/master/images/similarity.png
+Next, we need to compute the similarity matrix for the map points
+
 \section{Methods}
+\label{se:me}
+The most common learning method is called regression, it is then worth spemnd soem time to explian thios technique prior to get into more brave waters. There are tow types of regression, linear regression and logistic regression.
+Linear regression predicts a continuous output,$\hat{y}$ as a function of the input variables $x$ each weighted by a coefficient $\hat{w}$plus a bias term $\hat{w}$. Note that the terms $\hat{y}$,$\hat{w}$ and $\hat{w}$ are estimates that can be estimated via different methods for example OLS, Ridge regression or Lasso regression from training data.
+\begin{equation}
+\hat{y} = \sum_i \hat{w_i}x_i
+\end{equation}
+Logistic regression takes this a step further by running the output  of the linear combination of w and x through a non linear fucntion (the logistic function). The logistic function range is $[0,1]$ so it can be used to estimate the probability that a given instance belong to one class or another.
+\begin{equation}
+\hat{y} = logistic(\sum_i \hat{w_i}x_i)
+\end{equation}
+
+In section \ref{} we expand on these ideas defining multi layer perceptron model (MLP) and other neural network models including Deep learning.
+
+
 \cite{patania2017topological}
-In supervised learning a. odel refers to the mathematical object that malkes a prediction $y_i$ given $x_i$, one of the easiest incarnations is a linear combination of weighted input features, $y_i = \sum_k w_j x_{ij}$ prediction values have different interpretations depending on the task, i.e. classification, regression. For example, it can be logistic transformed to get the probability of positive class in logistic regression, and it can also be used as a ranking score when we want to rank the outputs.
+In supervised learning model refers to the mathematical object that makes a prediction $y_i$ given $x_i$, one of the easiest incarnations is a linear combination of weighted input features, $y_i = \sum_k w_j x_{ij}$ prediction values have different interpretations depending on the task, i.e. classification, regression. For example, it can be logistic transformed to get the probability of positive class in logistic regression, and it can also be used as a ranking score when we want to rank the outputs.
 %http://xgboost.readthedocs.io/en/latest/model.html
 The parameters eg $w_j$ in linear model, are the undetermined part that we need to learn from data. To find the best parameters given the training data we need to measure the performance of the model given a certain set of parameters, this is the objective function. Objective functions have two terms, training loss and the regularization.
 \begin{equation}
@@ -144,9 +231,8 @@ The appendix section provides a more in depth description.  of the models implem
 go through the models and give a layman's description of the models making emphasis in the applicability and pros and cons.
 
 Learning happens in two steps, first we build an estimator and then we fit the model to the data, the model performance can be then studied. The estimator may need to specify parameters and hyperparameters, for example, decision tree needs to specify the maximum depth of the tree, other models for example Naive Bayes are less dependent on the choice of parameters. 
-This easiness of parametrization does not come for free (no free lunch), Naive Bayes assumes that each feature is conditionally independent of every other feature given the target category, $p(x_i|C) == p(x_i|C), \forall i,j$ which is quite unrealistic in our dataset. Furthermore, when dealing with continuous data Naive Bayes assumes also a Gausssian or normal distribution. Thus, 
+This easiness of parametrization does not come for free (no free lunch), Naive Bayes assumes that each feature is conditionally independent of every other feature given the target category, $p(x_i|C) == p(x_i|C), \forall i,j$ which is quite unrealistic in our dataset. Furthermore, when dealing with continuous data Naive Bayes assumes also a Gaussian or normal distribution. Thus, 
 $p(x = a|C_k) = \frac{e^{-\frac{(a-\mu_k)^2}{2\sigma_k^{2}}}} {\sqrt{2\pi\sigma_k^{2}}}$. 
-
 
 Once the estimator is being learned, we need to test it with the predictor. Predictors generate forecasts using the learned estimator fed with unknown  data, that is data that were not used to train the estimator.
 % 0. Transformers : before learning, some are simple: replacing missing data with a contant, taking a log transform ..or some transforms are learning algorithms themselves like PCA
@@ -154,6 +240,12 @@ Once the estimator is being learned, we need to test it with the predictor. Pred
 % For model tuning and selection we can use two meta estimators: GridSearchCV and RandomizedSearchCV to search the best parameters. Grid provides a grid of possible parameters and try each possible combination among them to arrive at the best one.. Randomized  optimizes this sampling the parameters to avoid combinatorial explosion of Grid. the also allow different x-validation schemes and score functions to measure performance.
 
 \subsection{Model evaluation: quantifying the quality of predictions }
+The two factors that tell us how well our machine learning is doing are:
+\begin{itemize}
+\item Underfitting: the error on the training set is too large.
+\item Overfitting: the gap between the error in the training and test sets is too large. 
+\end{itemize}
+
 %http://scikit-learn.org/stable/tutorial/machine_learning_map/index.html
 Whether we are doing classification both continuous and discrete or clustering we need to study the behavior of our model prediction, that is, model selection will rely on model evaluation criteria. Evaluation criteria consists in computing scoring objects that gives us information about model performance. It ought to be remarked that scoring is not dataset independent, for example, accuracy may be an optimal indicator of model performance in some situations but suboptimal in others. For example, in a binary classification problem -converter vs not converter- in which the converters are a small minority (e.g. $10\%$, accuracy is not the best measure to use because accuracy is just the number of correct prediction divided by the total number of instances. A dummy classifier that doesn't look at the features at all and always predict the most frequent class (i.e. non converter) will have an accuracy of $90\%$, that is, the dummy classifier will predict the right label for 90 out of 100 examples.
 %https://www.coursera.org/learn/python-machine-learning/lecture/BE2l9/model-evaluation-selection
@@ -188,7 +280,7 @@ The F1 score combines both precision and recall into a single number, mathematic
 %print(classification_report(test,pred,target_names=['not converter 0', 'converter 1']))
 %varying the decision threshold for predict_proba https://www.coursera.org/learn/python-machine-learning/lecture/0YPe1/classifier-decision-functions
 
-Receiving Operating Characteristic ROC curves, false positive rate (x-axis), true positive rate (y-axis) (top left corner is the ideal point, false positive 0 and true positive 1), area under the curve AUC is a way to summarize the classifier performance in one single number.
+Receiving Operating Characteristic ROC curves, false positive rate (x-axis), true positive rate (y-axis) (top left corner is the ideal point, false positive 0 and true positive 1), area under the curve AUC is a way to summarize the classifier performance in one single number. ROC AUC is a good metric for balanced-classification problems only.
 
 Other metrics that will be shown in the Results section are:
 \begin{itemize}
@@ -247,18 +339,29 @@ Three data splits:
 	\item Test set: final evaluation
 \end{itemize}
 
-\sectoion{Results}
-Results for each classifier.
+\section{Results}
+Results for each classifier. We will realize that the challenge of fitting the training data differs very drastically from the challenge of finding patterns that generalize to new data \cite{goodfellow2016deep}.
+\subsection{Logistic regression}
+
+Lasso regularization: answer two points: what is the baseline prediction of disease progression and  which independent variables are important factors for predicting disease progression.
+%A constant model that always predicts the expected value of y, disregarding the input features, would get a R^2 score of 0.0.
+%Coefficient of determination R^2 of the prediction of LogReg_Lasso on training set 0.29
+%Coefficient of determination R^2 of the prediction of LogReg_Lasso on test set 0.11
+
 \subsection{K-neighbors}
-K-Neighbors (KNN) classifier is non-parametric \footneote{KNN makes no explicit assumptions about the functional form of the mapping $h:X->y$ this is contrary to what happens in naive Bayes where it is assumed that data follow a Gaussian distribution}, instance-based supervised learning algorithm. KNN doesn't assume normality of data (non-parametric) a¡not it explicitly learn a model (instance-based) the algorithm rather memorizes the entire training set which are subsequently used as “knowledge” for the prediction phase, that is, KNN works like an on-demand process only when a query to our database is made will the algorithm use the training instances to spit out an answer. 
+K-Neighbors (KNN) classifier is non-parametric \footnote{KNN makes no explicit assumptions about the functional form of the mapping $h:X->y$ this is contrary to what happens in naive Bayes where it is assumed that data follow a Gaussian distribution}, instance-based supervised learning algorithm. KNN doesn't assume normality of data (non-parametric) not it explicitly learn a model (instance-based) the algorithm rather memorizes the entire training set which are subsequently used as “knowledge” for the prediction phase, that is, KNN works like an on-demand process only when a query to our database is made will the algorithm use the training instances to spit out an answer. 
 k-NN works as follows, given a training set $X_train$ with labels $y_train$ and an instance $x_test$ to be classified, first, finds the set of most similar instances to $x_test$ that are in $X_train$ and we call then $X_NN$. Next, it predicts the labels $y_NN$ for $X_NN$ and finally predicts the label for $x_test$ by combining the labels $y_NN$ using simply majority vote. 
 It requires minimal training but relies upon expensive testing. KNN is used as a benchmark for more complex classifiers such as SVM and artifical network which contrary to KNN have lengthy training phase albeit a very fast testing phase. KNN can suffer from skewed class distributions, if a certain class is very frequent in the training set it might perform poorly because the majority voting 
 it will tend to dominate the response. Finally, the accuracy of KNN can be severely degraded with high-dimension data because there is little difference between the nearest and farthest neighbor
 %https://kevinzakka.github.io/2016/07/13/k-nearest-neighbor/
 The algorithm requires the computation of the number of neighbors k, once this parameter is estimated performing cross validation on our dataset using a generated list of an odd number k neighbors (by default 5). For low k neighbor parameter, eg $k=1$ the decision boundaries will be very convoluted (high complexity, over fitting), for large k now the classifier needs to weigh the votes of many neighbors, not juts one, so single training data points will not have the dramatic influences in the prediction as in k=1 and the result is a smoother boundary (model with lower complexity, less variance), so for k equal all the number the prediction will be always the most frequent class (model underfit). The metric distance is the Minkowski distance ($p=1$ Manhattan, $p=2$ Euclidean). 
 %https://www.coursera.org/learn/python-machine-learning/lecture/I1cfu/k-nearest-neighbors-classification-and-regression
+One weakness of k-NN  is that it cannot learn that one feature is more discriminative than another.
 
 \subsection{Naive Bayes Classifier}
+The ideal model is an oracle that knows the true probability distribution that generates the data. But even if we had the oracle we still could incur in errors for example if there is noise in the distribution.
+Also note that the mapping X,y could be inherently stochastic  or y could be deterministic but involves variables that are not included in the model. The error incurred by an oracle making predictions from the true distribution is called the Bayes error.
+
 %https://www.evernote.com/shard/s263/nl/33458921/18793f59-d0f8-40c0-b1a5-6f51bab38c60?title=Naive%20Bayes%20Classifier
 The naive Bayes \footnote{Bayes hardly deserves the glory, Laplace had not only the intuition but provided the mathematical formulation, this is not rare in science and human affair see Amerigo Vespucci giving the name of America, absolutely disproportionate} classifier determines to which class a sample belongs to by calculating the posterior probability using the Bayes formula $p(C|X)$ where X is the sample and C the target class, for example converter.
 The Bayes rules combines two sources of information -prior and likelihood- to calculate the posterior which is the final classification criterion.
@@ -270,17 +373,20 @@ When the assumption of independence holds, a Naive Bayes classifier tends to per
 Bayes tend to be efficient in learning and prediction but poor in generalization compared with more sophisticated methods.
 
 \subsection{Decision trees}
+k-NN breaks the input space into box looking regions, decision trees does this as well, each node of the DT is asociated with a region in the inut space, space is then divided into non-overlapping regions with a 1-1 correspondence between leafs and input regions.
+
+
 Decision trees are a popular supervised learning method can be used for both regression and classification  a very good exploratory method to understand which are the features more relevant to predict the target.
 In essence, decision trees learn a set of conditional rules (if-then) on features values that result in the prediction, so the idea is to find a set of rules useful to categorize an object (reminiscent to expert systems in the 70s and 80s) but rather than figure out manually the rules for every task the algorithm will learn it for us.
 % if accuracy on training > acc test we are doing overfitting, one strategy is to keep addin
-When the tree keeps adding rules it may become very complex we will memorize the data and will overfit, to avoid this we can prevent the growth of the tree using the max depth parameter which controls the maximum number of splitting points (eg 3) and minimum-maximum samples leaf which is the number of data instances that a leaf can have to avoid further splitting.  In practice, the max depth parameter is enough to deal with overfitting.
+When the tree keeps adding rules it may become very complex we will memorize the data and will overfit \footnote{Overfitting happens in every machine-learning problem, the dialectics of Machine learning is in optimization versus generalization. Optimization refers to adjusting the model in order to get he best possible performance in the training set and generalization is about how well the trained model performs on data never seen before}, to avoid this we can prevent the growth of the tree using the max depth parameter which controls the maximum number of splitting points (eg 3) and minimum-maximum samples leaf which is the number of data instances that a leaf can have to avoid further splitting.  In practice, the max depth parameter is enough to deal with overfitting.
 the pros are that are easy to understand via visualization, no need of feature normalization or scaling and work well with databases with heterogeneous data types. the cons is that they overfit (complex trees). In the next section we show ensemble methods such as Random Forests that might help to alleviate the overfitting problem found in Decision Trees.
 
 
 \subsection{Gradient boosted decision trees}
 Random forest and gradient boosted are both tree based ensemble methods. Like Random forest Gradient boosted creates an ensemble of decision tree to create more powerful predictive models for classification and regression. Random forest is a bagging algorithm Gradient boosted is a boosted algorithm, bagging reduces variability (stability of the classifier) and boosting reduces both variance and bias. It reduces variance because you are using multiple models as we do in bagging and it reduces bias by training the subsequent model by telling him what errors the previous models.
 Boosting was originally a theoretical invention motivated by the question "can we build a stronger model using weaker models", weak learner here mean shallow trees built in a non random way (different from RF) to create a model that makes fewer and fewer mistakes as these are added (see Schapire The Strength of Weak Learnability). An interesting property of GBDT is that it works with different loss functions, even when the derivative is not convex (eg pinball loss function). %https://www.lokad.com/pinball-loss-function-definition
- There are tow main algorithms: Adaboost and Gradient boosting. Adaboost is the original algorithm and what it does is to you tell subsequent models to punish more heavily observations mistaken by the previous models. In Gradient boosting you train each subsequent model using the residuals (the difference between the predicted and true values). The learning rate parameter controls how hard each tree tries to correct the mistakes from previous rounds (high learning rate compelx trees, low learning rate simpler trees). 
+ There are tow main algorithms: Adaboost and Gradient boosting. Adaboost is the original algorithm and what it does is to you tell subsequent models to punish more heavily observations mistaken by the previous models. In Gradient boosting you train each subsequent model using the residuals (the difference between the predicted and true values). The learning rate parameter controls how hard each tree tries to correct the mistakes from previous rounds (high learning rate complex trees, low learning rate simpler trees). 
 What do they work? We don't really know, note that Data science is an empirical science, "because it works" is good enough \footnote{The 'As if' argument in economics (Milton Freedman) engineering view of scientific, see the the analogy of the billiard player plays “as if he knew ... complicated mathematical formulas”. For Friedman scientific theory (hypothesis or formula) cannot be tested by testing the realism of its assumptions.  All that matters is the accuracy of a theory’s predictions, not whether or not its assumptions are true. }. %http://www.rweconomics.com/BPA.htm
 
 GBDT are often best off-the-shelf accuracy on many problems, require not much memory and are fast but like random forests the results are hard for humans to interpret, require careful tuning of the learning rate.
@@ -295,22 +401,83 @@ The optimization problem of decision trees (forest) is much harder than than tra
 Random forest is a bagging algorithm because it tries to "fix" the reliability problem existing in the decision tree model. DT are unreliable in the sense that small changes in your data produce may produce large changes very different decision trees\footnote{This is reminiscent to the the butterfly effect in chaos theory coined by Edward Lorenz}. This is where bagging comes from, we can create a robust model through bagging, that is, create different models by resampling your data. Each tree will deal with a different set of the data called the bootstrap sample, chooses at random with replacement this means that a bootstrap sample may have missing instances and also repeated instances doing this N times (one for each Tree) importantly there is not only randomness in picking the dataset for each tree but also there is randomness on the features from which to decide to split or not, if the max features is 1 we have forests with diverse complex trees and with max features closed to the number of features will lead to similar forests with simpler trees. Once the random forest is train the overall prediction is a a weighted vote.
 Random forest is just the application of bagging to decision trees, and we want to do this if we care about stability.
 
-
-
-
 Random forest inherit many of the benefits of decision trees. Pros widely used excellent performance on a variety of problems, easily parallelized, does not require careful normalization of features it may not be good for very highly dimensional problems (text classifiers). some of the k parameters are n estimators (default 10) is the number of trees, the max features parameters has a large effect on performance influence the diversity of trees in the forest, the max depth by default is None which means that the tree will continue to split until all nodes (or the min samples which is 2) in the leaf belong to the same class.
+%https://github.com/mapattacker/datascience/blob/master/supervised.rst
 
 
+\section{Deep networks}
+\label{se:deep}
+
+The MLP expands on the regression model seen in section \ref{se:me}. In regression we have just two layers, the input $x$ and the output $(\hat{w})$ and the goal of the procedure was to estimate the output $\hat{y}$ via OLS or related methods that estimates the weights $\hat{w}$ of the inputs in the expression $\hat{y} = \sum_i \hat{w_i} x$. In MLP we add a hidden layer which computes a nonlinear function of the weighted sums of the input features. The linear function that the hidden units apply is called the activation function. For example
+\begin{equation}
+h_i = tanh(w_{i0}x_0 + w_{i1}x_1 + w_{i2}x_2 ....) \\
+\hat{y} = v_0 + h_0 + v_1 h_1 +...
+\end{equation}
+%https://www.coursera.org/learn/python-machine-learning/lecture/v4cs3/neural-networks  
+\textit{tanh} is the hyperbolic tangent function which is related to the logistic function but it is not the only choice for activation function of the hidden units, for example, \textit{relu (hockey stick), logistic} etc. The \textit{relu} activation function is the default in sklearn.
+
+It is the addition of the hidden layer with the non linear function adds expressive power and it is what allows the network to learn more complex patterns than linear and logistic regression models. Of course this increase in expressive power comes at the price of having more weights (model coefficients) to estimate, that is, we need more training data and computation compared to a linear model \footnote{Memory, data and time are the limitations that have been overcome. The crude limitation in memory in computers (Gates infamously said  640K is good for anyone is not a problem anymore, data now there is too much of it that the problem is how to do something without it and the limitation these days it is time, but not computing time but developer-engineer time, humans cost money while computation is almost free.}.
+
+%https://www.wired.com/1997/01/did-gates-really-say-640k-is-enough-for-anyone/
+A deep-learning model is a directed, acyclic graph of layers. The topology of a network defines a hypothesis space.
+The components of neural networks are: layers (the architecture of the network), inputs and target, loss function (is the feedback learning that allows learning), optimizer (tell us if we are learning). The loss function is the difference (can be calculated in multiple ways) between the predicted y and the true y, it produces a loss score which is input to the optimizer whose output will update the weights. 
+Thus, what deep learning in particular and machine learning in general does is to search for useful representations of input data using the guidance of a feedback signal(loss function) within a predefined space of possibilities or hypothesis space. Note that the choice of the topology constraint the space of possibilities or hypothesis space to a specific series of tensor operations and what you ultimately expect to find is a good configuration of weight tensors. Picking the right network architecture is more an art than a science although you should try to rely as much as possible on good practices.
+
+The fundamental data structure is the layer, a layer is a processing device which takes one or more tensors and outputs one or more tensors. The state of the layer is given by the weights (tensor) learned with the optimizer (stochastic gradient descent).
+2D tensors of shape (samples, features), is often processed by densely connected layers, also called fully connected or dense layers. Sequence data, on the other hand, are stored in 3D tensors of shape (samples, timesteps, features), is typically processed by recurrent layers such as an LSTM layer. Image data, stored in 4D tensors, is usually processed by 2D convolution layers (Conv2D).
+%Chollet book pg 144
 
 
+System -> Loss/Objective function ( produces a number that we want to minimize during training)-> Optimizer (determines how the network will update the weights based on the loss)-> System 
+
+The optimizer is SGD of some sort of other but the loss function changes depending on the task, for a two-class classification problem choose binary crossentropy. Without an activation function like relu (also called a non-linearity), the Dense layer would consist of two linear operations—a dot product and an addition output = dot(W, input) + b; so the layer could only learn linear transformations (affine transformations) of the input data: the hypothesis space of the layer would be the set of all possible linear transformations of the input data into a number of units layer-dimensional space. 
+In order to get access to a richer hypothesis space (deep representations) we need non-linearity, or activation function, for example relu: output = relu(previous output). The optimizer \textit{rmsprop} should work in most situations.
 
 
+For the loss function, we can use crossentropy (distance between two probability distributions, in this case between ground-truth distribution and our predictions), mean squared error can also be used.
+Validate the approach consists in train the model for n epochs (n iterations over all samples in the x train and y train tensors) in mini batches of m samples, while at the same time monitor the loss and accuracy on the test data set.
+The validation set is created by setting apart  1,000? (10 per cent of the training) samples in the training data to use as a validation set
+%len(train_data) 8982
+%x_val = x_train[:1000]
+%partial_x_train = x_train[1000:]
+
+%y_val = one_hot_train_labels[:1000]
+%partial_y_train = one_hot_train_labels[1000:]
+%train the network fro 20 epcohs
+In Keras deep learning models are built by putting together compatible layers to form an useful data-transformation pipeline.  The Keras work flow is:
+\begin{enumerate}
+\item input and target tensors
+\item define model (layers that map inputs to targets)
+\item learning (compile) choose loss function, optimizer and loss score 
+\item learning (compile) choose loss function, optimizer and loss score 
+%model.compile(optimizer=optimizers.RMSprop(lr=0.001),loss='mse',metrics=['accuracy'])
+\item iterate on your training data %model.fit(input_tensor, target_tensor, batch_size=128, epochs=10
+
+\end{enumerate}
+
+%for example layers.Dense(32, input_shape=(784,)) is a layer with 32 units receiving 784 inputs, so it will only accept a 2D input tensor whose dimension 0 is 784, the layer output 32 dimensions. Thhus this can only cbe connected downstream to another layer that takes 32 as input, But Keras takes  care of this, you dont need to spec the input dimension. For examples:
+%model = models.Sequential()
+%model.add(layers.Dense(32, input_shape=(784,)))
+%model.add(layers.Dense(32)) #dont need to put 32 as input_shape it is inferred
+
+%cross validation
+In the evaluation (training phase) you also keep adjusting the network parameters (number of epochs, that is, find the minimum number of epochs beyond which the network overfits). We split the data into training set and validation set (eg $10\%$) but since we have so few data points (less than 100) we encounter the problem that the validation score has a high variance with regard to the validation split, that is, the score depends a lot on which data points you use to validate (add to this that the set is imbalance we may have by chance a validation set with 0 converters). It goes without saying that this would prevent from a reliable evaluation of the model. 
+The best practice to deal with this situation is to use K-fold cross validation, split the available data into K partitions (e.g. between 4 and 5) instantiating K identical models and training each one on K-1 partitions while evaluating on the remaining partition, that validations core is the average of the K validation scores.
+At the end we get a final production model with the "right" parameters (number of epochs, layers, units, optimizer, loss, activation) train the final production model on all the training data (now without separating for validation) with the best parameters and look at its performance on the test data.
+% for example, let us see that we found thge epochs = 80
+%model = build_model(); model.fit(train_data, train_targets,epochs=80, batch_size=16, verbose=0);
+%test_mse_score, test_mae_score = model.evaluate(test_data, test_targets)   
 
 
 
 \section{Appendix}
+Notation:  a dataset is a collection of examples which are in turn collections of features. The design matrix is the most common form of describing a dataset, $X \in R^\{n,m\}$, where n is the number of examples (rows) and m the number of features (columns), so $X^\{i,j\}$ is the value of the feature j for example i
 
+Capacity: a model's capacity is its capacity to fit a wide variety of functions. for example, we we take the linear regression model we can increase its capacity by introducing x as another feature, note that the output is still a linear function of the parameters and it can be solved with the normal equations. MAchine learning algorithms perform best when they have a capacity appropriate for the complexity of the task and the training data available , models with high capacity can solve complex problems but when the capacity exceeds the complexity they may overfit (Occam's razor). 
 
+Complexity: The complexity of a model can be measured with the Vapnik-Chervonenkis dimension (complexity of binary classifier). The discrepancy between training error and generalization error is bounded from above by a quantity that grows as the capacity grows but shrinks as the size of the training set increases. Interestingly, these bounds are the intellectual justification of why machine learning works.
+
+The network or model capacity is the number of learnable parameters -number of layers and units per layer-. A model with more parameters will have more memorization capacity but that does not imply that will generalize well.On the other hand, if the network has limited memorization resources, it won’t be able to learn this mapping as easily; thus, in order to minimize its loss, it will have to resort to learning compressed representations that have predictive power regarding the targets—precisely the type of representations we’re interested in. (Keep inn mind that you should use models that have enough parameters that they don’t underfit: your model shouldn’t be starved for memorization resources). There is a compromise to be found between too much capacity and not enough capacity.
 
 %-------------------------------------------------------------------------------
 % REFERENCES
@@ -325,6 +492,160 @@ Random forest inherit many of the benefits of decision trees. Pros widely used e
 \bibliography{../bibliography-jgr/bibliojgr}
 
 \end{document}
+
+\section{Temp results}
+Correlation 
+
+(Pdb) type(corr_with_target)
+<class 'pandas.core.series.Series'>
+(Pdb) corr_with_target.sort_values()
+fcsrtrl3_visita1       -0.279696
+fcsrtlibdem_visita1    -0.273745
+fcsrtrl2_visita1       -0.265737
+fcsrtrl1_visita1       -0.226803
+cn_visita1             -0.198617
+mmse_visita1           -0.196126
+reloj_visita1          -0.160288
+nivel_educativo        -0.081176
+animales_visita1       -0.076619
+eqm06_visita1          -0.052374
+p_visita1              -0.051273
+relaocio_visita1       -0.050834
+eq5deva_visita1        -0.048784
+act_memt_visita1       -0.042345
+eqm07_visita1          -0.025660
+tpoevol_visita1        -0.025052
+ejfre_visita1          -0.017775
+act_prax_visita1       -0.015352
+sexo                   -0.013451
+valcvida_visita1       -0.009756
+lat_manual             -0.008453
+stai_visita1           -0.008087
+valsatvid_visita1      -0.007622
+eq5dcp_visita1         -0.001277
+act_visu_visita1        0.003478
+eqm82_visita1           0.006725
+ejminut_visita1         0.008365
+relaamigo_visita1       0.008726
+eq5ddol_visita1         0.011100
+eq5dmov_visita1         0.013172
+                          ...
+eqm86_visita1           0.025106
+eqm09_visita1           0.027991
+act_aten_visita1        0.031886
+act_apat_visita1        0.036703
+act_expr_visita1        0.036969
+act_orie_visita1        0.044686
+act_mrec_visita1        0.046276
+act_comp_visita1        0.048005
+eqm83_visita1           0.051727
+eqm85_visita1           0.052457
+act_ansi_visita1        0.053931
+relafami_visita1        0.056147
+edadinicio_visita1      0.057559
+act_depre_visita1       0.058367
+eqm84_visita1           0.060337
+eq5dans_visita1         0.061559
+edad                    0.067859
+act_ejec_visita1        0.068252
+eq5dact_visita1         0.074656
+peorotros_visita1       0.077590
+eqm81_visita1           0.088604
+eq5dsalud_visita1       0.091330
+gds_visita1             0.117234
+scd_visita1             0.117537
+eqm10_visita1           0.118976
+apoe                    0.122093
+preocupacion_visita1    0.133250
+cdrsum_visita1          0.150836
+faq_visita1             0.204567
+conversion              1.000000
+
+Type: Graph
+Number of nodes: 62
+Number of edges: 156
+Average degree:   5.0323
+(Pdb) print_summary_network(graph_metrics, nodes=corr_Xy_df.keys().tolist(), corrtarget=corr_with_target)
+Summary for: clustering : best 6 nodes
+
+		clustering at node: eqm81_visita1 = 1.0, correlation with target=0.0886036300459
+		clustering at node: act_ansi_visita1 = 1.0, correlation with target=0.0539314624044
+		clustering at node: reloj_visita1 = 1.0, correlation with target=-0.160288410645
+		clustering at node: eq5dcp_visita1 = 1.0, correlation with target=-0.00127669914835
+		clustering at node: rsoled_visita1 = 1.0, correlation with target=0.018641453136
+		clustering at node: conversion = 1.0, correlation with target=1.0
+Summary for: closeness_centrality : best 6 nodes
+
+		closeness_centrality at node: stai_visita1 = 0.200819672131, correlation with target=-0.00808664222061
+		closeness_centrality at node: eq5dans_visita1 = 0.202848153668, correlation with target=0.0615591653571
+		closeness_centrality at node: faq_visita1 = 0.211389128559, correlation with target=0.204566926193
+		closeness_centrality at node: scd_visita1 = 0.236258437801, correlation with target=0.117536621037
+		closeness_centrality at node: gds_visita1 = 0.236258437801, correlation with target=0.117233934239
+		closeness_centrality at node: peorotros_visita1 = 0.239071038251, correlation with target=0.0775901113454
+Skipping communicability
+
+Skipping degree
+
+Skipping density
+
+Skipping is_connected
+
+Summary for: betweenness_centrality : best 6 nodes
+
+		betweenness_centrality at node: eq5dans_visita1 = 0.0416783762685, correlation with target=0.0615591653571
+		betweenness_centrality at node: eq5ddol_visita1 = 0.0718969555035, correlation with target=0.0110997974908
+		betweenness_centrality at node: scd_visita1 = 0.0869763205829, correlation with target=0.117536621037
+		betweenness_centrality at node: peorotros_visita1 = 0.105555555556, correlation with target=0.0775901113454
+		betweenness_centrality at node: faq_visita1 = 0.142896174863, correlation with target=0.204566926193
+		betweenness_centrality at node: gds_visita1 = 0.169117876659, correlation with target=0.117233934239
+Skipping degree_assortativity_coefficient
+
+Skipping degree_histogram
+
+Skipping estrada_index
+
+Summary for: degree_centrality : best 6 nodes
+
+		degree_centrality at node: fcsrtrl3_visita1 = 0.16393442623, correlation with target=-0.279696300585
+		degree_centrality at node: fcsrtlibdem_visita1 = 0.16393442623, correlation with target=-0.273745482996
+		degree_centrality at node: cn_visita1 = 0.16393442623, correlation with target=-0.198616561327
+		degree_centrality at node: stai_visita1 = 0.16393442623, correlation with target=-0.00808664222061
+		degree_centrality at node: eq5dans_visita1 = 0.180327868852, correlation with target=0.0615591653571
+		degree_centrality at node: gds_visita1 = 0.196721311475, correlation with target=0.117233934239
+Skipping number_connected_components
+
+Skipping transitivity
+
+Summary for: average_degree_connectivity : best 6 nodes
+
+		average_degree_connectivity at node: peorotros_visita1 = 7.2, correlation with target=0.0775901113454
+		average_degree_connectivity at node: eqm07_visita1 = 7.81818181818, correlation with target=-0.0256601218935
+		average_degree_connectivity at node: eqm81_visita1 = 7.91666666667, correlation with target=0.0886036300459
+		average_degree_connectivity at node: preocupacion_visita1 = 7.97222222222, correlation with target=0.133250098533
+		average_degree_connectivity at node: eqm06_visita1 = 8.01428571429, correlation with target=-0.0523737453908
+		average_degree_connectivity at node: tpoevol_visita1 = 8.14285714286, correlation with target=-0.0250515726128
+Summary for: triangles : best 6 nodes
+
+		triangles at node: cdrsum_visita1 = 19, correlation with target=0.150836101922
+		triangles at node: gds_visita1 = 20, correlation with target=0.117233934239
+		triangles at node: eq5dans_visita1 = 20, correlation with target=0.0615591653571
+		triangles at node: fcsrtrl2_visita1 = 21, correlation with target=-0.26573676764
+		triangles at node: fcsrtrl3_visita1 = 21, correlation with target=-0.279696300585
+		triangles at node: fcsrtlibdem_visita1 = 21, correlation with target=-0.273745482996
+Summary for: k_nearest_neighbors : best 6 nodes
+
+		k_nearest_neighbors at node: peorotros_visita1 = 7.2, correlation with target=0.0775901113454
+		k_nearest_neighbors at node: eqm07_visita1 = 7.81818181818, correlation with target=-0.0256601218935
+		k_nearest_neighbors at node: eqm81_visita1 = 7.91666666667, correlation with target=0.0886036300459
+		k_nearest_neighbors at node: preocupacion_visita1 = 7.97222222222, correlation with target=0.133250098533
+		k_nearest_neighbors at node: eqm06_visita1 = 8.01428571429, correlation with target=-0.0523737453908
+		k_nearest_neighbors at node: tpoevol_visita1 = 8.14285714286, correlation with target=-0.0250515726128
+Density =0.0824960338445
+Is connected =False
+degree_assortativity_coefficient =0.655249823616
+estrada_index =5042.09819121
+number_connected_components =21, Normalized ncc/totalnodes=0.338709677419
+transitivity =0.621338912134
 
 %-------------------------------------------------------------------------------
 % SNIPPETS
