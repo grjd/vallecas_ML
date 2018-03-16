@@ -182,23 +182,81 @@ The features to be removed are obviously the target variable conversion, tiempo 
 
 \section{Descriptive statistics}
 
-\section{Data visualization (dimensionality reduction)}
+\section{Data visualization (dimensionality reduction-unsupervised learning-manifold learning)}
+%https://towardsdatascience.com/reducing-dimensionality-from-dimensionality-reduction-techniques-f658aec24dfe
+\subsection{PCA}
+\subsection{Singular Value Decomposition}
+TruncatedSVD is very similar to PCA, but differs in that it works on sample matrices X directly instead of their covariance matrices. Note that when the columnwise (per-feature) means of X are subtracted from the feature values, truncated SVD on the resulting matrix is equivalent to PCASVD deals more efficiently with sparse matrices than PCA (this is because it does not center the data before doing SVD) \cite{halko2009finding}. When truncated SVD is applied to term-document matrices, this transformation is known as latent semantic analysis (LSA), because it transforms such matrices to a “semantic” space of low dimensionality (combat the effects of synonymy and polysemy which cause term-document matrices to be overly sparse and exhibit poor similarity under measures such as cosine similarity).
+Mathematically, truncated \footnote{Truncated means just that the algorithm will return matrices with the specified number of columns (k). This is precisely how the dimensionality is reduced.} SVD applied to training samples X produces a low-rank approximation:
+\begin{equation}
+X \sim X_k = U \sum V
+\end{equation}
 
+
+\subsection{tSNE: stochastic neighbor embedding}
 computers can deal with as many dimensions as they like, humans on the other hand we are limited to 3. To visualize large (larger than 3) dimensionality datasets we need to reduce the dimensionality. The rationale is that despite the apparent large dimensionality the intrinsic dimensionality is low, or at least lower. For example a 10 mega pixels video camera rotating to film some scene build a 10 million dimensional space and yet the images approximately lie in a 3D space (yaw, pitch, roll), this embedding is certainly complex and nonlinear.
 Manifold learning also called nonlinear dimensional reduction is an unsupervised method that deals with discovering the hidden simpler structure in a high dimensional dataset.
 A popular algorithm is t-distributed stochastic neighbor embedding (t-SNE) \cite{maaten2008visualizing}.
 Let us briefly explain the algorithm, first some definitions:
 A \textbf{data point} is a point $x_i$ in the original space $\mathbf{R}^D$, where D is the number of dimension (features). A map point is a point $y_i$ in the map space $y \in \mathbf{R}^2$ (if we want to map the original space in 2D). The map space will contain the final representation of the original data space (b:X -> Y , where b is a isomorphic from the original space (X) to the Map space (Y), that is, for every map point y there is one point x. 
 Now, how this map is built? we want to preserve the structure of the original data, that is, if two points are close together in X their images in Y must be closed together as well. We need to define a distance that quantifies closeness, for example, the Euclidean distance. Thus, 
-\(p_{j|i} = \frac{\exp\left(-\left| x_i - x_j\right|^2 \big/ 2\sigma_i^2\right)}{\displaystyle\sum_{k \neq i} \exp\left(-\left| x_i - x_k\right|^2 \big/ 2\sigma_i^2\right)}\)
-which measures how close x_i is from x_j if we assume a Gaussian distribution around x_i. Note tht the variance $$ is different for every point, it is chosen such as in dense areas is smaller than in sparse areas (closed by need to be really close by to be friends). 
+\begin{equation}
+p_{j|i} = \frac{\exp\left(-\left| x_i - x_j\right|^2 \big/ 2\sigma_i^2\right)}{\displaystyle\sum_{k \neq i} \exp\left(-\left| x_i - x_k\right|^2 \big/ 2\sigma_i^2\right)}
+\end{equation}
+which measures how close $x_i$ is from $x_j$ if we assume a Gaussian distribution around $x_i$. Note that the variance $\sigma$ is different for every point, it is chosen such as in dense areas is smaller than in sparse areas (closed by need to be really close by to be friends). 
 Finally, the similarity $p_{ij}$ needs to be a symmetric measure of the conditional probability, then:
 \(p_{ij} = \frac{p_{j|i} + p_{i|j}}{2N}\)
 with the similarty we obrain the similarity matrix for the original dataset (the similarity matrix can be calcualted for siumplicity with constant $\sigma$ or using a different $\sigma_i$ per point i).
 Bellow we show the distance (Euclidean) matrix and the similarity matrix both for constant and variable $\sigma$.
 
 %images here: https://github.com/oreillymedia/t-SNE-tutorial/blob/master/images/similarity.png
-Next, we need to compute the similarity matrix for the map points
+Next, we need to compute the similarity matrix for the map points,
+\begin{equation}
+q_{ij} = \frac{f(\left| x_i - x_j\right|)}{\displaystyle\sum_{k \neq i} f(\left| x_i - x_k\right|)} \quad \textrm{with} \quad f(z) = \frac{1}{1+z^2}
+\end{equation}
+note that q is built using a Cauchy distribution\footnote{Cauchy is "pathological" distribution since both its expected value and its variance are undefined. This choice of the distribution for the map points obeys to the fact that the volume of the N dimensional ball of radius r scales at $r^N$ which means that when N is large if we pick random points uniformly in the ball, most points will be closed to the surface, that is, a N dimensional orange will have most of the points in the skin rather than in the pulp} 
+%https://github.com/oreillymedia/t-SNE-tutorial see similation of distance from origin 
+(t-student with one degree of freedom) rather than a Gaussian distribution as in p, another difference is that the similarity matrix p is fixed and the similarity matrix q depends on the map points. 
+
+
+
+When reducing the dimensionality of a dataset, if we used the same Gaussian distribution for the data points and the map points, we would get an imbalance in the distribution of the distances of a point's neighbors. This is because the distribution of the distances is so different between a high-dimensional space and a low-dimensional space. Yet, the algorithm tries to reproduce the same distances in the two spaces. This imbalance is actually what happens in the original SNE algorithm \cite{hinton2003stochastic}.
+The t-SNE algorithm works around this problem by using a Cauchy(0,1) distribution for the map points, since this distribution has a much heavier tail than the Gaussian distribution it compensates the original imbalance. For a given similarity between two data points, the two corresponding map points will need to be much further apart in order for their similarity to match the data similarity. So Cauchy distribution leads to more effective data visualizations, where clusters of points are more distinctly separated.
+
+What we want is that the matrices p and q be as similar as possible, that is, similar data points yield similar map points.
+The Kullback-Leiber divergence measures the distance between the two matrices p and q. 
+\begin{equation}
+KL(P||Q) = \sum_{i, j} p_{ij} , \log \frac{p_{ij}}{q_{ij}}
+\end{equation}
+to minimize the score we perform gradient descent:
+\(\frac{\partial , KL(P || Q)}{\partial y_i} = 4 \sum_j (p_{ij} - q_{ij}) g\left( \left| x_i - x_j\right| \right) u_{ij} \quad \textrm{where} , g(z) = \frac{z}{1+z^2}.\)
+we try to approximate the true distribution P using Q, KL(P|Q) = H(P,Q) - H(P), the cross entropy minus the entropy.
+So, KL-divergence is better not to be interpreted as a "distance measure" between distributions, but rather as a measure of entropy increase due to the use of an approximation to the true distribution rather than the true distribution itself. (if we knew the true distribution P of the random variable, we could construct a code with average description length H(P). If, instead, we used the code for a distribution Q, we would need H(P)+K(P||Q) bits on the average to describe the random variable) so you need more bits to describe the situation if youa re going to use Q while the true distribution is P, so what KL measures is the inefficiency caused by the approximation of Q to P.
+%https://stats.stackexchange.com/questions/111445/analysis-of-kullback-leibler-divergence
+
+\subsection{Topological Data Analysis}
+%https://www.quora.com/Is-there-a-relationship-between-manifold-learning-and-topological-data-analysis
+TDA focuses on identifying global features within the data.
+Manifold learning focuses on reducing dimensionality by finding a good map from the data to a low-dimensional manifold. Topological data analysis could be helpful to analyse (manifold) data before and after dimensionality reduction (i.e. manifold learning). The topology of the manifold should be the same and independent of the dimensionality of the ambient space.
+
+Manifold learning assumes that the data lies on a (usually low) dimensional submanifold and has as a goal to create a representation that faithfully records this local neighborhood structure given in the manifold. 
+TDA, on the other hand, makes very few assumptions about the data and the goal is not to faithfully reconstruct the data - or to fit the data to a model - but to provide (unbiased) summaries of the geometric/topological structure in the data.
+Persistent homology and mapper both take as inputs some kind of "space" (e.g simplicial complex) and both use a function to create a summary. For Mapper the summary is (loosely speaking) a recording of the connectivity of the fibers of the  function while for persistent homology it's the relationship between the homology of sublevel sets of the function. The output is a "barcode" for persistent homology or a simplicial complex in the case of mapper.The main point here is that to create such a summary very little is needed beyond some notion of similarity or proximity in your data.
+
+As we saw in the results (no separation of data points!), the manifold assumption (locally uniform and smooth) is quite strong and outside of scientific contexts have not found data sets that look like manifolds.
+
+%https://jsseely.github.io/notes/TDA/
+TDA involves ‘fitting’ a topological space to data, then perhaps computing topological invariants of that space. TDA is related to two familiar problems: clustering and manifold learning. In some sense, TDA is a generalization of both problems.
+We can view many data analysis problems as ‘fitting a space to data’. E.g. both PCA and linear regression involve fitting a linear subspace to data; the space perspective complements the statistical (least-squares) and algebraic (SVD, pseudoinverse) perspectives of these techniques.
+How do we generalize these linear techniques? A stock answer: manifold learning. But, manifolds are restrictive objects. A consequence of being locally Euclidean is that they cannot contain singularities and must have the same dimension everywhere. A mathematician’s motivation for working with manifolds is that one can do calculus on them. But if this is not the goal, then there may be little reason to assume a restrictive type of space in a data analysis context. Indeed, the singularities of a space are often the interesting points of study (e.g. bifurcation points), and one wants tools to capture these.
+%Simplicial complexes
+Topological spaces are a natural thing to turn to whenever one wants to ‘fit a space to data’. Yet topological spaces, without restriction, are too general. Simplicial complexes, which can be viewed as a convenient middle ground of specificity and generality in modeling spaces. Simplicial complexes lie somewhere between graphs and hypergraphs. All graphs are special kinds of simplicial complexes, and all simplicial complexes are special kinds of hypergraphs. “Most” topological spaces of interest can be discretized (triangulated) and represented as a simplicial complex.
+%Persistent homology
+The workhorse technique of TDA is persistent homology
+%Mapper
+An especially underused TDA technique is “mapper”. I found this particularly useful for visualization, and I wonder why it isn’t as widely applied as, say, t-SNE. Mapper fits a simplicial complex to data (often, just a graph), but in a very flexible way. The goal of mapper is either data visualization or clustering. The key insight offered by this technique is that many interesting “clusters” in real data are not clusters in the classical sense (as disconnected components), but are the branches of some single connected component. 
+We didnt find clusters with SVD nor tSNE, can we find some with Mapper??
+
 
 \section{Methods}
 \label{se:me}
@@ -404,6 +462,8 @@ Random forest is just the application of bagging to decision trees, and we want 
 Random forest inherit many of the benefits of decision trees. Pros widely used excellent performance on a variety of problems, easily parallelized, does not require careful normalization of features it may not be good for very highly dimensional problems (text classifiers). some of the k parameters are n estimators (default 10) is the number of trees, the max features parameters has a large effect on performance influence the diversity of trees in the forest, the max depth by default is None which means that the tree will continue to split until all nodes (or the min samples which is 2) in the leaf belong to the same class.
 %https://github.com/mapattacker/datascience/blob/master/supervised.rst
 
+%http://blog.kaggle.com/2014/08/01/learning-from-the-best/
+
 
 \section{Deep networks}
 \label{se:deep}
@@ -411,7 +471,7 @@ Random forest inherit many of the benefits of decision trees. Pros widely used e
 The MLP expands on the regression model seen in section \ref{se:me}. In regression we have just two layers, the input $x$ and the output $(\hat{w})$ and the goal of the procedure was to estimate the output $\hat{y}$ via OLS or related methods that estimates the weights $\hat{w}$ of the inputs in the expression $\hat{y} = \sum_i \hat{w_i} x$. In MLP we add a hidden layer which computes a nonlinear function of the weighted sums of the input features. The linear function that the hidden units apply is called the activation function. For example
 \begin{equation}
 h_i = tanh(w_{i0}x_0 + w_{i1}x_1 + w_{i2}x_2 ....) \\
-\hat{y} = v_0 + h_0 + v_1 h_1 +...
+\hat{y} = v_0 + h_0 + v_1 h_1 + ...
 \end{equation}
 %https://www.coursera.org/learn/python-machine-learning/lecture/v4cs3/neural-networks  
 \textit{tanh} is the hyperbolic tangent function which is related to the logistic function but it is not the only choice for activation function of the hidden units, for example, \textit{relu (hockey stick), logistic} etc. The \textit{relu} activation function is the default in sklearn.
