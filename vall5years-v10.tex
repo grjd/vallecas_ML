@@ -350,9 +350,72 @@ Other metrics that will be shown in the Results section are:
 	\item Zero one loss: computes the sum or average of the 0-1 classification loss $L_{0-1}$ over n samples. By default normalizes over the sample
 \end{itemize}
 
+\subsubsection{Class imbalance}
+The class imbalance problem -the number of samples of one class being under represented compared to another class- is predominant in many scenarios, in particular when dealing with anomaly detection, for example, fraudulent transaction, electrical grid fault, electrical theft, conversion to disease  etc. In this situation, a predictive model that does not take into account this could be very unreliable.
+The imbalance problem needs to be addressed in the design phase with an emphasis on improving the identification of the minority class as opposed to achieving higher overall accuracy.
+How rare is our data set can be easily quantified with the balancing ratio, r. Let X be an imbalanced set with $X_{min}$ the subset of the undersampled class and $X_{maj}$ the subset of the majority class. Te balancing ratio r is
+\begin{equation}
+r_X = \frac{X_{min}}{X_{maj}}
+\end{equation}
+
+%https://www.analyticsvidhya.com/blog/2017/03/imbalanced-classification-problem/
+The balancing process is equivalent to resample X in such a way that the ratio increases, $r_{X_{resampled}} > r_X$, we can do so undersampling the majority class and or over sampling the minority class. Udersampling refers to reducing the number of samples in $X_{maj}$ for example cleaning the majority space by eliminating redundant data points. Oversampling tries to achieve data balancing by generating new points in $X_{min}$.
+
+Standard classifier algorithms e.g. Logistic Regression, Decision tres etc. have a bias towards the majority class, that is, they tend to only predict the majority class data and the features of the minority class are treated as noise and are often ignored. 
+
+
+Random under sampling: eliminate randomly majority class examples, for example taking out $10\%$ samples without replacement from the majority class to combining them with the minority class. It reduces the training set discarding potentially useful information, this approach is only advisable for really large datasets.
+
+Random over-sampling increases the number of elements in the minority class by randomly replicating. Here, contrary to udersampling, there is no information loss but it may increase the likelihood of overfitting since it replicates the minority class events.
+
+Cluster-Based Over Sampling k-NN algorithm is independently applied to minority and majority class instances to identify clusters in the dataset. Subsequently, each cluster is oversampled such that all clusters of the same class have an equal number of instances and all classes have the same size. The disadvantage of this algorithm, like most oversampling techniques is the possibility of over-fitting the training data.  
+
+Informed Over Sampling: Synthetic Minority Over-sampling Technique (SMOTE): This technique is good at avoiding overfitting which naturally occurs when replicas of the minority set are added. In SMOTE rather than replicas we generate a synthetic subset from the minority class which is used to train the classifier. For example we get 20 instances from $X_{min}$ and similar synthetic instances are generated 20 times for a total of 400 instances. SMOTE mitigates the problem of overfitting because it does not mimic minority instances it rather generates new ones, another advantage is that the there is no information loss.
+The disadvantages of SMOTE are that the algorithm does not take into account neighboring examples across classes which could introduce noise, SMOTE is not very effective for high dimensional data (YS:how ineffective and ho high??)
+SMOTE creates artificial data based on the feature similarities between existing minority samples. To create a synthetic sample, randomly select one of the K-nearest neighbors (eg under Euclidean distance), then multiiply the feature vector with a random number between 0 and 1 and finally add this vector to x
+\begin{equation}
+x_{new} =  x_i + \delta * (\hat{x_i} - x_i)
+\end{equation}
+where $x_{new}$ is the synthetic new point, $x_i$ is the minority instance and $\hat{x_i}$ is one of the k nearest neighbors. Thus, the resulting new point is along the line between $x_i$ and the randomly selected neighbor $\hat{x_i}$. The drawbacks of SMOTE include over generalization and variance \cite{wang2004imbalanced}.
+
+YS: Tomek links
+SMOTE can be complemented with data cleaning techniques, notably Tomek links \cite{tomek1976two} to reduce the overlapping (new instances become 'tied' together leading to overfitting \cite{mease2007boosted}) that is introduced in the sampling methods.
+A Tomek link is a pair if minimally distanced nearest neighbors that belong to different classes. By eliminating the Tomek links (pairs of points that are two close or noise) we cleanup the undesired overlapping that the synthetic sampling may introduce. After the Tomek links are removed all the minimally distanced nearest neighbors belong to the same class. Then, if we remove the overlapping points it could be possible to establish well-defined clusters. 
+
+We can also integrate sampling techniques with ensemble learning techniques,  (SMOTE + Adaboost), SMOTE can introduce new synthetic sampling at each boosting iteration and the successive classifier ensemble focus more on the minority class.
+
+
+Modified synthetic minority oversampling technique (MSMOTE): Two approaches: Bagging (Bootstrap Aggregating) and Boosting. In bagging we generate ‘n’ different bootstrap training samples with replacement. And training the algorithm on each bootstrapped algorithm separately and then aggregating the predictions at the end. 
+Boosting is an ensemble technique to combine weak learners (small changes in data induce big changes in the classification model.) to create a strong learner. 
+AdaBoost (Adaptive Boosting) is the first original boosting technique which creates a highly accurate prediction rule by combining many weak and inaccurate rules. 
+Gradient Tree boosting: Decision Trees are used as weak learners. Gradient Boosted trees are harder to fit than random forests
+XGBoost (Extreme Gradient Boosting) is an advanced and more efficient implementation of Gradient Boosting Algorithm. It is 10 times faster than the normal Gradient Boosting as it implements parallel processing. Unlike gradient boosting which stops splitting a node as soon as it encounters a negative loss, XG Boost splits up to the maximum depth specified and prunes the tree backward and removes splits beyond which there is an only negative loss.
+
+The pipeline we will use is bagging plus boosting. First, bagging, balance the unbalanced dataset using Synthetic Minority oversampling technique (SMOTE) by creating synthetic instances. And train the newly balanced data set using a Gradient Boosting Algorithm. Note that ensemble based methods (eg. gradient tree boosting) are not an alternative to sampling techniques per se – so it is better to use SMOTE first and then  the ensemble algorithm SMOTE+Gradient boosting. However, XG boosting can be applied directly on the imbalanced data, XG Boost is a more advanced form of Boosting and takes care of imbalanced data set by balancing it in itself- so use of sampling techniques may not be necessary.
+
+In our dataset the imbalance is around 12:1 which is far from what is more often considered as imbalance with ratios as skewed as 100:1, 1,000:1 or 10,000:1\cite{he2009learning}.
+The goal is to have high accuracy i the minority class without jeopardizing  the accuracy of the majority class.
+
+The two main classes to deal with the imbalance problem are Sampling (random, synthetic and cluster based)and Cost Sensitive (Adaptive boosting, cost sensitive decision trees) 
+Note that classifiers can also learn from imbalanced data sets, some studies have found comparable result for imbalanced datasets and the same balanced using sampling techniques \cite{japkowicz2002class}.
+Cost-sensitive methods for imbalanced consists in including the cost associated with missclassifying examples, that is, instead of creating a balanced data distribution with sampling , cost sensitive penalizes learning that missclassifies wityh the cost matrix. AdaBoost introduces a cost via assigning a weight for the data instances as an updating strategy. Thresholding is another valid forms of cost-sensitive learning (adjust the threshold of predicted probabilities return by the classifier to reduce the missclassified examples).
+
+Weighting is based on the idea that the ‘cost’ of misclassifying the minority class is worse than misclassifying the majority  class. This is applied at the algorithmic level in such algorithms as SVM, ANN, and Random Forest, for example with the weights parameter. So, the limitations here consist of whether the algorithm can deal with weights.
+%https://stackoverflow.com/questions/20082674/unbalanced-classification-using-randomforestclassifier-in-sklearn
+%sample_weight parameter is to balance the target classes in training dataset
+%len(X) == len(y) == len(sample_wight), each element of sample 1-d array represent weight for a corresponding (observation, label) pair. For 5:1 imbalance, if 1 class is represented 5 times as 0 class is, do: sample_weight = np.array([5 if i == 0 else 1 for i in y])
+% scikit-learn 0.17, there is class_weight='balanced' option which you can pass at least to some classifiers:
+%The “balanced” mode uses the values of y to automatically adjust weights inversely proportional to class frequencies in the input data as n_samples / (n_classes * np.bincount(y)).
+
+
+Thresholding can be used if the algorithm return probabilities, for example \textit{predict proba} adopting an appropriate trade-off level, this level can be optimized by generated a curve of the evaluation metric (e.g. F-measure). The limitation here is that you are making absolute trade-offs. Any modification in the cutoff will in turn decrease the accuracy of predicting the other class. If you have exceedingly high probabilities for the majority of your common classes (e.g. most above 0.85) you are more likely to have success with this method. It is also algorithm independent (provided the algorithm returns probabilities).
+Note that the F-measures which combine precision (exactness) and recall (completeness) don’t take into account the true negative rate. Therefore, it is often recommended that in imbalanced settings to use metrics such as Cohen’s kappa metric.
+
+Sampling (synthetic data, algorithms are SMOTE, SMOTEBoost and EasyEnsemble)
+
 \subsection{Model selection}
 In the previous section we sketched different evaluation metrics now we will see how to apply them in order to select the best model for our application. 
-Model selection is the phase in the modeling process in which we opt for one model or other based oin the model's performance which is being previously evaluated.
+Model selection is the phase in the modeling process in which we opt for one model or other based on the model's performance which is being previously evaluated.
 
 There are three main methods of model selection: Train-Test split, K-fold Cross Validation and Grid Search.
 The train/test method split the data set into two portions testing set and test test. The training set is used to train the model and the testing set is used to test the model. The pros are flexibility and speed, the cons provides a high  variance estimate of out of sample. 
