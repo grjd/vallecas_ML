@@ -73,7 +73,7 @@ We utilize Machine Learning techniques, in particular, Deep Networks to perform 
 
 \section{Introduction}
 The Vallecas Project for early detection of AD is the most ambitious population-based study in Spain. The project is carried out in the Queen Sofia Foundation Alzheimer Center by a multidisciplinary team of researchers from the CIEN Foundation. The main objective of the Vallecas Project is to elucidate, through tracking of progression of the cohort, the best combination of  parameters, clinical and others \footnote{Note in the inception of the project only clinical parameters were considered, here we advocate for a more inclusive set of parameters including neuropsychological, and also features related to the lifestyle such as nutrition and physical exercise} , that are informative about the medium and long-term features that distinguish individuals who will develop future cognitive impairment from those who will not. Thus, it intends to identify various markers to eventually determine the potential risk that each individual could have to develop the disease in the future.
-There are four branches in Machien Learning:
+There are four branches in Machine Learning:
 \begin{itemize}
 \item Supervised learning: map between input data to known targets (labels, annotations) 
 \item Unsupervised learning: finding interesting transformations of input data (without the help of any target) for the purpose of compression, denoising, visualization or to better understand the correlations in the input data. UL is the bread and butter of Data analytics and it is often advisable to perform UL (eg. clustering, dimensionality reduction PCA) before doing SL. 
@@ -260,15 +260,129 @@ We didnt find clusters with SVD nor tSNE, can we find some with Mapper??
 
 \section{Methods}
 \label{se:me}
-The most common learning method is called regression, it is then worth spemnd soem time to explian thios technique prior to get into more brave waters. There are tow types of regression, linear regression and logistic regression.
-Linear regression predicts a continuous output,$\hat{y}$ as a function of the input variables $x$ each weighted by a coefficient $\hat{w}$plus a bias term $\hat{w}$. Note that the terms $\hat{y}$,$\hat{w}$ and $\hat{w}$ are estimates that can be estimated via different methods for example OLS, Ridge regression or Lasso regression from training data.
+The most common learning method is called regression, it is then worth spend some time to explain this technique prior to get into more brave waters. 
+%https://www.evernote.com/shard/s263/sh/574750b2-7b4a-4300-8c41-7e8e5150de18/f2c4ffea344f3dd11b3e2f5dcdd25633
+There are two types of regression, linear regression and logistic regression. Logistic regression gives you a discrte ouput e.g.0,1 while linear regression gives a continuous output. Logistic and Linear Regression can be used as a benchmark (baseline performance) against which more complex techniques can be compared. 
+Both linear regression and logistic regression does work better when you remove attributes that are unrelated to the output variable as well as attributes that are very similar (correlated) to each other. Thus, feature engineering plays an important role in regards to the performance of this technique and it is not exception with other methodologies explored here. 
+Linear regression predicts a continuous output, $\hat{y}$ as a function of the input variables $x$ each weighted by a coefficient $\hat{w}$ plus a bias term $\hat{w}$. Note that the terms $\hat{y}$, $\hat{w}$ and $\hat{w}$ are estimates that can be estimated via different methods.
+
+The equation of a linear regression is
 \begin{equation}
 \hat{y} = \sum_i \hat{w_i}x_i
 \end{equation}
-Logistic regression takes this a step further by running the output  of the linear combination of w and x through a non linear fucntion (the logistic function). The logistic function range is $[0,1]$ so it can be used to estimate the probability that a given instance belong to one class or another.
+Logistic regression takes this a step further by running the output  of the linear combination of w and x through a non linear function (the sigmoid or logistic function). The logistic function range is $[0,1]$ so it can be used to estimate the probability that a given instance belong to one class or another.
 \begin{equation}
-\hat{y} = logistic(\sum_i \hat{w_i}x_i)
+\hat{y} = \sigma(\sum_i \hat{w_i}x_i)
 \end{equation}
+
+Maximum Likelihood Estimate (MLE) is a general method to estimate parameters in statistical models including regression. In MLE we maximize the probability that a random input point will be classified correctly. In order to maximize the likelihood we use optimization processes\footnote{Formally, any operation in which you are solving for the minimum or maximum of some function can be interpreted as an optimization. What optimization technique does is to looking for the linear model that provides the "best" fit to the data. For example, OLS minimizes the model error, in this case the residuals which are the part of the data that aren't explained by the model. OLS seeks to give the best description of the data, by minimizing the "total amount" of unexplained variation in the data.} e.g. ordinary least squares (OLS), Ridge regression or Lasso regression, Newton, gradient descent etc. 
+%OLS works by defining the "best" model as the one that minimizes a certain measure of model error -- in this case, the sum of the squares of the model residuals. The residuals are the part of the data that aren't explained by the model: OLS seeks to give the best description of the data, by minimizing the "total amount" of unexplained variation in the data.
+
+\subsection{Linear regression}
+Conversion and psychological test scores are not continuous but discrete variables so it does not make sense of performing a linear regression.
+
+There are teo main ways to train a linear regression model (the simplest machine learning method): "closed-form" directly computes the model parameters that best fit the model to the training set \textbf{Normal Equation} and using "gradient-descent" an iterative optimization approach that gradually tweaks the parameters to minimize the cost function over the training set. (eventually giving the same results as in the closed form). Variations of Gradient Descent are Batch GD, Mini batch GD and Stochastic GD.
+
+Polynomial regression, contrary to linear regression can fit nonlinear datasets. It has more parameters than linear regression and it is therefore more prone to overfitting the training data (Learning curve is the graphical device we have to detect if the model if overfiting), regularization s what deals with overfitting phenomenon.
+
+A linear regression model is something like this
+\begin{equation}
+y = \theta_0 + \theta_{1}x
+\end{equation}
+for example, $happiness = \theta_0 + \theta_1 wealth$., that is, the model is just a lienar fucntion of the input feature $wealth$ amd $\theta_0, \theta_{1}$ are the model parameters. A linear makes a prediction $\hat{y}$ based on the weighted sum of the input features pus a bias term(or intercept), $\hat{y} = \theta_0 + \theta_1 x_1 + ...+ \theta_n x_n$. This can be written in a more compact form as
+\begin{equation}
+y = \Theta^{T} X 
+\end{equation}
+where $\Theta$ is the model's parameter vector ( a column so we need to transpose y have a row ($\Theta^{T} (1 \times n), X (n \times 1)$ to get an scalar $(1 \times 1)$ which is the actual prediction for that input instance ), X is the instance vector (note that $x_0$ is always 1).
+Once we have built the model we need to train it which in essence consists in setting its parameters so that the model best fits the training set. Thus, we need to find a measure that tells us whether the model fits well the data, the most common measure is the root mean square error (RSME) but we use the mean square error (MSE) because the value that minimizes a function also minimizes square root.
+The MSE os a linear regression hypothesis on a training set X is
+
+\begin{equation}
+MSE(X,\Theta) = \frac{1}{m} \sum_{i=1}^{m}(\hat{y}^{i} - y^{i})^2 = \frac{1}{m} \sum_{i=1}^{m}(\Theta^Tx^{i} - y^{i})^2
+\end{equation}
+T find the value of the vector $\Theta$ we can use the closed-form also called normal equation
+\begin{equation}
+\hat{\Theta} = (X^{T}X)^{-1}X^{T}y
+\end{equation}
+where $\hat{\Theta}$ is the value that minimizes the cost function and y is the vector of target values.
+
+Fortunately the MSE cost function for a LR happens to be convex (choosing two points, the line segment never crosses the curve) that is, no local minima just one global minimum and it is also continuous and smooth function, thats to this: “Gradient Descent is guaranteed to approach arbitrarily close the global minimum (if you wait long enough and if the learning rate is not too high).”
+
+Importantly, when using Gradient Descent, you should ensure that all features have a similar scale (e.g., using Scikit-Learn’s StandardScaler class), or else it will take much longer to converge. (see pag 202 Aurelien book). The search is in the parameter space, so the more parameters the longer (finding a needle in a 300 dimensional haystack s much harder than in a 3 dimensional one, but the haystack is convex, so we know the needle sis always at the bottom)!
+
+
+To calculate the gradient descent we need to do the partial derivative of the cost function for each model parameter $\Theta$ in order to see how the cost function will change if a I change the parameter just a little bit(what is the slope of the mountain if I change $\Theta_i$ eg direction east and so on for each dimension ($\frac{\partial}{\partial \theta_j} MSE(\Theta$). Once we have the gradient vector (which points uphill) just subtract the gradient (weighted by the learning rate) from $\theta$ to go downhill
+
+The main problem with Batch GD is that it uses the entire training set to compute the gradient at every step, which makes it slow when the training set is large. Stochastic GD picks a subset (a random instance) in the training set at every step and computes the gradient for that instance, this makes the algorithm faster, with the inconvenient that its randomness (stochasticity) makes it less regular than GD, the cost function rather than slowly going to the minimum it may bounce up and down, but still decreasing on the average. However, randomness is actually good to escape from local optima but it could never settle in the global minimum.
+\textbf{simulated annealing} can solve this problem playing with the learning rate, it starts with a large one, to avoid local minimum, to make shorter steps as the algorithm approaches the global minimum (learning schedule).
+Each round of iterations is called epoch so in SGD the algorithm goes through the training set epochs times. Note that since instances are picked randomly per each epoch some instances can be chosen more than once while others none.
+%SGDRegressor “To perform Linear Regression using SGD with Scikit-Lear”
+
+Mini batch GD: “at each step, instead of computing the gradients based on the full training set (as in Batch GD) or based on just one instance (as in Stochastic GD), Mini-batch GD computes the gradients on small random sets of instances called mini-batches”. Better than SGD is we use GPU, the algorithm is less erratic than SGD especially with fairly large mini-batches
+
+Importantly these 3 algorithms will yield the same predictions choosing one or another relies upon the use computational resources we wish.
+
+
+\subsection{Over and underfitting}
+If a model performs well on the training data but generalizes poorly according to the cross-validation metrics, then your model is overfitting. It it performs badly in both is underfitting or what is the same the model is too complex or too simple. Another way to look at model's behavior is using learning curves: plots performance in training and validation set as a function of the training data size. To generate the plots, simply train the model several times on different sized subsets of the training set.
+Undefitting: both training and validation set reach a plateau, i.e. throwing more data doesn't translate into better performance.
+Thus, underfitting is easily detected when adding more training example doesn't improve the performance, what is needed is a more complex model or come up with better features.
+
+The hallmark of overfitting is the gap between curves -the model performs better in the training set- however if we use a largerr dataset the curves can eventually meet.
+
+The hallmark of undefiting is plateau.
+
+
+\subsection{Regularization}
+The bias/variance tradeoff: Increasing a model’s complexity will typically increase its variance and reduce its bias. Conversely, reducing a model’s complexity increases its bias and reduces its variance. To reduce the overfitting we can use regularization, for example, in a polynomial model just reduce the number of polynomial degrees.
+For a linear model, regularization is typically achieved by constraining the weights of the model. We will now look at Ridge Regression, Lasso Regression, and Elastic Net, which implement three different ways to constrain the weights.”
+Always scale the inputs if using regularization.
+
+
+Ridge or Tikhonov regularization is a regularized version of linear regression, a term $\alpha \sum_{i=1}^{n}(\theta_i)^2$ (the hyperparameter $\alpha$ tells how much regularization we want, if 0 then is identical to linear regression. Note also that the bias term $\theta_0$ is not regularized) is added to the cost function, the goal is not only to fit the data but keeping the model weights as small as possible. Note that the regularization term is only used during training, once the model is trained the model's performance is done using unregularized cost measure.
+As with linear regression we can compute Ridge using the closed form or gradient descent.
+\begin{equation}
+\hat{\Theta} = (X^{T}X + \alpha A)^{-1}X^{T}y
+\end{equation}
+
+Lasso uses $l_1$ instead of the square of the $l_2$ norm as in ridge as a regularization term in the cost function. Lasso tends to eliminate entirely the coefficients of the least important features, that is, Lasso Regression automatically performs feature selection and outputs a sparse model (i.e., with few nonzero feature weights).
+%Scikit-Learn example using the Lasso class. Note that you could instead use an SGDRegressor(penalty="l1")”
+
+elastic net is a middle ground between Ridge $(r=0)$ and Lasso $(r=1)$. “It is almost always preferable to have at least a little bit of regularization, so generally you should avoid plain Linear Regression. Ridge is a good default, but if you suspect that only a few features are actually useful, you should prefer Lasso or Elastic Net since they tend to reduce the useless features’ weights down to zero as we have discussed. In general, Elastic Net is preferred over Lasso since Lasso may behave erratically when the number of features is greater than the number of training instances or when several features are strongly correlated.”
+%“from sklearn.linear_model import ElasticNet”
+
+\subsection{Early stopping}
+An alternative approach to deal with overfitting is early stopping: stops trainign as soon as the validation error reaches a minimum. In the learning curve is the validation set reaches a minimum and then rises , this means that the model has started to overfit the data. With early stopping you just stop training as soon as the validation error reaches the minimum. It is such a simple and efficient regularization technique that Geoffrey Hinton called it a “beautiful free lunch.”
+%“ warm_start=True, when the fit() method is called, it just continues training where it left off instead of restarting from scratch”
+
+\subsection{Logistic regression}
+Logit just like Linear Regression computes a weighted sum of the input features (plus a bias term) but instead of outputting directly the results it returns the logistic or the sigmoid of the result.
+\begin{equation}
+\hat{p} = h_{\theta}(x) = \sigma(\Theta^{T} X)
+\end{equation}
+once the logit has estimated the probability $\hat{p}$ that the input x belongs to the positive class it can easily make the prediction $\hat{y} = 0 if \hat{p} < 0.5, \hat{y} = 1 otherwise$. We train a logit model with the log loss function, however there is no known closed function for the log loss, that is, there is no Normal Equation as it is the case of the MSE and the regularizations cost functions in which the $\Theta$ that minimizes the cost can be calculated. However, the good news is that the log loss fucntion is convex, so it is guarantee that stichastic descent (or any other optimization algorithm it will find a global minimum given that the learning rate is not too large is we have time to wait.
+“Just like the other linear models, Logistic Regression models can be regularized using $l_1$ or $l_2$ penalties. Scitkit-Learn actually adds an $l_2$ penalty by default”
+
+
+\subsection{Multinomial Logistic regression or Softmax}
+
+Logit can be generalized to support multiple classes. When given an instance x, the Softmax Regression model first computes a score $s_{k}(x)$ for each class k, then estimates the probability of each class by applying the softmax function (also called the normalized exponential) to the scores. $\hat{y}= argmax_{k} \sigma(s(x))_k$. The cost function in Softmax is cross entropy (for k=2 the cross entropy is the same as the log loss). Cross entropy measures the average number of bits you actually send per option. If your assumption is perfect, cross entropy will just be equal to the entropy (i.e., its intrinsic unpredictability). But if your assumptions are wrong , cross entropy will be greater by an amount called the Kullback–Leibler divergence. The cross entropy between two probability distributions is $ H(p,q)= -p(x)\log q(x)$
+
+%“Scikit-Learn’s LogisticRegression uses one-versus-all by default when you train it on more than two classes, but you can set the multi_class hyperparameter to "multinomial" to switch it to Softmax Regression instead. You must also specify a solver that supports Softmax Regression, such as the "lbfgs" solver (see Scikit-Learn’s documentation for more details). It also applies ℓ2 regularization by default, which you can control using the hyperparameter C.”
+
+
+
+
+
+Logistic Regression is a Machine Learning classification algorithm, the most basic, that is used to predict the probability of a categorical dependent variable. 
+In logistic regression, the dependent variable is a binary variable that contains data coded as 1 (e.g. converter) or 0 (e.g. nono converter).
+Some of the assumptions of this kind of modeling are: the dependent variable needs to be binary, only "meaningful" variables should be included in the model, the independent variables should be independent from each other (this happens very rarely certainly it does not in out dataset) 
+
+A disadvantage of logistic regression is that we can’t solve non-linear problems with logistic regression since it’s decision surface is linear. 
+Logistic Regression separates the input into two "regions" by a linear boundary, one for each class. Therefore it is required that data is linearly separable. Another disadvantage of logistic regression is that it has a high reliance on a proper presentation of your data, that is, the important independent variables need to be known. Another drawback of logistic regression is its vulnerability to overfitting.
+
+YS: Draw figure with impossibility of classifying non linear datasets. XOR
+
 
 In section \ref{} we expand on these ideas defining multi layer perceptron model (MLP) and other neural network models including Deep learning.
 
@@ -296,6 +410,7 @@ Once the estimator is being learned, we need to test it with the predictor. Pred
 % 0. Transformers : before learning, some are simple: replacing missing data with a contant, taking a log transform ..or some transforms are learning algorithms themselves like PCA
 % The pipeline is: Read Data -> apply some simple or complex (PCA) transformation -> fit an appropriate model -> predict using the model for unseen data. (iteratively)
 % For model tuning and selection we can use two meta estimators: GridSearchCV and RandomizedSearchCV to search the best parameters. Grid provides a grid of possible parameters and try each possible combination among them to arrive at the best one.. Randomized  optimizes this sampling the parameters to avoid combinatorial explosion of Grid. the also allow different x-validation schemes and score functions to measure performance.
+
 
 \subsection{Model evaluation: quantifying the quality of predictions }
 The two factors that tell us how well our machine learning is doing are:
@@ -413,6 +528,43 @@ Note that the F-measures which combine precision (exactness) and recall (complet
 
 Sampling (synthetic data, algorithms are SMOTE, SMOTEBoost and EasyEnsemble)
 
+
+
+\subsection{Support Vector Machine (SVM)}
+%
+
+The idea behind SVM is to fit the widest margin street between the classes. Scaling is required because otherwise it will neglect the small features.
+A support vector is an instance in the street and the decision function is entirely determined by the support vectors. Computing the predictions only involves the support vectors, you could remove the other training points they will not matter for prediction.
+SVM does not return probabilities (contrary to logistic regression) but it can give you a confidence score which is the distance between the test instance and the decision boundary.
+
+
+
+It can perform both linear and non linear classification, regression and outlier detection. What an SVM classifier does is fitting the widest possible street (represented by the parallel dashed lines) between the classes. This is called large margin classification.
+Note that adding more training instances “off the street” will not affect the decision boundary at all: it is fully determined (or “supported”) by the instances located on the edge of the street. These instances (those that touch the street boundaries) are called the support vectors. Always standarize data because SVMs are sensitive to the feature scales.
+“If your SVM model is overfitting, you can try regularizing it by reducing C.” large C margins are narrow and we may overfit C small (C=1) larger margins. “Unlike Logistic Regression classifiers, SVM classifiers do not output probabilities for each class”
+%LinearSVC same as SVC(kernel='linear') but SVC is musch slower specially for large datasets  also possible use 
+% GDClassifier(loss="hinge", alpha=1/(m*C)). This applies regular Stochastic Gradient Descent to train a SVM classifier but it doesnt converge as fast as the LinearSVC class
+
+
+When the datasets are not linearly separable we can use nonlinear SVM classifiers, one tactic is to add more feartures so that it result in a linearly separable dataset (pg 259).
+\textbf{Kernel trick} “ It makes it possible to get the same result as if you added many polynomial features, even with very high-degree polynomials, without actually having to add them. ”
+
+another 'trick' to deal with nonlinearity in the dataset is adding similarity features, that is achieved using a similarity function that measures how much each instance matches a particular landmark. The Gaussian Radial function (GRF) is a similarity, it is a bell-shape function with 0 for very far from the landmark to 1 very close to it. We transform the dataset using the function $\phi_{\gamma}(x,d) = e(-\gamma ||x-d||^2)$, where $\gamma$ a hyperparameter (approximated using grid ) and d is the distance from x to the landmark (with this transform the dataset may become linearly separable). Increasing $\gamma$ makes the Bell curve narrower, which means that the decision boundary is more wiggling around individual instances. Conversely a large $$ makes the Bell curve wider and the decision boundary is smoother (instances have more influence), so $$ acts like a regularization parameter, if the model is overfitting, reduce $\gamma$ (wider) and if you underfit increase (too much regularization) $\gamma$ (narrow) or C or both. The C parameter behaves in a similar way.
+%see page 263 for 1 dimensional to 2dimensional
+
+How to create a landmark? the easiest is one landmark at each point, the problem s that we make the dateset bigger, from m points and n features to $m \times m$. Thus, compute the additional features (m-n) can become computationally expensive, however the kernel trick does the magic 
+%“SVC(kernel="rbf", gamma=5, C=0.001)”
+
+GRF is not he only kernel there are vene specialized kermnels, for example  string kernels for classifying texts or DNA sequences (Levenshtein distance). Which kernel to use? Asa rule of thumb start with linear kernel \emph{LinearSVC}(\emph{LinearSVC} is faster than \emph{SVC(kernel=linear)}, especially isf the training set is very large or has many features, if this is not the case use Gaussian Radial basis function (RBF).
+
+In terms of complexity, \emph{LinearSVC} (\emph{liblinear}) does not support the kernel trick, but it scales almost linearly with the number of training instances and features, so its training time complexity is $O(m \times n$).
+The \emph{SVC} (\emph{libsvm}) class supports the kernel trick and the training time is cuaratic or cube witht he number of  $O(m^{2} \times n$) instances. This is a great algorithm for small-medium size d¡datasets. Note also that it scales well with the number of features, especially sparse features. 
+
+Linear SVM works by simply calculating a decision function $w^Tx +b $ (where $w$ is the parameeters vector we call to this $\Theta$ and b is the bias ($b_0$)). Thus if the result of $w_{1} x_{1} + ....+ w_{n}x_{n} + b$ is positive the predicted class $\hat{y}$ is the positive class or else is the negative class. Thus, in essence, training a linear SVM classifier means finding the value of w and b that make this margin as wide as possible while avoiding margin violations (hard margin) or limiting them (soft margin).
+
+
+
+
 \subsection{Model selection}
 In the previous section we sketched different evaluation metrics now we will see how to apply them in order to select the best model for our application. 
 Model selection is the phase in the modeling process in which we opt for one model or other based on the model's performance which is being previously evaluated.
@@ -494,14 +646,129 @@ When the assumption of independence holds, a Naive Bayes classifier tends to per
 Bayes tend to be efficient in learning and prediction but poor in generalization compared with more sophisticated methods.
 
 \subsection{Decision trees}
-k-NN breaks the input space into box looking regions, decision trees does this as well, each node of the DT is asociated with a region in the inut space, space is then divided into non-overlapping regions with a 1-1 correspondence between leafs and input regions.
+Decision trees makes very few assumptions about the dataset, this is very different from linear models which assume that data is linear. DT are nonparametric models, nonparametric is a misnomer, it does not mean that it does not have parameters, rather the opposite it has a lot, it means that the parameters are not determined prior to training, the model adapts to the data fitting to it (often overfitting). A parametric model (eg linear model) has a predetermined number of parameters,reducing thus, the risk of overfitting but increasing the risk of underfitting. In order to avoid overfitting in DT it is important to restrict this adaptive or sticky properties of decision trees (regularization), for example the max depth hyperparameter will reduce the risk of overfitting (by default is none, no limitation, so likely overfit).
 
+Decision trees require very little preparation, for example they do not need to scale or centering the data, remember than in SVM scaling was critical otherwise the algorithm would neglect small features.
+Decision trees are white box models, in contrast with neural networks and random forests. 
+The Gini gives the impurity $G_i = 1- \sum_{k=1}^{n} p_{i,k}^2$, where $p_{i,k}$, is the ratio of instances of class k in node i. A node is pure if Gini is 0 i.e. all training instances belong to the same class . It is possible to use entropy rather than Gini, they have very similar results, Gini is a bit faster but Gini tends to isolate the most frequent class in its own branch of the tree, while entropy tends to produce more balanced trees. %criterion='entropy'
+%DecisionTreeRegressor
+We use the scikit learn implementation of decision trees algorithm (CART) which uses binary trees, however there are other algorithms that produce trees with more than two children, eg. ID3.
+A decision tree can also estimate the probability that an instance belongs to a class (SVM does not have this feature)
+% tree_clf.predict_proba
+
+The CART algorithm is \textbf{greedy} (looks for the optimum split at top level but does not care if the split will lead to the lowest impurity several levels down, that is, it is trickle down economics, does the optimum split at the top and never thinks twice about the consequences down the road)). CART does not guarantee to find the optimal solution, it splits the training set using feature k and threshold $t_k$, the algo chooses the pair $(k,t_k)$ by looking for the split that produces the purest split weighted by the size, so the cost function that the algo minimizes has an impurity term factor by a size term for both right and left side.
+$J(k,t_k) = \frac{m_{left}}{m}G_{left} + \frac{m_{right}}{m}G_{right}$
+The algorithm stops recursing once it reaches the maximum depth (defined by the $max_depth$ hyperparameter), or if it cannot find a split that will reduce impurity.
+
+“Unfortunately, finding the optimal tree is known to be an NP-Complete problem: it requires O(exp(m)) time, making the problem intractable even for fairly small training sets. This is why we must settle for a “reasonably good” solution.”
+
+“Since each node only requires checking the value of one feature, the overall prediction complexity is just $O(\log_{2}(m))$, independent of the number of features. So predictions are very fast, even when dealing with large training sets.”
+“However, the training algorithm compares all features (or less if $max_features$ is set) on all samples at each node. This results in a training complexity of O(n × m log(m)). For small training sets (less than a few thousand instances), Scikit-Learn can speed up training by presorting the data (set presort=True), but this slows down training considerably for larger training sets.”
+ 
+
+DT have many bounties, do not need data preparation, simple to understand and interpret, versatile etc. but they have an inconvenient, instability, this is due to the orthogonality of the boundaries it creates, which makes them sensitive to dataset rotation.  One solution to this problem is to use PCA which often results in a better orientation of the training data. DT are very sensitive to small variations in the training data. Random Forests can limit this instability by averaging predictions over many trees.
+
+k-NN breaks the input space into box looking regions, decision trees does this as well, each node of the DT is associated with a region in the input space, space is then divided into non-overlapping regions with a 1-1 correspondence between leafs and input regions.
 
 Decision trees are a popular supervised learning method can be used for both regression and classification  a very good exploratory method to understand which are the features more relevant to predict the target.
 In essence, decision trees learn a set of conditional rules (if-then) on features values that result in the prediction, so the idea is to find a set of rules useful to categorize an object (reminiscent to expert systems in the 70s and 80s) but rather than figure out manually the rules for every task the algorithm will learn it for us.
 % if accuracy on training > acc test we are doing overfitting, one strategy is to keep addin
 When the tree keeps adding rules it may become very complex we will memorize the data and will overfit \footnote{Overfitting happens in every machine-learning problem, the dialectics of Machine learning is in optimization versus generalization. Optimization refers to adjusting the model in order to get he best possible performance in the training set and generalization is about how well the trained model performs on data never seen before}, to avoid this we can prevent the growth of the tree using the max depth parameter which controls the maximum number of splitting points (eg 3) and minimum-maximum samples leaf which is the number of data instances that a leaf can have to avoid further splitting.  In practice, the max depth parameter is enough to deal with overfitting.
 the pros are that are easy to understand via visualization, no need of feature normalization or scaling and work well with databases with heterogeneous data types. the cons is that they overfit (complex trees). In the next section we show ensemble methods such as Random Forests that might help to alleviate the overfitting problem found in Decision Trees.
+
+\subsection{Ensemble Methods}
+Ask to a thousand people and then aggregate their answers, in many cases the aggregate is better than the expert's response, by the same token, aggregating many predictors will give you better answers than a single one.
+Don't look at the tree it may be lying... but to the forest!
+A group of predictors is an ensemble, thus, the technique is called Ensemble Learning, an ensemble of decision trees or other type of predictors gives you individual predictions, then you can get the class that gets the most votes. This, in essence is a Random Forest.
+Ensemble methods make sense once you have done 'individual methods' decision tree, svm, logit etc. 
+Examples of ensemble methods bagging, boosting, stacking and random forests.
+
+A majority vote is a hard voting classifier, this voting classifier often achieves a higher accuracy than the best classifier in the ensemble (svm, logit, dt etc), even if individual classifiers are weak learners (do slightly better than random guessing) the ensemble can still be a strong classifier, provided there are a sufficient number of weak learners and they are sufficiently diverse. % solo no puedes con amigos si   https://www.youtube.com/watch?v=Ds7tje_Y0CM
+
+The reason why RF works is the \emph{Law of large numbers}. For example, for a coin that is slightly biased, let us say that has $51\%$ probability of heads and $49\%$ of tails, if you toss the coin 1,000 times chances are that you will get a majority  of heads, something close to 510 heads and 490 tails. The (frequentist) probability of heads majority for 1,000 tosses is $75\%$ and the more tosses you do the closer you get to 1, for 10,000 tosses the probability of majority is $97\%$. This is the \emph{Law of large numbers} the more you toss the coin the closer you will get to 51-49 ratio. In the same vein, you can build 1,000 classifiers that are individually correct let us say $51\%$ of the time, (barely better than random guessing) but if you predict the majority vote class you can hope for a 75% accuracy!
+%for example for 3 coins np.power(0.49,3) + 3*(np.power(0.49,2)*0.55 + np.power(0.51,2)*0.49)  +np.power(0.51,3)
+% p(aaa) or p(aab) = 0.51499 = 3*np.power(0.51,2)*0.49  +np.power(0.51,3)
+"However, this is only true if all classifiers are perfectly independent, making uncorrelated errors, which is clearly not the case since they are trained on the same data. They are likely to make the same types of errors, so there will be many majority votes for the wrong class, reducing the ensemble’s accuracy.”Thus, “Ensemble methods work best when the predictors are as independent from one another as possible” One way to get diversity train them using very different algorithms so they will make different types of errors improving the accuracy.
+%pg 279 “from sklearn.ensemble import RandomForestClassifier
+%from sklearn.ensemble import VotingClassifier
+%from sklearn.linear_model import LogisticRegression
+%from sklearn.svm import SVC
+
+%log_clf = LogisticRegression()
+%rnd_clf = RandomForestClassifier()
+%svm_clf = SVC()
+
+%voting_clf = VotingClassifier(
+%        estimators=[('lr', log_clf), ('rf', rnd_clf), ('svc', svm_clf)],
+%        voting='hard'
+%    )
+%voting_clf.fit(X_train, y_train)”
+%“>>> from sklearn.metrics import accuracy_score
+%>>> for clf in (log_clf, rnd_clf, svm_clf, voting_clf):
+%>>>     clf.fit(X_train, y_train)
+%>>>     y_pred = clf.predict(X_test)
+%>>>     print(clf.__class__.__name__, accuracy_score(y_test, y_pred))
+%LogisticRegression 0.864
+%RandomForestClassifier 0.872
+%SVC 0.888
+%VotingClassifier 0.896”
+In oder to do soft voting you need the classifier be able to estimate class probabilities $(predict_proba)$ \footnote{SVC does not estimate class probabilities but still you can use the SVC class for soft voting, just set the probability hyperparameter to True (this will make the SVC class use cross validation to estimate class probabilities, slowing down training, and it will add a $predict_proba()$}. Soft voting often achieves better performance than hard voting because it gives more weight to highly confident votes.
+%JUST replace voting="hard" with voting="soft" and ensure that all classifiers can estimate class probabilities”
+
+
+\subsection{Bagging and Pasting}
+Before we saw how to introduce variability by using different classifiers, another way to introduce diversity in the voters is using the same algorithm but trained in different datasets ie. Bagging and Pasting.
+%for Pasting BaggingClassifier(...bootstrap=False
+“When sampling is performed with replacement, this method is called bagging (short for bootstrap aggregating). When sampling is performed without replacement, it is called pasting.”. “Both bagging and pasting allow training instances to be sampled several times across multiple predictors, but only bagging allows training instances to be sampled several times for the same predictor”
+So for one training set we get n training sets by sampling it randomly (with replacement for bootstrap) and then training on each sample.“Once all predictors are trained, the ensemble can make a prediction for a new instance by simply aggregating the predictions of all predictors”. “The aggregation function is typically the statistical mode (i.e., the most frequent prediction, just like a hard voting classifier) for classification, or the average for regression”. Note that each individual predictor has a larger bias than if it were trained on the original (same size) dataset but aggregation reduces both bias and variance.
+Bagging and Pasting scale very well because they can be trained and also predict in parallel (GPUs).
+
+%“ BaggingClassifier automatically performs soft voting instead of hard voting if the base classifier can estimate class probabilities ”
+
+%“from sklearn.ensemble import BaggingClassifier
+%from sklearn.tree import DecisionTreeClassifier
+
+%bag_clf = BaggingClassifier(
+%        DecisionTreeClassifier(), n_estimators=500,
+%        max_samples=100, bootstrap=True, n_jobs=-1
+%    )
+%bag_clf.fit(X_train, y_train)
+%y_pred = bag_clf.predict(X_test)”
+“Overall, bagging often results in better models than pasting, which explains why it is generally preferred”
+“With bagging, some instances may be sampled several times for any given predictor, while others may not be sampled at all”
+
+%bag_clf.oob_score_ is a proxy of accuracy in the test test, because some samples will never see them, the out of bag
+%“oob_decision_function_ variable. In this case (since the base estimator has a predict_proba() method) the decision function returns the class probabilities for each training instance” tells the estimate of class for each training instance
+
+
+\subsection{Random Forest}
+“ Random Forest is an ensemble of Decision Trees, generally trained via the bagging method (or sometimes pasting), typically with max_samples set to the size of the training set”“Instead of building a BaggingClassifier and passing it a DecisionTreeClassifier, you can instead use the RandomForestClassifier class, which is more convenient and optimized for Decision Trees”
+
+%“from sklearn.ensemble import RandomForestClassifier
+
+%rnd_clf = RandomForestClassifier(n_estimators=500, max_leaf_nodes=16, n_jobs=-1)
+%rnd_clf.fit(X_train, y_train)
+%“With a few exceptions, a RandomForestClassifier has all the hyperparameters of a DecisionTreeClassifier (to control how trees are grown), plus all the hyperparameters of a BaggingClassifier to control the ensemble itself”
+“The Random Forest algorithm introduces extra randomness when growing trees; instead of searching for the very best feature when splitting a node (see Chapter 6), it searches for the best feature among a random subset of features. This results in a greater tree diversity, which (once again) trades a higher bias for a lower variance, generally yielding an overall better model. The following BaggingClassifier is roughly equivalent to the previous RandomForestClassifier:”
+%we can achieve this also with “BaggingClassifier(DecisionTreeClassifier(splitter="random”
+%rnd_clf.feature_importances_
+
+\subsection{Boosting}
+Boosting is any ensemble method that combine weak learners into a strong learner. The idea is to train predictors sequentially each trying to correct its predecessor. AdaBoost (short for adaptive boosting) and Gradient boosting are the most common algorithms.
+
+\textbf{AdaptBoost}
+
+The idea is haver a chain of predictors where deeper in the chain predictors focus on harder instances (instances where the predictor underfitted). For example , eight of misclassified training instances is then increased and a second classifier is trained using the updated weights. The difference between AdaBoost and Gradient Descent is that in Ada we don't tweak the hyperparameters of any individual predictor it rather adds predictors to the ensemble. Once all predictors are trained, the ensemble makes predictions very much like bagging or pasting, except that predictors have different weights depending on their overall accuracy on the weighted training.
+
+The drawback of Boosting is that is sequential and therefore it can't be parallelized so it does not scale well because we need the previous predictor the train the next one.
+“If your AdaBoost ensemble is overfitting the training set, you can try reducing the number of estimators or more strongly regularizing the base estimator.”
+
+\textbf{Gradient Boosting}
+Gradient Boosting is also sequential like Ada, but rather than tweaking the weights of the instances, GB tries to fit the new predictor to the residual errors.
+
+
+
+
 
 
 \subsection{Gradient boosted decision trees}
@@ -619,156 +886,9 @@ The network or model capacity is the number of learnable parameters -number of l
 \section{Temp results}
 Correlation 
 
-(Pdb) type(corr_with_target)
-<class 'pandas.core.series.Series'>
-(Pdb) corr_with_target.sort_values()
-fcsrtrl3_visita1       -0.279696
-fcsrtlibdem_visita1    -0.273745
-fcsrtrl2_visita1       -0.265737
-fcsrtrl1_visita1       -0.226803
-cn_visita1             -0.198617
-mmse_visita1           -0.196126
-reloj_visita1          -0.160288
-nivel_educativo        -0.081176
-animales_visita1       -0.076619
-eqm06_visita1          -0.052374
-p_visita1              -0.051273
-relaocio_visita1       -0.050834
-eq5deva_visita1        -0.048784
-act_memt_visita1       -0.042345
-eqm07_visita1          -0.025660
-tpoevol_visita1        -0.025052
-ejfre_visita1          -0.017775
-act_prax_visita1       -0.015352
-sexo                   -0.013451
-valcvida_visita1       -0.009756
-lat_manual             -0.008453
-stai_visita1           -0.008087
-valsatvid_visita1      -0.007622
-eq5dcp_visita1         -0.001277
-act_visu_visita1        0.003478
-eqm82_visita1           0.006725
-ejminut_visita1         0.008365
-relaamigo_visita1       0.008726
-eq5ddol_visita1         0.011100
-eq5dmov_visita1         0.013172
-                          ...
-eqm86_visita1           0.025106
-eqm09_visita1           0.027991
-act_aten_visita1        0.031886
-act_apat_visita1        0.036703
-act_expr_visita1        0.036969
-act_orie_visita1        0.044686
-act_mrec_visita1        0.046276
-act_comp_visita1        0.048005
-eqm83_visita1           0.051727
-eqm85_visita1           0.052457
-act_ansi_visita1        0.053931
-relafami_visita1        0.056147
-edadinicio_visita1      0.057559
-act_depre_visita1       0.058367
-eqm84_visita1           0.060337
-eq5dans_visita1         0.061559
-edad                    0.067859
-act_ejec_visita1        0.068252
-eq5dact_visita1         0.074656
-peorotros_visita1       0.077590
-eqm81_visita1           0.088604
-eq5dsalud_visita1       0.091330
-gds_visita1             0.117234
-scd_visita1             0.117537
-eqm10_visita1           0.118976
-apoe                    0.122093
-preocupacion_visita1    0.133250
-cdrsum_visita1          0.150836
-faq_visita1             0.204567
-conversion              1.000000
+Explanatory variables
 
-Type: Graph
-Number of nodes: 62
-Number of edges: 156
-Average degree:   5.0323
-(Pdb) print_summary_network(graph_metrics, nodes=corr_Xy_df.keys().tolist(), corrtarget=corr_with_target)
-Summary for: clustering : best 6 nodes
-
-		clustering at node: eqm81_visita1 = 1.0, correlation with target=0.0886036300459
-		clustering at node: act_ansi_visita1 = 1.0, correlation with target=0.0539314624044
-		clustering at node: reloj_visita1 = 1.0, correlation with target=-0.160288410645
-		clustering at node: eq5dcp_visita1 = 1.0, correlation with target=-0.00127669914835
-		clustering at node: rsoled_visita1 = 1.0, correlation with target=0.018641453136
-		clustering at node: conversion = 1.0, correlation with target=1.0
-Summary for: closeness_centrality : best 6 nodes
-
-		closeness_centrality at node: stai_visita1 = 0.200819672131, correlation with target=-0.00808664222061
-		closeness_centrality at node: eq5dans_visita1 = 0.202848153668, correlation with target=0.0615591653571
-		closeness_centrality at node: faq_visita1 = 0.211389128559, correlation with target=0.204566926193
-		closeness_centrality at node: scd_visita1 = 0.236258437801, correlation with target=0.117536621037
-		closeness_centrality at node: gds_visita1 = 0.236258437801, correlation with target=0.117233934239
-		closeness_centrality at node: peorotros_visita1 = 0.239071038251, correlation with target=0.0775901113454
-Skipping communicability
-
-Skipping degree
-
-Skipping density
-
-Skipping is_connected
-
-Summary for: betweenness_centrality : best 6 nodes
-
-		betweenness_centrality at node: eq5dans_visita1 = 0.0416783762685, correlation with target=0.0615591653571
-		betweenness_centrality at node: eq5ddol_visita1 = 0.0718969555035, correlation with target=0.0110997974908
-		betweenness_centrality at node: scd_visita1 = 0.0869763205829, correlation with target=0.117536621037
-		betweenness_centrality at node: peorotros_visita1 = 0.105555555556, correlation with target=0.0775901113454
-		betweenness_centrality at node: faq_visita1 = 0.142896174863, correlation with target=0.204566926193
-		betweenness_centrality at node: gds_visita1 = 0.169117876659, correlation with target=0.117233934239
-Skipping degree_assortativity_coefficient
-
-Skipping degree_histogram
-
-Skipping estrada_index
-
-Summary for: degree_centrality : best 6 nodes
-
-		degree_centrality at node: fcsrtrl3_visita1 = 0.16393442623, correlation with target=-0.279696300585
-		degree_centrality at node: fcsrtlibdem_visita1 = 0.16393442623, correlation with target=-0.273745482996
-		degree_centrality at node: cn_visita1 = 0.16393442623, correlation with target=-0.198616561327
-		degree_centrality at node: stai_visita1 = 0.16393442623, correlation with target=-0.00808664222061
-		degree_centrality at node: eq5dans_visita1 = 0.180327868852, correlation with target=0.0615591653571
-		degree_centrality at node: gds_visita1 = 0.196721311475, correlation with target=0.117233934239
-Skipping number_connected_components
-
-Skipping transitivity
-
-Summary for: average_degree_connectivity : best 6 nodes
-
-		average_degree_connectivity at node: peorotros_visita1 = 7.2, correlation with target=0.0775901113454
-		average_degree_connectivity at node: eqm07_visita1 = 7.81818181818, correlation with target=-0.0256601218935
-		average_degree_connectivity at node: eqm81_visita1 = 7.91666666667, correlation with target=0.0886036300459
-		average_degree_connectivity at node: preocupacion_visita1 = 7.97222222222, correlation with target=0.133250098533
-		average_degree_connectivity at node: eqm06_visita1 = 8.01428571429, correlation with target=-0.0523737453908
-		average_degree_connectivity at node: tpoevol_visita1 = 8.14285714286, correlation with target=-0.0250515726128
-Summary for: triangles : best 6 nodes
-
-		triangles at node: cdrsum_visita1 = 19, correlation with target=0.150836101922
-		triangles at node: gds_visita1 = 20, correlation with target=0.117233934239
-		triangles at node: eq5dans_visita1 = 20, correlation with target=0.0615591653571
-		triangles at node: fcsrtrl2_visita1 = 21, correlation with target=-0.26573676764
-		triangles at node: fcsrtrl3_visita1 = 21, correlation with target=-0.279696300585
-		triangles at node: fcsrtlibdem_visita1 = 21, correlation with target=-0.273745482996
-Summary for: k_nearest_neighbors : best 6 nodes
-
-		k_nearest_neighbors at node: peorotros_visita1 = 7.2, correlation with target=0.0775901113454
-		k_nearest_neighbors at node: eqm07_visita1 = 7.81818181818, correlation with target=-0.0256601218935
-		k_nearest_neighbors at node: eqm81_visita1 = 7.91666666667, correlation with target=0.0886036300459
-		k_nearest_neighbors at node: preocupacion_visita1 = 7.97222222222, correlation with target=0.133250098533
-		k_nearest_neighbors at node: eqm06_visita1 = 8.01428571429, correlation with target=-0.0523737453908
-		k_nearest_neighbors at node: tpoevol_visita1 = 8.14285714286, correlation with target=-0.0250515726128
-Density =0.0824960338445
-Is connected =False
-degree_assortativity_coefficient =0.655249823616
-estrada_index =5042.09819121
-number_connected_components =21, Normalized ncc/totalnodes=0.338709677419
-transitivity =0.621338912134
+['sexo', 'lat_manual', 'nivel_educativo', 'apoe', 'edad', 'hsnoct', 'sue_dia', 'sue_noc', 'sue_con', 'sue_man', 'sue_suf', 'sue_pro', 'sue_ron', 'sue_mov', 'sue_rui', 'sue_hor', 'sue_rec', 'imc', 'dempad', 'edempad', 'demmad', 'edemmad', 'audi', 'visu', 'a01', 'a02', 'a03', 'a04', 'a05', 'a06', 'a07', 'a08', 'a09', 'a10', 'a11', 'a12', 'a13', 'a14', 'sdhijos', 'numhij', 'sdvive', 'sdeconom', 'sdresid', 'sdestciv', 'sdtrabaja', 'sdocupac', 'sdatrb', 'hta', 'hta_ini', 'glu', 'lipid', 'tabac', 'tabac_ini', 'tabac_fin', 'tabac_cant', 'sp', 'cor', 'cor_ini', 'arri', 'arri_ini', 'card', 'card_ini', 'tir', 'ictus', 'ictus_num', 'ictus_ini', 'ictus_secu', 'tce', 'tce_num', 'tce_ini', 'tce_con', 'tce_secu', 'alfrut', 'alcar', 'alpesblan', 'alpeszul', 'alaves', 'alaceit', 'alpast', 'alpan', 'alverd', 'alleg', 'alemb', 'allact', 'alhuev', 'aldulc', 'scd_visita1', 'edadinicio_visita1', 'tpoevol_visita1', 'peorotros_visita1', 'preocupacion_visita1', 'eqm06_visita1', 'eqm07_visita1', 'eqm81_visita1', 'eqm82_visita1', 'eqm83_visita1', 'eqm84_visita1', 'eqm85_visita1', 'eqm86_visita1', 'eqm09_visita1', 'eqm10_visita1', 'act_aten_visita1', 'act_orie_visita1', 'act_mrec_visita1', 'act_memt_visita1', 'act_visu_visita1', 'act_expr_visita1', 'act_comp_visita1', 'act_ejec_visita1', 'act_prax_visita1', 'act_depre_visita1', 'act_ansi_visita1', 'act_apat_visita1', 'gds_visita1', 'stai_visita1', 'eq5dmov_visita1', 'eq5dcp_visita1', 'eq5dact_visita1', 'eq5ddol_visita1', 'eq5dans_visita1', 'eq5dsalud_visita1', 'eq5deva_visita1', 'relafami_visita1', 'relaamigo_visita1', 'relaocio_visita1', 'rsoled_visita1', 'ejfre_visita1', 'ejminut_visita1', 'valcvida_visita1', 'valsatvid_visita1', 'valfelc_visita1', 'conversion']
 
 %-------------------------------------------------------------------------------
 % SNIPPETS
