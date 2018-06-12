@@ -3,46 +3,90 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\documentclass[12pt]{report}
+\documentclass[11pt]{article}
+%\usepackage[spanish]{babel}
+\usepackage[english]{babel}
+\usepackage{tgbonum}
+\usepackage[utf8]{inputenc}
+\usepackage[OT1]{fontenc}
 \usepackage[a4paper]{geometry}
 \usepackage[myheadings]{fullpage}
 \usepackage{fancyhdr}
 \usepackage{lastpage}
-\usepackage{amsmath}
+\usepackage{amsfonts, amsmath, amsthm, amssymb}
 \usepackage{graphicx, wrapfig, subcaption, setspace, booktabs}
 \usepackage[T1]{fontenc}
 \usepackage[font=small, labelfont=bf]{caption}
 \usepackage{fourier}
 \usepackage[protrusion=true, expansion=true]{microtype}
-\usepackage[english]{babel}
+%\usepackage[margin=1in]{geometry}
 \usepackage{sectsty}
 \usepackage{url, lipsum}
 \usepackage{listings}
-
+\usepackage{xcolor}
+\newcounter{countCode}
 \newcommand{\HRule}[1]{\rule{\linewidth}{#1}}
 \onehalfspacing
 \setcounter{tocdepth}{5}
 \setcounter{secnumdepth}{5}
-
+\lstnewenvironment{code} [1][caption=Ponme caption, label=default]{%
+\renewcommand*{\lstlistingname}{Listado} 
+	\setcounter{lstlisting}{\value{countCode}} 
+	\lstset{ %
+	language=java,
+	basicstyle=\ttfamily\footnotesize,       % the size of the fonts that are used for the code
+	numbers=left,                   % where to put the line-numbers
+	numberstyle=\sc,      % the size of the fonts that are used for the line-numbers
+	stepnumber=1,                   % the step between two line-numbers. 
+	numbersep=5pt,                 % how far the line-numbers are from the code
+	numberstyle=\color{red!50!blue},
+    backgroundcolor=\color{lightgray!20},
+	rulecolor=\color{blue},
+	keywordstyle=\color{red}\bfseries,
+	showspaces=false,               % show spaces adding particular underscores
+	showstringspaces=false,         % underline spaces within strings
+	showtabs=false,                 % show tabs within strings adding particular underscores
+	frame=single,                   % adds a frame around the code
+	framexleftmargin=0mm,
+	numberblanklines=false,
+	xleftmargin=5pt,
+	breaklines=true,
+	breakatwhitespace=true,
+	breakautoindent=true,
+	captionpos=t,
+	texcl=true,
+	tabsize=2,                      % sets default tabsize to 3 spaces
+	extendedchars=true,
+	inputencoding=utf8, 
+	escapechar=\%,
+	morekeywords={print, println, size, background, strokeWeight, fill, line, rect, ellipse, triangle, arc, save, PI, HALF_PI, QUARTER_PI, TAU, TWO_PI, width, height,},
+	emph=[1]{print,println,}, emphstyle=[1]{\color{blue}}, % Mis palabras clave.
+	emph=[2]{width,height,}, emphstyle=[2]{\bf\color{violet}}, % Mis palabras clave.
+	emph=[3]{PI, HALF_PI, QUARTER_PI, TAU, TWO_PI}, emphstyle=[3]\color{orange!50!violet}, % Mis palabras clave.
+	emph=[4]{line, rect, ellipse, triangle, arc,}, emphstyle=[4]\color{green!70!black}, % Mis palabras clave.
+	%emph=[5]{size, background, strokeWeight, fill,}, emphstyle=[5]{\tt \color{red!30!blue}}, % Mis palabras clave.
+	%emph={[2]sqrt,baset}, emphstyle={[2]\color{blue}}, % f(sqrt(2)), sqrt a nivel 2 se pondrá azul
+#1}}{\addtocounter{countCode}{1}}
 %-------------------------------------------------------------------------------
 % HEADER & FOOTER
 %-------------------------------------------------------------------------------
 \pagestyle{fancy}
 \fancyhf{}
 \setlength\headheight{15pt}
-\fancyhead[L]{Five years of the Vallecas Project}
-\fancyhead[R]{Fundaci\'on Reina Sof\'ia}
+\fancyhead[L]{Six years of \emph{Proyecto Vallecas}}
+\fancyhead[R]{Gómez-Ramírez et al. Fundaci\'on CIEN}
 \fancyfoot[R]{Page \thepage\ of \pageref{LastPage}}
 %-------------------------------------------------------------------------------
 % TITLE PAGE
 %-------------------------------------------------------------------------------
 
 \begin{document}
+%IDENTIFICACIÓN DE FACTORES DE RIESGO EN DETERIORO COGNITIVO LEVE CON APRENDIZAJE AUTOMÁTICO: HACIA UNA AYUDA AL DIAGNÓSTICO MULTIFACTORIAL Y  AUTOINFORMADA
 
-\title{ \normalsize \textsc{Five years of the Vallecas Project}
+\title{ \normalsize \textsc{Identificación de Factores de Riesgo en Deterioro Cognitivo Level con Aprendizaje Automático: Ayuda al Diagnóstico con el Proyecto Vallecas}
 		\\ [2.0cm]
 		\HRule{0.5pt} \\
-		\LARGE \textbf{\uppercase{Machine Learning in the Vallecas Project}}
+		\LARGE \textbf{\uppercase{Identification of risk factors in Mild Cognitive Impairment: A Machine Learning-Based Framework for early detection with The Vallecas Project longitudinal dataset}}
 		\HRule{2pt} \\ [0.5cm]
 		\normalsize \today \vspace*{5\baselineskip}}
 
@@ -66,13 +110,102 @@
 % BODY
 %-------------------------------------------------------------------------------
 
+\section*{Resumen}
+
+La multifactorialidad, comorbilidad y el carácter asíntomático en estadio iniciales de la enfermedad de Alzheimer (EA) están dificultando enormemente la obtención de tratamientos efectivos. No debería sorprender pues que el ratio de éxito en la aprobación de fármacos en AD sea un exiguo $0.4\%$, uno de los mas bajos de la industria farmacéutica. 
+La identificación de factores de riesgo, preferentemente de sencilla obtención, se hacen cada vez mas necesarios habida cuenta de que la prevalencia de la EA crece exponencialmente con la edad. 
+Investigadores del Proyecto Vallecas a lo largo de los últimos 6 años han ido recabando información de voluntarios de mas de 70 años, dicha información incluye entre otros factores relativos al estilo de vida (dieta, sueño, ejercicio físico etc), demográfica y socioeconómica (lugar de residencia, sexo, educación, estado civil etc.), quejas subjetivas de memoria etc.
+El objetivo de este estudio es el de identificar un conjunto de factores autoinformados, es decir factores conocidos por el propio sujeto sin necesidad de un experto o procedimiento externo, que sean de ayuda a la hora de clasificar sujetos con riesgo de convertir a estadios de deterioro cognitivo. 
+Se reclutaron 921 individuos cognitivamente sanos participantes en el estudio longitudinal enmarcado en el Proyecto Vallecas. Los participantes fueron evaluados anualmente a lo largo de los cinco años del estudio. La evolución clínica clasificó los participantes en dos grupos Controles y Conversores a DCL $(9,4\%)$. 
+Se utilizaron técnicas de \emph{machine learning} incluyendo, reducción de dimensionalidad y aprendizaje supervisado conducentes a la obtención de modelos predictivos de conversion a DCL. Los algoritmos predictivos utilizados presentaron una precisión y exactitud muy por encima de estimadores aleatorios.
+Este estudio muestra que la base de datos del Proyecto Vallecas explotada convenientemente con algoritmos capaces de capturar patrones complejos no lineales, puede ayudar a identificar factores de riesgo de conversion a DCL. La detección temprana mediante este tipo de técnicas permite no solo detector factores de riesgo en fases asintomáticas sino además establecer intervenciones personalizadas que incidan en el estilo de vida.
+
 \section*{Abstract}
-
-We utilize Machine Learning techniques, in particular, Deep Networks to perform predictive analytics on The Vallecas Project dataset that covers five years of data collection.
-
+Alzheimer's Disease (AD) is a complex, multifactorial and comorbid condition. The asymptomatic behavior in early stages of the disease is a paramount obstacle to formulate a preclinical and predictive model of AD. Not surprisingly, the AD drug approval rate is one of the lowest in the industry, an exiguous $0.4\%$. The identification of risk factors, preferably obtained by the subject herself, is sorely needed given that the incidence of Alzheimer’s disease grows exponentially with age. 
+For the last 6 years, researchers at \emph{Proyecto Vallecas} have collected information about the project's volunteers, aged 70 or more, such information includes among others self informed factors (do not require an expert) -lifestyle, demographic and socioeconomic, subjective memory complains etc-. 
+We use machine learning techniques, including supervised algorithms, manifold learning, clustering and deep networks to perform predictive analytics on the \emph{Proyecto Vallecas} dataset.
+We show that the longitudinal dataset of \emph{Proyecto Vallecas}, if conveniently exploited with algorithms able to deal with the complex and nonlinear patterns that embedded in the dataset, may help identifying risk factors related to MCI conversion.
+The early detection with machine learning algorithms makes possible not only to detect risk factors in asymptomatic  stages but also to formulate personalized interventions informed by the subject's lifestyle.
 
 \section{Introduction}
 The Vallecas Project for early detection of AD is the most ambitious population-based study in Spain. The project is carried out in the Queen Sofia Foundation Alzheimer Center by a multidisciplinary team of researchers from the CIEN Foundation. The main objective of the Vallecas Project is to elucidate, through tracking of progression of the cohort, the best combination of  parameters, clinical and others \footnote{Note in the inception of the project only clinical parameters were considered, here we advocate for a more inclusive set of parameters including neuropsychological, and also features related to the lifestyle such as nutrition and physical exercise} , that are informative about the medium and long-term features that distinguish individuals who will develop future cognitive impairment from those who will not. Thus, it intends to identify various markers to eventually determine the potential risk that each individual could have to develop the disease in the future.
+
+The dataset contains over 500 features that include a wide range of features. Table \ref{fig:tableclustervallecas} shows the most important features types that are collected in the dataset.
+\begin{figure}[h]
+        \centering
+        \includegraphics[keepaspectratio, width=0.9\linewidth]{figures/tableclustervallecas}
+        \caption{The Vallecas Project collects a longitudinal dataset for over 1,000 volunteers, the number of features collected amounts to more than 500. The table shows some of the most import types of features. Note that some features are collected only during the first year (basal) for example: familiar AD, APOE, level of education etc., but for the most part, features are assessed for every visit by the team of neuropsychologists and neurologists.}
+\label{fig:tableclustervallecas}
+\end{figure}
+
+Features fall into two categories, those that are self-informed, that is, the subject can report herself the value of the variable e.g. age, income level, education, sleep, diet etc. and those that require an expert to be obtained, for example, APOE genotype, cognitive performance measured in performance tests etc.
+  
+In this study we use machine learning techniques to investigate the factors that are most informative for conversion to MCI and dementia. The goal is to build algorithms capable of predicting the next stage (non conversion, conversion) in the cohort of \emph{Proyecto Vallecas}. We pay particular attention to the learning capabilities of our predictive analysis model. Our ambition is build a system that has been tested and validated in the Vallecas dataset and can be fed and deployed in larger scenarios e.g. health insurers, municipal or regional health systems providing comprehensible and accurate predictions for conversion to dementia in early stages.
+
+The document is structure as follows. Section \ref{} outlines the framework and methodology used, specifically we describe the methodology for machine learning analytics that we use, called CRISP-DM mod
+
+ The voluminous and complex (heterogeneity and dimensionality) dataset collected in the Vallecas Project make it particularly to build analytics of any kind, let alone predictive analytics. In order to try to cope with this difficulty, we use a methodology well suited for machine learning analytics called CRISP-DM which is described in Section \ref{se:crisp}. The following sections follow the CRISP-DM methodological plan to cover data preparation, modeling, evaluation and deployment. Thus, Section \ref{} performs exploratory data analysis, including detecting multicollinearity among different features and commenting on the feature engineering process followed. Section \ref{} explains the different predicitve models implemented and Section \ref{} deals with the evaluation of the different predictive models implemented and described in the previous section. Importantly ewe weigh on the interpretability side of the results and not only on the prediction side.
+ Section \ref{} comments on how to deploy the most successful models. Finally, we include a discussion and conclusions Section \ref{}.
+
+
+\section{CRISP-DM model}
+\label{se:crisp}
+%James Wu, Foundations of predictive analytics
+The voluminous and complex (heterogeneity and dimensionality) dataset collected in the Vallecas Project make it particularly challenging to build analytics of any kind, let alone predictive analytics.
+In order to try to cope with this difficulty, we use a methodology well suited for machine learning analytics called CRISP-DM model (CRoss Industry Standard Process for Data Mining).
+  
+The CRISP-DM model consists of 6 phases that act upon themselves in an iterative loop depicted in figure \ref{fig:crisp}.
+\begin{enumerate}
+%1. Problem understanding
+\item \textbf{Business understanding}: understanding the project objectives and requirements from a 'business' perspective. In our case, we can state the problem (business) we have at hand as follows: 
+	\begin{itemize}
+		\item Definition of the problem: We have a dataset that contains a number of features and we want to clarify the relationships between those inputs and most importantly which if any and in which measure have predictive power about conversion to MCI and dementia.
+	\end{itemize}
+%2. Data Understanding Assessment of scenarios for analysis. 
+\item \textbf{Data understanding}: The main resource available are spreadsheets that contain demographic e.g age, school years etc., genetic: APOE, cognitive performance metrics from neuropsychological tests together with features related to life style including nutrition and physical exercise among others. MRI and fMRI are also available but need to be integrated with the above mentioned features. Here we will not deal with neuroimaging data. This is being undertaking in forthcoming work.
+\item \textbf{Data preparation}: activities to construct the final dataset from the initial raw data
+	\begin{itemize}
+		\item Data description: format, volume, description of attributes \footnote{Here we will refer indistinctly features, attributes, inputs and dimensions}
+		\item Exploratory data analysis (EDA): charts, plots to visualize data features find associations and correlations. This task comprises: explore and visualize data, select attributes (most important, remove redundant or dependent attributes), test hypothesis about correlations and associations.
+		\item Data quality analysis: Deal with missing values, inconsistent values
+		%3. Data preparation
+		\item Clean, wrangle and curate the dataset before the learning machinery is launched to build models. The most time consuming $(60\%) of the time$
+		\item Data integration : multiple. datasets, this will have to be taken care of when we integrate with the imaging dataset.
+		\item Data wrangling: handle missing values (remove rows, handle missing values), formatting into csv, json etc.
+	\end{itemize}
+\item \textbf{Modeling}: various modeling techniques are selected and applied.
+	\begin{itemize}
+		\item Linear regression 
+		\item Logistic regression
+		\item SVM
+		\item ...
+	\end{itemize}
+\item \textbf{Evaluation}: Once the models are built, proceed to evaluate them to identify the best models according with different metrics. (accuracy, precision, interpretability etc)
+\item \textbf{Deployment}: the knowledge gained will need to be organized and presented in a way that is useful to the customer
+\end{enumerate}
+
+
+\begin{figure}[h!]
+        \centering
+        \includegraphics[keepaspectratio, width=0.8\linewidth]{figures/crisp}
+        \caption{\emph{Proyecto Vallecas} adopts CRISP-DM \ref{crispdmwiki} as the methodology of choice for analytics and data mining. CRISP-DM was conceived around 1996  and is to this day the most important methodology in data science projects. It consists in a 6 high-level iterative phases. The adoption of this kind of methodology is crucial to deal with random and false discoveries, specially in Big Data projects like ours.}
+\label{fig:tableclustervallecas}
+\end{figure}
+
+In the next section we describe the work done in point 3, \emph{Data preparation}
+
+\section{Definition of the problem and data understanding}
+\label{se:biz}
+
+
+
+\section{Data Preparation and EDA} 
+\label{se:eda}
+
+
+\section{Modeling using Machine Learning techniques} 
+\label{se:eda}
+
 There are four branches in Machine Learning:  
 \begin{itemize}
 \item Supervised learning: map between input data to known targets (labels, annotations) 
@@ -104,33 +237,7 @@ min \frac{1}{m^{(test)}} ||X^{(test)}w - y^{(test)}||
 But how is it possible to affect performance in the test set when we get only observations on the training set? If training and test sets were collected arbitrarily the whole enterprise of statistical learning would not stand, the reason why the field exists is because exists the assumption that both the trainign and test sets are generated by the same data generative process.
 
 
-\section{CRISP-DM model}
-%James Wu, Foundations of predictive analytics
-The voluminous and complex (heterogeneity and dimensionality) dataset collected in the Vallecas Project make it particularly to build analytics of any kind, let alone predictive analytics.
-In order to try to cope with this difficulty, we use a methodology well suited for machine learning analytics called CRISP-DM model (CRoss Industry Standard Process for Data Mining).
-The CRISP-DM model consists of 5 phases:
-\begin{enumerate}
-%1. Problem understanding
-\item
-\item Definition of the problem. The data set is contains a number of features and we want to clarify the relationships between those inputs and most importantly which if any and in which measure have predictive power about conversion to MCI and dementia.
-\item Assessment of scenarios for analysis. The main resource available are spreadsheets that contain demographic e.g age, school years etc. genetic: APOE, cognitive performance metrics from neuropsychological tests together with features related to life style  including nutrition and physical exercise among others. MRI and fMRI are also available but need ti be integrated with the above mentioned features, in this we will not deal with neuroimaging data.
-%2. Data Understanding
-\item Data understanding:
-\item Data understanding
-\item Data collection
-\item Data description: format, volume, description of attributes \footnote{Here we will refer indistinctly features, attributes, inputs and dimensions}
-\item Exploratory data analysis (EDA): charts, plots to visualize data features find associations and correlations. This task comprises: explore and visualize data, select attributes (most important, remove redundant or dependent attributes), test hypothesis about correlations and associations.
-\item Data quality analysis: Deal with missing values, inconsistent values
-%3. Data preparation
-\item Clean, wrangle and curate the dataset before the learning machinery is launched to build models. The most time consuming $(60\%) of the time$
-\item Data integration : multiple. datasets, this will have to be taken care of when we integrate with the imaging dataset.
-\item Data wrangling: handle missing values (remove rows, handle missing values), formatting into csv, json etc.
-% 4. Modelling
-% 5. Evaluation
-% 6. Deployment
 
- \end{enumerate}
-In the next section we describe the work done in point 3, \emph{Data preparation}
 
 \subsection{Data preparation}
 % Transformation including Scaling and discretize continuous variables (binning)
@@ -742,7 +849,7 @@ Bagging and Pasting scale very well because they can be trained and also predict
 
 
 \subsection{Random Forest}
-“ Random Forest is an ensemble of Decision Trees, generally trained via the bagging method (or sometimes pasting), typically with max_samples set to the size of the training set”“Instead of building a BaggingClassifier and passing it a DecisionTreeClassifier, you can instead use the RandomForestClassifier class, which is more convenient and optimized for Decision Trees”
+"Random Forest is an ensemble of Decision Trees, generally trained via the bagging method (or sometimes pasting), typically with max samples set to the size of the training set" Instead of building a BaggingClassifier and passing it a DecisionTreeClassifier, you can instead use the RandomForestClassifier class, which is more convenient and optimized for Decision Trees"
 
 %“from sklearn.ensemble import RandomForestClassifier
 
