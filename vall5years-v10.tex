@@ -83,10 +83,10 @@
 \begin{document}
 %IDENTIFICACIÓN DE FACTORES DE RIESGO EN DETERIORO COGNITIVO LEVE CON APRENDIZAJE AUTOMÁTICO: HACIA UNA AYUDA AL DIAGNÓSTICO MULTIFACTORIAL Y  AUTOINFORMADA
 
-\title{ \normalsize \textsc{Identificación de Factores de Riesgo en Deterioro Cognitivo Level con Aprendizaje Automático: Ayuda al Diagnóstico con el Proyecto Vallecas}
+\title{ \normalsize \textsc{Identificación de Factores de Riesgo en Deterioro Cognitivo Level con técnicas de inteligencia artificial: Ayuda al Diagnóstico con datos longitudinales del Proyecto Vallecas}
 		\\ [2.0cm]
 		\HRule{0.5pt} \\
-		\LARGE \textbf{\uppercase{Identification of risk factors in Mild Cognitive Impairment: A Machine Learning-Based Framework for early detection with The Vallecas Project longitudinal dataset}}
+		\LARGE \textbf{\uppercase{Identification of risk factors in Mild Cognitive Impairment: Artificial intelligence   for early detection in The Vallecas Project longitudinal dataset}}
 		\HRule{2pt} \\ [0.5cm]
 		\normalsize \today \vspace*{5\baselineskip}}
 
@@ -108,6 +108,9 @@
 
 %-------------------------------------------------------------------------------
 % BODY
+
+%CODE
+%tensorflow/production/descriptive_stats.py
 %-------------------------------------------------------------------------------
 
 \section*{Resumen}
@@ -128,9 +131,9 @@ We show that the longitudinal dataset of \emph{Proyecto Vallecas}, if convenient
 The early detection with machine learning algorithms makes possible not only to detect risk factors in asymptomatic  stages but also to formulate personalized interventions informed by the subject's lifestyle.
 
 \section{Introduction}
-The Vallecas Project for early detection of AD is the most ambitious population-based study in Spain. The project is carried out in the Queen Sofia Foundation Alzheimer Center by a multidisciplinary team of researchers from the CIEN Foundation. The main objective of the Vallecas Project is to elucidate, through tracking of progression of the cohort, the best combination of  parameters, clinical and others \footnote{Note in the inception of the project only clinical parameters were considered, here we advocate for a more inclusive set of parameters including neuropsychological, and also features related to the lifestyle such as nutrition and physical exercise} , that are informative about the medium and long-term features that distinguish individuals who will develop future cognitive impairment from those who will not. Thus, it intends to identify various markers to eventually determine the potential risk that each individual could have to develop the disease in the future.
+The Vallecas Project for early detection of AD is the most ambitious population-based study in Spain. The project is carried out in the Queen Sofia Foundation Alzheimer Center by a multidisciplinary team of researchers from the CIEN Foundation. The main objective of the Vallecas Project is to elucidate, through tracking of progression of the cohort, the best combination of features, clinical and others \footnote{Note in the inception of the project only clinical parameters were considered, here we advocate for a more inclusive set of parameters including neuropsychological, and also features related to the lifestyle such as nutrition and physical exercise}, that are informative about the medium and long-term features that distinguish individuals who will develop future cognitive impairment from those who will not. Thus, it intends to identify various \emph{markers} to eventually determine the potential risk that each individual could have to develop the disease in the future.
 
-The dataset contains over 500 features that include a wide range of features. Table \ref{fig:tableclustervallecas} shows the most important features types that are collected in the dataset.
+The dataset contains more than 1,000 examples described with $~500$ features that include a wide range of characteristics collected yearly. Importantly, the dimensionality of the dataset grows every year (new features are added) but it shrinks in the number of examples (some volunteers drop the study). Table \ref{fig:tableclustervallecas} shows the a non exhaustive list of the features types that are collected in the dataset.
 \begin{figure}[h]
         \centering
         \includegraphics[keepaspectratio, width=0.9\linewidth]{figures/tableclustervallecas}
@@ -138,15 +141,17 @@ The dataset contains over 500 features that include a wide range of features. Ta
 \label{fig:tableclustervallecas}
 \end{figure}
 
-Features fall into two categories, those that are self-informed, that is, the subject can report herself the value of the variable e.g. age, income level, education, sleep, diet etc. and those that require an expert to be obtained, for example, APOE genotype, cognitive performance measured in performance tests etc.
+The problem we are trying to solve here is prediction. Prediction is a way to generate information you do not have, that is, a predictive machine gets an input data set and uses it to generate new information. Classification is a quintessential prediction problem, for example, given a dataset of subjects whom have been diagnoses a classifier will predict the chances that a new subject will convert.
+
+
+Before going any further it is worth giving some basic definitions. First, we need to understand what Artificial intelligence (AI) is. The term AI was coined in 1956 by John McCarthy, AI studies how human intelligence can be implemented in technical systems. AI is an overarching concept including all sort of intelligent processes done by humans such as planning, problem solving, understanding language, recognizing objects, learning etc. 
+Machine learning is an approach to achieve Artificial intelligence. However, machine learning is more modest in the sense that does not claim to reverse engineer the human mind, it rather deals with making prediction as accurate as possible. Thus, AI tries to build 'intelligent' machines, machine learning, on the other hand, focuses on one aspect of intelligence, prediction.
+Deep learning is the most promising and popular approach to machine learning, other approaches include decision trees, Bayesian network, kernel methods, clustering etc.
   
-In this study we use machine learning techniques to investigate the factors that are most informative for conversion to MCI and dementia. The goal is to build algorithms capable of predicting the next stage (non conversion, conversion) in the cohort of \emph{Proyecto Vallecas}. We pay particular attention to the learning capabilities of our predictive analysis model. Our ambition is build a system that has been tested and validated in the Vallecas dataset and can be fed and deployed in larger scenarios e.g. health insurers, municipal or regional health systems providing comprehensible and accurate predictions for conversion to dementia in early stages.
+In this study we use machine learning techniques (all the above mentioned and others) to investigate the factors that are most informative for conversion to MCI and dementia. The goal is to build algorithms capable of predicting the next stage (non conversion, conversion) in the cohort of \emph{Proyecto Vallecas}. We pay particular attention to the learning capabilities of our predictive analysis model. Our ambition is build a system that has been tested and validated in the Vallecas dataset and can be fed and deployed in larger scenarios e.g. health insurers, municipal or regional health systems providing comprehensible and accurate predictions for conversion to dementia in early stages.
 
-The document is structure as follows. Section \ref{} outlines the framework and methodology used, specifically we describe the methodology for machine learning analytics that we use, called CRISP-DM mod
-
- The voluminous and complex (heterogeneity and dimensionality) dataset collected in the Vallecas Project make it particularly to build analytics of any kind, let alone predictive analytics. In order to try to cope with this difficulty, we use a methodology well suited for machine learning analytics called CRISP-DM which is described in Section \ref{se:crisp}. The following sections follow the CRISP-DM methodological plan to cover data preparation, modeling, evaluation and deployment. Thus, Section \ref{} performs exploratory data analysis, including detecting multicollinearity among different features and commenting on the feature engineering process followed. Section \ref{} explains the different predicitve models implemented and Section \ref{} deals with the evaluation of the different predictive models implemented and described in the previous section. Importantly ewe weigh on the interpretability side of the results and not only on the prediction side.
- Section \ref{} comments on how to deploy the most successful models. Finally, we include a discussion and conclusions Section \ref{}.
-
+ The voluminous and complex (heterogeneity and dimensionality) dataset collected in the Vallecas Project make it particularly to build analytics of any kind, let alone predictive analytics \footnote{The datasets that are giving better results with deep learning are very large -tens or even hundreds of thousands of examples- our dataset is more modest in the order of 1,000 thousand examples.}. In order to try to cope with this difficulty, we use a methodology well suited for machine learning analytics called CRISP-DM which is described in Section \ref{se:crisp}. We will follow the CRISP-DM methodological plan to cover data preparation, modeling, evaluation and deployment. Thus, Section \ref{} performs exploratory data analysis, including multicollinearity detection among different features and commenting on the feature engineering process used. Section \ref{} explains the different predictive models implemented and Section \ref{} deals with the evaluation of the predictive models that are described in the previous section. Importantly, we weigh on the interpretability side of the results and not only on the prediction side, section \ref{sse:interp}.
+ Section \ref{} focuses on the deployment of the most successful models and argues about the benefits and challenges of deploying our models \emph{extramural} Finally, we include a discussion and conclusions Section \ref{}.
 
 \section{CRISP-DM model}
 \label{se:crisp}
@@ -154,15 +159,15 @@ The document is structure as follows. Section \ref{} outlines the framework and 
 The voluminous and complex (heterogeneity and dimensionality) dataset collected in the Vallecas Project make it particularly challenging to build analytics of any kind, let alone predictive analytics.
 In order to try to cope with this difficulty, we use a methodology well suited for machine learning analytics called CRISP-DM model (CRoss Industry Standard Process for Data Mining).
   
-The CRISP-DM model consists of 6 phases that act upon themselves in an iterative loop depicted in figure \ref{fig:crisp}.
+The CRoss Industry Standard Process for Data Mining (CRISP-DM model) is the most popular methodology used in machine learning. CRISP-DM consists in 6 phases that act upon themselves in an iterative loop depicted in figure \ref{fig:crisp}.
 \begin{enumerate}
 %1. Problem understanding
-\item \textbf{Business understanding}: understanding the project objectives and requirements from a 'business' perspective. In our case, we can state the problem (business) we have at hand as follows: 
+\item \textbf{Business understanding}: understanding the project objectives and requirements from a 'business' perspective, the 'business' is no other than prediction. 
 	\begin{itemize}
 		\item Definition of the problem: We have a dataset that contains a number of features and we want to clarify the relationships between those inputs and most importantly which if any and in which measure have predictive power about conversion to MCI and dementia.
 	\end{itemize}
 %2. Data Understanding Assessment of scenarios for analysis. 
-\item \textbf{Data understanding}: The main resource available are spreadsheets that contain demographic e.g age, school years etc., genetic: APOE, cognitive performance metrics from neuropsychological tests together with features related to life style including nutrition and physical exercise among others. MRI and fMRI are also available but need to be integrated with the above mentioned features. Here we will not deal with neuroimaging data. This is being undertaking in forthcoming work.
+\item \textbf{Data understanding}: The main resource available are spreadsheets that contain demographic e.g age, school years etc., genetic: APOE, cognitive performance metrics from neuropsychological tests together with features related to life style including nutrition and physical exercise among others \footnote{ASL, MRI and fMRI data are also available (for the large majority of the volunteers) but need to be integrated with the above mentioned features. Here we will not deal with neuroimaging data. This is being undertaking in forthcoming work.}
 \item \textbf{Data preparation}: activities to construct the final dataset from the initial raw data
 	\begin{itemize}
 		\item Data description: format, volume, description of attributes \footnote{Here we will refer indistinctly features, attributes, inputs and dimensions}
@@ -192,20 +197,193 @@ The CRISP-DM model consists of 6 phases that act upon themselves in an iterative
 \label{fig:tableclustervallecas}
 \end{figure}
 
-In the next section we describe the work done in point 3, \emph{Data preparation}
-
 \section{Definition of the problem and data understanding}
 \label{se:biz}
 
+Features fall into two categories, those that are self-informed, that is, the subject can report herself the value of the variable e.g. age, income level, education, sleep, diet etc. and those that require an expert, for example, APOE genotype, cognitive performance measured in performance tests etc.
+
+The objective is to build a system that predicts whether a subject will convert to mild cognitive impairment and we want to do it in the most cost effective way. In order to do so, we will use only as an input of our machine learning algorithms the self-informed features, that is to say, features that require a neurologist or a neuropsychologist are not used (e.g. cognitive performance tests), neither features that require lab tests (e.g APOE gene variant.)
+
+The input is five years of \emph{Proyecto Vallecas} and the output is whether they convert or not to MCI in any of the future years. Thus, we predict whether a subject that was diagnosed as non MCI in year 1 is diagnosed as MCI in any ulterior year. The total number of visits collected in the 5 years project is 4444. Figure \ref{fig:pv5years} depicts the number of volunteers for every year of the project.
+
+\begin{figure}[h!]
+        \centering
+        \includegraphics[keepaspectratio, width=0.8\linewidth]{figures/pv5years}
+        \caption{Number of volunteers across five years of \emph{Proyecto Vallecas}. As expected the number of subjects decreases along time. The number of subjects in the basal visit (year 1) was 1213 of which 33 were removed  because were diagnosed with MCI or AD, remaining 1180 in year 1, 965 in year 2, 865 in year 3, 770 in year 4 and  664 in year 5, for a total of 4444.}
+\label{fig:pv5years}
+\end{figure}
 
 
-\section{Data Preparation and EDA} 
+\section{Data Preparation} 
+\label{se:dp}
+In this section we will explain how we prepare the dataset for the modeling process that will be explained in Section \ref{se:mod}.  
+The dataset we are dealing with here is a longitudinal dataset with 5 time points (year 1 (basal visit) to year 5).
+We will go through data preparation in section \ref{sse:daprep}, to pass to comment on data leakage and feature selection in sections \ref{sse:dl} and \ref{sse:fe}. Finally in Section \ref{sse:vs} we explain the resulting variable selection that will be fed to the algorithms.
+
+Data preparation also known as data pre-processing is a crucial step in machine learning projects, failure to properly pre-process the data set will cause suboptimal modeling and error-prone predictions.
+%https://paginas.fe.up.pt/~ec/files_1112/week_03_Data_Preparation.pdf
+Generally speaking, the data Preparation stage, more than $60\%$ of a data mining project effort \ref{witten2005data}.
+
+\subsection{Data preparation}
+\label{sse:daprep}
+
+% Transformation including Scaling and discretize continuous variables (binning)
+An obligatory step in pre-processing is transforming via scaling. 
+%and discretize continuous variables (binning using hot-coding).
+In general, algorithms that exploit distances or similarities ('nearness') between data samples, such as k-NN and SVM, are sensitive to feature transformation. 
+Scaling the dataset is thus absolutely necessary if we use techniques sensitive to scaling \cite{wu2012foundations}. Although other techniques like naive Bayes, decision trees and tree-based ensemble method are invariant to feature scaling, it is but still a good idea to rescale/standarize the dataset. Scaling will do no harm in techniques invariant to scaling and it is necessary in those that are sensitive to scaling. 
+
+There are two common ways to get all attributes (except the target variable which is rarely scaled) to have the same scale: min-max scaling and standardization.
+Min-max scaling, also called normalization, shifts and rescaled values so that they are between 0 and 1. This is done by subtracting the min value and dividing by the max minus the min. 
+%Scikit-Learn provides a transformer called MinMaxScaler for this. It has a feature_range hyperparameter that lets you change the range if you don’t want 0–1 for some reason.”
+Standarization, on the other hand, does not bound values to a specific range, it substracts the mean value (zero mean) and then divides it by the variance. 
+Standarization is preferred to min-max because is less affected by outliers. The most common scaling method is \emph{z-scaling} which is easily performed as 
+
+\begin{equation} \label{eq:scaling}
+\prime{x}_i=\frac{x_i -\mu}{\sigma_i}
+\end{equation}
+that is, the set of variables $X = x_i, i=1..n$ are scaled to be centered ($\mu=0$) and have the same spread (unit variance) \footnote{Note that we may want to use a lognormal rather than normal as a reasonable distribution. The Benford law is pertinent here: in many naturally occurring collections of numbers, the leading significant digit is likely to be small. This law is reminiscent of Pareto or Zipf law of numbers. For such variables, perform a log transform, $x'_i = \log x_i$}. 
+
+The z-scale and log transform are example of linear transformations but our dataset may need nonlinear transformations as well, for example discretize a continuous variable (discretize the age variable in bins of 5 years $70-75, 75-80, ...$.). Although machine learning techniques are perfectly able to deal with continuous variable the reason we still may be a good idea to discretize is that in doing so we will be helping the model to learn the relationship between inputs and output. Binning can also provide statistical smoothing and robustness in the modeling process (The cutpoint of the variable can be calculated with Gini index, entropy, chi squared or KS criteria).
+A good praxis is to always encode the dataset as good as possible to reduce the work of the model as much as possible.
+
+% Missing data imputation
+\subsection{Data leakage}
+\label{sse:dl}
+Data leakage describes the situation in which data you are including to train the machine learning algorithm includes the very thing you are trying to predict. For example if we are trying to predict conversion along the 5 years project and conversion in any given year is included as a feature.
+Another example of data leakage is including the neuropsychological test data in the training data set. Since the diagnosis is based on the test results, failing to remove the test scores will lead to an overfitting algorithm, that is, the algorithm will learn which combination of test scores result in one diagnosis or another -the output \emph{does the subject converts to mci?} would be already included in the input \emph{eg. MMSE scores}. 
+
+%Data leakage can occur in more subtle ways than those just described. For example in time series using features from the future not available for the current prediction using. 
+
+An effective way to eliminate leakage before building the model is to look for features highly correlated with the target. Leakage can persist once the model is built, in that case we can look look for surprising feature behavior (e.g. very large information gains). The proof that there is leakage is obtained by comparing the deployment performance versus the train and evaluation performance. 
+
+Features that are removed to avoid leakage include the target variable 'conversionMCI' and related variables that contain information about the conversion e.g. time to convert, diagnosis per year and all the neuropsychological tests scores e.g. MMSE, Buschke memory test.
+%Dummy features to remove: id, fecha nacimiento, fecha_visita
+
+\subsection{Feature engineering}
+\label{sse:fe}
+Feature engineering is the process of transforming raw data into features that better represent the problem that we are trying to solve to the model, to improve its accuracy on unseen data. 
+Put in simple words, feature engineering asks what is the best representation of the sample data to learn a solution to the problem?
+In feature engineering we may create additional features, for example by combining features to feed into the model. The rationale of feature engineering is to bring into the modeling process the domain expertise. Importantly, feature engineering is beneficial to reducing overfitting. 
+%https://machinelearningmastery.com/discover-feature-engineering-how-to-engineer-features-and-how-to-get-good-at-it/
+
+As it is also the case of data leakage, there is no an exact method for feature engineering. It is worth noting that success in the predictive model built depends on three things: the model selection, the dataset available and the engineered features. With well engineered features, it is possible to choose suboptimal models, and or suboptimal parameters and still obtain good results. Feature engineering requires domain knowledge in order to make informed decision about the selection of features that should included in the model.
+%It is an art like engineering is an art, like programming is an art, like medicine is an art.
+
+
+\subsection{Variable Selection}
+\label{sse:vs}
+% Variable Selection:
+Feature engineering is what makes us distinguish attributes from features, attributes is just any column in our tabular dataset,a feature on the other hand is an attribute that is useful or meaningful to your problem. Feature engineering gets us closer to the final selection of features that will be used for prediction. 
+Variable Selection consists of filtering the most important features and remove those that are not needed - Feature selection and wrapper.
+Note that it could be always possible to select all the features and let the model do the job of finding the best predictive model, but this is not a good idea in practical terms and the reason is \emph{stability}. Stable solutions require removing features that have spurious or non consistent relationship with the target. Furthermore, the principle of parsimony applies: careful variable selection and elimination tend to produce simpler models, and \emph{ceteris paribus} simple should be preferred to complex.
+
+Feature selection addresses the problem of selecting a subset that are most useful to the problem. Feature selection algorithms may use a scoring method to rank and choose features, such as correlation or other feature importance methods. Regularization methods like LASSO and ridge regression which are studied in Section \ref{} may also be considered algorithms with feature selection baked in, as they actively seek to remove or discount the contribution of features as part of the model building process
+
+The group of features that are we will used for learning are the following 56: 
+%\begin{center}
+%\textit{sex, education (nivel educativo),apoe, edad visita, scd (aggregate of 9 features related to subjective cognitive complaints), cognitive complaints (aggregate of 15 features), psychiatric syndromes (aggregate of 5 features), cognitive performance (aggregate of 11 features), quality of life (aggregate of 10 features), social engagement (aggregate of 4 features), physical exercise (aggregate of 2 features), diet(aggregate of 14 features), intellectual activity (aggregate of 14 features), demographics (aggregate of 6 features: married/singles, sons, perceived socioeconomic status), professional life(aggregate of 3 features), health (aggregate of 15 features: smoker, cardiac,lipids, glucose,diabetes, ictus, heart.. ), psychiatric history(aggregate of 15 features: depression and anxiety), sleep (aggregate of 12 features), family dementia history (aggregate of 4 features), sensory disturbances (auditive and visual disturbance) } 
+%\end{center}
+
+\begin{center}
+\textit{$'sexo', 'lat_manual', 'edad', 'edad_ultimodx', 'sue_noc', 'sue_rec', 'imc', 'a02', 'a03', 'a08', 'a11', 'a12', 'a13', 'a14', 'numhij', 'sdvive', 'sdeconom', 'sdresid', 'sdestciv', 'sdatrb', 'hta', 'glu', 'lipid', 'tabac_cant', 'cor', 'arri', 'card', 'ictus', 'tce', 'tce_con', 'dietaketo', 'dietaglucemica', 'dietasaludable', 'renta', 'nivel_educativo', 'educrenta', 'physical_exercise', 'familiar_ad', 'scd_visita1', 'preocupacion_visita1', 'act_aten_visita1', 'act_orie_visita1', 'act_mrec_visita1', 'act_visu_visita1', 'act_expr_visita1', 'act_comp_visita1', 'act_apat_visita1', 'gds_visita1', 'stai_visita1', 'eq5dsalud_visita1', 'eq5deva_visita1', 'relafami_visita1', 'relaamigo_visita1', 'valcvida_visita1', 'valsatvid_visita1', 'valfelc_visita1'$}
+\end{center}
+
+\section{Exploratory data analysis}
 \label{se:eda}
+Here we perform Exploratory Data Analysis (EDA). EDA is the first step in the data analysis process and is performed once the pre processing steps have finished. 
+The objective of EDA is to build graphical representations that help us make sense of the data. EDA gives us a bird's eye of the dataset to help us identifying patterns and trends and most importantly, assist us in framing the type of  questions we want to ask.
+Figure \ref{fig:sexmci} shows the distribution of sex and conversion and in 5 years of \emph{Proyecto Vallecas}
+
+\begin{figure}[t!]
+    \centering
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[height=2.5in]{figures/femalemale}
+        \caption{Out of 1180 subjects, 427 are men and 753 women ($64\%$ women, $36\%$ men)}
+    \end{subfigure}
+    ~ 
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[height=2.5in]{figures/convmci}
+        \caption{Non converters and MCI converters in 5 years time. Out of a total of 915 subjects with two or more visits, 829 do not convert and 86 convert to MCI at some time after the basal visit. The conversion rate is $10.3\%$}
+    \end{subfigure}%\quad
+    \label{fig:sexmci}
+    \caption{Distribution of sex and conversion and in 5 years of \emph{Proyecto Vallecas}}
+\end{figure}
+
+Figure \ref{fig:staigds} plot longitudinal variables for cognitive test and self reported emotional state, we also calculate the skewness of the distribution across time. For normally distributed data, the skewness should be about 0. The displayed variables are skewed.
+
+
+\begin{figure}[ht!]
+    \centering
+    \begin{subfigure}[t]{\textwidth}
+        \centering
+        \includegraphics[keepaspectratio, width=0.9\linewidth]{figures/mmse}
+        \caption{Mini–Mental State Examination (MMSE) scores across five years. The distribution is skewed on the right side with values for years 1 to 5: $1.93, 1.96, 1.67, 1.80, 1.75$}
+        %1.9335506443503956
+
+    \end{subfigure}
+    
+    \begin{subfigure}[t]{\textwidth}
+        \centering
+        \includegraphics[keepaspectratio, width=0.9\linewidth]{figures/fcs}
+        \caption{Buschke Immediate Recall score. The distribution is left skewed and increases with time $-0.52, -0.60, -0.92, -1.02, -1.12s$ }
+    \end{subfigure}%\quad
+    
+     \begin{subfigure}[t]{\textwidth}
+        \centering
+        \includegraphics[keepaspectratio, width=0.9\linewidth]{figures/gds}
+        \caption{Self-reported depression level by the volunteers for each year. The distribution is right skewed and tends to decrease with time $1.93, 1.96, 1.67, 1.80, 1.75$ }
+    \end{subfigure}
+    
+    \begin{subfigure}[t]{\textwidth}
+        \centering
+        \includegraphics[keepaspectratio, width=0.9\linewidth]{figures/stai}
+        \caption{Self-reported anxiety level by the volunteers for each year. The distribution is right skewed and tends to decrease with time (with a strong increment in the last year) $0.67, 0.62, 0.52, 0.41, 0.74$}
+    \end{subfigure}%\quad
+    \label{fig:staigds}
+    \caption{MMSE, Buschke, depression and anxiety levels across five years.}
+\end{figure}
+
+Figure \ref{fig:staigds} plot longitudinal variables for cognitive test and self reported emotional state, we also calculate the skewness of the distribution across time. For normally distributed data, the skewness should be about 0. The displayed variables are skewed.
+\begin{figure}[ht!]
+    \centering
+    \begin{subfigure}[t]{\textwidth}
+        \centering
+        \includegraphics[keepaspectratio, width=\linewidth]{figures/demos}
+        \caption{Conversion rate for different features: APOE, educational level, familiar AD (father or mother), income level calculated using residency and age.}
+
+    \end{subfigure}
+    
+    \begin{subfigure}[t]{\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/alim}
+        \caption{Conversion rate for diet related features, ketogenic diet (high in protein and fat low in carbs), glucemic diet (high in carbs) and healthy diet (high in vegetables, fruit and low in fat)}
+    \end{subfigure}%\quad
+    
+    \label{fig:demosalime}
+    \caption{Conversion rate for different features, above APOE, familiar AD, income and age, bellow diet.}
+\end{figure}
+
 
 
 \section{Modeling using Machine Learning techniques} 
-\label{se:eda}
+\label{se:mod}
 
+We can also "test" using clustering (K-means, hierarchical clustering) our domain specific partition. Clustering is associated with unsupervised learning but it could be useful to exploit out domain specific knowledge tin order to obtain more discriminant features (distributional clustering) \cite{guyon2003introduction}. Distributional clustering is related to information bottleneck \cite{tishby2015deep} searches for the solution that achieves the largest possible compression while retaining the essential information about the target.
+Another method of feature construction is single value decomposition (SVD) an unsupervised method of feature construction, the goal of SVD is to form a set of features that are liner combinations of the original variables which provide the best reconstruction in the least square sense \cite{duda2012pattern}.  
+
+Supervised methods: Filters: maximize the mutual information between the features and the target
+
+%Detection of Multicollinearity
+Another important issue if multicollinearity, we need to identify and remove correlated variables (crucial for model building). We can do this in two steps, first remove variables that produce another one, for example if A = B + C + D we can remove B, C and D.
+In a second step we deal with pair wise collinearity which is not exactly multicollinearity. For that we calculate the correlation between all pairs (build correlation matrix) and remove those with a large value (above some threshold). To do this systematically we can build a graph, in the node note the correlation with the target and in the edges the correlation value with the adjacent components. We will select variables with largest corr with target and remove its correlated variables. (page 211, \cite{wu2012foundations}).
+%(Belsey's 80) approach is based on covariance matrix of the least squares coefficient vector. Decaying importance of the variables as ordered by the eigenvalues
+
+%\ref{sse:interp}
+%Feature importance scores:A feature may be important if it is highly correlated with the dependent variable (the thing being predicted). Correlation coefficients and other univariate (each attribute is considered independently) methods are common methods
+%Complex predictive modeling algorithms perform feature importance and selection internally while constructing their mode Random Forest and Gradient Boosted Machines.
 There are four branches in Machine Learning:  
 \begin{itemize}
 \item Supervised learning: map between input data to known targets (labels, annotations) 
@@ -239,53 +417,7 @@ But how is it possible to affect performance in the test set when we get only ob
 
 
 
-\subsection{Data preparation}
-% Transformation including Scaling and discretize continuous variables (binning)
-Most techniques are sensitive to scaling \cite{wu2012foundations} and this is because there used to be an implicit metric or definition of nearness in the dataset. The most common scaling is z-scaling which is easily performed as $\prime{x}_i=\frac{x_i -\mu}{\sigma_i}$, that is, the set of variables $X = x_i, i=1..n$ are scaled to be centered and have the same spread \footnote{Note that we may want to use a lognormal rather than normal as a reasonable distribution. The Benford law is pertinent here: in many naturally occurring collections of numbers, the leading significant digit is likely to be small. This law is reminiscent of Pareto or Zipf law of numbers. For such variables perform a log transform, $x'_i = \log x_i$}.
-z-scale and log transform are example of linear transformations but we may need nonlinear transformations, for example discretize a continuous variable. For example we can discretize the age variable in bins of 3 or 5 years. Although machine learning techniques are perfectly able to deal with continuous variable the reason we still may be a good idea to discretize is that in doing so we will be helping the model to learn the relationship between inputs and output, binning can also provide statistical smoothing and robustness in the modeling process (The cutpoint of the variable can be calculated with Gini index, entropy, chi squared or KS criteria).
 
-Praxis: always encode your data as best as possible to reduce the work of the model as much as possible.
-
-% Variable Selection:
-Variable Selection consists of filtering the most important features and remove those that are not needed - Feature selection and wrapper.
-Note that it could be always possible to select all the features and let the model do the job of finding the best predictive model, but this is not a good idea in practical terms and the reason is \emph{stability}. Remove variables that have a spurious or non consistent relationship with the target, also the principle of parsimony applies: careful variable selection and elimination.
-%Detection of Multicollinearity
-Another important issue if multicollinearity, we need to identify and remove correlated variables (crucial for model building). We can do this in two steps, first remove variables that produce another one, for example if A = B + C + D we can remove B, C and D.
-In a second step we deal with pair wise collinearity which is not exactly multicollinearity. For that we calculate the correlation between all pairs (build correlation matrix) and remove those with a large value (above some threshold). To do this systematically we can build a graph, in the node note the correlation with the target and in the edges the correlation value with the adjacent components. We will select variables with largest corr with target and remove its correlated variables. (page 211, \cite{wu2012foundations}).
-%(Belsey's 80) approach is based on covariance matrix of the least squares coefficient vector. Decaying importance of the variables as ordered by the eigenvalues
-
-% Missing data imputation
-
-%CODE
-%tensorflow/production/descriptive_stats.py
-\subsection{Feature engineering}
-Feature engineering is the process of transforming the gathered data into features that better represent the problem that we are trying to solve to the model, to improve its performance and accuracy. In feature engineering we create additional features for example by combining features to feed into the model. The rationale of feature engineering is to bring into the modeling process the domain expertise, it may also help with overfitting. 
-There is no a formal method to deal with feature engineering but it is one of the most important processes and if not done properly it will hamper success. It is worth noting that success in the predictive model built depends on three things: the model selection, , the dataset available and the engineered features. With well engineered features, it is possible to choose suboptimal models, and or suboptimal parameters and still obtain good results. Feature engineering is the process of transforming raw data into features that better represent the underlying problem to the predictive models, resulting in improved model accuracy on unseen data. Feature engineering is manually designing what the input x’s should be. Feature engineering asks: what is the best representation of the sample data to learn a solution to your problem?
-%It is an art like engineering is an art, like programming is an art, like medicine is an art.
-
-Feature engineering is what makes us distinguish attributes from features, attributes is just any column in our tabular dataset,a feature on the other hand is an attribute that is useful or meaningful to your problem
-%Feature importance scores:A feature may be important if it is highly correlated with the dependent variable (the thing being predicted). Correlation coefficients and other univariate (each attribute is considered independently) methods are common methods
-Complex predictive modeling algorithms perform feature importance and selection internally while constructing their mode Random Forest and Gradient Boosted Machines.
-
-Feature selection addresses automatically selecting a subset that are most useful to the problem. Feature selection algorithms may use a scoring method to rank and choose features, such as correlation or other feature importance methods.Regularization methods like LASSO and ridge regression may also be considered algorithms with feature selection baked in, as they actively seek to remove or discount the contribution of features as part of the model building process
-
-The group the features that belong to the same category reducing the dimensionality from 115 features to 20 features.
-the resulting set of features are : 
-\begin{center}
-\textit{sex, education (nivel educativo),apoe, edad visita, scd (aggregate of 9 features related to subjective cognitive complaints), cognitive complaints (aggregate of 15 features), psychiatric syndromes (aggregate of 5 features), cognitive performance (aggregate of 11 features), quality of life (aggregate of 10 features), social engagement (aggregate of 4 features), physical exercise (aggregate of 2 features), diet(aggregate of 14 features), intellectual activity (aggregate of 14 features), demographics (aggregate of 6 features: married/singles, sons, perceived socioeconomic status), professional life(aggregate of 3 features), health (aggregate of 15 features: smoker, cardiac,lipids, glucose,diabetes, ictus, heart.. ), psychiatric history(aggregate of 15 features: depression and anxiety), sleep (aggregate of 12 features), family dementia history (aggregate of 4 features), sensory disturbances (auditive and visual disturbance) } 
-
-\end{center}
-
-We can also "test" using clustering (K-means, hierarchical clustering) our domain specific partition. Clustering is associated with unsupervised learning but it could be useful to exploit out domain specific knowledge tin order to obtain more discriminant features (distributional clustering) \cite{guyon2003introduction}. Distributional clustering is related to information bottleneck \cite{tishby2015deep} searches for the solution that achieves the largest possible compression while retaining the essential information about the target.
-Another method of feature construction is single value decomposition (SVD) an unsupervised method of feature construction, the goal of SVD is to form a set of features that are liner combinations of the original variables which provide the best reconstruction in the least square sense \cite{duda2012pattern}.  
-
-Supervised methods: Filters: maximize the mutual information between the features and the target
-
-\subsection{Data leakage}
-Data leakage describes the situation in which data you are including to train the machine learning algorithm includes the very thing you are trying to predict, for example if I am trying to predict conversion and I include conversion in a given year as a feature, another example of data leakage is having test data in the training data set this will lead to overfitting. Data leakage can happen in ways more subtle than those just described, for example in time series using features from the future not available for the current prediction using. To eliminate leakage, before building the  model look for features highly correlated with the target, after building the model look for surprising feature behavior (large information gains). The proof that there is leakage is obtained by comparing the deployment performance versus the train and evaluation performance. 
-
-The features to be removed are obviously the target variable conversion, tiempo (time to convert), tpo1.1..5 (time from year 1 to conversion), dx visita1
-%Dummy features to remove: id, fecha nacimiento, fecha_visita
 
 \section{Descriptive statistics}
 
