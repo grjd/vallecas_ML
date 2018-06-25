@@ -276,7 +276,8 @@ A good praxis is to always encode the dataset as good as possible to reduce the 
 % 
 \subsection{Missing data imputation}
 \label{sse:miss}
-MA
+Miguel Angel.
+
 
 \subsection{Data leakage}
 \label{sse:dl}
@@ -307,13 +308,13 @@ It is worth noting that success in the predictive model built depends on three t
 \subsection{The Vallecas Index}
 \label{sse:vs}
 % Variable Selection:
-Feature engineering is what makes us distinguish attributes from features, attributes is just any column in our tabular dataset,a feature on the other hand is an attribute that is useful or meaningful to your problem. Feature engineering gets us closer to the final selection of features that will be used for prediction. 
+Feature engineering is what makes us distinguish attributes from features, attributes is just any column in our tabular dataset, a feature on the other hand is an attribute that is useful or meaningful to your problem. Feature engineering gets us closer to the final selection of features that will be used for prediction. 
 Variable Selection consists of filtering the most important features and remove those that are not needed - Feature selection and wrapper.
 Note that it could be always possible to select all the features and let the model do the job of finding the best predictive model, but this is not a good idea in practical terms and the reason is \emph{stability}. Stable solutions require removing features that have spurious or non consistent relationship with the target. Furthermore, the principle of parsimony applies: careful variable selection and elimination tend to produce simpler models, and \emph{ceteris paribus} simple should be preferred to complex.
 
 Feature selection addresses the problem of selecting a subset that are most useful to the problem. Feature selection algorithms may use a scoring method to rank and choose features, such as correlation or other feature importance methods. Regularization methods like LASSO and ridge regression which are studied in Section \ref{} may also be considered algorithms with feature selection baked in, as they actively seek to remove or discount the contribution of features as part of the model building process
 
-The group of features that are we will used for learning are the following 56: 
+The group of features that are we will used for learning are the following 56 \footnote{For a description of the features see the Appendix}: 
 %\begin{center}
 %\textit{sex, education (nivel educativo),apoe, edad visita, scd (aggregate of 9 features related to subjective cognitive complaints), cognitive complaints (aggregate of 15 features), psychiatric syndromes (aggregate of 5 features), cognitive performance (aggregate of 11 features), quality of life (aggregate of 10 features), social engagement (aggregate of 4 features), physical exercise (aggregate of 2 features), diet(aggregate of 14 features), intellectual activity (aggregate of 14 features), demographics (aggregate of 6 features: married/singles, sons, perceived socioeconomic status), professional life(aggregate of 3 features), health (aggregate of 15 features: smoker, cardiac,lipids, glucose,diabetes, ictus, heart.. ), psychiatric history(aggregate of 15 features: depression and anxiety), sleep (aggregate of 12 features), family dementia history (aggregate of 4 features), sensory disturbances (auditive and visual disturbance) } 
 %\end{center}
@@ -324,10 +325,9 @@ The group of features that are we will used for learning are the following 56:
 \subsection{Descriptive statistics}
 \label{sse:des}
 
-Once we have identified the set of features we are interested in, we can proceed to study the associations between the features among themselves and more importantly with the target variable. This will give us an idea of the embedded structure in the dataset and will help us address questions in a most effective way.
+Once we have identified the set of features we are interested in, we can proceed to study the associations between the features among themselves and more importantly with the target variable. This will give us an idea of the embedded structure in the dataset and will help us address questions in a most effective way. But prior to doing this, since our dataset is longitudinal, it is worth exploring the temporal evolution of features across the 5 years of the project.
 
 First, we plot longitudinal variables for cognitive test (these are not included in the \emph{Vallecas index} to avoid data leakage) and self reported emotional state (included in the \emph{Vallecas index}). We also calculate the skewness of the distribution across time. For normally distributed data, the skewness should be about 0. The displayed variables are skewed (Figure \ref{fig:staigds}). 
-
 
 \begin{figure}[H]
     \centering
@@ -358,7 +358,8 @@ First, we plot longitudinal variables for cognitive test (these are not included
     \caption{MMSE, Buschke, depression and anxiety levels across five years.}
 \end{figure}
 
-Figure \ref{fig:demosalime} plots the conversion rate for different the features: APOE, educational level, familiar AD (father or mother), income level calculated using residency and age and diet.
+Next we study associations between features and the target (\emph{conversion to MCI}). 
+Figure \ref{fig:demosalime} plots the conversion rate for different features: APOE, educational level, familiar AD (father or mother), income level calculated using residency and age and diet. Note that we explore not only features included in the \emph{Vallecas Index} also other features like APE profile. The \emph{Vallecas Index} is a subset of the in put space that will be used to build a classifier that predicts the likelihood that a new example will convert to MCI (Section ). Here, however, we are performing exploratory data analysis, that is, we look for patterns of associations in the dataset without being concerned with prediction per se.
 
 \begin{figure}[H]
     \centering
@@ -395,7 +396,7 @@ See figure \ref{fig:demosalime} for a conversion rate with education level and i
 \label{fig:incomeresidency}
 \end{figure}
 
-Figure \ref{fig:multico} shows the Pearson correlation between conversion to MCI and some features cognitive complaints, depression (positive correlation) and income level-education and use of new technologies (negative correlation.
+Figure \ref{fig:multico} shows the Pearson correlation between conversion to MCI and features related to cognitive complaints, depression (positive correlation) and income level-education and use of new technologies (negative correlation).
 
 \begin{figure}[H]
     \centering
@@ -452,8 +453,8 @@ for all the variables included in the \textbf{Vallecas index}.
 \subsection{Statistical inference}
 \label{sse:satinf}
 %ANOVA TESTS
-In this section we study the difference between groups using analysis of variance \footnote{ANOVA is similar to 2-sample t-test but it is more conservative (less type I error)}. In particular we study whether the observed variance for a variable (e.g. age or diet) when partitioned into components attributable to conversion.
-Table \ref{tab:anova} shows the ANOVA statistical test to determine whether differences between the means are of conversion to MCI and features are statistically significant. the null hypothesis is rejected for depression,  subjective complaints, education level, income, familiar unit, use of new technologies and age.
+In this section we study the difference between groups using analysis of variance \footnote{ANOVA is similar to 2-sample t-test but it is more conservative (less type I error)}. In particular we study whether the observed variance for a variable (e.g. age or diet) when partitioned into components can be attributable to conversion.
+Table \ref{tab:anova} shows the ANOVA statistical test to determine whether differences between the means are of conversion to MCI and features are statistically significant. The null hypothesis is rejected for depression,  subjective complaints, education level, income, familiar unit, use of new technologies and age.
 
 \begin{tabular}{llr}
 \hline
@@ -483,7 +484,7 @@ tabac &  2.388573  & 0.122572 \\
 \label{tab:anova}
 \end{tabular}
 
-Figure \ref{fig:anovabox} shows the box plot for some of the features that reject the null hypothesis.
+Figure \ref{fig:anovabox} shows the box plot for features that reject the null hypothesis (cognitive complaints, age,education level and use of new technologies).
 
 \begin{figure}[H]
     \centering
@@ -514,247 +515,55 @@ Figure \ref{fig:anovabox} shows the box plot for some of the features that rejec
     \caption{Box plot of 1-factor ANOVA tests.}
 \end{figure}
 
-
+\newpage
 %\section{Modeling using Machine Learning techniques} 
-\section{Predictive analytics using Machine Learning} 
+\section{Predictive analytics with Machine Learning} 
 \label{se:mod}
 
+Machine learning is changing numerous aspects in our lifes. Predictive algorithms perform tasks that only experts could do. The range of domains of applications in which machine learning have shown optimal results is impressive. From natural language translation (Google Neural Machine Translation), lip reading (\cite{suwajanakorn2017synthesizing}) to reconstruction of face aging process using Conditional Generative Adversarial Networks \cite{antipov2017face}, they are just some of the achievements of Artificial Intelligence.
+The success of recent models to detect abnormalities in medical images better than trained radiologists have caused  great excitement in the AI community. Google and University of Toronto leader researcher Geoffrey Hinton has gone as far as to advocate to stop training radiologists in medical schools.
+%The paper documents how the algorithm detected abnormalities (like fractures, or bone degeneration) better than radiologists in finger and wrist radiographs. However, radiologists were still better at spotting issues in elbows, forearms, hands, upper arms, and shoulders.
+
+Here we are interested in building learning system that accurately predicts that whether a subject will convert to MCI. The input set is the \emph{Vallecas Index} explained above. While at this stage we focus only on capturing the predictive power of the \emph{Vallecas Index} which mainly consists in demographic, cognitive and lifestyles features, the solutions here implemented can be directly extended with additional features, including neuroimaging related features (e.g. gray matter density, connectivity) and others.
+
+We will explore a number of different algorithms and we will evaluate the goodness of fit of those algorithms with the problem at hand -predict conversion to MCI from healthy subjects. We are promiscuous for a reason. There is no a machine learning algorithm that is universally any better than any other. This is related to the no free lunch theorem in search an optimization \cite{wolpert1997no}. It follows that the goal of machine learning is not to seek an universal learning algorithm, instead the goal must be to understand what kinds of distributions are relevant to the real world that an AI agent is experiencing. Thus, we must develop an algorithm to perform well in a particular task and we do this by adding preference hyperparameters \footone{Hyperparameter is a parameter whose value is set before the learning process begins. By contrast, the values of other parameters are derived via training.} (e.g. regularization) in the algorithm.  
+
+This document is self contained and it has been created with the dual objective of being both divulgative about machine learning techniques and informative about the results obtained in the \emph{Vallecas Project} using those techniques.
+In the next section we deal with the divulgative aspect and we provide a short introduction to machine learning, the reader familiarized with the topic can skip and go directly to the next section, where the models implemented in the Vallecas dataset are discussed.
 
 
-There are four branches in Machine Learning:  
-\begin{itemize}
-\item Supervised learning: map between input data to known targets (labels, annotations) 
-\item Unsupervised learning: finding interesting transformations of input data (without the help of any target) for the purpose of compression, denoising, visualization or to better understand the correlations in the input data. UL is the bread and butter of Data analytics and it is often advisable to perform UL (eg. clustering, dimensionality reduction PCA) before doing SL. 
-\item Self supervised learning: SL without humans in the loop, labels are generated from the input data (eg. autoencoders)
-\item Reinforcement learning: model agent-environment interactions the goal is to learn actions that maximize some reward. for example,a network that looks at a video game screen and outputs the game actions that will maximize the score (Atari games)
-\end{itemize}
-In machine learning, the goal is to achieve models that generalize —that perform well on never-before-seen data—and overfitting is the central obstacle. Evaluating a model always boils down to splitting the available data into three sets: training, validation, and test. You train on the training data and evaluate your model on the validation data. Once your model is ready for prime time, you test it one final time on the test data. 
-But why not just two sets: training and testing? Because adjusting the optimal configuration of the model (parameter and hyperparameters) is a feedback loop, the performance of the model on the validation set is the feedback signal.
-
+\subsection{Introduction to Machine Learning} 
+\label{sse:iml}
 %chollet book pg216
 % why machine learning
-Machine learning is in essence a form of applied statistics where the emphasis is placed on estimate complicated functions rather than providing confidence intervals around those functions \footnote{the p-hacking crisis is absolutely irrelevant for scientists working on ML and a symptom of the obsolescence of that approach}. Machine learning is not only interesting from an engineering point of view (fabricating a system with a desired behavior) but also from the standpoint of psychology because principle-based approach of machine learning necessarily informs and is informed by the principles that underlie human intelligence.
-The classification problem we are trying to solve here is to build a function $f:R^n \to \{0,1\}$, y=f(x), the input x has n dimensions it follows that we can obtain $2^n$ different classification functions  but we only need to learn one, the optimal describing the joint probability distribution.
+Machine learning is in essence a form of applied statistics where the emphasis is placed on estimate complicated functions rather than providing confidence intervals around those functions \footnote{The p-hacking crisis is absolutely irrelevant for scientists working on ML and a symptom of the obsolescence of that approach}. Machine learning is not only interesting from an engineering point of view (fabricating a system with a desired behavior) but also from the standpoint of psychology because principle-based approach of machine learning necessarily informs and is informed by the principles that underlie human intelligence.
 
-What separates machine learning from optimization is that optimization business is about reducing the training error  while in machine business we do that and also reduce the generalization or test error (expected error on a new input) as well. For example, in the simplest case of machine learning, linear regression, we train the model by minimizing the training error -train and test tests are identically distributed, that is, drawn from the same probability distribution. Thus, if we have a probability distribution p(X,y) and we sample it repeatedly to obtain the training set and the test set, the expected error for either sets should be the same because both expectations are built using identical sampling process.
+What separates machine learning from optimization is that the optimization business is about reducing the training error while the machine business is about that but also about reducing the generalization or test error (expected error on a new input). 
 
-No free lunch theorem in search an optimization \cite{wolpert1997no} (No ML algorithm is universally any better than any other) it follows that the goal of ML is not to seek an universal earning algorithm, instead the goal must be to understand what kinds of distributions are relevant to the real world that an AI agent is experiencing. Thus, we must develop an algorithm to perform well in a particular task and we do by adding preference (regularization) in the algorithm which if they are aligned with the problem at hand will perform optimally.
-
-
+Formally, we look for the model parameters w that minimize the distance between the prediction and the ground truth
 \begin{equation}
-min \frac{1}{m^{(train)}} ||X^{(train)}w - y^{(train)}||
+argmin_{w}  ||X^{(train)}w - y^{(train)}||
+\label{eq:reaintest1}
 \end{equation}
 
-but we actually care about minimizing the test error:
+However, in reality what we actually care about is minimizing the test error, that is, how good our model predict the behavior of examples never seen before:
 \begin{equation}
-min \frac{1}{m^{(test)}} ||X^{(test)}w - y^{(test)}||
-\end{equation}
-But how is it possible to affect performance in the test set when we get only observations on the training set? If training and test sets were collected arbitrarily the whole enterprise of statistical learning would not stand, the reason why the field exists is because exists the assumption that both the trainign and test sets are generated by the same data generative process.
-
-\subsection{Supervised Learning}
-Supervised methods: Filters: maximize the mutual information between the features and the target
-
-%(Belsey's 80) approach is based on covariance matrix of the least squares coefficient vector. Decaying importance of the variables as ordered by the eigenvalues
-
-%\ref{sse:interp}
-%Feature importance scores:A feature may be important if it is highly correlated with the dependent variable (the thing being predicted). Correlation coefficients and other univariate (each attribute is considered independently) methods are common methods
-%Complex predictive modeling algorithms perform feature importance and selection internally while constructing their mode Random Forest and Gradient Boosted Machines.
-
-
-
-The most common learning method is called regression, it is then worth spend some time to explain this technique prior to get into more brave waters. 
-%https://www.evernote.com/shard/s263/sh/574750b2-7b4a-4300-8c41-7e8e5150de18/f2c4ffea344f3dd11b3e2f5dcdd25633
-There are two types of regression, linear regression and logistic regression. Logistic regression gives you a discrte ouput e.g.0,1 while linear regression gives a continuous output. Logistic and Linear Regression can be used as a benchmark (baseline performance) against which more complex techniques can be compared. 
-Both linear regression and logistic regression does work better when you remove attributes that are unrelated to the output variable as well as attributes that are very similar (correlated) to each other. Thus, feature engineering plays an important role in regards to the performance of this technique and it is not exception with other methodologies explored here. 
-Linear regression predicts a continuous output, $\hat{y}$ as a function of the input variables $x$ each weighted by a coefficient $\hat{w}$ plus a bias term $\hat{w}$. Note that the terms $\hat{y}$, $\hat{w}$ and $\hat{w}$ are estimates that can be estimated via different methods.
-
-The equation of a linear regression is
-\begin{equation}
-\hat{y} = \sum_i \hat{w_i}x_i
-\end{equation}
-Logistic regression takes this a step further by running the output  of the linear combination of w and x through a non linear function (the sigmoid or logistic function). The logistic function range is $[0,1]$ so it can be used to estimate the probability that a given instance belong to one class or another.
-\begin{equation}
-\hat{y} = \sigma(\sum_i \hat{w_i}x_i)
+argmin_{w'} ||X^{(test)}w' - y^{(test)}||
 \end{equation}
 
-Maximum Likelihood Estimate (MLE) is a general method to estimate parameters in statistical models including regression. In MLE we maximize the probability that a random input point will be classified correctly. In order to maximize the likelihood we use optimization processes\footnote{Formally, any operation in which you are solving for the minimum or maximum of some function can be interpreted as an optimization. What optimization technique does is to looking for the linear model that provides the "best" fit to the data. For example, OLS minimizes the model error, in this case the residuals which are the part of the data that aren't explained by the model. OLS seeks to give the best description of the data, by minimizing the "total amount" of unexplained variation in the data.} e.g. ordinary least squares (OLS), Ridge regression or Lasso regression, Newton, gradient descent etc. 
-%OLS works by defining the "best" model as the one that minimizes a certain measure of model error -- in this case, the sum of the squares of the model residuals. The residuals are the part of the data that aren't explained by the model: OLS seeks to give the best description of the data, by minimizing the "total amount" of unexplained variation in the data.
+But how is it possible to affect performance in the test set when we get only observations on the training set? If training and test sets were collected arbitrarily the whole enterprise of statistical learning would not stand. 
+Let us see this with an example. The simplest case of machine learning is -linear regression, in which the model is trained by minimizing the training error \emph{under the premise that both train and test test errors are identically distributed}, that is, both training and test are drawn from the same probability distribution. Thus, if we have a probability distribution $p(X,y)$ and we sample it repeatedly to obtain the training set and the test set, the expected error for either sets should be the same because both expectations are built using identical sampling process.
+The solution to the previous question must be clear now, the assumption that both the training and test sets are generated by the same data generative process is \emph{conditio sine qua non}.
 
-\textbf{Model selection}
-In the previous section we sketched different evaluation metrics now we will see how to apply them in order to select the best model for our application. 
-Model selection is the phase in the modeling process in which we opt for one model or other based on the model's performance which is being previously evaluated.
 
-There are three main methods of model selection: Train-Test split, K-fold Cross Validation and Grid Search.
-The train/test method split the data set into two portions testing set and test test. The training set is used to train the model and the testing set is used to test the model. The pros are flexibility and speed, the cons provides a high  variance estimate of out of sample. 
-
-This method splits the data set into K equal partitions (“folds”), then use 1 fold as the testing set and the union of the other folds as the training set. Then the model is tested for accuracy. The process will follow the above steps K times, using different fold as the testing set each time. The average testing accuracy of the process is the testing accuracy.
-%https://towardsdatascience.com/machine-learning-workflow-on-diabetes-data-part-01-573864fcc6b8
-In K-fold Cross Validation the data set is divided into K equal partitions or “folds”, 1 fold is used as the testing set and the union of the other sets are the training set. The process is performed K times using different fol as the testing set each time. the average testing accuracy of the K iterations is the testing accuracy.
-In Cross Validation we do not to set any parameter, apart from the number of folds (cv) from which we calculate the average performance across folds. The pros are more accurate estimate of out-of-sample accuracy, more “efficient” use of data in the sense that every observation is used for both training and testing. The cons are slow compared to Train/Test split.
-
-In GridSearch we need a gamma parameter (for example in SVC with rbf kernel set the radius), GridSearchCV finds the gamma that optimizes the given evaluation metric (accuracy, precision etc).
-%cross validation, no parameters only cv (number of folds)
-%from sklearn.model_selection import cross_val_score; from sklearn.svm import SVC
-%print('cross validation (accuracy)', cross_val_accuracy(clf, X,y, cv=5))
-%print('cross validation (AUC)', cross_val_accuracy(clf, X,y, cv=5, scoring = 'roc_auc'))
-%print('cross validation (recall)', cross_val_accuracy(clf, X,y, cv=5, scoring = 'recall'))
-%not that we do not any parameter tunning just 5 folds and examine performance
-
-%% Grid Search, we need gamma parameter
-%from sklearn.model_selection import GridSearchCV
-%grid_values = {'gamma': [0.001, 0.01, 0.1, 1 10]}
-%grid_clf_acc = GridSearchCV(clf, param_grid = grid_values); grid_clf_acc.fit(X_train, y_train)
-%#optimize for acc
-% y_decision_fn_scores_acc = grid_clf_acc.decision_function(X_test); print('Grid best parameter (max. accuracy):', grid_clf_acc.best)
-%print('Grid best score (accuracy):', grid_clf_acc.best_score_) 
-%#optimize for auc
-%grid_clf_auc = GridSearchCV(clf, param_grid = grid_values, scoring='roc_auc'); grid_clf_auc.fit(X_train, y_train)
-%print('Grid best score (accuracy):', grid_clf_auc.best_score_) 
-%the gamma parameter can be equal but also different depending on the metric used
-
-The evaluation metric supported for model selection are
-\begin{lstlisting}
-%from sklearn.metrics.scorer import SCORERS
-%sorted(list(SCORERS.keys()))
-%['accuracy', 'adjusted_mutual_info_score', 'adjusted_rand_score', 'average_precision', 'completeness_score', 'explained_variance', 'f1', 'f1_macro', 'f1_micro', 'f1_samples', 'f1_weighted', 'fowlkes_mallows_score', 'homogeneity_score', 'log_loss', 'mean_absolute_error', 'mean_squared_error', 'median_absolute_error', 'mutual_info_score', 'neg_log_loss', 'neg_mean_absolute_error', 'neg_mean_squared_error', 'neg_mean_squared_log_error', 'neg_median_absolute_error', 'normalized_mutual_info_score', 'precision', 'precision_macro', 'precision_micro', 'precision_samples', 'precision_weighted', 'r2', 'recall', 'recall_macro', 'recall_micro', 'recall_samples', 'recall_weighted', 'roc_auc', 'v_measure_score']
-\end{lstlisting}
-The decision boundaries change when it is optimize for different metrics
-
-Three data splits:
+There are four types of models in Machine Learning, in this document we will deal with the two most important, supervised and unsupervised learning.  
 \begin{itemize}
-	\item Training set: model building
-	\item Evaluation set: model selection 
-	\item Test set: final evaluation
+\item Supervised learning: builds a map between input data to known targets (labels, annotations) 
+\item Unsupervised learning: finds interesting transformations of input data (without the help of any target) for the purpose of compression, denoising, visualization or to better understand the correlations in the input data. 
+It is often advisable to perform Unsupervised learning (eg. clustering, dimensionality reduction PCA) before doing Supervised learning.
+\item Self supervised learning: SL without humans in the loop, labels are generated from the input data (eg. autoencoders)
+\item Reinforcement learning: model agent-environment interactions the goal is to learn actions that maximize some reward. For example, a network that looks at a video game screen and outputs the game actions that will maximize the score \cite{mnih2013playing}
 \end{itemize}
-
-
-\subsubsection{Linear regression}
-Conversion and psychological test scores are not continuous but discrete variables so it does not make sense of performing a linear regression.
-
-There are teo main ways to train a linear regression model (the simplest machine learning method): "closed-form" directly computes the model parameters that best fit the model to the training set \textbf{Normal Equation} and using "gradient-descent" an iterative optimization approach that gradually tweaks the parameters to minimize the cost function over the training set. (eventually giving the same results as in the closed form). Variations of Gradient Descent are Batch GD, Mini batch GD and Stochastic GD.
-
-Polynomial regression, contrary to linear regression can fit nonlinear datasets. It has more parameters than linear regression and it is therefore more prone to overfitting the training data (Learning curve is the graphical device we have to detect if the model if overfiting), regularization s what deals with overfitting phenomenon.
-
-A linear regression model is something like this
-\begin{equation}
-y = \theta_0 + \theta_{1}x
-\end{equation}
-for example, $happiness = \theta_0 + \theta_1 wealth$., that is, the model is just a lienar fucntion of the input feature $wealth$ amd $\theta_0, \theta_{1}$ are the model parameters. A linear makes a prediction $\hat{y}$ based on the weighted sum of the input features pus a bias term(or intercept), $\hat{y} = \theta_0 + \theta_1 x_1 + ...+ \theta_n x_n$. This can be written in a more compact form as
-\begin{equation}
-y = \Theta^{T} X 
-\end{equation}
-where $\Theta$ is the model's parameter vector ( a column so we need to transpose y have a row ($\Theta^{T} (1 \times n), X (n \times 1)$ to get an scalar $(1 \times 1)$ which is the actual prediction for that input instance ), X is the instance vector (note that $x_0$ is always 1).
-Once we have built the model we need to train it which in essence consists in setting its parameters so that the model best fits the training set. Thus, we need to find a measure that tells us whether the model fits well the data, the most common measure is the root mean square error (RSME) but we use the mean square error (MSE) because the value that minimizes a function also minimizes square root.
-The MSE is a linear regression hypothesis on a training set X is
-
-\begin{equation}
-MSE(X,\Theta) = \frac{1}{m} \sum_{i=1}^{m}(\hat{y}^{i} - y^{i})^2 = \frac{1}{m} \sum_{i=1}^{m}(\Theta^Tx^{i} - y^{i})^2
-\end{equation}
-T find the value of the vector $\Theta$ we can use the closed-form also called normal equation
-\begin{equation}
-\hat{\Theta} = (X^{T}X)^{-1}X^{T}y
-\end{equation}
-where $\hat{\Theta}$ is the value that minimizes the cost function and y is the vector of target values.
-
-Fortunately the MSE cost function for a LR happens to be convex (choosing two points, the line segment never crosses the curve) that is, no local minima just one global minimum and it is also continuous and smooth function, thats to this: “Gradient Descent is guaranteed to approach arbitrarily close the global minimum (if you wait long enough and if the learning rate is not too high).”
-
-Importantly, when using Gradient Descent, you should ensure that all features have a similar scale (e.g., using Scikit-Learn’s StandardScaler class), or else it will take much longer to converge. (see pag 202 Aurelien book). The search is in the parameter space, so the more parameters the longer (finding a needle in a 300 dimensional haystack s much harder than in a 3 dimensional one, but the haystack is convex, so we know the needle sis always at the bottom)!
-
-
-To calculate the gradient descent we need to do the partial derivative of the cost function for each model parameter $\Theta$ in order to see how the cost function will change if a I change the parameter just a little bit(what is the slope of the mountain if I change $\Theta_i$ eg direction east and so on for each dimension ($\frac{\partial}{\partial \theta_j} MSE(\Theta$). Once we have the gradient vector (which points uphill) just subtract the gradient (weighted by the learning rate) from $\theta$ to go downhill
-
-The main problem with Batch GD is that it uses the entire training set to compute the gradient at every step, which makes it slow when the training set is large. Stochastic GD picks a subset (a random instance) in the training set at every step and computes the gradient for that instance, this makes the algorithm faster, with the inconvenient that its randomness (stochasticity) makes it less regular than GD, the cost function rather than slowly going to the minimum it may bounce up and down, but still decreasing on the average. However, randomness is actually good to escape from local optima but it could never settle in the global minimum.
-\textbf{simulated annealing} can solve this problem playing with the learning rate, it starts with a large one, to avoid local minimum, to make shorter steps as the algorithm approaches the global minimum (learning schedule).
-Each round of iterations is called epoch so in SGD the algorithm goes through the training set epochs times. Note that since instances are picked randomly per each epoch some instances can be chosen more than once while others none.
-%SGDRegressor “To perform Linear Regression using SGD with Scikit-Lear”
-
-Mini batch GD: “at each step, instead of computing the gradients based on the full training set (as in Batch GD) or based on just one instance (as in Stochastic GD), Mini-batch GD computes the gradients on small random sets of instances called mini-batches”. Better than SGD is we use GPU, the algorithm is less erratic than SGD especially with fairly large mini-batches
-
-Importantly these 3 algorithms will yield the same predictions choosing one or another relies upon the use computational resources we wish.
-
-
-\textbf{Over and underfitting}
-If a model performs well on the training data but generalizes poorly according to the cross-validation metrics, then your model is overfitting. It it performs badly in both is underfitting or what is the same the model is too complex or too simple. Another way to look at model's behavior is using learning curves: plots performance in training and validation set as a function of the training data size. To generate the plots, simply train the model several times on different sized subsets of the training set.
-Undefitting: both training and validation set reach a plateau, i.e. throwing more data doesn't translate into better performance.
-Thus, underfitting is easily detected when adding more training example doesn't improve the performance, what is needed is a more complex model or come up with better features.
-
-The hallmark of overfitting is the gap between curves -the model performs better in the training set- however if we use a largerr dataset the curves can eventually meet.
-
-The hallmark of undefiting is plateau.
-
-
-\textbf{Regularization}
-
-The bias/variance tradeoff: Increasing a model’s complexity will typically increase its variance and reduce its bias. Conversely, reducing a model’s complexity increases its bias and reduces its variance. To reduce the overfitting we can use regularization, for example, in a polynomial model just reduce the number of polynomial degrees.
-For a linear model, regularization is typically achieved by constraining the weights of the model. We will now look at Ridge Regression, Lasso Regression, and Elastic Net, which implement three different ways to constrain the weights.”
-Always scale the inputs if using regularization.
-
-
-Ridge or Tikhonov regularization is a regularized version of linear regression, a term $\alpha \sum_{i=1}^{n}(\theta_i)^2$ (the hyperparameter $\alpha$ tells how much regularization we want, if 0 then is identical to linear regression. Note also that the bias term $\theta_0$ is not regularized) is added to the cost function, the goal is not only to fit the data but keeping the model weights as small as possible. Note that the regularization term is only used during training, once the model is trained the model's performance is done using unregularized cost measure.
-As with linear regression we can compute Ridge using the closed form or gradient descent.
-\begin{equation}
-\hat{\Theta} = (X^{T}X + \alpha A)^{-1}X^{T}y
-\end{equation}
-
-Lasso uses $l_1$ instead of the square of the $l_2$ norm as in ridge as a regularization term in the cost function. Lasso tends to eliminate entirely the coefficients of the least important features, that is, Lasso Regression automatically performs feature selection and outputs a sparse model (i.e., with few nonzero feature weights).
-%Scikit-Learn example using the Lasso class. Note that you could instead use an SGDRegressor(penalty="l1")”
-
-elastic net is a middle ground between Ridge $(r=0)$ and Lasso $(r=1)$. “It is almost always preferable to have at least a little bit of regularization, so generally you should avoid plain Linear Regression. Ridge is a good default, but if you suspect that only a few features are actually useful, you should prefer Lasso or Elastic Net since they tend to reduce the useless features’ weights down to zero as we have discussed. In general, Elastic Net is preferred over Lasso since Lasso may behave erratically when the number of features is greater than the number of training instances or when several features are strongly correlated.”
-%“from sklearn.linear_model import ElasticNet”
-
-\textbf{Early stopping}
-An alternative approach to deal with overfitting is early stopping: stops trainign as soon as the validation error reaches a minimum. In the learning curve is the validation set reaches a minimum and then rises , this means that the model has started to overfit the data. With early stopping you just stop training as soon as the validation error reaches the minimum. It is such a simple and efficient regularization technique that Geoffrey Hinton called it a “beautiful free lunch.”
-%“ warm_start=True, when the fit() method is called, it just continues training where it left off instead of restarting from scratch”
-
-\subsubsection{Logistic regression}
-Logit just like Linear Regression computes a weighted sum of the input features (plus a bias term) but instead of outputting directly the results it returns the logistic or the sigmoid of the result.
-\begin{equation}
-\hat{p} = h_{\theta}(x) = \sigma(\Theta^{T} X)
-\end{equation}
-once the logit has estimated the probability $\hat{p}$ that the input x belongs to the positive class it can easily make the prediction $\hat{y} = 0 if \hat{p} < 0.5, \hat{y} = 1 otherwise$. We train a logit model with the log loss function, however there is no known closed function for the log loss, that is, there is no Normal Equation as it is the case of the MSE and the regularizations cost functions in which the $\Theta$ that minimizes the cost can be calculated. However, the good news is that the log loss fucntion is convex, so it is guarantee that stichastic descent (or any other optimization algorithm it will find a global minimum given that the learning rate is not too large is we have time to wait.
-“Just like the other linear models, Logistic Regression models can be regularized using $l_1$ or $l_2$ penalties. Scitkit-Learn actually adds an $l_2$ penalty by default”
-Lasso regularization: answer two points: what is the baseline prediction of disease progression and  which independent variables are important factors for predicting disease progression.
-%A constant model that always predicts the expected value of y, disregarding the input features, would get a R^2 score of 0.0.
-%Coefficient of determination R^2 of the prediction of LogReg_Lasso on training set 0.29
-%Coefficient of determination R^2 of the prediction of LogReg_Lasso on test set 0.11
-
-\subsubsection{Multinomial Logistic regression or Softmax}
-
-Logit can be generalized to support multiple classes. When given an instance x, the Softmax Regression model first computes a score $s_{k}(x)$ for each class k, then estimates the probability of each class by applying the softmax function (also called the normalized exponential) to the scores. $\hat{y}= argmax_{k} \sigma(s(x))_k$. The cost function in Softmax is cross entropy (for k=2 the cross entropy is the same as the log loss). Cross entropy measures the average number of bits you actually send per option. If your assumption is perfect, cross entropy will just be equal to the entropy (i.e., its intrinsic unpredictability). But if your assumptions are wrong , cross entropy will be greater by an amount called the Kullback–Leibler divergence. The cross entropy between two probability distributions is $ H(p,q)= -p(x)\log q(x)$
-
-%“Scikit-Learn’s LogisticRegression uses one-versus-all by default when you train it on more than two classes, but you can set the multi_class hyperparameter to "multinomial" to switch it to Softmax Regression instead. You must also specify a solver that supports Softmax Regression, such as the "lbfgs" solver (see Scikit-Learn’s documentation for more details). It also applies ℓ2 regularization by default, which you can control using the hyperparameter C.”
-
-
-
-
-
-Logistic Regression is a Machine Learning classification algorithm, the most basic, that is used to predict the probability of a categorical dependent variable. 
-In logistic regression, the dependent variable is a binary variable that contains data coded as 1 (e.g. converter) or 0 (e.g. nono converter).
-Some of the assumptions of this kind of modeling are: the dependent variable needs to be binary, only "meaningful" variables should be included in the model, the independent variables should be independent from each other (this happens very rarely certainly it does not in out dataset) 
-
-A disadvantage of logistic regression is that we can’t solve non-linear problems with logistic regression since it’s decision surface is linear. 
-Logistic Regression separates the input into two "regions" by a linear boundary, one for each class. Therefore it is required that data is linearly separable. Another disadvantage of logistic regression is that it has a high reliance on a proper presentation of your data, that is, the important independent variables need to be known. Another drawback of logistic regression is its vulnerability to overfitting.
-
-YS: Draw figure with impossibility of classifying non linear datasets. XOR
-
-
-In section \ref{} we expand on these ideas defining multi layer perceptron model (MLP) and other neural network models including Deep learning.
-
-
-\cite{patania2017topological}
-In supervised learning model refers to the mathematical object that makes a prediction $y_i$ given $x_i$, one of the easiest incarnations is a linear combination of weighted input features, $y_i = \sum_k w_j x_{ij}$ prediction values have different interpretations depending on the task, i.e. classification, regression. For example, it can be logistic transformed to get the probability of positive class in logistic regression, and it can also be used as a ranking score when we want to rank the outputs.
-%http://xgboost.readthedocs.io/en/latest/model.html
-The parameters eg $w_j$ in linear model, are the undetermined part that we need to learn from data. To find the best parameters given the training data we need to measure the performance of the model given a certain set of parameters, this is the objective function. Objective functions have two terms, training loss and the regularization.
-\begin{equation}
-obj(w) = L(w) + R(w)
-\end{equation}
-where L is the training loss and R is the regularization. The training loss measures how predictive our model is on training data, for example if we use mean squared $L(w) = \sum_i \hat{y_i} - y_i)^2$ but there are many other possible loss functions for example log loss.
-the regularization term, R, controls the complexity of the model which helps to avoid overfitting.
-
-
-We exhaustively explore a number of models and evaluate their performance on the Vallecas Project dataset.
-The appendix section provides a more in depth description.  of the models implemented, in this section we will
-go through the models and give a layman's description of the models making emphasis in the applicability and pros and cons.
 
 Learning happens in two steps, first we build an estimator and then we fit the model to the data, the model performance can be then studied. The estimator may need to specify parameters and hyperparameters, for example, decision tree needs to specify the maximum depth of the tree, other models for example Naive Bayes are less dependent on the choice of parameters. 
 This easiness of parametrization does not come for free (no free lunch), Naive Bayes assumes that each feature is conditionally independent of every other feature given the target category, $p(x_i|C) == p(x_i|C), \forall i,j$ which is quite unrealistic in our dataset. Furthermore, when dealing with continuous data Naive Bayes assumes also a Gaussian or normal distribution. Thus, 
@@ -765,9 +574,85 @@ Once the estimator is being learned, we need to test it with the predictor. Pred
 % The pipeline is: Read Data -> apply some simple or complex (PCA) transformation -> fit an appropriate model -> predict using the model for unseen data. (iteratively)
 % For model tuning and selection we can use two meta estimators: GridSearchCV and RandomizedSearchCV to search the best parameters. Grid provides a grid of possible parameters and try each possible combination among them to arrive at the best one.. Randomized  optimizes this sampling the parameters to avoid combinatorial explosion of Grid. the also allow different x-validation schemes and score functions to measure performance.
 
+We exhaustively explore a number of models and evaluate their performance on the Vallecas Project dataset.
+The appendix section provides a more in depth description of the models implemented, in this section we will
+go through the models and give a layman's description of the models making emphasis in the applicability and pros and cons.
 
-\subsubsection{Support Vector Machine (SVM)}
-%
+\subsection{Supervised Learning}
+\label{sse:sup}
+Supervised methods can be conceptualized as filters that try to maximize the mutual information between the features and the target.
+Supervised learning model refers to the mathematical object that makes a prediction $y_i$ given $x_i$, one of the easiest incarnations is a linear combination of weighted input features, $y_i = \sum_k w_j x_{ij}$ prediction values have different interpretations depending on the task, i.e. classification, regression. For example, it can be logistic transformed to get the probability of positive class in logistic regression, and it can also be used as a ranking score when we want to rank the outputs \cite{patania2017topological}.
+%http://xgboost.readthedocs.io/en/latest/model.html
+The parameters eg $w_j$ in linear model, are the undetermined part that we need to learn from data. To find the best parameters given the training data we need to measure the performance of the model given a certain set of parameters, this is the objective function. Objective functions have two terms, training loss and the regularization.
+\begin{equation}
+obj(w) = L(w) + R(w)
+\end{equation}
+where L is the training loss and R is the regularization. The training loss measures how predictive our model is on training data, for example if we use mean squared $L(w) = \sum_i \hat{y_i} - y_i)^2$ but there are many other possible loss functions for example log loss.
+the regularization term, R, controls the complexity of the model which helps to avoid overfitting.
+
+The most common learning method is called regression, it is then worth spend some time to explain this technique prior to get into more brave waters. 
+%https://www.evernote.com/shard/s263/sh/574750b2-7b4a-4300-8c41-7e8e5150de18/f2c4ffea344f3dd11b3e2f5dcdd25633
+There are two types of regression, linear regression and logistic regression. Logistic regression gives you a discrete output e.g.0,1 while linear regression gives a continuous output. Logistic and Linear Regression can be used as a benchmark (baseline performance) against which more complex techniques can be compared. 
+Both linear regression and logistic regression do work better when you remove attributes that are unrelated to the output variable as well as attributes that are very similar (correlated) to each other. Thus, feature engineering plays (Section \ref{sse:fe}) an important role in regards to the performance of this technique and it is not exception with other methodologies explored further in this document.
+
+
+\subsection{Linear regression}
+\label{sse:linreg}
+
+Linear regression attempts to model the relationship between two variables by fitting a linear equation to observed data. In the context of prediction, linear regression aims to predict the continuous output, $\hat{y}$ as a function of the input variables $x$ each weighted by a coefficient $\hat{w}$ plus a bias term $\hat{b}$. Note that the terms $\hat{y}$, $\hat{w}$ and $\hat{b}$ are estimates that can be estimated via different methods. The equation of a linear regression is \ref{eq:linreg}:
+\begin{equation}
+\hat{y} = \sum_i \hat{w_i}x_i + \hat{b_0}
+\label{eq:linreg}
+\end{equation}
+where $x_i$ explanatory variable, $y$ is the dependent variable and $b_0$ is the bias (or intercept) and gives the slope of the line ($y$ when $x=0$).
+%Once we have built the model we need to train it which in essence consists in setting its parameters so that the model best fits the training set. Thus, we need to find a measure that tells us whether the model fits well the data, the most common measure is the root mean square error (RSME) but we use the mean square error (MSE) because the value that minimizes a function also minimizes square root.
+%The MSE is a linear regression hypothesis on a training set X is
+
+Note that Equation \ref{eq:linreg} contains estimates. The Maximum Likelihood Estimate (MLE) is a general method to estimate parameters in statistical models including regression. In MLE we maximize the probability that a random input point will be classified correctly. In order to maximize the likelihood we use optimization processes. 
+Technically speaking, any operation in which you are solving for the minimum or maximum of some function can be interpreted as an optimization. Optimization in the case of linear regression is looking for the linear model that provides the "best" fit to the data -minimizing the total amount of unexplained variation in the data.
+Ordinary least squares (OLS) is a common method for estimating the unknown parameters in a linear regression model. OLS 
+works by defining the "best" model as the one that minimizes the residuals which are the part of the data that aren't explained by the model. Other optimization techniques are Ridge regression, Lasso regression, Newton's method and gradient descent which will be seen in detail when we study nonlinear techniques.
+%Gradient descent is a first-order iterative optimization algorithm for finding the minimum of a function. To find a local minimum of a function using gradient descent, one takes steps proportional to the negative of the gradient (or approximate gradient) of the function at the current point.
+
+There are two main ways to train a linear regression model (the simplest machine learning method): "closed-form" directly computes the model parameters that best fit the model to the training set \textbf{Normal Equation} and using "gradient-descent" an iterative optimization approach that gradually tweaks the parameters to minimize the cost function over the training set. (eventually giving the same results as in the closed form). Variations of Gradient Descent are Batch GD, Mini batch GD and Stochastic GD are seen bellow.
+
+Polynomial regression, contrary to linear regression can fit nonlinear datasets. It has more parameters than linear regression and it is therefore more prone to overfitting the training data (Learning curve is the graphical device we have to detect if the model if overfitting), so using regularization is adviced.
+
+
+\subsection{Logistic regression}
+\label{sse:logreg}
+
+Logistic regression just like Linear Regression computes a weighted sum of the input features (plus a bias term) but instead of outputting directly the results it returns the logistic or the sigmoid of the result. Logistic regression takes this a step further by running the output  of the linear combination of w and x through a non linear function (the sigmoid or logistic function $\sigma$). Logistic Regression is a Machine Learning classification algorithm, the most basic, and is used to predict the probability of a categorical dependent variable. For example, a binary variable that coded as 1 (e.g. converter) or 0 (e.g. non converter). The logistic function range is $[0,1]$ so it can be used to estimate the probability that a given instance belong to one class or another. Logistic regression applies to a binary dependent variable, in our case the conversion to MCI variable and it therefore fits with our prediction problem.
+
+Some of the assumptions of this kind of modeling are: the dependent variable needs to be binary, only "meaningful" variables should be included in the model, the independent variables should be independent from each other (this happens very rarely certainly it does not in out dataset) 
+
+\begin{equation}
+\hat{y} = \sigma(\sum_i \hat{w_i}x_i +\hat{b_0})
+\label{eq:logreg}
+\end{equation}
+%\begin{equation}
+%\hat{p} = h_{\theta}(x) = \sigma(\Theta^{T} X)
+%\end{equation}
+In words, Equation \ref{eq:logreg} denotes a logistic model where the log-odds of the probability of an event is a linear combination of independent or predictor variables. Mathematically, logistic regression estimates a multiple linear regression function defined as:
+\begin{equation}
+\log \frac {\hat{p}(y=1)}{1-(p(y=1))} = \hat{b_0} + \hat{b_1}w_1 + \hat{b_2}w_2 + ...}
+\label{eq:logreg2}
+\end{equation}
+
+Once the logit model has estimated the probability $\hat{p}$ that the input x belongs to the positive class, it can easily make the predictions: $\hat{y} = 0 if \hat{p} < 0.5, \hat{y} = 1 otherwise$. Adding independent variables to a logistic regression model $w_i$ will always increase the amount of variance explained in the log odds ($R^2$) \footnote{A constant model that always predicts the expected value of y, disregarding the input features, would get a $R^2$ score of 0.0.}. However, adding can result in overfitting, which reduces the generalizability of the model beyond the data on which the model is fit. Of note, Logistic Regression models just like any other linear regression model can be regularized using $l_1$ or $l_2$ penalties. The logit model fir to the Vallecas Project dataset is shown in Section \ref{}.
+A disadvantage of logistic regression is that we can’t solve non-linear problems with logistic regression since it’s decision surface is linear. 
+Logistic Regression separates the input into two "regions" by a linear boundary, one for each class. Therefore it is required that data is linearly separable. Another disadvantage of logistic regression is that it has a high reliance on a proper presentation of your data, that is, the important independent variables need to be known. 
+Another drawback of logistic regression is its vulnerability to overfitting.
+
+YS: Draw figure with impossibility of classifying non linear datasets. XOR. In section \ref{} we expand on these ideas defining multi layer perceptron model (MLP) and other neural network models including Deep learning.
+
+\textbf{Multinomial Logistic regression or Softmax}
+
+Logit can be generalized to support multiple classes. When given an instance x, the Softmax Regression model first computes a score $s_{k}(x)$ for each class k, then estimates the probability of each class by applying the softmax function (also called the normalized exponential) to the scores. $\hat{y}= argmax_{k} \sigma(s(x))_k$. The cost function in Softmax is cross entropy (for k=2 the cross entropy is the same as the log loss). Cross entropy measures the average number of bits you actually send per option. If your assumption is perfect, cross entropy will just be equal to the entropy (i.e., its intrinsic unpredictability). But if your assumptions are wrong , cross entropy will be greater by an amount called the Kullback–Leibler divergence. The cross entropy between two probability distributions is $ H(p,q)= -p(x)\log q(x)$
+%“Scikit-Learn’s LogisticRegression uses one-versus-all by default when you train it on more than two classes, but you can set the multi_class hyperparameter to "multinomial" to switch it to Softmax Regression instead. You must also specify a solver that supports Softmax Regression, such as the "lbfgs" solver (see Scikit-Learn’s documentation for more details). It also applies ℓ2 regularization by default, which you can control using the hyperparameter C.”
+
+\subsection{Support Vector Machine (SVM)}
+\label{sse:svm}
 
 The idea behind SVM is to fit the widest margin street between the classes. Scaling is required because otherwise it will neglect the small features.
 A support vector is an instance in the street and the decision function is entirely determined by the support vectors. Computing the predictions only involves the support vectors, you could remove the other training points they will not matter for prediction.
@@ -914,8 +799,8 @@ Bagging and Pasting scale very well because they can be trained and also predict
 %bag_clf.oob_score_ is a proxy of accuracy in the test test, because some samples will never see them, the out of bag
 %“oob_decision_function_ variable. In this case (since the base estimator has a predict_proba() method) the decision function returns the class probabilities for each training instance” tells the estimate of class for each training instance
 
-
-\subsubsection{Random Forest}
+\subsubsection{Ensemble Methods}
+\textbf{Random Forest}
 "Random Forest is an ensemble of Decision Trees, generally trained via the bagging method (or sometimes pasting), typically with max samples set to the size of the training set" Instead of building a BaggingClassifier and passing it a DecisionTreeClassifier, you can instead use the RandomForestClassifier class, which is more convenient and optimized for Decision Trees"
 
 Random forest is a bagging algorithm because it tries to "fix" the reliability problem existing in the decision tree model. DT are unreliable in the sense that small changes in your data produce may produce large changes very different decision trees\footnote{This is reminiscent to the the butterfly effect in chaos theory coined by Edward Lorenz}. This is where bagging comes from, we can create a robust model through bagging, that is, create different models by resampling your data. Each tree will deal with a different set of the data called the bootstrap sample, chooses at random with replacement this means that a bootstrap sample may have missing instances and also repeated instances doing this N times (one for each Tree) importantly there is not only randomness in picking the dataset for each tree but also there is randomness on the features from which to decide to split or not, if the max features is 1 we have forests with diverse complex trees and with max features closed to the number of features will lead to similar forests with simpler trees. Once the random forest is train the overall prediction is a a weighted vote.
@@ -951,8 +836,8 @@ Gradient Boosting is also sequential like Ada, but rather than tweaking the weig
 
 
 
-
-\subsubsection{Gradient boosted decision trees}
+%%%%%
+\textbf{Gradient boosted decision trees}
 Random forest and gradient boosted are both tree based ensemble methods. Like Random forest Gradient boosted creates an ensemble of decision tree to create more powerful predictive models for classification and regression. Random forest is a bagging algorithm Gradient boosted is a boosted algorithm, bagging reduces variability (stability of the classifier) and boosting reduces both variance and bias. It reduces variance because you are using multiple models as we do in bagging and it reduces bias by training the subsequent model by telling him what errors the previous models.
 Boosting was originally a theoretical invention motivated by the question "can we build a stronger model using weaker models", weak learner here mean shallow trees built in a non random way (different from RF) to create a model that makes fewer and fewer mistakes as these are added (see Schapire The Strength of Weak Learnability). An interesting property of GBDT is that it works with different loss functions, even when the derivative is not convex (eg pinball loss function). %https://www.lokad.com/pinball-loss-function-definition
  There are tow main algorithms: Adaboost and Gradient boosting. Adaboost is the original algorithm and what it does is to you tell subsequent models to punish more heavily observations mistaken by the previous models. In Gradient boosting you train each subsequent model using the residuals (the difference between the predicted and true values). The learning rate parameter controls how hard each tree tries to correct the mistakes from previous rounds (high learning rate complex trees, low learning rate simpler trees). 
@@ -1186,10 +1071,35 @@ Other metrics that will be shown in the Results section are:
 	\item Zero one loss: computes the sum or average of the 0-1 classification loss $L_{0-1}$ over n samples. By default normalizes over the sample
 \end{itemize}
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Results}
 \label{se:res}
+
+In this section we provide the results for the machine learning techniques explained in the previous section.
+
+Evaluating a model always boils down to splitting the available data into three sets: training, validation, and test. You train on the training data and evaluate your model on the validation data. Once your model is ready for prime time, you test it one final time on the test data. 
+But why not just two sets: training and testing? Because adjusting the optimal configuration of the model (parameter and hyperparameters) is a feedback loop, the performance of the model on the validation set is the feedback signal.
+
 Results for each classifier. We will realize that the challenge of fitting the training data differs very drastically from the challenge of finding patterns that generalize to new data \cite{goodfellow2016deep}.
+
+\subsection{Linear regression}
+\label{se:reslinreg}
+
+Conversion and psychological test scores are not continuous but discrete variables so it does not make sense of performing a linear regression.
+
+\subsection{Linear regression}
+\label{se:reslogreg}
+
+The logit model is implemented with the \emph{log loss} function, however there is no known closed function for the \emph{log loss}, that is, there is no Normal Equation as it is the case of the MSE and the regularizations cost functions. However, the good news is that the \emph{log loss} function is convex, so it is guarantee that stochastic descent (or any other optimization algorithm will find a global minimum given that the learning rate is not too large and we have time to wait the model reaches the minimum.
+%Scitkit-Learn actually adds an $l_2$ penalty by default”
+%Lasso regularization: answer two points: what is the baseline prediction of disease progression and  which independent variables are important factors for predicting disease progression.
+%Coefficient of determination R^2 of the prediction of LogReg_Lasso on training set 0.29
+%Coefficient of determination R^2 of the prediction of LogReg_Lasso on test set 0.11
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{The class imbalance problem}
 The class imbalance problem -the number of samples of one class being under represented compared to another class- is predominant in many scenarios, in particular when dealing with anomaly detection, for example, fraudulent transaction, electrical grid fault, electrical theft, conversion to disease  etc. In this situation, a predictive model that does not take into account this could be very unreliable.
@@ -1281,6 +1191,137 @@ The network or model capacity is the number of learnable parameters -number of l
 \bibliography{../bibliography-jgr/bibliojgr}
 
 \end{document}
+
+
+\section{Appendix}
+\textbf{Notes on Training the model }
+
+
+%\textbf{Over and underfitting}
+If a model performs well on the training data but generalizes poorly according to the cross-validation metrics, then your model is overfitting. If it performs badly in both is underfitting or what is the same the model is too complex or too simple. Another way to look at model's behavior is using learning curves: plots performance in training and validation set as a function of the training data size. To generate the plots, simply train the model several times on different sized subsets of the training set.
+Undefitting: both training and validation set reach a plateau, i.e. throwing more data doesn't translate into better performance.
+Thus, underfitting is easily detected when adding more training example doesn't improve the performance, what is needed is a more complex model or come up with better features.
+
+The hallmark of overfitting is the gap between curves -the model performs better in the training set- however if we use a largerr dataset the curves can eventually meet.
+
+The hallmark of undefiting is plateau.
+
+
+\textbf{Regularization}
+
+The bias/variance tradeoff: Increasing a model’s complexity will typically increase its variance and reduce its bias. Conversely, reducing a model’s complexity increases its bias and reduces its variance. To reduce the overfitting we can use regularization, for example, in a polynomial model just reduce the number of polynomial degrees.
+For a linear model, regularization is typically achieved by constraining the weights of the model. We will now look at Ridge Regression, Lasso Regression, and Elastic Net, which implement three different ways to constrain the weights.”
+Always scale the inputs if using regularization.
+
+
+Ridge or Tikhonov regularization is a regularized version of linear regression, a term $\alpha \sum_{i=1}^{n}(\theta_i)^2$ (the hyperparameter $\alpha$ tells how much regularization we want, if 0 then is identical to linear regression. Note also that the bias term $\theta_0$ is not regularized) is added to the cost function, the goal is not only to fit the data but keeping the model weights as small as possible. Note that the regularization term is only used during training, once the model is trained the model's performance is done using unregularized cost measure.
+As with linear regression we can compute Ridge using the closed form or gradient descent.
+\begin{equation}
+\hat{\Theta} = (X^{T}X + \alpha A)^{-1}X^{T}y
+\end{equation}
+
+Lasso uses $l_1$ instead of the square of the $l_2$ norm as in ridge as a regularization term in the cost function. Lasso tends to eliminate entirely the coefficients of the least important features, that is, Lasso Regression automatically performs feature selection and outputs a sparse model (i.e., with few nonzero feature weights).
+%Scikit-Learn example using the Lasso class. Note that you could instead use an SGDRegressor(penalty="l1")”
+
+elastic net is a middle ground between Ridge $(r=0)$ and Lasso $(r=1)$. “It is almost always preferable to have at least a little bit of regularization, so generally you should avoid plain Linear Regression. Ridge is a good default, but if you suspect that only a few features are actually useful, you should prefer Lasso or Elastic Net since they tend to reduce the useless features’ weights down to zero as we have discussed. In general, Elastic Net is preferred over Lasso since Lasso may behave erratically when the number of features is greater than the number of training instances or when several features are strongly correlated.”
+%“from sklearn.linear_model import ElasticNet”
+
+\textbf{Early stopping}
+An alternative approach to deal with overfitting is early stopping: stops training as soon as the validation error reaches a minimum. In the learning curve is the validation set reaches a minimum and then rises , this means that the model has started to overfit the data. With early stopping you just stop training as soon as the validation error reaches the minimum. It is such a simple and efficient regularization technique that Geoffrey Hinton called it a “beautiful free lunch.”
+%“ warm_start=True, when the fit() method is called, it just continues training where it left off instead of restarting from scratch”
+
+
+
+
+\begin{equation}
+MSE(X,\Theta) = \frac{1}{m} \sum_{i=1}^{m}(\hat{y}^{i} - y^{i})^2 = \frac{1}{m} \sum_{i=1}^{m}(\Theta^Tx^{i} - y^{i})^2
+\end{equation}
+T find the value of the vector $\Theta$ we can use the closed-form also called normal equation
+\begin{equation}
+\hat{\Theta} = (X^{T}X)^{-1}X^{T}y
+\end{equation}
+where $\hat{\Theta}$ is the value that minimizes the cost function and y is the vector of target values.
+
+Fortunately the MSE cost function for a LR happens to be convex (choosing two points, the line segment never crosses the curve) that is, no local minima just one global minimum and it is also continuous and smooth function, thats to this: “Gradient Descent is guaranteed to approach arbitrarily close the global minimum (if you wait long enough and if the learning rate is not too high).”
+
+Importantly, when using Gradient Descent, you should ensure that all features have a similar scale (e.g., using Scikit-Learn’s StandardScaler class), or else it will take much longer to converge. (see pag 202 Aurelien book). The search is in the parameter space, so the more parameters the longer (finding a needle in a 300 dimensional haystack s much harder than in a 3 dimensional one, but the haystack is convex, so we know the needle sis always at the bottom)!
+
+
+To calculate the gradient descent we need to do the partial derivative of the cost function for each model parameter $\Theta$ in order to see how the cost function will change if a I change the parameter just a little bit(what is the slope of the mountain if I change $\Theta_i$ eg direction east and so on for each dimension ($\frac{\partial}{\partial \theta_j} MSE(\Theta$). Once we have the gradient vector (which points uphill) just subtract the gradient (weighted by the learning rate) from $\theta$ to go downhill
+
+The main problem with Batch GD is that it uses the entire training set to compute the gradient at every step, which makes it slow when the training set is large. Stochastic GD picks a subset (a random instance) in the training set at every step and computes the gradient for that instance, this makes the algorithm faster, with the inconvenient that its randomness (stochasticity) makes it less regular than GD, the cost function rather than slowly going to the minimum it may bounce up and down, but still decreasing on the average. However, randomness is actually good to escape from local optima but it could never settle in the global minimum.
+\textbf{simulated annealing} can solve this problem playing with the learning rate, it starts with a large one, to avoid local minimum, to make shorter steps as the algorithm approaches the global minimum (learning schedule).
+Each round of iterations is called epoch so in SGD the algorithm goes through the training set epochs times. Note that since instances are picked randomly per each epoch some instances can be chosen more than once while others none.
+%SGDRegressor “To perform Linear Regression using SGD with Scikit-Lear”
+
+Mini batch GD: “at each step, instead of computing the gradients based on the full training set (as in Batch GD) or based on just one instance (as in Stochastic GD), Mini-batch GD computes the gradients on small random sets of instances called mini-batches”. Better than SGD is we use GPU, the algorithm is less erratic than SGD especially with fairly large mini-batches
+
+Importantly these 3 algorithms will yield the same predictions choosing one or another relies upon the use computational resources we wish.
+
+
+
+\textbf{Model selection}
+A linear regression model is something like this
+\begin{equation}
+y = \theta_0 + \theta_{1}x
+\end{equation}
+for example, $happiness = \theta_0 + \theta_1 wealth$., that is, the model is just a lienar fucntion of the input feature $wealth$ and $\theta_0, \theta_{1}$ are the model parameters. A linear makes a prediction $\hat{y}$ based on the weighted sum of the input features pus a bias term(or intercept), $\hat{y} = \theta_0 + \theta_1 x_1 + ...+ \theta_n x_n$. This can be written in a more compact form as
+\begin{equation}
+y = \Theta^{T} X 
+\end{equation}
+where $\Theta$ is the model's parameter vector ( a column so we need to transpose y have a row ($\Theta^{T} (1 \times n), X (n \times 1)$ to get an scalar $(1 \times 1)$ which is the actual prediction for that input instance ), X is the instance vector (note that $x_0$ is always 1).
+In the previous section we sketched different evaluation metrics now we will see how to apply them in order to select the best model for our application. 
+Model selection is the phase in the modeling process in which we opt for one model or other based on the model's performance which is being previously evaluated.
+
+There are three main methods of model selection: Train-Test split, K-fold Cross Validation and Grid Search.
+The train/test method split the data set into two portions testing set and test test. The training set is used to train the model and the testing set is used to test the model. The pros are flexibility and speed, the cons provides a high  variance estimate of out of sample. 
+
+This method splits the data set into K equal partitions (“folds”), then use 1 fold as the testing set and the union of the other folds as the training set. Then the model is tested for accuracy. The process will follow the above steps K times, using different fold as the testing set each time. The average testing accuracy of the process is the testing accuracy.
+%https://towardsdatascience.com/machine-learning-workflow-on-diabetes-data-part-01-573864fcc6b8
+In K-fold Cross Validation the data set is divided into K equal partitions or “folds”, 1 fold is used as the testing set and the union of the other sets are the training set. The process is performed K times using different fol as the testing set each time. the average testing accuracy of the K iterations is the testing accuracy.
+In Cross Validation we do not to set any parameter, apart from the number of folds (cv) from which we calculate the average performance across folds. The pros are more accurate estimate of out-of-sample accuracy, more “efficient” use of data in the sense that every observation is used for both training and testing. The cons are slow compared to Train/Test split.
+
+In GridSearch we need a gamma parameter (for example in SVC with rbf kernel set the radius), GridSearchCV finds the gamma that optimizes the given evaluation metric (accuracy, precision etc).
+%cross validation, no parameters only cv (number of folds)
+%from sklearn.model_selection import cross_val_score; from sklearn.svm import SVC
+%print('cross validation (accuracy)', cross_val_accuracy(clf, X,y, cv=5))
+%print('cross validation (AUC)', cross_val_accuracy(clf, X,y, cv=5, scoring = 'roc_auc'))
+%print('cross validation (recall)', cross_val_accuracy(clf, X,y, cv=5, scoring = 'recall'))
+%not that we do not any parameter tunning just 5 folds and examine performance
+
+%% Grid Search, we need gamma parameter
+%from sklearn.model_selection import GridSearchCV
+%grid_values = {'gamma': [0.001, 0.01, 0.1, 1 10]}
+%grid_clf_acc = GridSearchCV(clf, param_grid = grid_values); grid_clf_acc.fit(X_train, y_train)
+%#optimize for acc
+% y_decision_fn_scores_acc = grid_clf_acc.decision_function(X_test); print('Grid best parameter (max. accuracy):', grid_clf_acc.best)
+%print('Grid best score (accuracy):', grid_clf_acc.best_score_) 
+%#optimize for auc
+%grid_clf_auc = GridSearchCV(clf, param_grid = grid_values, scoring='roc_auc'); grid_clf_auc.fit(X_train, y_train)
+%print('Grid best score (accuracy):', grid_clf_auc.best_score_) 
+%the gamma parameter can be equal but also different depending on the metric used
+
+The evaluation metric supported for model selection are
+\begin{lstlisting}
+%from sklearn.metrics.scorer import SCORERS
+%sorted(list(SCORERS.keys()))
+%['accuracy', 'adjusted_mutual_info_score', 'adjusted_rand_score', 'average_precision', 'completeness_score', 'explained_variance', 'f1', 'f1_macro', 'f1_micro', 'f1_samples', 'f1_weighted', 'fowlkes_mallows_score', 'homogeneity_score', 'log_loss', 'mean_absolute_error', 'mean_squared_error', 'median_absolute_error', 'mutual_info_score', 'neg_log_loss', 'neg_mean_absolute_error', 'neg_mean_squared_error', 'neg_mean_squared_log_error', 'neg_median_absolute_error', 'normalized_mutual_info_score', 'precision', 'precision_macro', 'precision_micro', 'precision_samples', 'precision_weighted', 'r2', 'recall', 'recall_macro', 'recall_micro', 'recall_samples', 'recall_weighted', 'roc_auc', 'v_measure_score']
+\end{lstlisting}
+The decision boundaries change when it is optimize for different metrics
+
+Three data splits:
+\begin{itemize}
+	\item Training set: model building
+	\item Evaluation set: model selection 
+	\item Test set: final evaluation
+\end{itemize}
+
+
+%(Belsey's 80) approach is based on covariance matrix of the least squares coefficient vector. Decaying importance of the variables as ordered by the eigenvalues
+
+%\ref{sse:interp}
+%Feature importance scores:A feature may be important if it is highly correlated with the dependent variable (the thing being predicted). Correlation coefficients and other univariate (each attribute is considered independently) methods are common methods
+%Complex predictive modeling algorithms perform feature importance and selection internally while constructing their mode Random Forest and Gradient Boosted Machines.
 
 \section{Temp results}
 Correlation 
