@@ -3,11 +3,15 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\documentclass[10pt]{article}
+\documentclass[11pt]{article}
 %\usepackage[spanish]{babel}
 \usepackage[english]{babel}
 \usepackage{helvet}
 \usepackage[utf8]{inputenc}
+\usepackage[utf8]{luainputenc}
+%\usepackage[T1]{fontenc}
+%\usepackage{pgffor}
+%\usepackage{lipsum}
 %\usepackage[OT1]{fontenc}
 \usepackage[a4paper]{geometry}
 \usepackage[myheadings]{fullpage}
@@ -34,7 +38,7 @@
 \setcounter{tocdepth}{5}
 \setcounter{secnumdepth}{5}
 \lstnewenvironment{code} [1][caption=Ponme caption, label=default]{%
-\renewcommand*{\lstlistingname}{Listado} 
+\renewcommand*{\lstlistingname}{Python} 
 	\setcounter{lstlisting}{\value{countCode}} 
 	\lstset{ %
 	language=python,
@@ -76,10 +80,10 @@
 %-------------------------------------------------------------------------------
 \pagestyle{fancy}
 \fancyhf{}
-\setlength\headheight{15pt}
+\setlength\headheight{12pt}
 \fancyhead[L]{Six years of \emph{Proyecto Vallecas}}
 \fancyhead[R]{Gómez-Ramírez et al. Fundaci\'on CIEN}
-\fancyfoot[R]{Page \thepage\ of \pageref{LastPage}}
+\fancyfoot[R]{\small{Page} \thepage\ \small{of} \pageref{LastPage}}
 %-------------------------------------------------------------------------------
 % TITLE PAGE
 %-------------------------------------------------------------------------------
@@ -102,6 +106,10 @@
 		Centre for Research in Neurodegenarative Diseases }
 
 \maketitle
+\begin{center}
+\includegraphics[width = 40mm]{figures/logo_mciu.png}
+\end{center}
+\newpage
 \tableofcontents
 \newpage
 
@@ -545,7 +553,7 @@ What separates machine learning from optimization is that the optimization busin
 
 Formally, we look for the model parameters w that minimize the distance between the prediction and the ground truth
 \begin{equation}
-\argmin_{w}  ||X^{(train)}w - y^{(train)}||
+\argmin_{w} ||X^{(train)}w - y^{(train)}||
 \label{eq:reaintest1}
 \end{equation}
 
@@ -668,13 +676,30 @@ The implementation and the results obtained with this kind of classifier are dis
 
 \subsection{Support Vector Machine (SVM)}
 \label{sse:svm}
-
+SVM is the linear classifier with the maximum margin \cite{vapnik2013nature}, that is, an SVM model represents the examples as points in space, mapped so that the examples of the separate categories are divided by gap ('street') as wide as possible.
 The idea behind Support Vector Machine (SVM) is to fit the widest margin "street" between the classes. This is called large margin classification.Scaling is required because otherwise it will neglect the small features.
 A support vector is an instance in the street and the decision function is entirely determined by the support vectors. Computing the predictions only involves the support vectors, you could remove the other training points they will not matter for prediction, in other words adding more training instances “off the street” will not affect the decision boundary at all. Thus, prediction with SVM is entirely determined (or “supported”) by the instances located on the edge of the street. The instances (those that touch the street boundaries) are called the support vectors. 
 
 SVM does not return probabilities (contrary to logistic regression) but it can give you a confidence score which is the distance between the test instance and the decision boundary. SVM are sensitive to the feature scales therefore it requires to standarize data. 
 
-Linear SVM works by simply calculating a decision function $w^Tx +b$ (where $w$ is the parameters vector and b is the bias ($b_0$)). Thus if the result of $w_{1} x_{1} + ....+ w_{n}x_{n} + b_0$ is positive the predicted class $\hat{y}$ is the positive class or else is the negative class. Thus, in essence, training a linear SVM classifier means finding the value of $w$ and $b$ that make this margin as wide as possible while avoiding margin violations (hard margin) or limiting them (soft margin). 
+Linear SVM works by simply calculating a decision function $w^Tx +b$ (where $w$ is the parameters vector and b is the bias ($b_0$)). Thus if the result of $f(x) = w_{1} x_{1} + ....+ w_{n}x_{n} + b_0$ is positive the predicted class $\hat{y}$ is the positive class or else is the negative class. We look for a function f as \emph{flat} as possible which means having a small $w$ . One way to ensure this is minimizing the norm of the vector w, $||w||^2$. This minimization problem can be written as:
+
+%\textit{minimize} \frac{1}{2}||w||^2 \\
+%\textit{subject to} y_i -w_ix_i - b \leq \epsilon \\
+
+\begin{equation}
+\textit{minimize} \frac{1}{2} ||w||^2 \\
+ \textit{subject to}=\begin{cases}
+    y - wx -b \leq \epsilon \\
+    wx +b - y \leq \epsilon
+  \end{cases}
+  \label{eq:svm}
+\end{equation}
+The tacit assumption in Equation \ref{eq:svm} is that a function $f$ that approximates all pairs $(x_i, y_i)$ with precision $\epsilon$ exists.
+Thus, in essence, training a linear SVM classifier means finding the value of $w$ and $b$ that make this margin as wide as possible while avoiding margin violations (hard margin) or limiting them (soft margin). Thus, we do not care about errors as long as they are less than the margin $\epsilon$, but will not
+accept any deviation larger than this. 
+
+The parameter $C > 0$ determines the trade-off between the flatness of f and the amount up to which deviations larger than $\epsilon$ are tolerated \cite{smola2004tutorial}. 
 
 %The problem of overfitting in SVM is tackle via expanding or narrowinfg the margin 'street' with the C parameter (for large C, margins are narrow we could overfit). 
 
@@ -694,6 +719,12 @@ The mapping $X \to y$ could be inherently stochastic or even if y were determini
 %https://www.evernote.com/shard/s263/nl/33458921/18793f59-d0f8-40c0-b1a5-6f51bab38c60?title=Naive%20Bayes%20Classifier
 The naive Bayes \footnote{Thomas Bayes hardly deserves the glory, Laplace had not only the intuition but provided the mathematical formulation. This unfairness in author attribution is not rare in science and human affairs, see Amerigo Vespucci giving the name of America which is absolutely disproportionate.} classifier determines to which class a sample belongs to by calculating the posterior probability using the Bayes formula $p(C|X)$ where X is the sample and C the target class.
 The Bayes rules combines two sources of information -prior and likelihood- to calculate the posterior which is the final classification criterion. 
+
+The likelihood of the features is assumed to be Gaussian and the parameters $\sigma_y$ and $\mu_y$ are estimated using maximum likelihood:
+\begin{equation} \label{eq:naiveb}
+P(x_i|y= \frac{1}{\sqrt{1\pi\sigma_y^{2}}}e^{-\frac{(x_i-\mu_y)^2}{2\sigma_y^2}})
+\end{equation}
+
 
 For example, if the posterior (posterior = prior $\times$ likelihood) of X being a converter is larger than the posterior of X being a non converter, then we classify X as a converter ($p(C|X) > p(~C|X)$). Thus, given a subject X with the features values 
 \begin{equation*}
@@ -726,9 +757,9 @@ Decision trees are white box models -identifies which are the features more rele
 %in contrast with neural networks and random forests. 
 The decision boundaries is calculated with entropy measures such as the Gini coefficient. Gini gives the impurity of a tree node i:
 
-\begin{equation*}
+\begin{equation} \label{eq:gini}
 G_i = 1- \sum_{k=1}^{n} p_{i,k}^2
-\end{equation*}
+\end{equation}
 where $p_{i,k}$, is the ratio of instances of class k in node i. A node is pure if Gini is 0 i.e. all training instances belong to the same class. The Gini coefficient is not the only possible measure, Shannon's entropy can be used and will produce very similar results. Gini is a bit faster than shannon's entropy but Gini tends to isolate the most frequent class in its own branch of the tree, while entropy tends to produce more balanced trees. %criterion='entropy'
 %DecisionTreeRegressor
 
@@ -738,13 +769,13 @@ A decision tree can also estimate the probability that an instance belongs to a 
 
 The CART algorithm is \textbf{greedy}: looks for the optimum split at top level but does not care if the split will lead to the lowest impurity several levels down. It does the optimum split at the top and never thinks twice about the consequences down the road (\emph{trickle down economics}). CART does not guarantee to find the optimal solution, it splits the training set using feature k and threshold $t_k$, the algorithm chooses then the pair $(k,t_k)$ by looking for the split that produces the purest split weighted by the size, so the cost function that the algorithm minimizes has an impurity term factored by the size term for both right and left side 
 
-\begin{equation*}
+\begin{equation}\label{eq:cart}
 J(k,t_k) = \frac{m_{left}}{m}G_{left} + \frac{m_{right}}{m}G_{right}
-\end{equation*}
+\end{equation}
+where J is the cost function, $G_{L/R}$ measures the impurity of left/right branch and $m_{L/R}$ is the number of instances in the left/right branch 
+The algorithm stops recursing once it reaches the maximum depth (defined by the $max_depth$ hyperparameter), or if it cannot find a split that will reduce impurity. 
 
-
-The algorithm stops recursing once it reaches the maximum depth (defined by the $max_depth$ hyperparameter), or if it cannot find a split that will reduce impurity.
-
+Finding the optimal tree is an NP-problem (cannot be solved in polynomial time). Prediction is decsision trees is however fast, a prediction requires traversing the tree form the root to a leaf, since the trees are approximately balanced it will go through $\log_2m$ nodes and for each node it needs to check only the value of one feature, the overall complexity is $O(\log_2(m))$ independent of the number of features
 %“Unfortunately, finding the optimal tree is known to be an NP-Complete problem: it requires O(exp(m)) time, making the problem intractable even for fairly small training sets. This is why we must settle for a “reasonably good” solution.”
 %“Since each node only requires checking the value of one feature, the overall prediction complexity is just $O(\log_{2}(m))$, independent of the number of features. So predictions are very fast, even when dealing with large training sets.”
 %“However, the training algorithm compares all features (or less if $max_features$ is set) on all samples at each node. This results in a training complexity of O(n × m log(m)). For small training sets (less than a few thousand instances), Scikit-Learn can speed up training by presorting the data (set presort=True), but this slows down training considerably for larger training sets.”
@@ -1133,8 +1164,8 @@ From the Vallecas Index regression model \ref{formula} the algorithm estimates t
 'conversionmci ~ sexo + lat_manual + nivel_educativo  + edad_ultimodx + renta+ sue_noc + sue_rec+ familiar_ad + imc+ a02 + a03 + a08 + a11 + a12 + a13 + a14+ numhij+ sdvive + sdeconom + sdresid + sdestciv + sdatrb+ sdatrb+ hta + glu + lipid + tabac_cant + cor + arri + card+ ictus + tce + tce_con+ dietaketo + dietasaludable + dietaglucemica+ physical_exercise + scd_visita1 + preocupacion_visita1 + act_aten_visita1 + act_orie_visita1 + act_mrec_visita1 + act_visu_visita1 + act_expr_visita1 + act_comp_visita1 + gds_visita1 + stai_visita1 + act_apat_visita1 + relaamigo + relafami + valcvida2_visita1 + valsatvid2_visita1 + valfelc2_visita1 + eq5dsalud_visita1 + eq5deva_visita1'
 \end{code}
 
-\begin {table}[H]
-\caption {Ranking with ANOVA F-value between target/feature} \label{tab:ranking} 
+\begin{table}[H]
+\caption{Ranking with ANOVA F-value between target/feature} \label{tab:ranking} 
 \begin{center} 
 \begin{tabular}{ll}
 \hline
@@ -1170,24 +1201,281 @@ Ranking & Feature     \\
 \label{se:reslogreg}
 
 The logit model is implemented with the \emph{log loss} function, however there is no known closed function for the \emph{log loss}, that is, there is no Normal Equation as it is the case of the MSE and the regularizations cost functions. However, the good news is that the \emph{log loss} function is convex, so it is guarantee that stochastic descent (or any other optimization algorithm will find a global minimum given that the learning rate is not too large and we have time to wait the model reaches the minimum.
+
+Since the dataset is unbalanced, there are 9 non converters for every converter the classifier will use the \emph{balanced} weight option to give more weight to the underrepresented class, by which it will replicate the smaller class until you have as many samples as in the larger one. 
+The logistic regression is regularized with L2 penalty and uses the \emph{liblinear} solver (liblinear solver supports logistic regression and SVM). 
+The L2-regularized Logistic Regression solves the unconstrained optimization problem \cite{fan2008liblinear}
+\begin{equation}
+\textit{min}_{w} \frac{1}{2}w^Tw + C \sum_{i=1}^{n}\log(1+ e^{-y_iw^Tx_i})
+\end{equation}
+%https://www.csie.ntu.edu.tw/~cjlin/papers/liblinear.pdf
+where w is the weight vector generated by the logit model, $(x_i,y_i)$ the instances and $C > 0$ a penalty parameter.
+
+Figure \ref{fig:logresres} shows the results of the logistic regression model. Remember that it is assumed that the logit transformation of the outcome variable (\emph{conversionMCI}) has a linear relationship with the predictor variables (\emph{Vallecas index}).
+
+
+\begin{figure}[h]
+        \centering
+        \includegraphics[keepaspectratio, width=0.8\linewidth]{figures/LR_results-balanced}
+        \caption{Logistic regression results L2 regularization, balanced weight option and liblinear solver. The feature about remembering dreams (sue rec) shows a strong negative association.}
+\label{fig:logresres}
+\end{figure}
+
+
 %Scitkit-Learn actually adds an $l_2$ penalty by default”
 %Lasso regularization: answer two points: what is the baseline prediction of disease progression and  which independent variables are important factors for predicting disease progression.
 %Coefficient of determination R^2 of the prediction of LogReg_Lasso on training set 0.29
 %Coefficient of determination R^2 of the prediction of LogReg_Lasso on test set 0.11
 
+The dataset is split into training data ($80\%$) and test data ($20\%$). Table \ref{tab:logreg}
+
+\begin{table}[H]
+\caption{Classification metrics for logistic regression} \label{tab:logreg} 
+\begin{center} 
+\begin{tabular}{lllll}
+\hline
+\multicolumn{1}{c}{} \\
+%\cline{1}
+Class & precision & recall & f1-score & support     \\
+\hline
+0 & 0.92  &    0.70   &   0.79   &    164 \\
+1 & 0.15  &    0.47   &   0.23   &     19 \\
+\hline
+\end{tabular}
+\caption{The table shows  main classification metrics for the logistic regression classifier in the test set. Note that the recall recall of the positive class is also known as \emph{sensitivity} and recall of the negative class is also called \emph{specificity}. The precision is low due to the unbalanced data.}
+\end{center}
+\end{table}
+
+Figure \ref{fig:lr-cm} shows the confusion matrix and the Receiver Operating Characteristic (ROC) metric. The decision matrix describes the performance of the logistic regression classifier. The confusion matrix tabulates the number of misclassifications. The diagonal elements of the confusion matrix show the number of correct classifications for each class and the off-diagonal elements provides the misclassifications. 
+ROC curves feature true positive rate on the Y axis, and false positive rate on the X axis. Then, the top left corner of the plot is the “ideal” point - a false positive rate of zero, and a true positive rate of one. 
+Thus, the larger area under the curve (AUC) the better is usually the classifier.
+The steepness of ROC curves is also important, a steep curve -maximize true positive rate while minimizing the false positive rate- is preferred.
+
+\begin{figure}[H]
+        \centering
+        \includegraphics[keepaspectratio, width=1\linewidth]{figures/LR-CM}
+        \caption{Confusion matrix and ROC for logistic regression classifier. In a confusion matrix the y-axis has the actual values and the x-axis the predicted values, therefore the counts on the diagonal are the number of correct predictions and elements of the diagonal are incorrect predictions.
+        On the left the performance of the training set ($80\%$), center the performance on the test set ($20\%$) and on the right the ROC curves and the area under the curve (AUC). The discontinuous black diagonal line refers to pure 'luck' prediction, the more top left the curve is the better the predictor. In blue the training set and in red the test set.}
+\label{fig:lr-cm}
+\end{figure}
+
+Figure \ref{fig:lr-cv7} shows the learning curve for the logistic regression classifier using cross-validation (7 splits).
+\begin{figure}[H]
+        \centering
+        \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/LR-CV7}
+        \caption{Learning curve for logistic regression, in red the training score and in green the cross-validation ($cv=7$)score. The training score is very high at the beginning and decreases and the cross-validation score stays within the $0.70-0.75$ range. The curve seems to suggest that the validation score could be increased with more training samples, if eventually training and cross-validation have the same score it means that the classifier is not over-fitting (early stopping(stop training). T
+        }
+\label{fig:lr-cv7}
+\end{figure}
+
+%Underfitting – Validation and training error high
+%Overfitting – Validation error is high, training error low
+%Good fit – Validation error low, slightly higher than the training error
+%Unknown fit - Validation error low, training error 'high'
+%If the training accuracy increases(positive slope) while the validation accuracy steadily decreases(negative slope) then a situation of over fitting may have occurred. Time to stop Training
+
 \subsection{SVM}
 \label{se:ressvm}
+Here we show the implementation of Support vector machines (SVMs) for classification. SVMs are versatile (different kernels can be defined for the decision function), memory efficient and effective classifiers especially when dealing with high dimensional spaces. SVMs are also effective when n > m (more dimensions than examples). Note that this is not the case in example, n~50 < m ~1000.
+Although SVMs do not directly provide probability estimates, these can be calculated using cross-validation (averaging across multiple (5) realizations).
+%If the number of features is much greater than the number of samples, avoid over-fitting in choosing Kernel functions and regularization term is crucial.
+A technical description of SVMs was given in Section ref\ref{sse:svm} here we will explain the choices made in its implementation and the quality of its predictions.
+
+The dataset is again split into training data ($80\%$) and test data ($20\%$). Table \ref{tab:svm}
+
+Table \ref{tab:svm} shows the classification metrics for SVM.
+\begin{table}[H]
+\caption{Classification metrics for SVM} \label{tab:svm} 
+\begin{center} 
+\begin{tabular}{lllll}
+\hline
+\multicolumn{1}{c}{} \\
+%\cline{1}
+Class & precision & recall & f1-score & support     \\
+\hline
+0 & 0.93  &    0.57   &   0.71   &    164 \\
+1 & 0.15  &    0.63   &   0.24   &    19 \\
+\hline
+\end{tabular}
+\caption{The table shows the main classification metrics for the SVM classifier (sigmoid kernel) in the test set. The SVM classifier underperforms the previous logit classifier except in \emph{sensitivity} (recall of the positive class).}
+\end{center}
+\end{table}
+
+Figure \ref{fig:svm-cm} shows the confusion matrix and the Receiver Operating Characteristic (ROC) metric of the SVM implemented which uses a sigmoid kernel and balances the weight of the classes to deal with the unbalanced problem (give more weight to the underrepresented class).
+\begin{figure}[H]
+        \centering
+        \includegraphics[keepaspectratio, width=1\linewidth]{figures/SVM-CM}
+        \caption{Confusion matrix and ROC for SVM classifier with sigmoid kernel. The classifier performs better than random luck but worse than the previous logit classifier.}
+\label{fig:svm-cm}
+\end{figure}
+
+Figure \ref{fig:svm-cv7} shows the learning curve for the logistic regression classifier using cross-validation (7 splits).
+\begin{figure}[H]
+        \centering
+        \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/SVM-CV7}
+        \caption{Learning curve for SVM classifier with sigmoid kernel, in red the training score and in green the cross-validation ($cv=7$) score. SMV roughly converges to a low score ~0.6.
+        }
+\label{fig:svm-cv7}
+\end{figure}
+
+\textbf{SVM parameters for non linear SVM}
+
+%GridSearchCV to perform an exhaustive search over the parameter values for an estimator. The parameters are optimized by cross-validated grid-search over a parameter grid. C and Gamma are the parameters for a nonlinear SVM with a Gaussian radial basis function kernel.
+The above SVM implements linear classification using the dot product (Equation \ref{eq:svm}). However, if we replace the dot product with a nonlinear kernel function (such as a Gaussian radial basis kernel function (Equation \ref{eq:kernelgamma}) or Polynomial kernel) SVM can classify non linear relationships as well.
+\begin{equation} \label{eq:kernelgamma}
+K(x_i,y_i) = e^{-\gamma ||x_i-x_j||^2}
+\end{equation}
+
+The free parameter of the Gaussian radial basis function (Equation \ref{eq:kernelgamma}), $\gamma$, gives us the influence of  single training examples. 
+A small  $\gamma$ means a Gaussian with a large variance so the class of the support vector $(x_j)$ will have influence on deciding the class of the vector $x_i$ even if the distance between them is large. If  $\gamma$ is large, then variance is small implying the support vector does not have wide-spread influence. Technically speaking, large gamma leads to high bias and low variance models, and vice-versa.
+%https://www.quora.com/What-are-C-and-gamma-with-regards-to-a-support-vector-machine
+The behavior of the SVM model is very sensitive to the $\gamma$ parameter. If $\gamma$ is too large, the radius of the area of influence of the support vectors only includes the support vector itself and no amount of regularization with C will be able to prevent overfitting.
+When gamma is very small, the model is too constrained and cannot capture the complexity or “shape” of the data. The region of influence of any selected support vector would include the whole training set. The resulting model will behave similarly to a linear model with a set of hyperplanes that separate the centers of high density of any pair of two classes.
+%literal from http://scikit-learn.org/stable/auto_examples/svm/plot_rbf_parameters.html
+
+
+%The gamma parameters can be seen as the inverse of the radius of influence of samples selected by the model as support vectors.
+As it has been already explained in Section \ref{sse:svm}, the C parameter is the cost of misclassification. C trades off misclassification of training examples against simplicity of the decision surface (low C makes the decision surface smooth, while a high C aims at classifying all training examples correctly by giving the model freedom to select more samples as support vectors). 
+
+%A large C gives you low bias and high variance. Low bias because you penalize the cost of missclasification a lot.
+
+The best C and $\gamma$ calculated with Grid-Search are $C= 10.0$ and $\gamma= 0.03125$. %with a score of 0.61
+Table \ref{tab:svmnonlinear} shows the classification metrics for the nonlinear SVM (Radial Basis Function Kernel) and C and $\gamma$.
+
+\begin{table}[H]
+\caption{Classification metrics for SVM} \label{tab:svmnonlinear} 
+\begin{center} 
+\begin{tabular}{lllll}
+\hline
+\multicolumn{1}{c}{} \\
+%\cline{1}
+Class & precision & recall & f1-score & support     \\
+\hline
+0 & 0.93  &    0.79   &   0.85   &    164 \\
+1 & 0.20  &    0.47   &   0.29   &    19 \\
+\hline
+\end{tabular}
+\caption{The table shows the main classification metrics for the nonlinear SVM classifier (RBF kernel) in the test set with the best hyperparameters C and $\gamma$. The nonlinear SVM classifier performs better than the linear SVM, in particular in \emph{specificity} (recall of negative class).}
+\end{center}
+\end{table}
+
+Figure \ref{fig:svm-rbf-cm} shows the confusion matrix and the Receiver Operating Characteristic (ROC) metric of the nonlinear SVM with Radial Basis Function kernel kernel, balanced the weight of the classes to deal with the unbalanced problem and the hyperparameters $C= 10.0$ and $\gamma= 0.03125$. The nonlinear SVM classifier produces netter results than the linear SVM classifier.
+
+\begin{figure}[H]
+        \centering
+        \includegraphics[keepaspectratio, width=1\linewidth]{figures/SVM-RBF-CM}
+        \caption{Confusion matrix and ROC for nonlinear SVM classifier (RBF kernel). The classifier performs better than the linear SVM (Figure \ref{fig:svm-cm}). The accuracy of SVM classifier on training set is 0.85 and on the test set 0.75}
+\label{fig:svm-rbf-cm}
+\end{figure}
+
+Figure \ref{fig:svm-cv7} shows the learning curve for the logistic regression classifier using cross-validation (7 splits).
+\begin{figure}[H]
+        \centering
+        \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/SVM-RBF-CV7}
+        \caption{Learning curve for nonlinear SVM classifier with RBF kernel, in red the training score and in green the cross-validation ($cv=7$) score. The nonlinear SMV performs better than the linear SVM (Figure \ref{fig:svm-cv7}) ~0.75 vs. ~0.6. The gap between the training score and the cross validation score suggests high variance, indicating that more data will likely will help improving the results. 
+        }
+\label{fig:svm-cv7}
+\end{figure}
 
 \subsection{Naive Bayes}
 \label{se:resnaivebayes}
 
+We fit a Gaussian Naive Bayes classifier. Although naive Bayes is known as a decent classifier, it is known to be a bad estimator, so the probability outputs are not to be taken too seriously. %from predict_proba
+%http://scikit-learn.org/stable/modules/naive_bayes.html.  literal
 
+A technical description of Naive Bayes classifier delineating the independence assumption in the distribution of $P(x_i | y)$ was provided in Section \ref{se:naivebayes}. Here we will show the results of the Naive Bayes classifier.
+
+The dataset is again split into training data ($80\%$) and test data ($20\%$). Table \ref{tab:naive}
+
+Table \ref{tab:naive} shows the classification metrics for the implemented Gaussian Naive Bayes classifier.
+\begin{table}[H]
+\caption{Classification metrics for Naive Bayes} \label{tab:naive} 
+\begin{center} 
+\begin{tabular}{lllll}
+\hline
+\multicolumn{1}{c}{} \\
+%\cline{1}
+Class & precision & recall & f1-score & support     \\
+\hline
+0 & 0.91  &    0.63   &   0.74   &    164 \\
+1 & 0.13  &    0.47   &   0.20   &    19 \\
+\hline
+\end{tabular}
+\caption{The table shows the main classification metrics for the Gaussian Naive Bayes classifier in the test set.}
+\end{center}
+\end{table}
+
+Figure \ref{fig:nb-cm} shows the confusion matrix and the Receiver Operating Characteristic (ROC) metric of the Gaussian Naive Bayes classifier implemented.
+\begin{figure}[H]
+        \centering
+        \includegraphics[keepaspectratio, width=1\linewidth]{figures/NB-CM}
+        \caption{Confusion matrix and ROC for GaussianNB classifier. The classifier performs clearly better than random luck and also better than the SVM classifier. The AUC of GaussianNB and logistic regression (Figure \ref{fig:lr-cm}) for the test set  are very similar (0.62 and 0.63).}
+\label{fig:nb-cm}
+\end{figure}
+
+Figure \ref{fig:nb-cv3} shows the learning curve for the logistic regression classifier using cross-validation (7 splits).
+\begin{figure}[H]
+        \centering
+        \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/NB-CV3}
+        \caption{Learning curve for Gaussian Naive Bayes, in red the training score and in green the cross-validation ($cv=3$) score. The curves seem to indicate that the model is bias (feeding the the GaussianNB model with more data may not help capturing the underlying relationship)
+        }
+\label{fig:nb-cv3}
+\end{figure}
+%https://www.ritchieng.com/machinelearning-learning-curve/
 
 \subsection{Decision Trees}
 \label{se:resdectree}
+Like SVMs decision trees are versatile machine learning algorithms that can fit complex datasets. Decision trees are the most important components of Random Forests -a powerful ensemble methods that will bee studied in the next Section.
+One advantage if Decision Trees is that require very little data preparation (no need for centering (MinMax) or scaling (0,1) the data.
+The Gini attribute measures the impurity, if the node is pure, Gini=0, all instances fall into the same class.
+The decision tree implemented here uses the (Classification and Regreession Tree) CART algorithm to produce binary trees (yes/no answers) (Equation \ref{eq:cart}).
+%However, other algorithms such as ID3 can produce Decision Trees with nodes that have more than two children”
+ 
+Decision trees are nonparametric models (the number of parameters is not known in training time) that is to say, the model will have as many parameters as it needs to fit the data. It follows that if left unconstrained, the tree will fit the data very closely, and most likely overfitting. This is an important difference with the previous models seen above (logistic regression, SVM and naive Bayes) which are parametric (limited degree of freedom) models. 
+The main concern in Decision Tree is then to reduce the degrees of freedom to avoid overfitting. The parameter $max\_depth$ regularizes the. model and reduces the risk of overfitting.
+
+The dataset is again split into training data ($80\%$) and test data ($20\%$). Figure \ref{fi:dt-md5} shows the confusion matrix and the AUC for the Decision Tree implemented. The hyperparameter $max\_depth$ is set to 5 for better performance and it uses balanced mode to give more weight to the underrepresented class, the rest of parameters are set by default.
+\begin{figure}[H]
+        \centering
+        \includegraphics[keepaspectratio, width=1\linewidth]{figures/DT_depth5-CM}
+        \caption{Confusion matrix and ROC for Decision Tree classifier with $max\_depth=5$. The classifier performs poorly for the test set, the AUC is sligthly better than luck, $auc=0.56$.
+        }
+\label{fig:dt-md5}
+\end{figure}
+
+Figure \ref{fig:dt-md5-learning} shows the learning curve for the Decision Tree using cross-validation (7 splits). 
+\begin{figure}[H]
+        \centering
+        \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/DT_depth5}
+        \caption{Learning curve for Decision Tree classifier with $max\_depth=5$, in red the training score and in green the cross-validation ($cv=3$) score. The curves seem to indicate that the model is bias (feeding the model with more data may not help capturing the underlying relationship)
+        }
+\label{fig:dt-md5-learning}
+\end{figure}
+
+Figure \ref{fig:dt-md5-features} identifies the most important features, that is to say, the features selected by the CART algorithm to split the tree so that the cost function (Equation \ref{eq:cart}) is minimized. The algorithm will stop when it cannot find a split that reduces the impurity of the node or it reaches the max depth established as it is the case.
+\begin{figure}[H]
+        \centering
+        \includegraphics[keepaspectratio, width=1\linewidth]{figures/DT_depth5-featuresimportance}
+        \caption{On the left the ranking of the most important features of the Decision Tree. The three most important features ( purer splits) are cognitive complaints, dyslipidemia and anxiety. On the right it is shown that 14 features are enough to provide $95\%$ of the total information of the tree.   
+        }
+\label{fig:dt-md5-learning}
+\end{figure}
+
+Finally, Figure \ref{fig:dt-md5-dot} plots the Decision Tree. 
+\begin{figure}[H]
+        \centering
+        \includegraphics[keepaspectratio, width=1\linewidth]{figures/decision_tree_depth5}
+        \caption{Decision tree for classification of converter to MCI with the \emph{Vallecas Index}. The root node is cognitive complaints (scd), the depth of the tree was set to a maximum of 5.
+        }
+\label{fig:dt-md5-dot}
+\end{figure}
+
 
 \subsection{Ensemble Methods}
 \label{se:resensemble}
+
+We have trained a bunch of classifiers in the previous secgtions (decition trees, SVMs,logistic regression and Naivr Bayers) a simple way to create a better classifier is to aggregate the predictions of each classifier, the predictions of the aggregate classifier is the class with the most votes. The majority-vote classifier is a hard classifier
+
 
 \textbf{Random Forest}
 \textbf{Gradient boost}
