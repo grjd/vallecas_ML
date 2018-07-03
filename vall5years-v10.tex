@@ -9,6 +9,7 @@
 \usepackage{helvet}
 \usepackage[utf8]{inputenc}
 \usepackage[utf8]{luainputenc}
+
 %\usepackage[T1]{fontenc}
 %\usepackage{pgffor}
 %\usepackage{lipsum}
@@ -687,14 +688,17 @@ Linear SVM works by simply calculating a decision function $w^Tx +b$ (where $w$ 
 %\textit{minimize} \frac{1}{2}||w||^2 \\
 %\textit{subject to} y_i -w_ix_i - b \leq \epsilon \\
 
-\begin{equation}
-\textit{minimize} \frac{1}{2} ||w||^2 \\
- \textit{subject to}=\begin{cases}
+\begin{equation}\label{eq:svm}
+\begin{aligned}
+ & \textit{minimize} \frac{1}{2} ||w||^2 \\
+ & \textit{subject to}=
+ \begin{cases}
     y - wx -b \leq \epsilon \\
     wx +b - y \leq \epsilon
   \end{cases}
-  \label{eq:svm}
+  \end{aligned}
 \end{equation}
+
 The tacit assumption in Equation \ref{eq:svm} is that a function $f$ that approximates all pairs $(x_i, y_i)$ with precision $\epsilon$ exists.
 Thus, in essence, training a linear SVM classifier means finding the value of $w$ and $b$ that make this margin as wide as possible while avoiding margin violations (hard margin) or limiting them (soft margin). Thus, we do not care about errors as long as they are less than the margin $\epsilon$, but will not
 accept any deviation larger than this. 
@@ -710,6 +714,23 @@ The parameter $C > 0$ determines the trade-off between the flatness of f and the
 SVM can perform both linear and non linear classification, regression and outlier detection. When the datasets are not linearly separable we can use nonlinear SVM classifiers, one tactic is to add more features so that it result in a linearly separable dataset (pg 259 \cite{geron2017hands}). The \textbf{Kernel trick} makes this possible (for a discussion of the kernel trick see the Appendix). SVM is considered a good algorithm for small-medium size datasets. Note also that it scales well with the number of features, especially sparse features. 
 
 The implementation and the results obtained with this kind of classifier are discussed in Section \ref{se:ressvm}.
+
+\subsection{k-nearest neighbors algorithm}
+\label{se:reskneighbors}
+The k-nearest neighbors algorithm (k-NN) is a non-parametric \footnote{KNN makes no explicit assumptions about the functional form of the mapping $h:X->y$ this is contrary to what happens in naive Bayes where it is assumed that data follow a Gaussian distribution} instance-based supervised learning algorithm used for classification and regression. In classification, a point is classified by a majority vote of its neighbors -the point will belong to the most common class amongst its k neighbors. If k=1 the point is simply assigned the same class of ts closest neighbor.
+k-NN is a type of instance-based learning, or lazy learning, where the function is only approximated locally and all computation is deferred until classification \cite{keller1985fuzzy}. k-NN breaks the input space into box looking regions, decision trees does this as well, each node of the DT is associated with a region in the input space, space is then divided into non-overlapping regions with a 1-1 correspondence between leafs and input regions.
+
+The best choice of k depends upon the data and the empirically optimal k can be calculated with the bootstrap method. Scaling and feature selection must be careful done because the accuracy of the k-NN algorithm can be severely degraded by the presence of noisy or irrelevant features. In general, larger k reduces effect of the noise on the classification. In binary classification (eg. converter vs non converter) it is helpful to choose k to be an odd number as this avoids tied votes
+k-nn doesn't assume normality of data (non-parametric) not it explicitly learn a model (instance-based) the algorithm rather memorizes the entire training set which are subsequently used as “knowledge” for the prediction phase, that is, k-nn works like an on-demand process only when a query to our database is made will the algorithm use the training instances to spit out an answer. 
+
+k-NN works as follows, given a training set $X_train$ with labels $y_train$ and an instance $x_test$ to be classified, first, finds the set of most similar instances to $x_test$ that are in $X_train$ and we call then $X_NN$. Next, it predicts the labels $y_NN$ for $X_NN$ and finally predicts the label for $x_test$ by combining the labels $y_NN$ using simply majority vote. 
+It requires minimal training but relies upon expensive testing. KNN is used as a benchmark for more complex classifiers such as SVM and artifical network which contrary to KNN have lengthy training phase albeit a very fast testing phase. k-nn can suffer from skewed class distributions, if a certain class is very frequent in the training set it might perform poorly because the majority voting it will tend to dominate the response. Finally, the accuracy of k-nn can be severely degraded with high-dimension data because there is little difference between the nearest and farthest neighbor
+%https://kevinzakka.github.io/2016/07/13/k-nearest-neighbor/
+The algorithm requires the computation of the number of neighbors k, once this parameter is estimated performing cross validation on our dataset using a generated list of an odd number k neighbors (by default 5). For low k neighbor parameter, eg $k=1$ the decision boundaries will be very convoluted (high complexity, over fitting), for large k now the classifier needs to weigh the votes of many neighbors, not juts one, so single training data points will not have the dramatic influences in the prediction as in k=1 and the result is a smoother boundary (model with lower complexity, less variance), so for k equal all the number the prediction will be always the most frequent class (model underfit). The metric distance is the Minkowski distance ($p=1$ Manhattan, $p=2$ Euclidean). 
+%https://www.coursera.org/learn/python-machine-learning/lecture/I1cfu/k-nearest-neighbors-classification-and-regression
+One weakness of k-NN  is that it cannot learn that one feature is more discriminative than another, this will be seen it is an important obstacle in our dataset which is unbalanced (9 times more class 0 than class 1).
+
+The implementation and the results obtained with this kind of classifier are discussed in Section \ref{se:reskneighbor}.
 
 \subsection{Naive Bayes Classifier}
 \label{sse:naivebayes}
@@ -790,7 +811,7 @@ Some of the advantages of DT are: do not need feature normalization or scaling, 
 The implementation and the results obtained with this kind of classifier are discussed in Section \ref{se:resdectree}.
 
 \subsection{Ensemble Methods}
-
+\label{sse:ensemble}
 Ask to a thousand people and then aggregate their answers, in many cases the aggregate is better than the expert's response, by the same token, aggregating many predictors will give you better answers than a single one.
 \emph{Don't look at the tree it may be lying... but to the forest!}
 A group of predictors is an ensemble, thus, the technique is called Ensemble Learning. An ensemble of decision trees or other type of predictors gives individual predictions, then the winning class will be the one with the most votes. 
@@ -799,88 +820,49 @@ A group of predictors is an ensemble, thus, the technique is called Ensemble Lea
 Ensemble methods make sense once you have done 'individual methods' decision tree, svm, logit etc. A majority vote is a hard voting classifier, this voting classifier often achieves a higher accuracy than the best classifier in the ensemble (svm, logit, dt etc). In soft voting, the classifier is able to estimate class probabilities \footnote{SVC does not estimate class probabilities but still you can use the SVC class for soft voting, just set the probability hyperparameter to True (this will make the SVC class use cross validation to estimate class probabilities, slowing down training, and it will add a $predict_proba()$}. Soft voting often achieves better performance than hard voting because it gives more weight to highly confident votes.
 %JUST replace voting="hard" with voting="soft" and ensure that all classifiers can estimate class probabilities”
 Even if individual classifiers are weak learners (do slightly better than random guessing) the ensemble can still be a strong classifier, provided there are a sufficient number of weak learners and they are sufficiently diverse. % solo no puedes con amigos si   https://www.youtube.com/watch?v=Ds7tje_Y0CM
-Examples of ensemble methods are bagging, boosting, stacking and random forests.
 
-\subsubsection{Random Forest}
+The reason why ensemble methods work is the \emph{Law of large numbers}. For example, for a coin that is slightly biased, let us say that has $51\%$ probability of heads and $49\%$ of tails, if you toss the coin 1,000 times chances are that you will get a majority of heads, something close to 510 heads and 490 tails. The (frequentist) probability of heads majority for 1,000 tosses is $75\%$ and the more tosses you do the closer you get to 1, for 10,000 tosses the probability of majority is $97\%$. Thus, the more you toss the coin the closer you will get to 51-49 ratio. In the same vein, you can build 1,000 classifiers that are individually correct let us say $51\%$ of the time, (barely better than random guessing) but if you predict the majority vote class you can hope for a $75\%$ accuracy! Ensemble methods work best when the predictors are as independent from one another as possible. One way to get diversity train the ensemble of predictors  using very different algorithms so they will make different types of errors improving the accuracy.\cite{geron2017hands}
 
-Random Forest is an ensemble of Decision Trees, generally trained via the bagging method (or sometimes pasting), typically with max samples set to the size of the training set. Instead of building a BaggingClassifier and passing it a DecisionTreeClassifier, you can instead use the RandomForestClassifier class, which is more convenient and optimized for Decision Trees.
+We can distinguish to main types of ensemble methods depending on how the variability is introduced: in the models or in the data. An example of the former is a voting  classifier which is implemented in Section \ref{}. But we can also use the same training algorithm for every learner but train them on different subsets of the dataset, when this is the case we can distinguish between bagging (sampling with replacement) or pasting (sampling without replacement). Once all predictors are trained, the ensemble will make a prediction for a new instance by simply aggregating the individual predictions (majority for classifiers or mean for regression). Generally, aggregation has a similar bias but lower variance than individual predictors. An important advantage of bagging and pasting is that the scale very well because predictors can be trained and make predictions in parallel (multicore GPU).
+%Bagging and Pasting in sklearn is BaggingClassifier (BaggingRegressor) “BaggingClassifier automatically performs soft voting instead of hard voting if the base classifier can estimate class probabilities”
+%“the ensemble’s predictions will likely generalize much better than the single Decision Tree’s predictions: the ensemble has a comparable bias but a smaller variance (it makes roughly the same number of errors on the training set, but the decision boundary is less irregular)” Excerpt From: Aurélien Géron. “Hands-On Machine Learning with Scikit-Learn and TensorFlow: Concepts, Tools, and Techniques to Build Intelligent Systems.” iBooks. 
+%Examples of ensemble methods are bagging, boosting, stacking and random forests.
 
-The reason why RF works is the \emph{Law of large numbers}. For example, for a coin that is slightly biased, let us say that has $51\%$ probability of heads and $49\%$ of tails, if you toss the coin 1,000 times chances are that you will get a majority of heads, something close to 510 heads and 490 tails. The (frequentist) probability of heads majority for 1,000 tosses is $75\%$ and the more tosses you do the closer you get to 1, for 10,000 tosses the probability of majority is $97\%$. Thus, the more you toss the coin the closer you will get to 51-49 ratio. In the same vein, you can build 1,000 classifiers that are individually correct let us say $51\%$ of the time, (barely better than random guessing) but if you predict the majority vote class you can hope for a $75\%$ accuracy! Ensemble methods work best when the predictors are as independent from one another as possible. One way to get diversity train the ensemble of predictors  using very different algorithms so they will make different types of errors improving the accuracy.\cite{geron2017hands}
-%for example for 3 coins np.power(0.49,3) + 3*(np.power(0.49,2)*0.55 + np.power(0.51,2)*0.49)  +np.power(0.51,3)
-% p(aaa) or p(aab) = 0.51499 = 3*np.power(0.51,2)*0.49  +np.power(0.51,3)
-%However, this is only true if all classifiers are perfectly independent, making uncorrelated errors, which is clearly not the case since they are trained on the same data. The voters will likely make the same types of errors, since they were trained on the same data, so there will be many majority votes for the wrong class, reducing the ensemble’s accuracy.
+Table \ref{tab:ensemblemethods} shows a classification of the ensemble that are implemented.
 
-%pg 279 “from sklearn.ensemble import RandomForestClassifier
-%from sklearn.ensemble import VotingClassifier
-%from sklearn.linear_model import LogisticRegression
-%from sklearn.svm import SVC
+\captionof{table}{Ensemble methods} \label{tab:ensemblemethods} 
+\begin{tabular}{ |p{3cm}||p{3cm}|p{3cm}|p{2cm}| } %\label{tab:ensemblemethods} 
+%\caption{Table}
+ \hline
+ \multicolumn{4}{|c|}{Ensemble Methods} \\
+ \hline
+ Majority Vote& Bagging &Boosting&Stacking\\
+ \hline
+ Section \ref{}   & Random Forest (\ref{})  &AdaBoost (\ref{}) &   \\
+  				  &                & XGBT (\ref{})&  \\
 
-%log_clf = LogisticRegression()
-%rnd_clf = RandomForestClassifier()
-%svm_clf = SVC()
+ \hline
 
-%voting_clf = VotingClassifier(
-%        estimators=[('lr', log_clf), ('rf', rnd_clf), ('svc', svm_clf)],
-%        voting='hard'
-%    )
-%voting_clf.fit(X_train, y_train)”
-%“>>> from sklearn.metrics import accuracy_score
-%>>> for clf in (log_clf, rnd_clf, svm_clf, voting_clf):
-%>>>     clf.fit(X_train, y_train)
-%>>>     y_pred = clf.predict(X_test)
-%>>>     print(clf.__class__.__name__, accuracy_score(y_test, y_pred))
-%LogisticRegression 0.864
-%RandomForestClassifier 0.872
-%SVC 0.888
-%VotingClassifier 0.896”
+\end{tabular}
 
+\subsubsection{Bagging (Random Forest)}
+\label{sse:rf}
+%“Instead of building a BaggingClassifier and passing it a DecisionTreeClassifier, you can instead use the RandomForestClassifier class, which is more convenient and optimized for Decision Trees1”
 
-
-\textbf{Bagging and Pasting}
-Before we saw how to introduce variability by using different classifiers, another way to introduce diversity in the voters is using the same algorithm but trained in different datasets ie. Bagging and Pasting.
-%for Pasting BaggingClassifier(...bootstrap=False
-“When sampling is performed with replacement, this method is called bagging (short for bootstrap aggregating). When sampling is performed without replacement, it is called pasting.”. “Both bagging and pasting allow training instances to be sampled several times across multiple predictors, but only bagging allows training instances to be sampled several times for the same predictor” \cite{geron2017hands}
-
-So for one training set we get n training sets by sampling it randomly (with replacement for bootstrap) and then training on each sample.“Once all predictors are trained, the ensemble can make a prediction for a new instance by simply aggregating the predictions of all predictors”. “The aggregation function is typically the statistical mode (i.e., the most frequent prediction, just like a hard voting classifier) for classification, or the average for regression”. Note that each individual predictor has a larger bias than if it were trained on the original (same size) dataset but aggregation reduces both bias and variance.
-Bagging and Pasting scale very well because they can be trained and also predict in parallel (GPUs).
-
-%“ BaggingClassifier automatically performs soft voting instead of hard voting if the base classifier can estimate class probabilities ”
-
-%“from sklearn.ensemble import BaggingClassifier
-%from sklearn.tree import DecisionTreeClassifier
-
-%bag_clf = BaggingClassifier(
-%        DecisionTreeClassifier(), n_estimators=500,
-%        max_samples=100, bootstrap=True, n_jobs=-1
-%    )
-%bag_clf.fit(X_train, y_train)
-%y_pred = bag_clf.predict(X_test)”
-“Overall, bagging often results in better models than pasting, which explains why it is generally preferred”
-“With bagging, some instances may be sampled several times for any given predictor, while others may not be sampled at all”
-
-%bag_clf.oob_score_ is a proxy of accuracy in the test test, because some samples will never see them, the out of bag
-%“oob_decision_function_ variable. In this case (since the base estimator has a predict_proba() method) the decision function returns the class probabilities for each training instance” tells the estimate of class for each training instance
-
-
-Random forest is a bagging algorithm because it tries to "fix" the reliability problem existing in the decision tree model. DT are unreliable in the sense that small changes in your data produce may produce large changes very different decision trees\footnote{This is reminiscent to the the butterfly effect in chaos theory coined by Edward Lorenz}. This is where bagging comes from, we can create a robust model through bagging, that is, create different models by resampling your data. Each tree will deal with a different set of the data called the bootstrap sample, chooses at random with replacement this means that a bootstrap sample may have missing instances and also repeated instances doing this N times (one for each Tree). Importantly there is not only randomness in picking the dataset for each tree but also there is randomness on the features from which to decide to split or not, if the max features is 1 we have forests with diverse complex trees and with max features closed to the number of features will lead to similar forests with simpler trees. Once the random forest is train the overall prediction is a weighted vote.
+Random Forest is an ensemble of Decision Trees generally trained via the bagging method (or sometimes pasting), typically with max samples set to the size of the training set.
+Random forest is a bagging algorithm because it tries to "fix" the reliability problem existing in the decision tree model. Decision trees are unreliable in the sense that small changes in your data produce may produce large changes very different decision trees\footnote{This is reminiscent to the the butterfly effect in chaos theory coined by Edward Lorenz}. This is where bagging comes from, we can create a robust model through bagging, that is, create different models by resampling your data. Each tree will deal with a different set of the data called the bootstrap sample, chooses at random with replacement this means that a bootstrap sample may have missing instances and also repeated instances doing this N times (one for each Tree). Importantly, there is not only randomness in picking the dataset for each tree but also there is randomness on the features from which to decide to split or not, if the max features is 1 we have forests with diverse complex trees and with max features closed to the number of features will lead to similar forests with simpler trees. Once the random forest is train the overall prediction is a weighted vote.
 Random forest is just the application of bagging to decision trees, and we want to do this if we care about stability.
 
 Random forest inherit many of the benefits of decision trees. Pros widely used excellent performance on a variety of problems, easily parallelized, does not require careful normalization of features it may not be good for very highly dimensional problems (text classifiers). Some of the k parameters are n estimators (default 10) is the number of trees, the max features parameters has a large effect on performance influence the diversity of trees in the forest, the max depth by default is None which means that the tree will continue to split until all nodes (or the min samples which is 2) in the leaf belong to the same class.
 %https://github.com/mapattacker/datascience/blob/master/supervised.rst
 
-%http://blog.kaggle.com/2014/08/01/learning-from-the-best/
-%“from sklearn.ensemble import RandomForestClassifier
-
-%rnd_clf = RandomForestClassifier(n_estimators=500, max_leaf_nodes=16, n_jobs=-1)
-%rnd_clf.fit(X_train, y_train)
-%“With a few exceptions, a RandomForestClassifier has all the hyperparameters of a DecisionTreeClassifier (to control how trees are grown), plus all the hyperparameters of a BaggingClassifier to control the ensemble itself”
 “The Random Forest algorithm introduces extra randomness when growing trees; instead of searching for the very best feature when splitting a node (see Chapter 6), it searches for the best feature among a random subset of features. This results in a greater tree diversity, which (once again) trades a higher bias for a lower variance, generally yielding an overall better model. The following BaggingClassifier is roughly equivalent to the previous RandomForestClassifier:”
 %we can achieve this also with “BaggingClassifier(DecisionTreeClassifier(splitter="random”
 %rnd_clf.feature_importances_
 
 
-\subsubsection{Gradient boosted decision trees}
-\textbf{AdaptBoost}
+\subsubsection{Adaptive and Gradient Boosting (AdaBoost)}
+\textbf{AdaBoost}
 
 The idea is having a chain of predictors where deeper in the chain predictors focus on harder instances (instances where the predictor underfitted). For example, eight of misclassified training instances is then increased and a second classifier is trained using the updated weights. The difference between AdaBoost and Gradient Descent is that in Ada we don't tweak the hyperparameters of any individual predictor it rather adds predictors to the ensemble. Once all predictors are trained, the ensemble makes predictions very much like bagging or pasting, except that predictors have different weights depending on their overall accuracy on the weighted training.
 
@@ -907,6 +889,69 @@ The optimization problem of decision trees (forest) is much harder than than tra
 The implementation and the results obtained with Ensemble learning methods including Random Forest are discussed in Section \ref{se:resensemble}.
 
 
+\subsection{Deep networks}
+\label{se:deep}
+
+A multilayer perceptron (MLP) is a feedforward artificial neural network. A MLP is perhaps the classic network architecture in Deep Learning. The term deep refers to having networks with more than one layer, the more layers the deeper the network is.
+Multilayer perceptron (MLP) can be used for both classification and regression. In order to understand how MLPs work it might be useful to expand on a previous type of network seen, the regression model (Section \ref{sse:logreg}). In regression we have just two layers, the input $x$ and the output $(\hat{y})$ obtained via covariance matrix inversion. The goal of a regression model is to estimate the output $\hat{y}$ via OLS or related estimation methods for the weights $\hat{w}$ in the equation \ref{eq:linreg}
+\begin{equation}
+\hat{y} = \sum_i \hat{w_i} x + b
+\label{eq:linreg}
+\end{equation}
+ 
+Graphically representations of the architecture of regression models -linear and logistic- are shown in Figure \ref{fig:mich}. 
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{.8\textwidth}
+        \centering
+        \includegraphics[height=1.7in]{figures/michiganfigure}
+        \caption{Graphical representation of linear (left) and logistic (right) regression. In linear regression, the model coefficients $\hat{w,b}$ can be estimated through methods such as OLS, Ridge, Lasso etc. Logistic regression adds an additional non-linear function eg. a logistic function.}
+    \end{subfigure}
+    ~ 
+    \begin{subfigure}[t]{.8\textwidth}
+        \centering
+        \includegraphics[height=1.7in]{figures/michiganfigure}
+        \caption{MLP adds a hidden layer which computes a nonlinear function (activation function) of the weighted sums of the input features. Each hidden unit $h_i$ computes a non linear function of the weighted sum of the inputs, resulting in the intermediate output values $v_i$. The activation function \textit{tanh} is the hyperbolic tangent function which is related to the logistic function, other functions are, \textit{ReLU, logistic} etc. Rectified linear unit (ReLU) are probably the best choice: fast, simple (look like a hockey stick) and propagate gradients more ffectively than sigmoid. The \textit{relu} activation function is the default in sklearn. The output y is the weighted sum of the intermediary outputs $v_i$.}
+    \end{subfigure}%\quad
+    \label{fig:mich}
+    \caption{Predicting $y$ in MLP requires the computation of a non linear function in the hidden units, this gives the network more expressive power and allows to perform more accurate predictions than in linear or logistic regression models, especially when the relationship between the inputs $x$ and the target $y$ is complex. On the other hand, more parameters need to be estimated (MLP will likely require more training data than linear/logistic regression).}
+\end{figure}
+%https://www.coursera.org/learn/python-machine-learning/lecture/v4cs3/neural-networks  
+
+It is the addition of the hidden layer with the non linear function what adds superior expressive power to MLPs making possible that the network learns more complex patterns than linear and logistic regression models. Of course this increase in expressive power comes at the price of having more weights (model coefficients) to estimate, that is, we need more training data and computation compared to a linear model \footnote{Memory, data and time are the limitations that have been overcome. The crude limitation in memory in computers (Gates infamously said  640K is good for anyone) is not a problem anymore. Data is not excessively problematic neither now since there is too much of it. The major limitation these days is time, but not computing time but developer-engineer time, humans cost money while computation is almost free.}.
+
+%https://www.wired.com/1997/01/did-gates-really-say-640k-is-enough-for-anyone/
+A deep-learning model is a directed, acyclic graph of layers. The topology of a network defines a hypothesis space.
+The components of neural networks are: layers (the architecture of the network), inputs and target, loss function (is the feedback learning that allows learning), optimizer (tell us if we are effectively learning). The loss function is the difference (can be calculated in multiple ways) between the predicted y and the true y, it produces a loss score which is the input of the optimizer whose output will update the weights. 
+Thus, what deep learning in particular and machine learning in general does is to search for useful representations of input data using the guidance of a feedback signal (loss function) within a predefined space of possibilities or hypothesis space. Note that the choice of the topology constraint the space of possibilities or hypothesis space to a specific series of tensor operations and what you ultimately expect to find is a good configuration of weight tensors. Picking the right network architecture is more an art than a science although one should always try to rely as much as possible on good practices.
+
+The fundamental data structure in a deep network is the layer. A layer is a processing device which takes one or more tensors and outputs one or more tensors. The state of the layer is given by the weights (tensor) learned with the optimizer (stochastic gradient descent).
+2D tensors of shape (samples, features), is often processed by densely connected layers, also called fully connected or dense layers. Sequence data, on the other hand, are stored in 3D tensors of shape (samples, timesteps, features), is typically processed by recurrent layers such as an LSTM layer. Image data, stored in 4D tensors, is usually processed by 2D convolution layers (Conv2D) \cite{chollet2017deep}.
+%Chollet book pg 144
+
+The main components of a neural network (deep or not) are as follows.
+\begin{itemize}
+	\item Input data and target
+	\item Layers
+	\item Loss/objective function: is the feedback signal during learning (produces a number that we want to minimize during training) 
+	\item Optimizer: determines learning: how the network will update the weights based on the loss
+
+\end{itemize}
+A schmematic representation of the architecture of neural networks is shown in figure \ref{fig:cholletfig}.
+
+\begin{figure}[H]
+        \centering
+        \includegraphics[keepaspectratio, width=1\linewidth]{figures/cholletfigure}
+        \caption{Neural networks build maps of input data to predictions. The loss function is the feedback signal that tells how good the model is doing. The difference between the prediction and the actual target is the loss value which is used by the optimizer to update the network's weight in order to produce a better prediction in the next iteration.
+        }
+\label{fig:cholletfig}
+\end{figure}
+
+The optimizer is a stochastic gradient descent (SGD) of some sort of other but the loss function changes depending on the task, for a two-class classification problem use binary crossentropy as loss function. 
+
+The results produced by the implementation of deep network is shown in Section \ref{sse:resdeep}.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%ç
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -925,17 +970,7 @@ Mathematically, truncated \footnote{Truncated means just that the algorithm will
 X \sim X_k = U \sum V
 \end{equation}
 
-\subsubsection{K-neighbors}
-k-NN breaks the input space into box looking regions, decision trees does this as well, each node of the DT is associated with a region in the input space, space is then divided into non-overlapping regions with a 1-1 correspondence between leafs and input regions.
 
-K-Neighbors (KNN) classifier is non-parametric \footnote{KNN makes no explicit assumptions about the functional form of the mapping $h:X->y$ this is contrary to what happens in naive Bayes where it is assumed that data follow a Gaussian distribution}, instance-based supervised learning algorithm. KNN doesn't assume normality of data (non-parametric) not it explicitly learn a model (instance-based) the algorithm rather memorizes the entire training set which are subsequently used as “knowledge” for the prediction phase, that is, KNN works like an on-demand process only when a query to our database is made will the algorithm use the training instances to spit out an answer. 
-k-NN works as follows, given a training set $X_train$ with labels $y_train$ and an instance $x_test$ to be classified, first, finds the set of most similar instances to $x_test$ that are in $X_train$ and we call then $X_NN$. Next, it predicts the labels $y_NN$ for $X_NN$ and finally predicts the label for $x_test$ by combining the labels $y_NN$ using simply majority vote. 
-It requires minimal training but relies upon expensive testing. KNN is used as a benchmark for more complex classifiers such as SVM and artifical network which contrary to KNN have lengthy training phase albeit a very fast testing phase. KNN can suffer from skewed class distributions, if a certain class is very frequent in the training set it might perform poorly because the majority voting 
-it will tend to dominate the response. Finally, the accuracy of KNN can be severely degraded with high-dimension data because there is little difference between the nearest and farthest neighbor
-%https://kevinzakka.github.io/2016/07/13/k-nearest-neighbor/
-The algorithm requires the computation of the number of neighbors k, once this parameter is estimated performing cross validation on our dataset using a generated list of an odd number k neighbors (by default 5). For low k neighbor parameter, eg $k=1$ the decision boundaries will be very convoluted (high complexity, over fitting), for large k now the classifier needs to weigh the votes of many neighbors, not juts one, so single training data points will not have the dramatic influences in the prediction as in k=1 and the result is a smoother boundary (model with lower complexity, less variance), so for k equal all the number the prediction will be always the most frequent class (model underfit). The metric distance is the Minkowski distance ($p=1$ Manhattan, $p=2$ Euclidean). 
-%https://www.coursera.org/learn/python-machine-learning/lecture/I1cfu/k-nearest-neighbors-classification-and-regression
-One weakness of k-NN  is that it cannot learn that one feature is more discriminative than another.
 
 \subsection{Manifold learning}
 
@@ -977,13 +1012,13 @@ KL(P||Q) = \sum_{i, j} p_{ij} , \log \frac{p_{ij}}{q_{ij}}
 to minimize the score we perform gradient descent:
 \(\frac{\partial , KL(P || Q)}{\partial y_i} = 4 \sum_j (p_{ij} - q_{ij}) g\left( \left| x_i - x_j\right| \right) u_{ij} \quad \textrm{where} , g(z) = \frac{z}{1+z^2}.\)
 we try to approximate the true distribution P using Q, KL(P|Q) = H(P,Q) - H(P), the cross entropy minus the entropy.
-So, KL-divergence is better not to be interpreted as a "distance measure" between distributions, but rather as a measure of entropy increase due to the use of an approximation to the true distribution rather than the true distribution itself. (if we knew the true distribution P of the random variable, we could construct a code with average description length H(P). If, instead, we used the code for a distribution Q, we would need H(P)+K(P||Q) bits on the average to describe the random variable) so you need more bits to describe the situation if youa re going to use Q while the true distribution is P, so what KL measures is the inefficiency caused by the approximation of Q to P.
+So, KL-divergence is better not to be interpreted as a "distance measure" between distributions, but rather as a measure of entropy increase due to the use of an approximation to the true distribution rather than the true distribution itself. (if we knew the true distribution P of the random variable, we could construct a code with average description length H(P). If, instead, we used the code for a distribution Q, we would need H(P)+K(P||Q) bits on the average to describe the random variable) so you need more bits to describe the situation if you are going to use Q while the true distribution is P, so what KL measures is the inefficiency caused by the approximation of Q to P.
 %https://stats.stackexchange.com/questions/111445/analysis-of-kullback-leibler-divergence
 
 \subsubsection{Topological Data Analysis}
 %https://www.quora.com/Is-there-a-relationship-between-manifold-learning-and-topological-data-analysis
 TDA focuses on identifying global features within the data.
-Manifold learning focuses on reducing dimensionality by finding a good map from the data to a low-dimensional manifold. Topological data analysis could be helpful to analyse (manifold) data before and after dimensionality reduction (i.e. manifold learning). The topology of the manifold should be the same and independent of the dimensionality of the ambient space.
+Manifold learning focuses on reducing dimensionality by finding a good map from the data to a low-dimensional manifold. Topological data analysis could be helpful to analysis (manifold) data before and after dimensionality reduction (i.e. manifold learning). The topology of the manifold should be the same and independent of the dimensionality of the ambient space.
 
 Manifold learning assumes that the data lies on a (usually low) dimensional submanifold and has as a goal to create a representation that faithfully records this local neighborhood structure given in the manifold. 
 TDA, on the other hand, makes very few assumptions about the data and the goal is not to faithfully reconstruct the data - or to fit the data to a model - but to provide (unbiased) summaries of the geometric/topological structure in the data.
@@ -1002,79 +1037,6 @@ The workhorse technique of TDA is persistent homology
 %Mapper
 An especially underused TDA technique is “mapper”. I found this particularly useful for visualization, and I wonder why it isn’t as widely applied as, say, t-SNE. Mapper fits a simplicial complex to data (often, just a graph), but in a very flexible way. The goal of mapper is either data visualization or clustering. The key insight offered by this technique is that many interesting “clusters” in real data are not clusters in the classical sense (as disconnected components), but are the branches of some single connected component. 
 We didnt find clusters with SVD nor tSNE, can we find some with Mapper??
-
-
-
-
-
-
-\subsection{Deep networks}
-\label{se:deep}
-
-The MLP expands on the regression model seen in section \ref{se:me}. In regression we have just two layers, the input $x$ and the output $(\hat{w})$ and the goal of the procedure was to estimate the output $\hat{y}$ via OLS or related methods that estimates the weights $\hat{w}$ of the inputs in the expression $\hat{y} = \sum_i \hat{w_i} x$. In MLP we add a hidden layer which computes a nonlinear function of the weighted sums of the input features. The linear function that the hidden units apply is called the activation function. For example
-\begin{equation}
-h_i = tanh(w_{i0}x_0 + w_{i1}x_1 + w_{i2}x_2 ....) \\
-\hat{y} = v_0 + h_0 + v_1 h_1 + ...
-\end{equation}
-%https://www.coursera.org/learn/python-machine-learning/lecture/v4cs3/neural-networks  
-\textit{tanh} is the hyperbolic tangent function which is related to the logistic function but it is not the only choice for activation function of the hidden units, for example, \textit{relu (hockey stick), logistic} etc. The \textit{relu} activation function is the default in sklearn.
-
-It is the addition of the hidden layer with the non linear function adds expressive power and it is what allows the network to learn more complex patterns than linear and logistic regression models. Of course this increase in expressive power comes at the price of having more weights (model coefficients) to estimate, that is, we need more training data and computation compared to a linear model \footnote{Memory, data and time are the limitations that have been overcome. The crude limitation in memory in computers (Gates infamously said  640K is good for anyone is not a problem anymore, data now there is too much of it that the problem is how to do something without it and the limitation these days it is time, but not computing time but developer-engineer time, humans cost money while computation is almost free.}.
-
-%https://www.wired.com/1997/01/did-gates-really-say-640k-is-enough-for-anyone/
-A deep-learning model is a directed, acyclic graph of layers. The topology of a network defines a hypothesis space.
-The components of neural networks are: layers (the architecture of the network), inputs and target, loss function (is the feedback learning that allows learning), optimizer (tell us if we are learning). The loss function is the difference (can be calculated in multiple ways) between the predicted y and the true y, it produces a loss score which is input to the optimizer whose output will update the weights. 
-Thus, what deep learning in particular and machine learning in general does is to search for useful representations of input data using the guidance of a feedback signal(loss function) within a predefined space of possibilities or hypothesis space. Note that the choice of the topology constraint the space of possibilities or hypothesis space to a specific series of tensor operations and what you ultimately expect to find is a good configuration of weight tensors. Picking the right network architecture is more an art than a science although you should try to rely as much as possible on good practices.
-
-The fundamental data structure is the layer, a layer is a processing device which takes one or more tensors and outputs one or more tensors. The state of the layer is given by the weights (tensor) learned with the optimizer (stochastic gradient descent).
-2D tensors of shape (samples, features), is often processed by densely connected layers, also called fully connected or dense layers. Sequence data, on the other hand, are stored in 3D tensors of shape (samples, timesteps, features), is typically processed by recurrent layers such as an LSTM layer. Image data, stored in 4D tensors, is usually processed by 2D convolution layers (Conv2D).
-%Chollet book pg 144
-
-
-System -> Loss/Objective function ( produces a number that we want to minimize during training)-> Optimizer (determines how the network will update the weights based on the loss)-> System 
-
-The optimizer is SGD of some sort of other but the loss function changes depending on the task, for a two-class classification problem choose binary crossentropy. Without an activation function like relu (also called a non-linearity), the Dense layer would consist of two linear operations—a dot product and an addition output = dot(W, input) + b; so the layer could only learn linear transformations (affine transformations) of the input data: the hypothesis space of the layer would be the set of all possible linear transformations of the input data into a number of units layer-dimensional space. 
-In order to get access to a richer hypothesis space (deep representations) we need non-linearity, or activation function, for example relu: output = relu(previous output). The optimizer \textit{rmsprop} should work in most situations.
-
-
-For the loss function, we can use crossentropy (distance between two probability distributions, in this case between ground-truth distribution and our predictions), mean squared error can also be used.
-Validate the approach consists in train the model for n epochs (n iterations over all samples in the x train and y train tensors) in mini batches of m samples, while at the same time monitor the loss and accuracy on the test data set.
-The validation set is created by setting apart  1,000? (10 per cent of the training) samples in the training data to use as a validation set
-%len(train_data) 8982
-%x_val = x_train[:1000]
-%partial_x_train = x_train[1000:]
-
-%y_val = one_hot_train_labels[:1000]
-%partial_y_train = one_hot_train_labels[1000:]
-%train the network fro 20 epcohs
-In Keras deep learning models are built by putting together compatible layers to form an useful data-transformation pipeline.  The Keras work flow is:
-\begin{enumerate}
-\item input and target tensors
-\item define model (layers that map inputs to targets)
-\item learning (compile) choose loss function, optimizer and loss score 
-\item learning (compile) choose loss function, optimizer and loss score 
-%model.compile(optimizer=optimizers.RMSprop(lr=0.001),loss='mse',metrics=['accuracy'])
-\item iterate on your training data %model.fit(input_tensor, target_tensor, batch_size=128, epochs=10
-
-\end{enumerate}
-
-%for example layers.Dense(32, input_shape=(784,)) is a layer with 32 units receiving 784 inputs, so it will only accept a 2D input tensor whose dimension 0 is 784, the layer output 32 dimensions. Thhus this can only cbe connected downstream to another layer that takes 32 as input, But Keras takes  care of this, you dont need to spec the input dimension. For examples:
-%model = models.Sequential()
-%model.add(layers.Dense(32, input_shape=(784,)))
-%model.add(layers.Dense(32)) #dont need to put 32 as input_shape it is inferred
-
-%cross validation
-In the evaluation (training phase) you also keep adjusting the network parameters (number of epochs, that is, find the minimum number of epochs beyond which the network overfits). We split the data into training set and validation set (eg $10\%$) but since we have so few data points (less than 100) we encounter the problem that the validation score has a high variance with regard to the validation split, that is, the score depends a lot on which data points you use to validate (add to this that the set is imbalance we may have by chance a validation set with 0 converters). It goes without saying that this would prevent from a reliable evaluation of the model. 
-The best practice to deal with this situation is to use K-fold cross validation, split the available data into K partitions (e.g. between 4 and 5) instantiating K identical models and training each one on K-1 partitions while evaluating on the remaining partition, that validations core is the average of the K validation scores.
-At the end we get a final production model with the "right" parameters (number of epochs, layers, units, optimizer, loss, activation) train the final production model on all the training data (now without separating for validation) with the best parameters and look at its performance on the test data.
-% for example, let us see that we found thge epochs = 80
-%model = build_model(); model.fit(train_data, train_targets,epochs=80, batch_size=16, verbose=0);
-%test_mse_score, test_mae_score = model.evaluate(test_data, test_targets)   
-
-
-
-
-
 
 
 
@@ -1134,6 +1096,7 @@ Other metrics that will be shown in the Results section are:
 	%from sklearn import matthews_corrcoef, matthews_corrcoef(y_pred, y_true) # tp*tn - fp*fn/ sqrt()
 	\item Zero one loss: computes the sum or average of the 0-1 classification loss $L_{0-1}$ over n samples. By default normalizes over the sample
 \end{itemize}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1273,6 +1236,49 @@ Figure \ref{fig:lr-cv7} shows the learning curve for the logistic regression cla
 %Good fit – Validation error low, slightly higher than the training error
 %Unknown fit - Validation error low, training error 'high'
 %If the training accuracy increases(positive slope) while the validation accuracy steadily decreases(negative slope) then a situation of over fitting may have occurred. Time to stop Training
+
+\subsection{k-nearest neighbors algorithm}
+\label{se:reskneighbors}
+Here we show the implementation of the k-nearest neighbors vote algorithm. The algorithm is characterized by minimal training time (the function is approximated locally) but expensive testing (all computation is deferred until classification).
+The algorithm will look for the optimal k among all possible odd vales, between 1 and 49 $(k=1,3,5,7....49)$ and will evaluate the results using cross validation $(cv=7)$, thus we will train the algorithm $50/2*cv$ times. 
+
+Table \ref{tab:knn} shows the classification metrics for k-nn algorithm. The k-nn algorithm is very good at predicting the 0 class (non converter) but it entirely fails at predicting the positive class (converters)
+\begin{table}[H]
+\caption{Classification metrics for k-nn} \label{tab:knn} 
+\begin{center} 
+\begin{tabular}{lllll}
+\hline
+\multicolumn{1}{c}{} \\
+%\cline{1}
+Class & precision & recall & f1-score & support     \\
+\hline
+0 & 0.90  &    0.98   &   0.94   &    164 \\
+1 & 0.20  &    0.05   &   0.08   &     19 \\
+\hline
+\end{tabular}
+\caption{The table shows  main classification metrics for the k-nn algorithm in the test set with $k=3$ and $cv=5$. The recall recall of the positive class is also known as \emph{sensitivity} is 0.05 the  recall of the negative class (\emph{specificity}) is 0.98. The algorithm suffers from the data unbalanced and it cannot deal with it because the algorithm is based on a majority vote of neighbors which will be on almost always 0, that is, the majority vote will be 0 in a population with $90\%$ of 0s and $10\%$ of 1s.}
+\end{center}
+\end{table}
+
+Figure \ref{fig:knn-cm} shows the confusion matrix and the Receiver Operating Characteristic (ROC) metric of the k-nn algorithm. 
+
+\begin{figure}[H]
+        \centering
+        \includegraphics[keepaspectratio, width=1\linewidth]{figures/KNN5-cv5_CM}
+        \caption{Confusion matrix and ROC for k-nn classifier. The algorithm clearly overfits, the accuracy of the training set is $100\%$, in the test set the \emph{specificity} is $(160/164)$ and the \emph{sensitivity} is very poor $(1/19)$. The k-nn algorithm fails to predict true positives.
+        }
+\label{fig:knn-cm}
+\end{figure}
+
+Figure \ref{fig:knn-cv3} shows the learning curve for the logistic regression classifier using cross-validation (7 splits).
+\begin{figure}[H]
+        \centering
+        \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/KNN3-cv5_curve}
+        \caption{Learning curve for k-nn, $k=3$, in red the training score and in green the cross-validation ($cv=5$)score. The algorithm clearly overfits, it perfectly models the training data but fails to generalize for examples of class 1 (converters).
+        }
+\label{fig:knn-cv3}
+\end{figure}
+
 
 \subsection{SVM}
 \label{se:ressvm}
@@ -1474,12 +1480,294 @@ Finally, Figure \ref{fig:dt-md5-dot} plots the Decision Tree.
 \subsection{Ensemble Methods}
 \label{se:resensemble}
 
-We have trained a bunch of classifiers in the previous secgtions (decition trees, SVMs,logistic regression and Naivr Bayers) a simple way to create a better classifier is to aggregate the predictions of each classifier, the predictions of the aggregate classifier is the class with the most votes. The majority-vote classifier is a hard classifier
+We have trained a bunch of classifiers in the previous sections (decision trees, SVMs, k-nn, logistic regression and Naive Bayes) a simple way to create a better classifier is to aggregate the predictions of each classifier, the predictions of the aggregate classifier is the class with the most votes. The majority-vote classifier is a hard classifier. 
 
+
+Table \ref{tab:ensemble} shows the classification metrics for the implemented Gaussian Naive Bayes classifier.
+\begin{table}[H]
+\caption{Classification metrics for Ensemble classifier} \label{tab:ensemble} 
+\begin{center} 
+\begin{tabular}{lllll}
+\hline
+\multicolumn{1}{c}{} \\
+%\cline{1}
+Class & precision & recall & f1-score & support     \\
+\hline
+0 & 0.91  &    0.90   &   0.91   &    164 \\
+1 & 0.20  &    0.21   &   0.21   &    19 \\
+\hline
+\end{tabular}
+\caption{The table shows the main classification metrics for the Ensemble classifier. The metrics for the negative class 0 (non-converter) are excellent but those for the converters are very poor due to the data unbalanced problem in our dataset.
+The accuracy of the VotingClassifier is 0.83, which makes it a stronger learner (accuracy) than the ensemble's components: decision tree acc=0.677, SVM acc=0.75, logit acc=0.67, but not stronger than the k-nn learner, acc=0.88.
+}
+\end{center}
+\end{table}
+
+
+\subsubsection{Bagging}
+\label{se:resrf}
+
+Decision trees are sensitive to the specific data on which they are trained (inestability problem mentioned in Section \ref{se:dectree}). In a bagged decision tree, first we create many random sub-samples of our dataset with replacement, we train the tree on reach sample to finally calculate the average prediction from each model. The only parameters when bagging decision trees is the number of samples and hence the number of trees to include.
 
 \textbf{Random Forest}
-\textbf{Gradient boost}
 
+Random forest is one of the most successful machine learning algorithms. A Random Forest is an ensemble of Decision Trees, trained via the  Bootstrap Aggregation aka bagging method. 
+%https://machinelearningmastery.com/bagging-and-random-forest-ensemble-algorithms-for-machine-learning/
+%with replacement (meaning we can select the same value multiple times).
+
+%OJO Literal https://machinelearningmastery.com/bagging-and-random-forest-ensemble-algorithms-for-machine-learning/
+%If the training data is changed (e.g. a tree is trained on a subset of the training data) the resulting decision tree can be quite different and in turn the predictions can be quite different.
+Random Forests are an improvement over bagged decision trees. Decision trees are greedy (CART algorithm) are greedy, that is to say, the selected variable to split is the one that minimizes the error without concern of what will happen down the road. As such, even with Bagging, the decision trees can have a lot of structural similarities and in turn have high correlation in their predictions. Combining predictions from multiple models in ensembles works better if the predictions from the sub-models are uncorrelated or at best weakly correlated.
+%OJO Literal 
+Random forest changes the algorithm for the way that the sub-trees are learned so that the resulting predictions from all of the subtrees have less correlation. In CART, when selecting a split point, the learning algorithm is allowed to look through all variables and all variable values in order to select the most optimal split-point. The random forest algorithm changes this procedure so that the learning algorithm is limited to a random sample of features of which to search. The number of features that can be searched at each split point (m) must be specified as a parameter to the algorithm. You can try different values and tune it using cross validation (by default $\sqrt(m)$).
+
+We show the results with random forest built with the optimal hyperparameters estimated with the GridSearchCV procedure
+: 
+\begin{quote}
+$max\_features=(10,100,1000), max\_leaf\_nodes=(2,4,8,16), n\_estimators=(8,18,28)$ and  $min\_samples\_leaf=(8,16,32)$.
+\end{quote}
+%parameters = {'n_estimators':10 ** np.arange(1,4), 'max_features':2 ** np.arange(0, 5), 'min_samples_leaf':[8,18,28], 'max_leaf_nodes':[8,16,32]}
+
+Figure \ref{fig:rf_cm} shows the confusion matrix and the ROC for random forest. 
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{.8\textwidth}
+        \centering
+        \includegraphics[height=1.7in]{figures/RF_CM}
+        \caption{Confusion matrix and AUC for random forest classifier with the hyperparameters set to 1000 decision trees, $max\_features= 10$, $min\_samples\_leaf=28$ and $max\_leaf_nodes=16$}
+    \end{subfigure}
+    ~ 
+    \begin{subfigure}[t]{.8\textwidth}
+        \centering
+        \includegraphics[height=1.7in]{figures/RFGrid_CM}
+        \caption{Confusion matrix and AUC for random forest classifier with the optimal hyperparameters calculated with the GridSearchCv algorithm. The random forest has excellent accuracy but it entirely fails to detect positives in the test set.}
+    \end{subfigure}%\quad
+    \label{fig:rf_cm}
+    \caption{Confusion matrix and AUC for random forest classifier (top) and random forest with optimal hyperparameters that maximize scoring (down)}
+\end{figure}
+
+Figure \ref{fig:rf_learning} shows the learning rate for random forest classifier. 
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{.8\textwidth}
+        \centering
+        \includegraphics[height=2.5in]{figures/RF_learning}
+        \caption{Learning curve of the random forest classifier with the hyperparameters set to 1000 decision trees, $max\_features= 10$, $min\_samples\_leaf=28$ and $max\_leaf_nodes=16$.}
+    \end{subfigure}
+    ~ 
+    \begin{subfigure}[t]{.8\textwidth}
+        \centering
+        \includegraphics[height=2.5in]{figures/RFGrid_learning}
+        \caption{Learning curve of the random forest classifier with optimal hyperparameters calculated with the GridSearchCV search algorithm.}
+    \end{subfigure}%\quad
+    \label{fig:rf_learning}
+    \caption{Learning curve for random forest classifier, in red the training score and in green the cross-validation ($cv=3$) score. The learner overfits and more data will likely improve the predictions.}
+\end{figure}
+
+Figure \ref{fig:rf-features} identifies the most important features of the random forest which are cognitive complaints, age, depression and income level.
+\begin{figure}[H]
+        \centering
+        \includegraphics[keepaspectratio, width=1\linewidth]{figures/DT_depth5-featuresimportance}
+        \caption{On the left the ranking of the most important features of the random forest. The four most important features ( purer splits) are cognitive complaints, age, depression and income level. On the right it is shown that 32 features are enough to provide $95\%$ of the total information of the forest (1000 trees).   
+        }
+\label{fig:rf-features}
+\end{figure}
+
+\subsubsection{Boosting}
+\label{se:resgradboosting}
+
+Before we saw the bagging (bootstrap aggregating) method Random forest, now we will explore boosting methods.
+Boosting is a sequential process that can combine several weak learners into a strong learner. Bootstrap Aggregation is a general procedure used to reduce the variance for those algorithm that have high variance, for example  decision trees. . The general idea of boosting is to have predictors that are sequentially trained, each trying to correct its predecessor, that is to say, each subsequent model attempts to correct the errors of the previous model.
+The most popular boosting methods are AdaBoost (short for Adaptive Boosting) and Gradient Boosting and are studied next.
+
+\textbf{Adaptive Boosting (AdaBoost)}
+In Adaptive boosting or AdaBoost, multiple sequential models are created, each correcting the errors from the last model. AdaBoost assigns weights to the observations which are incorrectly predicted and the subsequent model works to predict these values correctly. The AdaBoost algorithm works by initially giving equal weight sot all observations as predictors are built and evaluated 
+higher weights are given to the data points which were predicted incorrectly. This process is repeated until the error function does not change, or the maximum limit of the number of estimators is reached.
+
+Table \ref{tab:ada} shows the classification metrics for the implemented Gaussian Naive Bayes classifier.
+\begin{table}[H]
+\caption{Classification metrics for Ensemble classifier} \label{tab:ada} 
+\begin{center} 
+\begin{tabular}{lllll}
+\hline
+\multicolumn{1}{c}{} \\
+%\cline{1}
+Class & precision & recall & f1-score & support     \\
+\hline
+0 & 0.90  &    0.99   &   0.94   &    164 \\
+1 & 0.33  &    0.05   &   0.09   &    19 \\
+\hline
+\end{tabular}
+\caption{The table shows the main classification metrics for the AdaBoost classifier. The metrics for the negative class 0 (non-converter) are excellent but those for the converters are extremely poor due to the data unbalanced problem in our dataset.
+}
+\end{center}
+\end{table}
+
+Figure \ref{fig:rf_ada} shows the confusion matrix and the ROC for AdaBoost algorithm. 
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{.8\textwidth}
+        \centering
+        \includegraphics[height=1.7in]{figures/ADA_CM-20-1-5}
+        \caption{Confusion matrix and AUC for AdaBoost algorithm with the hyperparameters set to 20 estimators; learning rate 1 and  $max\_depth=5$}
+    \end{subfigure}
+
+    \label{fig:rf_ada}
+    \caption{Confusion matrix and AUC for the AdaBoost algorithm which as we can see clearly learns the perfectly the training set and the test set for non converters but fails to correctly classify the few converters in the test set. }
+\end{figure}
+
+Figure \ref{fig:rf_learning} shows the learning rate for random forest classifier. 
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{.8\textwidth}
+        \centering
+        \includegraphics[height=2.5in]{figures/ADA_CM-20-1-5_cv7learning}
+        \caption{Learning curve of the AdaBoost classifier with  hyperparameters set to 20 estimators; learning rate 1 and  $max\_depth=5$. The algorithm clearly overfits, it will then benefit from more, the other canonical approach for dealing with overfitting -simplifying the model (reduce the number of estimators)- does not help.}
+    \end{subfigure}
+
+    \label{fig:rf_learning}
+    \caption{Learning curve of the AdaBoost classifier, in red the training score and in green the cross-validation ($cv=3$) score. The learner clearly overfits and more data will likely improve the predictions.}
+\end{figure}
+
+% OJO literal Geron
+%One way for a new predictor to improve its predecessor is to try to correct those instances that the predecessor uderfitted. Thus, we can imagine a chain of predictors, one attached to the next, if the first classifier gets many instances wrong, their weight get boosted (initially each predictor has a weight $1/m$, m number of predictors) and the second classifier therefore does a better job on these instances and so on. Once all predictors are trained, the ensemble makes predictions very much like bagging or pasting, except that predictors have different weights depending on their overall accuracy on the weighted training set. This sequential structure of predictors in the the AdaBoost algorithm makes impossible (as it was the case in bagging) to parallelize predictors.
+%
+%from sklearn.ensemble import AdaBoostClassifier
+%ada_clf = AdaBoostClassifier(
+%        DecisionTreeClassifier(max_depth=1), n_estimators=200,
+%        algorithm="SAMME.R", learning_rate=0.5
+%    )
+%ada_clf.fit(X_train, y_train)”
+
+
+%\textbf{Gradient Boosting}
+
+
+\subsection{Deep Learning}
+\label{sse:resdeep}
+
+We will use both the sklearn and the Python library Keras to implement deep networks. Keras is a deep-learning framework for Python that provides a convenient way to define and train almost any kind of deep-learning model. 
+Keras provides a high-level API for developing deep-learning models supporting different backend including TensorFlow \footnote{TensorFlow is itself wrapping a low-level library for tensor operations called Eigen. On GPU, Tensor-Flow wraps a library of well-optimized deep-learning operations called the NVIDIA CUDA Deep Neural Network library (cuDNN).}, Theano and the Microsoft Cognitive Toolkit (CNTK). Keras is able to run in both CPUs and GPUs. 
+%It doesn’t handle low-level operations such as tensor manipulation and differentiation. Instead, it relies on a specialized, well-optimized tensor library to do so, serving as the backend engine of Keras. Rather than choosing a single tensor library and tying the implementation of Keras to that library, Keras handles the problem in a modular way; thus several different backend engines e.g. , Theano backend, and the Microsoft Cognitive Toolkit (CNTK) can be plugged seamlessly into Keras. 
+
+When building a deep learning model there are two key architecture decisions to be made are, How many layers to use and How many units per layer. Additionally, we need to select the activation function for each layer e.g. ReLU, sigmoid. A ReLU function return 0 for negative values and 1 for positive ones and a sigmoid “squashes” arbitrary values into the $[0, 1]$ interval something which can be directly interpreted as a probability.
+
+\textbf{sklearn MLP}
+%http://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html
+
+Figure \ref{fig:mlp_cm} shows the confusion matrix and the ROC for different MLPs created using a regularization term $alpha = 0.01$ and the solver for weight optimization a quasi-Newton method (lbfs). Adam and stochastic gradient descent optimizers methods have worse performance. Sice we use lbfs the classifier does not use minibatches as would be the case for stochastic optimizers
+%‘lbfgs’ is an optimizer in the family of quasi-Newton methods.
+%‘sgd’ refers to stochastic gradient descent.
+%‘adam’ refers to a stochastic gradient-based optimizer proposed by Kingma, Diederik, 
+%alpha : float, optional, default 0.0001 L2 penalty (regularization term) parameter.
+%Size of minibatches for stochastic optimizers. If the solver is ‘lbfgs’, the classifier will not use minibatch. When set to “auto”, batch_size=min(200, n_samples)
+
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[t]{1\textwidth}
+        \centering
+        \includegraphics[height=1.7in]{figures/MLP-1-1}
+        \caption{Confusion matrix and the ROC for MLP with 1 hidden layer with only one unit. The network predicts always the majority class (non converter)}
+    \end{subfigure}
+
+    \begin{subfigure}[t]{1\textwidth}
+        \centering
+        \includegraphics[height=1.7in]{figures/MLP-1-10}
+        \caption{Confusion matrix and the ROC for MLP with 1 hidden layer with 10 units. The network overfits, provides excellent results for the training set bit less good for the test set especially for the positive class (converters)}
+    \end{subfigure}%\quad
+
+    \begin{subfigure}[t]{1\textwidth}
+        \centering
+        \includegraphics[height=1.7in]{figures/MLP-1-100}
+        \caption{Confusion matrix and the ROC for MLP with 1 hidden layer with 100 units. The network overfits, provides perfect results for the training set.}
+    \end{subfigure}%\quad
+
+    \begin{subfigure}[t]{1\textwidth}
+        \centering
+        \includegraphics[height=1.7in]{figures/MLP-16-16-32}
+        \caption{Confusion matrix and the ROC for MLP with 3 hidden layer with 16,16 and 32 units each. The network overfits, provides perfect results for the training set.}
+    \end{subfigure}%\quad
+    \label{fig:mlp_cm}
+    \caption{Confusion matrix and the ROC for different MLPs. All except the first MLP (1 layer 1 unit) overfits, the MLPm 1 layer/100 units and the deep network with 3 layers with 16,16,12 units per layer learn perfectly the training set. MLPs overfit more data will help improve the \emph{sensitivity} (recall of the positive class).}
+\end{figure}
+
+
+Figure \ref{fig:mlp_learning} shows the learning rate for MLPs.
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[t]{1\textwidth}
+        \centering
+        \includegraphics[height=1.7in]{figures/MLP-1-1_learning}
+        \caption{Learning curve for MLP with 1 hidden layer with only 1 unit.}
+    \end{subfigure}
+
+    \begin{subfigure}[t]{1\textwidth}
+        \centering
+        \includegraphics[height=1.7in]{figures/MLP-1-10_learning}
+        \caption{Learning curve for MLP with 1 hidden layer with 10 units.}
+    \end{subfigure}%\quad
+
+    \begin{subfigure}[t]{1\textwidth}
+        \centering
+        \includegraphics[height=1.7in]{figures/MLP-1-100_learning}
+        \caption{Learning curve for MLP with 1 hidden layer with 100 units.}
+    \end{subfigure}%\quad
+
+    \begin{subfigure}[t]{1\textwidth}
+        \centering
+        \includegraphics[height=1.7in]{figures/MLP-16-16-32_learning}
+        \caption{Learning curve for MLP with 3 hidden layers with 16,16,32 units each.}
+    \end{subfigure}%\quad
+    \label{fig:mlp_learning}
+    \caption{Learning curve for  MLPs, in red the training score and in green the cross-validation ($cv=7$) score. MLPs overfit and more data will likely improve the predictions. Interestingly, the deep network (3 hidden layers $16 \times 16 \times 32$ parameters) does not substantially improve the results of the network with one layer and 100 units (100 parameters).}
+\end{figure}
+
+
+\textbf{Keras}
+In Keras, deep learning models are built by putting together compatible layers to form an useful data-transformation pipeline. The snippet \ref{deepkeras} creates a three-layer network, the first and second layers have both 16 units with \emph{ReeLU} activation and the last layer is one neuron with a \emph{sigmoid} activation function to approximate a probability.
+
+\begin{code}[caption=Deep network 3 layers, label=deepkeras]
+from keras import models, layers
+#model architecture with 3 layers
+model = models.Sequential()
+model.add(layers.Dense(16, activation='relu', input_shape=(X.shape[0],)))
+model.add(layers.Dense(16, activation='relu'))
+model.add(layers.Dense(1, activation='sigmoid'))
+#optimizer and loss function
+model.compile(optimizer='rmsprop',loss='binary_crossentropy',metrics=['accuracy'])
+
+\end{code}
+Without an activation function like \emph{ReeLU} (also called a non-linearity), the Dense layer would consist of two linear operations—a dot product and an addition $output = dot(W, input) + b$; so the layer could only learn linear transformations (affine transformations) of the input data: the hypothesis space of the layer would be the set of all possible linear transformations of the input data into a number of units layer-dimensional space. 
+In order to get access to a richer hypothesis space (deep representations) we need non-linearity, or activation function, for example \emph{ReeLU}: output = relu(previous output). The optimizer \textit{rmsprop} should work in most situations.
+%YS: literal
+
+For the loss function, we can use crossentropy (distance between two probability distributions, in this case between ground-truth distribution and our predictions), mean squared error can also be used. 
+
+%Validation consists in training the model for n epochs (n iterations over all samples in the x train and y train tensors) in mini batches of m samples, while at the same time monitor the loss and accuracy on the test data set.
+%The validation set is created by setting apart  1,000? (10 per cent of the training) samples in the training data to use as a validation set
+
+% The Keras work flow is:
+% \begin{enumerate}
+% \item input and target tensors
+% \item define model (layers that map inputs to targets)
+% \item learning (compile) choose loss function, optimizer and loss score 
+% %model.compile(optimizer=optimizers.RMSprop(lr=0.001),loss='mse',metrics=['accuracy'])
+% \item iterate on your training data %model.fit(input_tensor, target_tensor, batch_size=128, epochs=10
+% \end{enumerate}
+
+%for example layers.Dense(32, input_shape=(784,)) is a layer with 32 units receiving 784 inputs, so it will only accept a 2D input tensor whose dimension 0 is 784, the layer output 32 dimensions. Thhus this can only cbe connected downstream to another layer that takes 32 as input, But Keras takes  care of this, you dont need to spec the input dimension. For examples:
+%model = models.Sequential()
+%model.add(layers.Dense(32, input_shape=(784,)))
+%model.add(layers.Dense(32)) #dont need to put 32 as input_shape it is inferred
+
+%cross validation
+%In the evaluation (training phase) you also keep adjusting the network parameters (number of epochs, that is, find the minimum number of epochs beyond which the network overfits). We split the data into training set and validation set (eg $10\%$) but since we have so few data points (less than 100) we encounter the problem that the validation score has a high variance with regard to the validation split, that is, the score depends a lot on which data points you use to validate (add to this that the set is imbalance we may have by chance a validation set with 0 converters). It goes without saying that this would prevent from a reliable evaluation of the model. 
+%The best practice to deal with this situation is to use K-fold cross validation, split the available data into K partitions (e.g. between 4 and 5) instantiating K identical models and training each one on K-1 partitions while evaluating on the remaining partition, that validations core is the average of the K validation scores.
+%At the end we get a final production model with the "right" parameters (number of epochs, layers, units, optimizer, loss, activation) train the final production model on all the training data (now without separating for validation) with the best parameters and look at its performance on the test data.
+% for example, let us see that we found thge epochs = 80
+%model = build_model(); model.fit(train_data, train_targets,epochs=80, batch_size=16, verbose=0);
+%test_mse_score, test_mae_score = model.evaluate(test_data, test_targets)  
 
 
 
@@ -1579,6 +1867,75 @@ The network or model capacity is the number of learnable parameters -number of l
 
 
 \section{Appendix}
+%Instead of building a BaggingClassifier and passing it a DecisionTreeClassifier, you can instead use the RandomForestClassifier class, which is more convenient and optimized for Decision Trees.
+
+
+%for example for 3 coins np.power(0.49,3) + 3*(np.power(0.49,2)*0.55 + np.power(0.51,2)*0.49)  +np.power(0.51,3)
+% p(aaa) or p(aab) = 0.51499 = 3*np.power(0.51,2)*0.49  +np.power(0.51,3)
+%However, this is only true if all classifiers are perfectly independent, making uncorrelated errors, which is clearly not the case since they are trained on the same data. The voters will likely make the same types of errors, since they were trained on the same data, so there will be many majority votes for the wrong class, reducing the ensemble’s accuracy.
+
+%pg 279 “from sklearn.ensemble import RandomForestClassifier
+%from sklearn.ensemble import VotingClassifier
+%from sklearn.linear_model import LogisticRegression
+%from sklearn.svm import SVC
+
+%log_clf = LogisticRegression()
+%rnd_clf = RandomForestClassifier()
+%svm_clf = SVC()
+
+%voting_clf = VotingClassifier(
+%        estimators=[('lr', log_clf), ('rf', rnd_clf), ('svc', svm_clf)],
+%        voting='hard'
+%    )
+%voting_clf.fit(X_train, y_train)”
+%“>>> from sklearn.metrics import accuracy_score
+%>>> for clf in (log_clf, rnd_clf, svm_clf, voting_clf):
+%>>>     clf.fit(X_train, y_train)
+%>>>     y_pred = clf.predict(X_test)
+%>>>     print(clf.__class__.__name__, accuracy_score(y_test, y_pred))
+%LogisticRegression 0.864
+%RandomForestClassifier 0.872
+%SVC 0.888
+%VotingClassifier 0.896”
+
+
+
+\textbf{Bagging and Pasting}
+Before we saw how to introduce variability by using different classifiers, another way to introduce diversity in the voters is using the same algorithm but trained in different datasets ie. Bagging and Pasting.
+%for Pasting BaggingClassifier(...bootstrap=False
+“When sampling is performed with replacement, this method is called bagging (short for bootstrap aggregating). When sampling is performed without replacement, it is called pasting.”. “Both bagging and pasting allow training instances to be sampled several times across multiple predictors, but only bagging allows training instances to be sampled several times for the same predictor” \cite{geron2017hands}
+
+So for one training set we get n training sets by sampling it randomly (with replacement for bootstrap) and then training on each sample.“Once all predictors are trained, the ensemble can make a prediction for a new instance by simply aggregating the predictions of all predictors”. “The aggregation function is typically the statistical mode (i.e., the most frequent prediction, just like a hard voting classifier) for classification, or the average for regression”. Note that each individual predictor has a larger bias than if it were trained on the original (same size) dataset but aggregation reduces both bias and variance.
+Bagging and Pasting scale very well because they can be trained and also predict in parallel (GPUs).
+
+%“ BaggingClassifier automatically performs soft voting instead of hard voting if the base classifier can estimate class probabilities ”
+
+%“from sklearn.ensemble import BaggingClassifier
+%from sklearn.tree import DecisionTreeClassifier
+
+%bag_clf = BaggingClassifier(
+%        DecisionTreeClassifier(), n_estimators=500,
+%        max_samples=100, bootstrap=True, n_jobs=-1
+%    )
+%bag_clf.fit(X_train, y_train)
+%y_pred = bag_clf.predict(X_test)”
+“Overall, bagging often results in better models than pasting, which explains why it is generally preferred”
+“With bagging, some instances may be sampled several times for any given predictor, while others may not be sampled at all”
+
+%bag_clf.oob_score_ is a proxy of accuracy in the test test, because some samples will never see them, the out of bag
+%“oob_decision_function_ variable. In this case (since the base estimator has a predict_proba() method) the decision function returns the class probabilities for each training instance” tells the estimate of class for each training instance
+
+
+
+
+
+
+%http://blog.kaggle.com/2014/08/01/learning-from-the-best/
+%“from sklearn.ensemble import RandomForestClassifier
+
+%rnd_clf = RandomForestClassifier(n_estimators=500, max_leaf_nodes=16, n_jobs=-1)
+%rnd_clf.fit(X_train, y_train)
+%“With a few exceptions, a RandomForestClassifier has all the hyperparameters of a DecisionTreeClassifier (to control how trees are grown), plus all the hyperparameters of a BaggingClassifier to control the ensemble itself”
 
 \textbf{The kernel trick}
  %“ It makes it possible to get the same result as if you added many polynomial features, even with very high-degree polynomials, without actually having to add them. ”
