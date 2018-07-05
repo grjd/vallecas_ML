@@ -9,6 +9,8 @@
 \usepackage{helvet}
 \usepackage[utf8]{inputenc}
 \usepackage[utf8]{luainputenc}
+%\usepackage{floatrow}
+
 
 %\usepackage[T1]{fontenc}
 %\usepackage{pgffor}
@@ -19,6 +21,11 @@
 \usepackage{fancyhdr}
 \usepackage{lastpage}
 \usepackage{amsfonts, amsmath, amsthm, amssymb}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+ 
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
 \usepackage{graphicx, wrapfig, subcaption, setspace, booktabs}
@@ -210,7 +217,7 @@ The CRoss Industry Standard Process for Data Mining (CRISP-DM model) is the most
         \centering
         \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/crisp}
         \caption{\emph{Proyecto Vallecas} adopts CRISP-DM \ref{crispdmwiki} as the methodology of choice for analytics and data mining. CRISP-DM was conceived around 1996  and is to this day the most important methodology in data science projects. It consists in a 6 high-level iterative phases. The adoption of this kind of methodology is crucial to deal with random and false discoveries, specially in Big Data projects like ours.}
-\label{fig:tableclustervallecas}
+\label{fig:crisp}
 \end{figure}
 
 \section{Exploratory Data Analysis}
@@ -788,7 +795,7 @@ We use the scikit learn implementation of decision trees algorithm (CART) which 
 A decision tree can also estimate the probability that an instance belongs to a class (SVM does not have this feature)
 % tree_clf.predict_proba
 
-The CART algorithm is \textbf{greedy}: looks for the optimum split at top level but does not care if the split will lead to the lowest impurity several levels down. It does the optimum split at the top and never thinks twice about the consequences down the road (\emph{trickle down economics}). CART does not guarantee to find the optimal solution, it splits the training set using feature k and threshold $t_k$, the algorithm chooses then the pair $(k,t_k)$ by looking for the split that produces the purest split weighted by the size, so the cost function that the algorithm minimizes has an impurity term factored by the size term for both right and left side 
+The CART algorithm is \textbf{greedy}: looks for the optimum split at the top level but does not care if the split will lead to lower impurity in the downstream levels. It does the optimum split at the top and never thinks twice about the consequences down the road (\emph{trickle down economics}). CART does not guarantee to find the optimal solution, it splits the training set using feature k and threshold $t_k$, the algorithm chooses then the pair $(k,t_k)$ by looking for the split that produces the purest split weighted by the size, so the cost function that the algorithm minimizes has an impurity term factored by the size term for both right and left side 
 
 \begin{equation}\label{eq:cart}
 J(k,t_k) = \frac{m_{left}}{m}G_{left} + \frac{m_{right}}{m}G_{right}
@@ -870,8 +877,11 @@ The drawback of Boosting is that it is sequential and therefore it can't be para
 “If your AdaBoost ensemble is overfitting the training set, you can try reducing the number of estimators or more strongly regularizing the base estimator.”
 
 \textbf{Boosting}
+
 Boosting is any ensemble method that combine weak learners into a strong learner. The idea is to train predictors sequentially each trying to correct its predecessor. AdaBoost (short for adaptive boosting) and Gradient boosting are the most common algorithms.
+
 \textbf{Gradient Boosting}
+
 Gradient Boosting is also sequential like Ada, but rather than tweaking the weights of the instances, GB tries to fit the new predictor to the residual errors.
 
 Random forest and gradient boosted are both tree based ensemble methods. Like Random forest Gradient boosted creates an ensemble of decision tree to create more powerful predictive models for classification and regression. Random forest is a bagging algorithm Gradient boosted is a boosted algorithm, bagging reduces variability (stability of the classifier) and boosting reduces both variance and bias. It reduces variance because you are using multiple models as we do in bagging and it reduces bias by training the subsequent model by telling him what errors the previous models.
@@ -901,7 +911,7 @@ Multilayer perceptron (MLP) can be used for both classification and regression. 
  
 Graphically representations of the architecture of regression models -linear and logistic- are shown in Figure \ref{fig:mich}. 
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \begin{subfigure}[t]{.8\textwidth}
         \centering
@@ -927,7 +937,7 @@ The components of neural networks are: layers (the architecture of the network),
 Thus, what deep learning in particular and machine learning in general does is to search for useful representations of input data using the guidance of a feedback signal (loss function) within a predefined space of possibilities or hypothesis space. Note that the choice of the topology constraint the space of possibilities or hypothesis space to a specific series of tensor operations and what you ultimately expect to find is a good configuration of weight tensors. Picking the right network architecture is more an art than a science although one should always try to rely as much as possible on good practices.
 
 The fundamental data structure in a deep network is the layer. A layer is a processing device which takes one or more tensors and outputs one or more tensors. The state of the layer is given by the weights (tensor) learned with the optimizer (stochastic gradient descent).
-2D tensors of shape (samples, features), is often processed by densely connected layers, also called fully connected or dense layers. Sequence data, on the other hand, are stored in 3D tensors of shape (samples, timesteps, features), is typically processed by recurrent layers such as an LSTM layer. Image data, stored in 4D tensors, is usually processed by 2D convolution layers (Conv2D) \cite{chollet2017deep}.
+2D tensors of shape (samples, features), is often processed by densely connected layers, also called fully connected or dense layers. Sequence data, on the other hand, are stored in 3D tensors of shape (samples, time steps, features), is typically processed by recurrent layers such as an LSTM layer. Image data, stored in 4D tensors, is usually processed by 2D convolution layers (Conv2D) \cite{chollet2017deep}.
 %Chollet book pg 144
 
 The main components of a neural network (deep or not) are as follows.
@@ -938,11 +948,11 @@ The main components of a neural network (deep or not) are as follows.
 	\item Optimizer: determines learning: how the network will update the weights based on the loss
 
 \end{itemize}
-A schmematic representation of the architecture of neural networks is shown in figure \ref{fig:cholletfig}.
+A schematic representation of the architecture of neural networks is shown in figure \ref{fig:cholletfig}.
 
 \begin{figure}[H]
         \centering
-        \includegraphics[keepaspectratio, width=1\linewidth]{figures/cholletfigure}
+        \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/chollet}
         \caption{Neural networks build maps of input data to predictions. The loss function is the feedback signal that tells how good the model is doing. The difference between the prediction and the actual target is the loss value which is used by the optimizer to update the network's weight in order to produce a better prediction in the next iteration.
         }
 \label{fig:cholletfig}
@@ -950,44 +960,100 @@ A schmematic representation of the architecture of neural networks is shown in f
 
 The optimizer is a stochastic gradient descent (SGD) of some sort of other but the loss function changes depending on the task, for a two-class classification problem use binary crossentropy as loss function. 
 
-The results produced by the implementation of deep network is shown in Section \ref{sse:resdeep}.
+The trade-off between optimization and generalization is the main issue in machine learning. Optimization refers to the process of adjusting a model to get the best performance possible on the training data (the learning in machine learning), whereas generalization refers to how well the trained model performs on data it has never seen before.
+Validation is used in order to deal with information leakage that could drive overfitting in the model.
+
+A validation set of for example the $10\%$ of our training set gives us only 73 samples, a small number so the validation scores might have a high variance with regard to the validation split possibly preventing us from reliably evaluating the model. The best practice to deal with this situation is to use K-fold cross validation, split the available data into K partitions (e.g. between 4 and 5) instantiating K identical models and training each one on K-1 partitions while evaluating on the remaining partition, that validations core is the average of the K validation scores.  Figure \ref{fig:xvalchollet} represents the cross validation process to effectively deal with high variance in the validation set \ref{chollet2017deep}. 
+\begin{figure}[H]
+        \centering
+        \includegraphics[keepaspectratio, width=1\linewidth]{figures/xvalidationchollet}
+        \caption{You train on the training data and evaluate your model on the validation data. Once your model is ready for prime time, you test it one final time on the test data. Cross validation  information leaks running one experiment, evaluating on the validation set, and modifying your model as a result—then you’ll leak an increasingly significant amount of information about the validation set into the model At the end of the day, you’ll end up with a model that performs artificially well on the validation data, because that’s what you optimized it for.
+        }
+\label{fig:xvalchollet}
+\end{figure}
+
+The results produced by the implementation of deep network using both sklearn and keras are shown in Section \ref{sse:resdeep}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%ç
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Clustering}
+\subsection{Dimensionality reduction and Unsupervised learning}
 
+Computers can deal with as many dimensions as they like, humans on the other hand are limited to 3. To visualize large (larger than 3) dimensionality datasets we need to reduce the number of dimensions to 3 or less. The rationale is that despite the apparent large dimensionality the intrinsic dimensionality is low, or at least lower. For example a 10 mega pixels video camera rotating to film some scene build a 10 million dimensional space and yet the images approximately lie in a 3D space (yaw, pitch, roll), this embedding is certainly complex and nonlinear.
 %https://towardsdatascience.com/reducing-dimensionality-from-dimensionality-reduction-techniques-f658aec24dfe
-We can also "test" using clustering (K-means, hierarchical clustering) our domain specific partition. Clustering is associated with unsupervised learning but it could be useful to exploit out domain specific knowledge tin order to obtain more discriminant features (distributional clustering) \cite{guyon2003introduction}. Distributional clustering is related to information bottleneck \cite{tishby2015deep} searches for the solution that achieves the largest possible compression while retaining the essential information about the target.
-Another method of feature construction is single value decomposition (SVD) an unsupervised method of feature construction, the goal of SVD is to form a set of features that are liner combinations of the original variables which provide the best reconstruction in the least square sense \cite{duda2012pattern}.  
+Clustering is associated with unsupervised learning but it could be useful to exploit out domain specific knowledge in order to obtain more discriminant features (distributional clustering) \cite{guyon2003introduction}. Distributional clustering is related to information bottleneck \cite{tishby2015deep}, it searches for the solution that achieves the largest possible compression while retaining the essential information about the target.
+
+Performing dimensionality reduction before clustering or even supervised learning is considered a good practice. The unsupervised learning problem can be stated as follows. Given a set of n observations $x_1, ..., x_n$ of a random p-vector X having joint density $Pr(X)$, we want to infer the properties of this distribution without the help of a "teacher" providing correct answers or degree of error for each observation. % \cite{}.
+
+Here we will study unsupervised learning methods to the Vallecas dataset, which in this case is not anymore a labeled dataset as it was in the previous section. The goal is then to learn in the absence of a "teacher" by building internal representations that reconstruct input data patterns.
+In what follows we build a number of unsupervised algorithms to study clusters in sample space. We are looking for internal representations in input space and dimensionality reduction that compress features into meaningful ways, ideally producing a division between converters and non converters. We start with Hierarchical clustering (Section \ref{sse:hierarchical}), then we implement principal component analysis (Section \ref{sse:PCA}) and single value decomposition (Section \ref{sse:SVD}). Manifold learning will be also studied (Section \ref{sse:manifold}). Manifold learning also called nonlinear dimensional reduction is an unsupervised method that deals with discovering the hidden simpler structure in a high dimensional dataset.
+
+
+\subsubsection{Hierarchical clustering}
+\label{sse:hierarchical}
+
+Hierarchical clustering involves creating clusters that have a predetermined ordering from top to bottom. Hierarchical clustering fall into two main strategies: 
+\begin{itemize}
+	\item Agglomerative (bottom up): each observation starts in its own cluster, and pairs of clusters are merged as one moves up the hierarchy
+	\item Divisive (top down): all observations start in one cluster, and splits are performed recursively as one moves down the hierarchy.
+\end{itemize}
+The results of hierarchical clustering are usually presented in a dendrogram \footnote{dendrogram from greek dendrog: "tree" and gramma "drawing"}.
+
+The results produced by the implementation of Hierarchical clustering are shown in Section \ref{sse:reshierarchical}.
 
 \subsubsection{PCA}
-\subsubsection{Singular Value Decomposition}
-TruncatedSVD is very similar to PCA, but differs in that it works on sample matrices X directly instead of their covariance matrices. Note that when the columnwise (per-feature) means of X are subtracted from the feature values, truncated SVD on the resulting matrix is equivalent to PCASVD deals more efficiently with sparse matrices than PCA (this is because it does not center the data before doing SVD) \cite{halko2009finding}. When truncated SVD is applied to term-document matrices, this transformation is known as latent semantic analysis (LSA), because it transforms such matrices to a “semantic” space of low dimensionality (combat the effects of synonymy and polysemy which cause term-document matrices to be overly sparse and exhibit poor similarity under measures such as cosine similarity).
+\label{sse:PCA}
+Principal component analysis (PCA) is  method to find the directions (principal components) in which the data has maximum variance. An eigenvalue is a number that tells us how the data set is spread out on the line which is an eigenvector. Thus, an eigenvector with the highest eigenvalue is the Principal Component. In addition to eigen-decomposition of the covariance matrix, PCA can also be performed via singular value decomposition (SVD) of the data matrix.
+
+\textbf{Singular Value Decomposition}
+
+Single value decomposition (SVD) is an unsupervised method of feature construction, the goal of SVD is to form a set of features that are liner combinations of the original variables which provide the best reconstruction in the least square sense \cite{duda2012pattern}. TruncatedSVD, the algortihm that will be implemented  int he Results Section \ref{sse:resunsupervised} is very similar to PCA, but differs in that it works on sample matrices X directly instead of their covariance matrices. 
+
+Note that when the columnwise (per-feature) means of X are subtracted from the feature values, truncated SVD on the resulting matrix is equivalent to PCASVD deals more efficiently with sparse matrices than PCA (this is because it does not center the data before doing SVD) \cite{halko2009finding}. When truncated SVD is applied to term-document matrices, this transformation is known as latent semantic analysis (LSA), because it transforms such matrices to a “semantic” space of low dimensionality (combat the effects of synonymy and polysemy which cause term-document matrices to be overly sparse and exhibit poor similarity under measures such as cosine similarity).
 Mathematically, truncated \footnote{Truncated means just that the algorithm will return matrices with the specified number of columns (k). This is precisely how the dimensionality is reduced.} SVD applied to training samples X produces a low-rank approximation:
 \begin{equation}
 X \sim X_k = U \sum V
 \end{equation}
 
+The results produced by the implementation of PCA using both eigen-decomposition and single value decomposition are are shown in Section \ref{sse:resPCA}.
 
 
-\subsection{Manifold learning}
+\subsubsection{Manifold learning}
+\label{sse:manifold}
 
-\subsubsection{tSNE: stochastic neighbor embedding}
-computers can deal with as many dimensions as they like, humans on the other hand we are limited to 3. To visualize large (larger than 3) dimensionality datasets we need to reduce the dimensionality. The rationale is that despite the apparent large dimensionality the intrinsic dimensionality is low, or at least lower. For example a 10 mega pixels video camera rotating to film some scene build a 10 million dimensional space and yet the images approximately lie in a 3D space (yaw, pitch, roll), this embedding is certainly complex and nonlinear.
-Manifold learning also called nonlinear dimensional reduction is an unsupervised method that deals with discovering the hidden simpler structure in a high dimensional dataset.
-A popular algorithm is t-distributed stochastic neighbor embedding (t-SNE) \cite{maaten2008visualizing}.
-Let us briefly explain the algorithm, first some definitions:
-A \textbf{data point} is a point $x_i$ in the original space $\mathbf{R}^D$, where D is the number of dimension (features). A map point is a point $y_i$ in the map space $y \in \mathbf{R}^2$ (if we want to map the original space in 2D). The map space will contain the final representation of the original data space (b:X -> Y , where b is a isomorphic from the original space (X) to the Map space (Y), that is, for every map point y there is one point x. 
-Now, how this map is built? we want to preserve the structure of the original data, that is, if two points are close together in X their images in Y must be closed together as well. We need to define a distance that quantifies closeness, for example, the Euclidean distance. Thus, 
-\begin{equation}
+Manifold learning is an approach to non-linear dimensionality reduction. The rationale is that the dimensionality of many data sets is only artificially high and an embedded lower dimensionality representation exists. High dimensional datasets are very difficult if not impossible to visualize. Dimensionality reduction for visualization is then necessary. The simplest method of visualization of high dimensional data  dimensionality reduction is taking a random projection of the data which wuill work as a section (a view) of the data. This method of suboptimal because if by chance we take dimensions with little variance most information will be lost
+As we saw in Section \ref{sse:PCA}, principal component analysis can identify meaningful components, however, PCA and related linear methods that focus on finding linear projection of the data will likely fail to identify important non-linear patterns in the data. 
+In this vein, Manifold Learning can be thought of as an attempt to generalize linear frameworks like PCA to be sensitive to non-linear structure in data. 
+%Though supervised variants exist, the typical manifold learning problem is unsupervised: it learns the high-dimensional structure of the data from the data itself, without the use of predetermined classifications.
+A number of algorithms for  manifold learning  exist including among others Isomap, Hessian Eigenmapping, Spectral Embedding, Multi-dimensional Scaling and t-distributed Stochastic Neighbor Embedding (t-SNE). Here we will focus on tSNE a recent and verys successful algorithm to visualize high-dimensional data.
+%https://distill.pub/2016/misread-tsne/
+
+\textbf{tSNE: stochastic neighbor embedding}
+%\label{sse:tsne}
+
+A popular algorithm for exploring high-dimensional data is t-distributed stochastic neighbor embedding (t-SNE) \cite{maaten2008visualizing}.
+Let us briefly explain the t-SNE algorithm. First, some definitions:
+
+
+\theoremstyle{definition}
+\begin{definition}{Data point}
+A data point is a point $x_i$ in the original space $\mathbf{R}^D$, where D is the number of dimension (features).
+\end{definition}
+\begin{definition}{Map point}
+A map point is a point $y_i$ in the map space $y \in \mathbf{R}^2$ (if we want to map the original space in 2D). The map space will contain the final representation of the original data space (b:X -> Y , where b is a isomorphic from the original space (X) to the Map space (Y), that is, for every map point y there is one point x. 
+\end{definition}
+ 
+Now, how  map space is built? We want to preserve the structure of the original data, that is, if two points are close together in X their images in Y must be closed together as well. We need to define a distance that quantifies closeness, for example, the Euclidean distance. Thus, 
+\begin{equation} \label{eq:tsne}
 p_{j|i} = \frac{\exp\left(-\left| x_i - x_j\right|^2 \big/ 2\sigma_i^2\right)}{\displaystyle\sum_{k \neq i} \exp\left(-\left| x_i - x_k\right|^2 \big/ 2\sigma_i^2\right)}
 \end{equation}
 which measures how close $x_i$ is from $x_j$ if we assume a Gaussian distribution around $x_i$. Note that the variance $\sigma$ is different for every point, it is chosen such as in dense areas is smaller than in sparse areas (closed by need to be really close by to be friends). 
 Finally, the similarity $p_{ij}$ needs to be a symmetric measure of the conditional probability, then:
-\(p_{ij} = \frac{p_{j|i} + p_{i|j}}{2N}\)
-with the similarty we obrain the similarity matrix for the original dataset (the similarity matrix can be calcualted for siumplicity with constant $\sigma$ or using a different $\sigma_i$ per point i).
+\begin{equation} \label{eq:tsne2}
+p_{ij} = \frac{p_{j|i} + p_{i|j}}{2N}
+\end{equation}
+the similarity measure we gives us the similarity matrix for the original dataset (the similarity matrix can be calculated for simplicity with constant $\sigma$ or using a different $\sigma_i$ per point i).
 Bellow we show the distance (Euclidean) matrix and the similarity matrix both for constant and variable $\sigma$.
 
 %images here: https://github.com/oreillymedia/t-SNE-tutorial/blob/master/images/similarity.png
@@ -1000,22 +1066,26 @@ note that q is built using a Cauchy distribution\footnote{Cauchy is "pathologica
 (t-student with one degree of freedom) rather than a Gaussian distribution as in p, another difference is that the similarity matrix p is fixed and the similarity matrix q depends on the map points. 
 
 
-
 When reducing the dimensionality of a dataset, if we used the same Gaussian distribution for the data points and the map points, we would get an imbalance in the distribution of the distances of a point's neighbors. This is because the distribution of the distances is so different between a high-dimensional space and a low-dimensional space. Yet, the algorithm tries to reproduce the same distances in the two spaces. This imbalance is actually what happens in the original SNE algorithm \cite{hinton2003stochastic}.
-The t-SNE algorithm works around this problem by using a Cauchy(0,1) distribution for the map points, since this distribution has a much heavier tail than the Gaussian distribution it compensates the original imbalance. For a given similarity between two data points, the two corresponding map points will need to be much further apart in order for their similarity to match the data similarity. So Cauchy distribution leads to more effective data visualizations, where clusters of points are more distinctly separated.
+The t-SNE algorithm works around this problem by using a Cauchy $(0,1)$ distribution for the map points, since this distribution has a much heavier tail than the Gaussian distribution it compensates the original imbalance. For a given similarity between two data points, the two corresponding map points will need to be much further apart in order for their similarity to match the data similarity. So Cauchy distribution leads to more effective data visualizations, where clusters of points are more distinctly separated.
 
-What we want is that the matrices p and q be as similar as possible, that is, similar data points yield similar map points.
-The Kullback-Leiber divergence measures the distance between the two matrices p and q. 
-\begin{equation}
-KL(P||Q) = \sum_{i, j} p_{ij} , \log \frac{p_{ij}}{q_{ij}}
-\end{equation}
-to minimize the score we perform gradient descent:
-\(\frac{\partial , KL(P || Q)}{\partial y_i} = 4 \sum_j (p_{ij} - q_{ij}) g\left( \left| x_i - x_j\right| \right) u_{ij} \quad \textrm{where} , g(z) = \frac{z}{1+z^2}.\)
-we try to approximate the true distribution P using Q, KL(P|Q) = H(P,Q) - H(P), the cross entropy minus the entropy.
-So, KL-divergence is better not to be interpreted as a "distance measure" between distributions, but rather as a measure of entropy increase due to the use of an approximation to the true distribution rather than the true distribution itself. (if we knew the true distribution P of the random variable, we could construct a code with average description length H(P). If, instead, we used the code for a distribution Q, we would need H(P)+K(P||Q) bits on the average to describe the random variable) so you need more bits to describe the situation if you are going to use Q while the true distribution is P, so what KL measures is the inefficiency caused by the approximation of Q to P.
+%What we want is that the matrices P and Q be as similar as possible, that is, similar data points yield similar map points.
+%The Kullback-Leiber divergence measures the distance between the two matrices P and Q. 
+% \begin{equation}
+% KL(P||Q) = \sum_{i, j} p_{ij} , \log \frac{p_{ij}}{q_{ij}}
+% \end{equation}
+% to minimize the score we perform gradient descent:
+% \(\frac{\partial , KL(P || Q)}{\partial y_i} = 4 \sum_j (p_{ij} - q_{ij}) g\left( \left| x_i - x_j\right| \right) u_{ij} \quad \textrm{where} , g(z) = \frac{z}{1+z^2}.\)
+% we try to approximate the true distribution P using Q, KL(P|Q) = H(P,Q) - H(P), the cross entropy minus the entropy.
+% So, KL-divergence is better not to be interpreted as a "distance measure" between distributions, but rather as a measure of entropy increase due to the use of an approximation to the true distribution rather than the true distribution itself. (if we knew the true distribution P of the random variable, we could construct a code with average description length H(P). If, instead, we used the code for a distribution Q, we would need H(P)+K(P||Q) bits on the average to describe the random variable) so you need more bits to describe the situation if you are going to use Q while the true distribution is P, so what KL measures is the inefficiency caused by the approximation of Q to P.
 %https://stats.stackexchange.com/questions/111445/analysis-of-kullback-leibler-divergence
 
+The results produced by the implementation of manifold learning, in particular t-distributed stochastic neighbor embedding (tSNE) are shown in Section \ref{sse:resmanifold}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Topological Data Analysis}
+\label{sse:TDA}
 %https://www.quora.com/Is-there-a-relationship-between-manifold-learning-and-topological-data-analysis
 TDA focuses on identifying global features within the data.
 Manifold learning focuses on reducing dimensionality by finding a good map from the data to a low-dimensional manifold. Topological data analysis could be helpful to analysis (manifold) data before and after dimensionality reduction (i.e. manifold learning). The topology of the manifold should be the same and independent of the dimensionality of the ambient space.
@@ -1039,65 +1109,6 @@ An especially underused TDA technique is “mapper”. I found this particularly
 We didnt find clusters with SVD nor tSNE, can we find some with Mapper??
 
 
-
-
-
-
-
-\textbf{Model evaluation: quantifying the quality of predictions }
-The two factors that tell us how well our machine learning is doing are:
-\begin{itemize}
-\item Underfitting: the error on the training set is too large.
-\item Overfitting: the gap between the error in the training and test sets is too large. 
-\end{itemize}
-
-%http://scikit-learn.org/stable/tutorial/machine_learning_map/index.html
-Whether we are doing classification both continuous and discrete or clustering we need to study the behavior of our model prediction, that is, model selection will rely on model evaluation criteria. Evaluation criteria consists in computing scoring objects that gives us information about model performance. It ought to be remarked that scoring is not dataset independent, for example, accuracy may be an optimal indicator of model performance in some situations but suboptimal in others. For example, in a binary classification problem -converter vs not converter- in which the converters are a small minority (e.g. $10\%$, accuracy is not the best measure to use because accuracy is just the number of correct prediction divided by the total number of instances. A dummy classifier that doesn't look at the features at all and always predict the most frequent class (i.e. non converter) will have an accuracy of $90\%$, that is, the dummy classifier will predict the right label for 90 out of 100 examples.
-%https://www.coursera.org/learn/python-machine-learning/lecture/BE2l9/model-evaluation-selection
-Dummy classifiers provide a null metric, in the results section we will compare the model prediction with dummy classifiers as a sanity check on the model's performance.
-When we find that the model accuracy is close to the null accuracy baseline given by the dummy classifier where are in any of these situations:
-\begin{itemize}
-	\item Features are ineffective or missing
-	\item Poor choice of hyperparameters or kernel in the model (eg in SVM) 
-	\item Large class imbalance 
-\end{itemize}
- %Scoring objects take care of that, as a rule,  higher return value better than lower return values.
- A very helpful mathematical object to study model performance is the confusion matrix. For example, for a bibary prediction task we have a $2 \times 2$ matrix where rows represent the true values and the columns the predicited values. Thus, the values in the diagonal are true predictions and off diagonal the predictions that the model got wrong, rather  than having a single number we have a matrix from which other metrics can be derived like recall, precision and $F_\beta$ metrics.
- %from sklearn.metrics import confusion_matrix
-\[
-M=
-  \begin{bmatrix}
-    TN & TF  \\
-    FN & TP 
-  \end{bmatrix}
-\]
-From the confusion matrix we can derive:
-$\textit{Accuracy} = \frac{TN + TP}{TN+TP+FN+FP}$. 
-Recall, also True Positive Rat, sensitivity and probability of detection  is the fraction of all positive instances does the classifier identifies correctly as positive, $\text{Recall} = \frac{TP}{TP+FN}$, in biomedical applications in which is crucial to do not miss the positives (converters) recall is a very important metric.
-Precision is the fraction of positive predictions that are correct (finding sick when they are not) $\text{Recall} = \frac{TP}{TP+FP}$.
-Specificity or False positive rate is the fraction of all negative instances that the classifier incorrectly identifies as positive (here the smaller the better)  $\text{specificity} = \frac{FP}{FP+TN}$
-
-Precision and recall are complementary in the sense that you can increase the precision but at the expense of the recall and viceversa. Recall oriented machine learning tasks are biomedical (e.g. tumor detection) and precision oriented tasks are e.g. document classification. Precision (x-axis) recall (y-axis) curves, an ideal classifier would achieve ideal precision (1.0) and ideal recall (1.0) (the top right corner) 
-
-The F1 score combines both precision and recall into a single number, mathematically based on the harmonic mean of precision and recall, $F_1 = 2\frac{\text{precision*recall}}{precision+recall} = \frac{2 * TP}{2TP + FN + FP}$. More generally we can modulate how much emphasis we do to precision versus recall using the parameter $\beta$. Thus, $F_\beta = (1+\beta^2)\frac{\text{precision*recall}}{(\beta^2 * precision)+recall} = \frac{2 * TP}{2TP + FN + FP}$ (precision oriented $\beta=0.5$, false positives hurts performance more than false negatives, recall oriented $\beta=2$, false negatives hurts performance more than false positives).
-%from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report
-%print('Accuracy:{:.2f}'.format(accuracy_score(test, predicted)));precision_score, recall_score;f1_score
-%print(classification_report(test,pred,target_names=['not converter 0', 'converter 1']))
-%varying the decision threshold for predict_proba https://www.coursera.org/learn/python-machine-learning/lecture/0YPe1/classifier-decision-functions
-
-Receiving Operating Characteristic ROC curves, false positive rate (x-axis), true positive rate (y-axis) (top left corner is the ideal point, false positive 0 and true positive 1), area under the curve AUC is a way to summarize the classifier performance in one single number. ROC AUC is a good metric for balanced-classification problems only.
-
-Other metrics that will be shown in the Results section are:
-\begin{itemize}
-	\item Hamming loss: Calculates the Hamming (distance) between two sets
-	\item Jaccard similarity: average of Jaccard similarity coefficients (Jaccard index)
-	\item Hinge loss: computes the average distance between the predictions and the data using hinge loss (only prediction errors) Used in SVM
-	\item Matthews correlation coefficient (phi coefficient): it is regarded as a balance measure useful even if the classes are of very different sizes. [-1,1] +1 is perfect prediction , 0 average random prediction and -1 inverse prediction. It is also called phi coefficient.
-	%from sklearn import matthews_corrcoef, matthews_corrcoef(y_pred, y_true) # tp*tn - fp*fn/ sqrt()
-	\item Zero one loss: computes the sum or average of the 0-1 classification loss $L_{0-1}$ over n samples. By default normalizes over the sample
-\end{itemize}
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Results}
@@ -1112,7 +1123,7 @@ Results for each classifier. We will realize that the challenge of fitting the t
 \subsection{Univariate feature selection}
 \label{se:reslinreg}
 
-Here we select the features according to the k highest scores. The algorithm used for univariate feature selection is described in \ref{SelectKBest}. Univariate feature selection works by selecting the best features based on univariate statistical tests (e.g ANOVA F-value between label/feature).
+Here we select the features according to the k highest scores. The algorithm used for univariate feature selection is described in the snippet \ref{SelectKBest}. Univariate feature selection works by selecting the best features based on univariate statistical tests (e.g ANOVA F-value between label/feature).
 
 \begin{code}[caption=SelectKBest, label=SelectKBest]
 from sklearn.feature_selection import SelectKBest
@@ -1121,7 +1132,7 @@ selector = SelectKBest(f_classif, nboffeats=12)
 selector.fit(X, y)
 \end{code}
 
-From the Vallecas Index regression model \ref{formula} the algorithm estimates the 12 most important features according to the ANOVA F-value between target and features (Table \ref{tab:ranking}).
+From the Vallecas Index regression model (snippet \ref{formula}) the algorithm estimates the 12 most important features according to the ANOVA F-value between target and features (Table \ref{tab:ranking}).
 
 \begin{code}[caption=Regression formula, label=formula]
 'conversionmci ~ sexo + lat_manual + nivel_educativo  + edad_ultimodx + renta+ sue_noc + sue_rec+ familiar_ad + imc+ a02 + a03 + a08 + a11 + a12 + a13 + a14+ numhij+ sdvive + sdeconom + sdresid + sdestciv + sdatrb+ sdatrb+ hta + glu + lipid + tabac_cant + cor + arri + card+ ictus + tce + tce_con+ dietaketo + dietasaludable + dietaglucemica+ physical_exercise + scd_visita1 + preocupacion_visita1 + act_aten_visita1 + act_orie_visita1 + act_mrec_visita1 + act_visu_visita1 + act_expr_visita1 + act_comp_visita1 + gds_visita1 + stai_visita1 + act_apat_visita1 + relaamigo + relafami + valcvida2_visita1 + valsatvid2_visita1 + valfelc2_visita1 + eq5dsalud_visita1 + eq5deva_visita1'
@@ -1150,7 +1161,7 @@ Ranking & Feature     \\
 12 & sue rec (remember dreams) \\
 \hline
 \end{tabular}
-\caption{The table shows the ranking between target/feature using ANOVA F value. Other statistical tests e. Chi square, mutual information, are possible producing slightly different results. For example, using the mutual information the ranking is \emph{scd visita1, a08, tce con, renta, gds visita1, preocupacion visita1, arri, nivel educativo, physical exercise, dietaketo, dietasaludable, a11}. Interestingly, when mutual information is used features related to diet and physical exercise show up. Note that mutual information captures also nonlinear dependence between variables.}
+\caption{The table shows the ranking between target/feature using ANOVA F value. Other statistical tests e.g. Chi square, mutual information, are also possible and will produce slightly different results. For example, using the mutual information the ranking is \emph{scd visita1, a08, tce con, renta, gds visita1, preocupacion visita1, arri, nivel educativo, physical exercise, dietaketo, dietasaludable, a11}. Interestingly, when mutual information is used features related to diet and physical exercise show up. Note that mutual information captures also nonlinear dependence between variables.}
 \end{center}
 \end{table}
 
@@ -1163,32 +1174,17 @@ Ranking & Feature     \\
 \subsection{Logistic regression}
 \label{se:reslogreg}
 
-The logit model is implemented with the \emph{log loss} function, however there is no known closed function for the \emph{log loss}, that is, there is no Normal Equation as it is the case of the MSE and the regularizations cost functions. However, the good news is that the \emph{log loss} function is convex, so it is guarantee that stochastic descent (or any other optimization algorithm will find a global minimum given that the learning rate is not too large and we have time to wait the model reaches the minimum.
+The logit model is implemented with the \emph{log loss} function. Of note, there is no known closed function for the \emph{log loss}, that is, there is no Normal Equation as it is the case of the MSE and the regularization cost functions. However, the good news is that the \emph{log loss} function is convex, so it is guaranteed that stochastic descent (or any other optimization algorithm)  will find a global minimum given that the learning rate is not too large and we have time to wait the model reaches the minimum.
 
-Since the dataset is unbalanced, there are 9 non converters for every converter the classifier will use the \emph{balanced} weight option to give more weight to the underrepresented class, by which it will replicate the smaller class until you have as many samples as in the larger one. 
+Since the dataset is unbalanced, there are 9 non converters for every converter, the classifier will use the \emph{balanced} weight option to give more weight to the underrepresented class, by which it will replicate the smaller class until you have as many samples as in the larger one. 
+
 The logistic regression is regularized with L2 penalty and uses the \emph{liblinear} solver (liblinear solver supports logistic regression and SVM). 
-The L2-regularized Logistic Regression solves the unconstrained optimization problem \cite{fan2008liblinear}
+The L2-regularized Logistic Regression solves the unconstrained optimization problem indicated below \cite{fan2008liblinear}
 \begin{equation}
 \textit{min}_{w} \frac{1}{2}w^Tw + C \sum_{i=1}^{n}\log(1+ e^{-y_iw^Tx_i})
 \end{equation}
 %https://www.csie.ntu.edu.tw/~cjlin/papers/liblinear.pdf
 where w is the weight vector generated by the logit model, $(x_i,y_i)$ the instances and $C > 0$ a penalty parameter.
-
-Figure \ref{fig:logresres} shows the results of the logistic regression model. Remember that it is assumed that the logit transformation of the outcome variable (\emph{conversionMCI}) has a linear relationship with the predictor variables (\emph{Vallecas index}).
-
-
-\begin{figure}[h]
-        \centering
-        \includegraphics[keepaspectratio, width=0.8\linewidth]{figures/LR_results-balanced}
-        \caption{Logistic regression results L2 regularization, balanced weight option and liblinear solver. The feature about remembering dreams (sue rec) shows a strong negative association.}
-\label{fig:logresres}
-\end{figure}
-
-
-%Scitkit-Learn actually adds an $l_2$ penalty by default”
-%Lasso regularization: answer two points: what is the baseline prediction of disease progression and  which independent variables are important factors for predicting disease progression.
-%Coefficient of determination R^2 of the prediction of LogReg_Lasso on training set 0.29
-%Coefficient of determination R^2 of the prediction of LogReg_Lasso on test set 0.11
 
 The dataset is split into training data ($80\%$) and test data ($20\%$). Table \ref{tab:logreg}
 
@@ -1209,6 +1205,22 @@ Class & precision & recall & f1-score & support     \\
 \end{center}
 \end{table}
 
+
+Figure \ref{fig:logresres} shows the results of the logistic regression model. Remember that it is assumed that the logit transformation of the outcome variable (\emph{conversionMCI}) has a linear relationship with the predictor variables (\emph{Vallecas index}).
+
+
+\begin{figure}[h]
+        \centering
+        \includegraphics[keepaspectratio, width=0.8\linewidth]{figures/LR_results-balanced}
+        \caption{Logistic regression results L2 regularization, balanced weight option and liblinear solver. The feature about remembering dreams (sue rec) shows a strong negative association.}
+\label{fig:logresres}
+\end{figure}
+
+
+%Scitkit-Learn actually adds an $l_2$ penalty by default”
+%Lasso regularization: answer two points: what is the baseline prediction of disease progression and  which independent variables are important factors for predicting disease progression.
+%Coefficient of determination R^2 of the prediction of LogReg_Lasso on training set 0.29
+%Coefficient of determination R^2 of the prediction of LogReg_Lasso on test set 0.11
 Figure \ref{fig:lr-cm} shows the confusion matrix and the Receiver Operating Characteristic (ROC) metric. The decision matrix describes the performance of the logistic regression classifier. The confusion matrix tabulates the number of misclassifications. The diagonal elements of the confusion matrix show the number of correct classifications for each class and the off-diagonal elements provides the misclassifications. 
 ROC curves feature true positive rate on the Y axis, and false positive rate on the X axis. Then, the top left corner of the plot is the “ideal” point - a false positive rate of zero, and a true positive rate of one. 
 Thus, the larger area under the curve (AUC) the better is usually the classifier.
@@ -1239,10 +1251,10 @@ Figure \ref{fig:lr-cv7} shows the learning curve for the logistic regression cla
 
 \subsection{k-nearest neighbors algorithm}
 \label{se:reskneighbors}
-Here we show the implementation of the k-nearest neighbors vote algorithm. The algorithm is characterized by minimal training time (the function is approximated locally) but expensive testing (all computation is deferred until classification).
-The algorithm will look for the optimal k among all possible odd vales, between 1 and 49 $(k=1,3,5,7....49)$ and will evaluate the results using cross validation $(cv=7)$, thus we will train the algorithm $50/2*cv$ times. 
+Here we show the implementation of the k-nearest neighbors vote algorithm (k-nn). The k-nn algorithm is characterized by minimal training time (the function is approximated locally) but expensive testing (all computation is deferred until classification).
+The algorithm will look for the optimal k among all possible odd values (to avoid voting results in a draw), eg, $(k=1,3,5,7....49)$ and will evaluate the results using cross validation $(cv=5)$, thus we will train the algorithm $50/2*cv$ times. 
 
-Table \ref{tab:knn} shows the classification metrics for k-nn algorithm. The k-nn algorithm is very good at predicting the 0 class (non converter) but it entirely fails at predicting the positive class (converters)
+Table \ref{tab:knn} shows the classification metrics for k-nn algorithm. The k-nn algorithm is very good at predicting the 0 class (non converter) but it fails at predicting the positive class (converters).
 \begin{table}[H]
 \caption{Classification metrics for k-nn} \label{tab:knn} 
 \begin{center} 
@@ -1282,8 +1294,8 @@ Figure \ref{fig:knn-cv3} shows the learning curve for the logistic regression cl
 
 \subsection{SVM}
 \label{se:ressvm}
-Here we show the implementation of Support vector machines (SVMs) for classification. SVMs are versatile (different kernels can be defined for the decision function), memory efficient and effective classifiers especially when dealing with high dimensional spaces. SVMs are also effective when n > m (more dimensions than examples). Note that this is not the case in example, n~50 < m ~1000.
-Although SVMs do not directly provide probability estimates, these can be calculated using cross-validation (averaging across multiple (5) realizations).
+Here we show the implementation of Support vector machines (SVMs) for classification. SVMs are versatile (different kernels can be defined for the decision function), memory efficient and effective classifiers especially when dealing with high dimensional spaces. SVMs are also effective when n > m (more dimensions than examples). Note that this is not the case in example, $n~50 < m ~1000$.
+Although SVMs do not directly provide probability estimates, these can be calculated using cross-validation (averaging across multiple $(cv=5)$ realizations).
 %If the number of features is much greater than the number of samples, avoid over-fitting in choosing Kernel functions and regularization term is crucial.
 A technical description of SVMs was given in Section ref\ref{sse:svm} here we will explain the choices made in its implementation and the quality of its predictions.
 
@@ -1303,7 +1315,7 @@ Class & precision & recall & f1-score & support     \\
 1 & 0.15  &    0.63   &   0.24   &    19 \\
 \hline
 \end{tabular}
-\caption{The table shows the main classification metrics for the SVM classifier (sigmoid kernel) in the test set. The SVM classifier underperforms the previous logit classifier except in \emph{sensitivity} (recall of the positive class).}
+\caption{The table shows the main classification metrics for the SVM classifier (sigmoid kernel) in the test set. The SVM classifier underperforms the previous logit classifier except in \emph{sensitivity} (recall of the positive class.}
 \end{center}
 \end{table}
 
@@ -1386,7 +1398,7 @@ Figure \ref{fig:svm-cv7} shows the learning curve for the logistic regression cl
 \subsection{Naive Bayes}
 \label{se:resnaivebayes}
 
-We fit a Gaussian Naive Bayes classifier. Although naive Bayes is known as a decent classifier, it is known to be a bad estimator, so the probability outputs are not to be taken too seriously. %from predict_proba
+Here we fit a Gaussian Naive Bayes classifier. Although naive Bayes is known as a decent classifier, it is known to be a bad estimator, so the probability outputs are not to be taken too seriously. %from predict_proba
 %http://scikit-learn.org/stable/modules/naive_bayes.html.  literal
 
 A technical description of Naive Bayes classifier delineating the independence assumption in the distribution of $P(x_i | y)$ was provided in Section \ref{se:naivebayes}. Here we will show the results of the Naive Bayes classifier.
@@ -1643,7 +1655,7 @@ Figure \ref{fig:rf_learning} shows the learning rate for random forest classifie
 %\textbf{Gradient Boosting}
 
 
-\subsection{Deep Learning}
+\subsection{Deep Networks}
 \label{sse:resdeep}
 
 We will use both the sklearn and the Python library Keras to implement deep networks. Keras is a deep-learning framework for Python that provides a convenient way to define and train almost any kind of deep-learning model. 
@@ -1655,7 +1667,7 @@ When building a deep learning model there are two key architecture decisions to 
 \textbf{sklearn MLP}
 %http://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html
 
-Figure \ref{fig:mlp_cm} shows the confusion matrix and the ROC for different MLPs created using a regularization term $alpha = 0.01$ and the solver for weight optimization a quasi-Newton method (lbfs). Adam and stochastic gradient descent optimizers methods have worse performance. Sice we use lbfs the classifier does not use minibatches as would be the case for stochastic optimizers
+Figure \ref{fig:mlp_cm} shows the confusion matrix and the ROC for different MLPs created using a regularization term $alpha = 0.01$ and the solver for weight optimization a quasi-Newton method (lbfs). Adam and stochastic gradient descent optimizers methods have worse performance. Since we use lbfs the classifier does not use minibatches as would be the case for stochastic optimizers
 %‘lbfgs’ is an optimizer in the family of quasi-Newton methods.
 %‘sgd’ refers to stochastic gradient descent.
 %‘adam’ refers to a stochastic gradient-based optimizer proposed by Kingma, Diederik, 
@@ -1727,6 +1739,11 @@ Figure \ref{fig:mlp_learning} shows the learning rate for MLPs.
 \textbf{Keras}
 In Keras, deep learning models are built by putting together compatible layers to form an useful data-transformation pipeline. The snippet \ref{deepkeras} creates a three-layer network, the first and second layers have both 16 units with \emph{ReeLU} activation and the last layer is one neuron with a \emph{sigmoid} activation function to approximate a probability.
 
+%from keras import losses
+%from keras import metrics
+% model.compile(optimizer=optimizers.RMSprop(lr=0.001),
+%               loss=losses.binary_crossentropy,
+%               metrics=[metrics.binary_accuracy])
 \begin{code}[caption=Deep network 3 layers, label=deepkeras]
 from keras import models, layers
 #model architecture with 3 layers
@@ -1734,45 +1751,198 @@ model = models.Sequential()
 model.add(layers.Dense(16, activation='relu', input_shape=(X.shape[0],)))
 model.add(layers.Dense(16, activation='relu'))
 model.add(layers.Dense(1, activation='sigmoid'))
-#optimizer and loss function
+#optimizer, metric and loss function 
 model.compile(optimizer='rmsprop',loss='binary_crossentropy',metrics=['accuracy'])
-
 \end{code}
-Without an activation function like \emph{ReeLU} (also called a non-linearity), the Dense layer would consist of two linear operations—a dot product and an addition $output = dot(W, input) + b$; so the layer could only learn linear transformations (affine transformations) of the input data: the hypothesis space of the layer would be the set of all possible linear transformations of the input data into a number of units layer-dimensional space. 
+Without an activation function like \emph{ReLU} (also called a non-linearity), the Dense layer would consist of two linear operations—a dot product and an addition $output = dot(W, input) + b$; so the layer could only learn linear transformations (affine transformations) of the input data: the hypothesis space of the layer would be the set of all possible linear transformations of the input data into a number of units layer-dimensional space. 
 In order to get access to a richer hypothesis space (deep representations) we need non-linearity, or activation function, for example \emph{ReeLU}: output = relu(previous output). The optimizer \textit{rmsprop} should work in most situations.
 %YS: literal
 
 For the loss function, we can use crossentropy (distance between two probability distributions, in this case between ground-truth distribution and our predictions), mean squared error can also be used. 
 
-%Validation consists in training the model for n epochs (n iterations over all samples in the x train and y train tensors) in mini batches of m samples, while at the same time monitor the loss and accuracy on the test data set.
-%The validation set is created by setting apart  1,000? (10 per cent of the training) samples in the training data to use as a validation set
+In order to monitor during training the accuracy of the model on data it has never seen before, we create a validation set by setting apart the $10\%$ of examples from the original training data. Then we train the model for 20 epochs of the training set \footnote{An epoch is an iteration over all samples in the $x\_train$ and $y\_train tensors$}. At the same time, we monitor loss and accuracy validation samples set apart.
+When the dataset are too big that we cannot pass the entire dataset at once we talk about epochs and batches (gradient descent  is an iterative optimization algorithm to calculate minima i.e. compute partial derivatives for each weight and each sample). To reduce this computational burden we can split the dataset into chunks and update the weights of the network at the end of each step. In one epoch or iteration we pass the entire dataset once both forward and backward. Since one epoch is too big (entire dataset) to feed to the computer at once we divide it in several smaller batches.
 
-% The Keras work flow is:
-% \begin{enumerate}
-% \item input and target tensors
-% \item define model (layers that map inputs to targets)
-% \item learning (compile) choose loss function, optimizer and loss score 
-% %model.compile(optimizer=optimizers.RMSprop(lr=0.001),loss='mse',metrics=['accuracy'])
-% \item iterate on your training data %model.fit(input_tensor, target_tensor, batch_size=128, epochs=10
-% \end{enumerate}
+We need more than one epoch because gradient descent is an iterative algorithm, as the number of epochs increases, more number of times the weight are changed in the neural network and the curve goes from underfitting to optimal to overfitting curve. The right number of epochs depend on the task. Now, you can pass the entire dataset or split it into chunks (batches)
+%https://towardsdatascience.com/epoch-vs-iterations-vs-batch-size-4dfb9c7ce9c9?gi=f60c6ca67f67
+The number of batches is equal to number of iterations for one epoch, let us say we have 1,000 examples with batches of size 250, then we have 4 iterations to complete 1 epoch.
+% iterations is the number of batches needed to complete one epoch.
 
-%for example layers.Dense(32, input_shape=(784,)) is a layer with 32 units receiving 784 inputs, so it will only accept a 2D input tensor whose dimension 0 is 784, the layer output 32 dimensions. Thhus this can only cbe connected downstream to another layer that takes 32 as input, But Keras takes  care of this, you dont need to spec the input dimension. For examples:
-%model = models.Sequential()
-%model.add(layers.Dense(32, input_shape=(784,)))
-%model.add(layers.Dense(32)) #dont need to put 32 as input_shape it is inferred
+\begin{code}[caption=fitting deep network, label=deepkerasfit]
+history = model.fit(partial_x_train, #partial is training - validation
+                    partial_y_train, 
+                    epochs=20,
+                    batch_size=512,
+                    validation_data=(x_val, y_val)) 
+                    #compute loss and accuracy on the validation samples
+\end{code}
 
-%cross validation
-%In the evaluation (training phase) you also keep adjusting the network parameters (number of epochs, that is, find the minimum number of epochs beyond which the network overfits). We split the data into training set and validation set (eg $10\%$) but since we have so few data points (less than 100) we encounter the problem that the validation score has a high variance with regard to the validation split, that is, the score depends a lot on which data points you use to validate (add to this that the set is imbalance we may have by chance a validation set with 0 converters). It goes without saying that this would prevent from a reliable evaluation of the model. 
-%The best practice to deal with this situation is to use K-fold cross validation, split the available data into K partitions (e.g. between 4 and 5) instantiating K identical models and training each one on K-1 partitions while evaluating on the remaining partition, that validations core is the average of the K validation scores.
-%At the end we get a final production model with the "right" parameters (number of epochs, layers, units, optimizer, loss, activation) train the final production model on all the training data (now without separating for validation) with the best parameters and look at its performance on the test data.
-% for example, let us see that we found thge epochs = 80
-%model = build_model(); model.fit(train_data, train_targets,epochs=80, batch_size=16, verbose=0);
-%test_mse_score, test_mae_score = model.evaluate(test_data, test_targets)  
+As it was mentioned in Section \ref{se:deep} the creation of an validation set helps dealing with the critical problem in machine learning -overfitting. We split the data into training set and validation set (eg $10\%$) but since we have so few data points (less than 100) we encounter the problem that the validation score has a high variance with regard to the validation split, that is, the score depends a lot on which data points you use to validate (add to this that the set is imbalance we may have by chance a validation set with 0 converters).
+
+%figures here
+Figure \ref{fig:kerasmetricsres} shows the validation metrics for k-fold, $k=4$, learning in a deep network with two hidden layers of 16 units each with ReLU activation with drop out regularization, Adam optimizer and binary cross entropy as loss function. The network in order to deal with the unbalanced problem (underrepresentation of positive class) gives 7 times more importance to positive class than to negative class. this will have consequences in precision and recall shown in the figure. The Cophenetic Correlation Coefficient of the Ward linkage is 0.563 and for Centroid linkage is 0.724 (The closer the value is to 1, the better the clustering preserves the original distances).
+
+\begin{figure}[h]
+        \centering
+        \includegraphics[keepaspectratio, width=1\linewidth]{figures/Keras_KFOLD4}
+        \caption{Clockwise: accuracy, loss, precision and recall metrics for a deep network with two layers and 6 units each. The network starts overfitting after 20 epochs. The accuracy is closed to 0.8. Although precision increases the values are very small, the recall is maximum 1. The precision is the proportion of positive identifications correctly identified and the recall tells us what proportion of actual positives was identified correctly. This means that the network identifies all the positive cases but it identifies positive cases in excess which is due to the fact that the network gives 7 times more importance to positive class than to negative class. 
+        }
+\label{fig:kerasmetricsres}
+\end{figure}
+
+\subsection{Dimensionality reduction and Unsupervised learning}
+\label{sse:resunsupervised}
+Here we show the results of unsupervised learning methods in the Vallecas dataset. First we explore hierarchical clustering (Section \ref{sse:reshierarchical}) and later we delve into principal component analysis via an eigen-decomposition of the covariance matrix (Section \ref{sse:reshierarchical}) and via singular value decomposition (SVD) of the data matrix \ref{sse:resPCA}.
+
+\subsubsection{Hierarchical clustering}
+\label{sse:reshierarchical}
+
+The dendrogram the and distance matrix are shown in figure \ref{fig:dendrogram}. We use two different agglomerative hierarchical clustering methods, centroid and Ward linkage. In the centroid method the distance between two clusters is the distance between the two mean vectors of the clusters, the Ward method on the other hand does not directly define a measure of distance between two points or clusters, it rather performs a one-way univariate ANOVAs for each variable. At each step, the two clusters that provide the smallest increase in the combined error sum of squares will merge. 
+\begin{figure}[H]
+        \centering
+        \includegraphics[keepaspectratio, width=1\linewidth]{figures/dendrogram}
+        \caption{Dendrogram and distance matrix calculated with the Euclidean distance metric and using two different linkage algorithms, centroid and Ward. Both are agglomerative hierarchical clustering methods, that is, each data point is initially a cluster to iteratively combine the existing clusters at each step, resulting always in one final all inclusive cluster. The heatmap depicts the Euclidean distance of the data matrix.
+        }
+\label{fig:dendrogram}
+\end{figure}
 
 
+\subsubsection{Principal component analysis}
+\label{sse:resPCA}
+Next we show linear dimensionality reduction using both eigen-decomposition (snippet \ref{eigendecomposition}) and truncated singular value decomposition (SVD) (snippet \ref{svdsnippet}). 
 
+\begin{code}[caption=PCA eigenvectors, label=eigendecomposition]
+from sklearn.decomposition import PCA
+pca = PCA().fit(X)
+PCA(copy=True, iterated_power='auto', n_components=None, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False)
+# n components=None, all components are kept
+# svd solver='auto', depending on the input data size and the number of components randomized
+# or full SVD is computed.
+# whiten=False, the signal is not transformed (unit component-wise variances)
+\end{code}
+
+Figure \ref{fig:PCA_variance} shows the explained variance with PCA. To explain $70\%$ of the total variance we need 14 dimensions and to explain the $95\%$ we need 37 features for a total dimensional input of 57. PCA could help to improve the results of the machine learning classifiers, replacing the data input by the principal components. 
+
+\begin{figure}[H] \label{fig:PCA_variance}
+    \centering
+    \begin{subfigure}[t]{.4\columnwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/PCA70_variance}
+        \caption{With 14 dimensions we can explain $70\%$ of the total variance of the 57 dimensional input.}
+    \end{subfigure}
+    \hfill %%
+    \begin{subfigure}[t]{.4\columnwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/PCA95_variance}
+        \caption{With 37 dimensions we can explain $95\%$ of the total variance of the 57 dimensional input.}
+    \end{subfigure}%\quad
+    \caption{Dimensionality reduction with PCA shows potential to summarize data. We need only 14 ($24\%$ of the input dimensions) to explain  $70\%$ of the variance of the input space. The PCA explained variance ratio of the three first components is 0.112, 0.093, 0.072 (eigenvectors with the highest variance).}
+\end{figure}
+
+Before we  calculated PCA using the eigen-decomposition, dimensionality reduction can also be calculated using truncated SVD (aka latent semantic analysis or LSA. We set the number of components to 2 (snippet \ref{svdsnippet}).  SVD is the generalization of the eigen-decomposition of a positive semidefinite normal matrix (seen above) to any matrix via an extension of the polar decomposition. 
+The SVD represents an expansion of the original data in a coordinate system where the covariance matrix is diagonal. A SVD consists in calculating the matrix of singular values S ( singular values) from the data matrix A, $A = USV$
+Truncated SVD does not need to center the data before computing the decomposition and it can efficiently work with sparse matrices (this is why it is called truncated). 
+
+\begin{code}[caption=PCA truncated SVDs, label=svdsnippet]
+svd = TruncatedSVD(n_components=2)
+X_reduced = svd.fit_transform(X_all)
+\end{code}
+
+Figure \ref{fig:PCASVD} shows the scatter plot of the SVD for 2 dimensions, in yellow the converters and in indigo the non converters. Two dimensions are not enough to identify cluster of converters and non converters. It ought to be emphasized that dimensionality reduction (e.g. PCA or SVD) is distinct from clustering but it still can help clustering high-dimensional data by reducing to a useful low dimensional representation.
+
+\begin{figure}[H] \label{fig:PCASVD}
+        \centering
+        \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/SVD_2D}
+        \caption{Scatter plot of single value decomposition with two components. The explained variance ratio of the components is 0.1132 and 0.0312, making a total explained variance ratio of  0.144. The singular values of the covariance matrix S are 98.21 20.26. Although the scatter plot is not useful as a clustering method i.e. separate converter from non converter in a 2D space, this dimensionality reduction procedure is however helpful to reduce the original dataset to a useful low dimensional representation to feed a classifier. 
+        }
+\end{figure}
+
+\subsubsection{Manifold learning}
+\label{sse:resmanifold}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Here we show the results of implementing the t-SNE algorithm described in Section \ref{sse:manifold} to visualize high dimensional data space.
+%There’s a reason that t-SNE has become so popular: it’s incredibly flexible, and can often find structure where other dimensionality-reduction algorithms cannot. Unfortunately, that very flexibility makes it tricky to interpret. Out of sight from the user, the algorithm makes all sorts of adjustments that tidy up its visualizations. Don’t let the hidden “magic” scare you away from the whole technique, though. The good news is that by studying how t-SNE behaves in simple cases, it’s possible to develop an intuition for what’s going on.
+
+
+Figure \ref{fig:TSNE} shows the scatter plot of the tSNE algorithm that creates a two-dimensional maps from original dataset of 57 dimensions. In red the converters and in blue the non converters. The hyperparameters were set to perplexity =30, the learning rate is 200 and the  gradient calculation algorithm is the Barnes-Hut approximation.
+
+\begin{figure}[H] \label{fig:TSNE}
+        \centering
+        \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/TSNE}
+        \caption{Scatter plot of tSNE algorithm that creates a two-dimensional maps from original dataset of 57 dimensions. 
+        }
+\end{figure}
+
+%class sklearn.manifold.TSNE(n_components=2, perplexity=30.0, early_exaggeration=12.0, learning_rate=200.0, n_iter=1000, n_iter_without_progress=300, min_grad_norm=1e-07, metric=’euclidean’, init=’random’, verbose=0, random_state=None, method=’barnes_hut’, angle=0.5)[source]¶
+
+
+
+
+
+
+
+
+
+\section{Comparative evaluation of models}
+
+quality of predictions
+
+
+The two factors that tell us how well our machine learning is doing are:
+\begin{itemize}
+\item Underfitting: the error on the training set is too large.
+\item Overfitting: the gap between the error in the training and test sets is too large. 
+\end{itemize}
+
+%http://scikit-learn.org/stable/tutorial/machine_learning_map/index.html
+Whether we are doing classification both continuous and discrete or clustering we need to study the behavior of our model prediction, that is, model selection will rely on model evaluation criteria. Evaluation criteria consists in computing scoring objects that gives us information about model performance. It ought to be remarked that scoring is not dataset independent, for example, accuracy may be an optimal indicator of model performance in some situations but suboptimal in others. For example, in a binary classification problem -converter vs not converter- in which the converters are a small minority (e.g. $10\%$, accuracy is not the best measure to use because accuracy is just the number of correct prediction divided by the total number of instances. A dummy classifier that doesn't look at the features at all and always predict the most frequent class (i.e. non converter) will have an accuracy of $90\%$, that is, the dummy classifier will predict the right label for 90 out of 100 examples.
+%https://www.coursera.org/learn/python-machine-learning/lecture/BE2l9/model-evaluation-selection
+Dummy classifiers provide a null metric, in the results section we will compare the model prediction with dummy classifiers as a sanity check on the model's performance.
+When we find that the model accuracy is close to the null accuracy baseline given by the dummy classifier where are in any of these situations:
+\begin{itemize}
+	\item Features are ineffective or missing
+	\item Poor choice of hyperparameters or kernel in the model (eg in SVM) 
+	\item Large class imbalance 
+\end{itemize}
+ %Scoring objects take care of that, as a rule,  higher return value better than lower return values.
+ A very helpful mathematical object to study model performance is the confusion matrix. For example, for a binary prediction task we have a $2 \times 2$ matrix where rows represent the true values and the columns the predicted values. Thus, the values in the diagonal are true predictions and off diagonal the predictions that the model got wrong, rather  than having a single number we have a matrix from which other metrics can be derived like recall, precision and $F_\beta$ metrics.
+ %from sklearn.metrics import confusion_matrix
+\[
+M=
+  \begin{bmatrix}
+    TN & TF  \\
+    FN & TP 
+  \end{bmatrix}
+\]
+From the confusion matrix we can derive:
+$\textit{Accuracy} = \frac{TN + TP}{TN+TP+FN+FP}$. 
+Recall, also True Positive Rat, sensitivity and probability of detection  is the fraction of all positive instances does the classifier identifies correctly as positive, $\text{Recall} = \frac{TP}{TP+FN}$, in biomedical applications in which is crucial to do not miss the positives (converters) recall is a very important metric.
+Precision is the fraction of positive predictions that are correct (finding sick when they are not) $\text{Recall} = \frac{TP}{TP+FP}$.
+Specificity or False positive rate is the fraction of all negative instances that the classifier incorrectly identifies as positive (here the smaller the better)  $\text{specificity} = \frac{FP}{FP+TN}$
+
+Precision and recall are complementary in the sense that you can increase the precision but at the expense of the recall and viceversa. Recall oriented machine learning tasks are biomedical (e.g. tumor detection) and precision oriented tasks are e.g. document classification. Precision (x-axis) recall (y-axis) curves, an ideal classifier would achieve ideal precision (1.0) and ideal recall (1.0) (the top right corner) 
+
+The F1 score combines both precision and recall into a single number, mathematically based on the harmonic mean of precision and recall, $F_1 = 2\frac{\text{precision*recall}}{precision+recall} = \frac{2 * TP}{2TP + FN + FP}$. More generally we can modulate how much emphasis we do to precision versus recall using the parameter $\beta$. Thus, $F_\beta = (1+\beta^2)\frac{\text{precision*recall}}{(\beta^2 * precision)+recall} = \frac{2 * TP}{2TP + FN + FP}$ (precision oriented $\beta=0.5$, false positives hurts performance more than false negatives, recall oriented $\beta=2$, false negatives hurts performance more than false positives).
+%from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report
+%print('Accuracy:{:.2f}'.format(accuracy_score(test, predicted)));precision_score, recall_score;f1_score
+%print(classification_report(test,pred,target_names=['not converter 0', 'converter 1']))
+%varying the decision threshold for predict_proba https://www.coursera.org/learn/python-machine-learning/lecture/0YPe1/classifier-decision-functions
+
+Receiving Operating Characteristic ROC curves, false positive rate (x-axis), true positive rate (y-axis) (top left corner is the ideal point, false positive 0 and true positive 1), area under the curve AUC is a way to summarize the classifier performance in one single number. ROC AUC is a good metric for balanced-classification problems only.
+
+Other metrics that will be shown in the Results section are:
+\begin{itemize}
+	\item Hamming loss: Calculates the Hamming (distance) between two sets
+	\item Jaccard similarity: average of Jaccard similarity coefficients (Jaccard index)
+	\item Hinge loss: computes the average distance between the predictions and the data using hinge loss (only prediction errors) Used in SVM
+	\item Matthews correlation coefficient (phi coefficient): it is regarded as a balance measure useful even if the classes are of very different sizes. [-1,1] +1 is perfect prediction , 0 average random prediction and -1 inverse prediction. It is also called phi coefficient.
+	%from sklearn import matthews_corrcoef, matthews_corrcoef(y_pred, y_true) # tp*tn - fp*fn/ sqrt()
+	\item Zero one loss: computes the sum or average of the 0-1 classification loss $L_{0-1}$ over n samples. By default normalizes over the sample
+\end{itemize}
+
+
 
 \section{The class imbalance problem}
 The class imbalance problem -the number of samples of one class being under represented compared to another class- is predominant in many scenarios, in particular when dealing with anomaly detection, for example, fraudulent transaction, electrical grid fault, electrical theft, conversion to disease  etc. In this situation, a predictive model that does not take into account this could be very unreliable.
@@ -1785,7 +1955,7 @@ r_X = \frac{X_{min}}{X_{maj}}
 %https://www.analyticsvidhya.com/blog/2017/03/imbalanced-classification-problem/
 The balancing process is equivalent to resample X in such a way that the ratio increases, $r_{X_{resampled}} > r_X$, we can do so undersampling the majority class and or over sampling the minority class. Udersampling refers to reducing the number of samples in $X_{maj}$ for example cleaning the majority space by eliminating redundant data points. Oversampling tries to achieve data balancing by generating new points in $X_{min}$.
 
-Standard classifier algorithms e.g. Logistic Regression, Decision tres etc. have a bias towards the majority class, that is, they tend to only predict the majority class data and the features of the minority class are treated as noise and are often ignored. 
+Standard classifier algorithms e.g. Logistic Regression, Decision trees etc. have a bias towards the majority class, that is, they tend to only predict the majority class data and the features of the minority class are treated as noise and are often ignored. 
 
 
 Random under sampling: eliminate randomly majority class examples, for example taking out $10\%$ samples without replacement from the majority class to combining them with the minority class. It reduces the training set discarding potentially useful information, this approach is only advisable for really large datasets.
@@ -1796,13 +1966,13 @@ Cluster-Based Over Sampling k-NN algorithm is independently applied to minority 
 
 Informed Over Sampling: Synthetic Minority Over-sampling Technique (SMOTE): This technique is good at avoiding overfitting which naturally occurs when replicas of the minority set are added. In SMOTE rather than replicas we generate a synthetic subset from the minority class which is used to train the classifier. For example we get 20 instances from $X_{min}$ and similar synthetic instances are generated 20 times for a total of 400 instances. SMOTE mitigates the problem of overfitting because it does not mimic minority instances it rather generates new ones, another advantage is that the there is no information loss.
 The disadvantages of SMOTE are that the algorithm does not take into account neighboring examples across classes which could introduce noise, SMOTE is not very effective for high dimensional data (YS:how ineffective and ho high??)
-SMOTE creates artificial data based on the feature similarities between existing minority samples. To create a synthetic sample, randomly select one of the K-nearest neighbors (eg under Euclidean distance), then multiiply the feature vector with a random number between 0 and 1 and finally add this vector to x
+SMOTE creates artificial data based on the feature similarities between existing minority samples. To create a synthetic sample, randomly select one of the K-nearest neighbors (eg under Euclidean distance), then multiply the feature vector with a random number between 0 and 1 and finally add this vector to x
 \begin{equation}
 x_{new} =  x_i + \delta * (\hat{x_i} - x_i)
 \end{equation}
 where $x_{new}$ is the synthetic new point, $x_i$ is the minority instance and $\hat{x_i}$ is one of the k nearest neighbors. Thus, the resulting new point is along the line between $x_i$ and the randomly selected neighbor $\hat{x_i}$. The drawbacks of SMOTE include over generalization and variance \cite{wang2004imbalanced}.
 
-YS: Tomek links
+%YS: Tomek links
 SMOTE can be complemented with data cleaning techniques, notably Tomek links \cite{tomek1976two} to reduce the overlapping (new instances become 'tied' together leading to overfitting \cite{mease2007boosted}) that is introduced in the sampling methods.
 A Tomek link is a pair if minimally distanced nearest neighbors that belong to different classes. By eliminating the Tomek links (pairs of points that are two close or noise) we cleanup the undesired overlapping that the synthetic sampling may introduce. After the Tomek links are removed all the minimally distanced nearest neighbors belong to the same class. Then, if we remove the overlapping points it could be possible to establish well-defined clusters. 
 
@@ -1841,6 +2011,10 @@ Sampling (synthetic data, algorithms are SMOTE, SMOTEBoost and EasyEnsemble)
 \section{Discussion and Conclusions}
 \label{se:dis}
 
+Connectionist learning (these days called machine learning), procedures can be divided into three broad classes: Supervised procedures studied in Section \ref{sse:sup}, reinforcement procedures which are not studied here and unsupervised procedures.
+The essential between these three types of approaches is the existence and role of the teacher in the learning.
+While supervised algorithms require a teacher to specify the desired output vector, reinforcement requires only require a single scalar evaluation of the output and finally unsupervised algorithms do not require any teacher nor additional information to  construct internal models that capture regularities in the input vectors  \cite{hinton1990connectionist}. There are often ways of converting one kind of learning procedure into another e.g. self supervised learning can be converted into an unsupervised learning by using the input itself to do the supervision i.e. the desired output vector is identical with the input vector.
+%A learning algorithm for boltzmann machines
 \section{Appendix}
 \label{se:ap}
 Notation:  a dataset is a collection of examples which are in turn collections of features. The design matrix is the most common form of describing a dataset, $X \in R^\{n,m\}$, where n is the number of examples (rows) and m the number of features (columns), so $X^\{i,j\}$ is the value of the feature j for example i
@@ -1986,9 +2160,6 @@ elastic net is a middle ground between Ridge $(r=0)$ and Lasso $(r=1)$. “It is
 \textbf{Early stopping}
 An alternative approach to deal with overfitting is early stopping: stops training as soon as the validation error reaches a minimum. In the learning curve is the validation set reaches a minimum and then rises , this means that the model has started to overfit the data. With early stopping you just stop training as soon as the validation error reaches the minimum. It is such a simple and efficient regularization technique that Geoffrey Hinton called it a “beautiful free lunch.”
 %“ warm_start=True, when the fit() method is called, it just continues training where it left off instead of restarting from scratch”
-
-
-
 
 \begin{equation}
 MSE(X,\Theta) = \frac{1}{m} \sum_{i=1}^{m}(\hat{y}^{i} - y^{i})^2 = \frac{1}{m} \sum_{i=1}^{m}(\Theta^Tx^{i} - y^{i})^2
