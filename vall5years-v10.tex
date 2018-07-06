@@ -1,16 +1,17 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%
+% 1.pdflatex main.tex 2.bibtex main.aux 3. pdflatex  main.tex 4. pdflatex  main.tex
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[11pt]{article}
 %\usepackage[spanish]{babel}
 \usepackage[english]{babel}
-\usepackage{helvet}
+%\usepackage[osf]{mathpazo}
+%\usepackage{bookman}
+\usepackage{palatino}
 \usepackage[utf8]{inputenc}
 \usepackage[utf8]{luainputenc}
 %\usepackage{floatrow}
-
 
 %\usepackage[T1]{fontenc}
 %\usepackage{pgffor}
@@ -137,34 +138,34 @@
 
 La multifactorialidad, comorbilidad y el carácter asíntomático en estadio iniciales de la enfermedad de Alzheimer (EA) están dificultando enormemente la obtención de tratamientos efectivos. No debería sorprender pues que el ratio de éxito en la aprobación de fármacos en AD sea un exiguo $0.4\%$, uno de los mas bajos de la industria farmacéutica. 
 La identificación de factores de riesgo, preferentemente de sencilla obtención, se hacen cada vez mas necesarios habida cuenta de que la prevalencia de la EA crece exponencialmente con la edad. 
-Investigadores del Proyecto Vallecas a lo largo de los últimos 6 años han ido recabando información de voluntarios de mas de 70 años, dicha información incluye entre otros factores relativos al estilo de vida (dieta, sueño, ejercicio físico etc), demográfica y socioeconómica (lugar de residencia, sexo, educación, estado civil etc.), quejas subjetivas de memoria etc.
+
+Investigadores del Proyecto Vallecas a lo largo de los últimos 6 años han ido recabando información de voluntarios de mas de 70 años, dicha información incluye entre otros, factores relativos al estilo de vida (dieta, sueño, ejercicio físico etc), demográfica y socioeconómica (lugar de residencia, sexo, educación, estado civil etc.), quejas subjetivas de memoria etc.
+
 El objetivo de este estudio es el de identificar un conjunto de factores autoinformados, es decir factores conocidos por el propio sujeto sin necesidad de un experto o procedimiento externo, que sean de ayuda a la hora de clasificar sujetos con riesgo de convertir a estadios de deterioro cognitivo. 
-Se reclutaron 921 individuos cognitivamente sanos participantes en el estudio longitudinal enmarcado en el Proyecto Vallecas. Los participantes fueron evaluados anualmente a lo largo de los cinco años del estudio. La evolución clínica clasificó los participantes en dos grupos Controles y Conversores a DCL $(9,4\%)$. 
+Se reclutaron 921 individuos cognitivamente sanos participantes en el estudio longitudinal enmarcado en el Proyecto Vallecas. Los participantes fueron evaluados anualmente a lo largo de los cinco años del estudio. La evolución clínica clasificó los participantes en dos grupos controles y conversores a deterioro cognitivo level (DCL) $(9,4\%)$. 
 Se utilizaron técnicas de \emph{machine learning} incluyendo, reducción de dimensionalidad y aprendizaje supervisado conducentes a la obtención de modelos predictivos de conversion a DCL. Los algoritmos predictivos utilizados presentaron una precisión y exactitud muy por encima de estimadores aleatorios.
-Este estudio muestra que la base de datos del Proyecto Vallecas explotada convenientemente con algoritmos capaces de capturar patrones complejos no lineales, puede ayudar a identificar factores de riesgo de conversion a DCL. La detección temprana mediante este tipo de técnicas permite no solo detector factores de riesgo en fases asintomáticas sino además establecer intervenciones personalizadas que incidan en el estilo de vida.
+Este estudio muestra que la base de datos del Proyecto Vallecas, explotada convenientemente con algoritmos capaces de capturar patrones complejos no lineales, puede ayudar a identificar factores de riesgo de conversion a deterioro cognitivo. La detección temprana mediante este tipo de técnicas permite no solo detector factores de riesgo en fases asintomáticas sino además establecer intervenciones personalizadas que incidan en el estilo de vida.
 
 \section*{Abstract}
 Alzheimer's Disease (AD) is a complex, multifactorial and comorbid condition. The asymptomatic behavior in early stages of the disease is a paramount obstacle to formulate a preclinical and predictive model of AD. Not surprisingly, the AD drug approval rate is one of the lowest in the industry, an exiguous $0.4\%$. The identification of risk factors, preferably obtained by the subject herself, is sorely needed given that the incidence of Alzheimer’s disease grows exponentially with age. 
-For the last 6 years, researchers at \emph{Proyecto Vallecas} have collected information about the project's volunteers, aged 70 or more, such information includes among others self informed factors (do not require an expert) -lifestyle, demographic and socioeconomic, subjective memory complains etc-. 
-We use machine learning techniques, including supervised algorithms, manifold learning, clustering and deep networks to perform predictive analytics on the \emph{Proyecto Vallecas} dataset.
+For the last 6 years, researchers at \emph{Proyecto Vallecas} have collected information about the project's volunteers, aged 70 or more. The  information includes self informed factors (do not require an expert) -lifestyle, demographic and socioeconomic, subjective memory complains etc. 
+
+We use machine learning techniques, including supervised algorithms, manifold learning, clustering and deep networks to perform predictive analytics in the \emph{Proyecto Vallecas} dataset.
 We show that the longitudinal dataset of \emph{Proyecto Vallecas}, if conveniently exploited with algorithms able to deal with the complex and nonlinear patterns that embedded in the dataset, may help identifying risk factors related to MCI conversion.
-The early detection with machine learning algorithms makes possible not only to detect risk factors in asymptomatic  stages but also to formulate personalized interventions informed by the subject's lifestyle.
+The early detection with machine learning algorithms makes possible not only to detect risk factors in asymptomatic stages but also to design  personalized interventions informed by the subject's lifestyle.
 
 \section{Introduction}
-The Vallecas Project for early detection of AD is the most ambitious population-based study in Spain. The project is carried out in the Queen Sofia Foundation Alzheimer Center by a multidisciplinary team of researchers from the CIEN Foundation. The main objective of the Vallecas Project is to elucidate, through tracking of progression of the cohort, the best combination of features, clinical and others \footnote{Note in the inception of the project only clinical parameters were considered, here we advocate for a more inclusive set of parameters including neuropsychological, and also features related to the lifestyle such as nutrition and physical exercise}, that are informative about the medium and long-term features that distinguish individuals who will develop future cognitive impairment from those who will not. Thus, it intends to identify various \emph{markers} to eventually determine the potential risk that each individual could have to develop the disease in the future.
 
-The dataset contains more than 1,000 examples described with $~500$ features that include a wide range of characteristics collected yearly. Importantly, the dimensionality of the dataset grows every year (new features are added) but it shrinks in the number of examples (some volunteers drop the study). Table \ref{fig:tableclustervallecas} shows the a non exhaustive list of the features types that are collected in the dataset.
+The Vallecas Project for early detection of AD is the most ambitious population-based study in Spain. The project is carried out at the Queen Sofia Foundation Alzheimer Center by a multidisciplinary team of researchers from the CIEN Foundation. The main objective of the Vallecas Project is to elucidate, through tracking of progression of the cohort, the best combination of features, clinical and others \footnote{Note in the inception of the project only clinical parameters were considered, here we advocate for a more inclusive set of parameters including neuropsychological, and also features related to the lifestyle such as nutrition and physical exercise}, that are informative about developing 
+cognitive impairment in the future. Thus, it intends to identify various \emph{markers} to eventually determine the potential risk that an  individual has to develop the disease in the future. The dataset contains more than 1,000 examples described with $~500$ features that include a wide range of characteristics collected yearly. Importantly, the dimensionality of the dataset grows every year (new features are added) but it shrinks in the number of examples (some volunteers drop the study). Table \ref{fig:tableclustervallecas} shows a non exhaustive list of the features types that are collected in the study.
+
 \begin{figure}[h]
         \centering
         \includegraphics[keepaspectratio, width=0.9\linewidth]{figures/tableclustervallecas}
-        \caption{The Vallecas Project collects a longitudinal dataset for over 1,000 volunteers, the number of features collected amounts to more than 500. The table shows some of the most import types of features. Note that some features are collected only during the first year (basal) for example: familiar AD, APOE, level of education etc., but for the most part, features are assessed for every visit by the team of neuropsychologists and neurologists.}
-\label{fig:tableclustervallecas}
+        \caption{The Vallecas Project collects a longitudinal dataset for over 1,000 volunteers, the number of features collected amounts to more than 500. The table shows some of the most import types of features. Note that some features are collected only during the first year (basal) for example: familiar AD, APOE, level of education etc., but for the most part, features are assessed for every visit by the team of neuropsychologists and neurologists.} \label{fig:tableclustervallecas}
 \end{figure}
 
-The problem we are trying to solve here is prediction. Prediction is a way to generate information you do not have, that is, a predictive machine gets an input data set and uses it to generate new information. Classification is a quintessential prediction problem, for example, given a dataset of subjects whom have been diagnoses a classifier will predict the chances that a new subject will convert.
-
-
-Before going any further it is worth giving some basic definitions. First, we need to understand what Artificial intelligence (AI) is. The term AI was coined in 1956 by John McCarthy, AI studies how human intelligence can be implemented in technical systems. AI is an overarching concept including all sort of intelligent processes done by humans such as planning, problem solving, understanding language, recognizing objects, learning etc. 
+The problem we are trying to solve here is prediction and the methodology we use is Artificial intelligence. Prediction is a way to generate information you do not have, that is, a predictive machine gets an input data set and uses it to generate new information. Classification is a quintessential prediction problem, for example, given a dataset of subjects whom have been diagnosed, we aim at building a classifier that can estimate the odds that a new subject will convert. Before going any further it is worth giving some basic definitions. First, we need to understand what Artificial intelligence (AI) is. The term AI was coined in 1956 by John McCarthy, AI studies how human intelligence can be implemented in technical systems. AI is an overarching concept including all sort of intelligent processes done by humans such as planning, problem solving, understanding language, recognizing objects, learning etc. 
 Machine learning is an approach to achieve Artificial intelligence. However, machine learning is more modest in the sense that does not claim to reverse engineer the human mind, it rather deals with making prediction as accurate as possible. Thus, AI tries to build 'intelligent' machines, machine learning, on the other hand, focuses on one aspect of intelligence, prediction.
 Deep learning is the most promising and popular approach to machine learning, other approaches include decision trees, Bayesian network, kernel methods, clustering etc.
   
@@ -173,58 +174,61 @@ In this study we use machine learning techniques (all the above mentioned and ot
 The objective is to build a system that predicts whether a subject will convert to mild cognitive impairment and we want to do it in the most cost effective way. In order to do so, we will use only as an input of our machine learning algorithms the self-informed features, that is to say, features that require a neurologist or a neuropsychologist are not used (e.g. cognitive performance tests), neither features that require lab tests (e.g APOE gene variant.)
 We identify a set of self-informed features with predictive power and we coin it the \textbf{Vallecas Index}. 
 
- The voluminous and complex (heterogeneity and dimensionality) dataset collected in the Vallecas Project make it particularly to build analytics of any kind, let alone predictive analytics \footnote{The datasets that are giving better results with deep learning are very large -tens or even hundreds of thousands of examples- our dataset is more modest in the order of 1,000 thousand examples.}. In order to try to cope with this difficulty, we use a methodology well suited for machine learning analytics called CRISP-DM which is described in Section \ref{se:crisp}. We will follow the CRISP-DM methodological plan to cover data preparation, modeling, evaluation and deployment. Thus, Section \ref{} performs exploratory data analysis, including multicollinearity detection among different features and commenting on the feature engineering process used. Section \ref{} explains the different predictive models implemented and Section \ref{} deals with the evaluation of the predictive models that are described in the previous section. Importantly, we weigh on the interpretability side of the results and not only on the prediction side, section \ref{sse:interp}.
- Section \ref{} focuses on the deployment of the most successful models and argues about the benefits and challenges of deploying our models \emph{extramural} Finally, we include a discussion and conclusions Section \ref{}.
+%  Thus, Section \ref{} performs exploratory data analysis, including multicollinearity detection among different features and commenting on the feature engineering process used. Section \ref{} explains the different predictive models implemented and Section \ref{} deals with the evaluation of the predictive models that are described in the previous section. Importantly, we weigh on the interpretability side of the results and not only on the prediction side, section \ref{sse:interp}.
+The document is self contained, it provides a painless introduction to machine learning where the emphasis is in the understanding the mechanics of the techniques rather than in their mathematical description. We follow a first principles example-based approach in which 
+the outcome of the algorithms' implementations in the Vallecas dataset is explained and put in context.
 
+The structure of the document is as follows. Section \ref{se:crisp} introduces the methodology that we will use use to study the \emph{Vallecas} dataset, namely the CRISP-DM model. In Section \ref{se:eda} we define the \emph{Vallecas Index} and we perform exploratory data analysis, providing descriptive statistics and statistical inference to test hypothesis of the population. Section \ref{se:mod} explains the different machine learning techniques used for predictive analytics. Next, in Section \ref{se:res} we show the results obtained for each one of the techniques within a comparative framework in Section \ref{se:compare}. Section \ref{se:imbalance} proposes solutions to the class imbalance problem that exists in the Vallecas dataset (the converter class is underrepresented). We conclude with the discussion and conclusions Section \ref{se:dis}.
+
+%focuses on the deployment of the most successful models and argues about the benefits and challenges of deploying our models \emph{extramural}
 \section{CRISP-DM model}
 \label{se:crisp}
+
+ The voluminous and complex (heterogeneity and dimensionality) dataset collected in the Vallecas Project make it particularly difficult to build analytics of any kind, let alone predictive analytics \footnote{The datasets that are giving better results with deep learning are very large -tens or even hundreds of thousands of examples- our dataset is more modest in the order of 1,000 thousand examples.}. In order to try to cope with this difficulty, we use a methodology well suited for machine learning analytics called CRoss Industry Standard Process for Data Mining (CRISP-DM model). We will follow the CRISP-DM methodological plan in order to effectively deal with data preparation, modeling, evaluation and deployment.
 %James Wu, Foundations of predictive analytics
-The voluminous and complex (heterogeneity and dimensionality) dataset collected in the Vallecas Project make it particularly challenging to build analytics of any kind, let alone predictive analytics.
-In order to try to cope with this difficulty, we use a methodology well suited for machine learning analytics called CRISP-DM model (CRoss Industry Standard Process for Data Mining).
   
-The CRoss Industry Standard Process for Data Mining (CRISP-DM model) is the most popular methodology used in machine learning. CRISP-DM consists in 6 phases that act upon themselves in an iterative loop depicted in figure \ref{fig:crisp}.
+The CRISP-DM model is the most popular methodology used in machine learning. CRISP-DM consists in 6 phases that act upon themselves in an iterative loop depicted in Figure \ref{fig:crisp}.
 \begin{enumerate}
 %1. Problem understanding
-\item \textbf{Business understanding}: understanding the project objectives and requirements from a 'business' perspective, the 'business' is no other than prediction. 
+\item \textbf{Business understanding}: Understanding the project objectives and requirements from a 'business' perspective, the 'business' here is no other than prediction. 
 	\begin{itemize}
-		\item Definition of the problem: We have a dataset that contains a number of features and we want to clarify the relationships between those inputs and most importantly which if any and in which measure have predictive power about conversion to MCI and dementia.
+		\item Definition of the problem: We have a dataset that contains a number of features and we want to clarify the relationships between those inputs and most importantly, which if any and in which measure have predictive power about conversion to MCI and dementia.
 	\end{itemize}
 %2. Data Understanding Assessment of scenarios for analysis. 
-\item \textbf{Data understanding}: The main resource available are spreadsheets that contain demographic e.g age, school years etc., genetic: APOE, cognitive performance metrics from neuropsychological tests together with features related to life style including nutrition and physical exercise among others \footnote{ASL, MRI and fMRI data are also available (for the large majority of the volunteers) but need to be integrated with the above mentioned features. Here we will not deal with neuroimaging data. This is being undertaking in forthcoming work.}
-\item \textbf{Data preparation}: activities to construct the final dataset from the initial raw data
+\item \textbf{Data understanding}: The main resource available are spreadsheets that contain demographic (age, school years...), genetic ( APOE), cognitive performance metrics from neuropsychological tests, together with features related to life style including nutrition and physical exercise among others \footnote{ASL, MRI and fMRI data are also available (for the large majority of the volunteers) but need to be integrated with the above mentioned features. Here we will not deal with neuroimaging data. This is being undertaking in forthcoming work.}
+\item \textbf{Data preparation}: Activities to construct the final dataset from the initial raw data
 	\begin{itemize}
 		\item Data description: format, volume, description of attributes \footnote{Here we will refer indistinctly features, attributes, inputs and dimensions}
 		\item Exploratory data analysis (EDA): charts, plots to visualize data features find associations and correlations. This task comprises: explore and visualize data, select attributes (most important, remove redundant or dependent attributes), test hypothesis about correlations and associations.
 		\item Data quality analysis: Deal with missing values, inconsistent values
 		%3. Data preparation
-		\item Clean, wrangle and curate the dataset before the learning machinery is launched to build models. The most time consuming $(60\%) of the time$
-		\item Data integration : multiple. datasets, this will have to be taken care of when we integrate with the imaging dataset.
-		\item Data wrangling: handle missing values (remove rows, handle missing values), formatting into csv, json etc.
+		\item Clean, wrangle and curate the dataset before the learning machinery is launched to build models. This is the most time consuming phase, $(60\%)$ of the time.
+		\item Data integration : In case of having multiple datasets. This will have to be taken care of when we integrate theis dataset with with the imaging dataset.
+		\item Data wrangling: Handle missing values (remove rows, handle missing values), formatting into csv, json etc.
 	\end{itemize}
 \item \textbf{Modeling}: various modeling techniques are selected and applied.
 	\begin{itemize}
-		\item Linear regression 
 		\item Logistic regression
 		\item SVM
 		\item ...
+		\item Decision Trees
+		\item Deep networks
 	\end{itemize}
-\item \textbf{Evaluation}: Once the models are built, proceed to evaluate them to identify the best models according with different metrics. (accuracy, precision, interpretability etc)
-\item \textbf{Deployment}: the knowledge gained will need to be organized and presented in a way that is useful to the customer
+\item \textbf{Evaluation}: Once the models are built, proceed to evaluate them to identify the best models according with different metrics (accuracy, precision, interpretability etc).
+\item \textbf{Deployment}: Knowledge gained will need to be organized and presented in a way that is useful to the customer or final user.
 \end{enumerate}
 
-
-\begin{figure}[h!]
+\begin{figure}[H]
         \centering
         \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/crisp}
-        \caption{\emph{Proyecto Vallecas} adopts CRISP-DM \ref{crispdmwiki} as the methodology of choice for analytics and data mining. CRISP-DM was conceived around 1996  and is to this day the most important methodology in data science projects. It consists in a 6 high-level iterative phases. The adoption of this kind of methodology is crucial to deal with random and false discoveries, specially in Big Data projects like ours.}
-\label{fig:crisp}
+        \caption{\emph{Proyecto Vallecas} adopts CRISP-DM \ref{crispdmwiki} as the methodology of choice for analytics and data mining. CRISP-DM was conceived around 1996 and it is to this day the most important methodology in data science projects. It consists in a 6 high-level iterative phases. The adoption of this kind of methodology is crucial to deal with random and false discoveries, specially in Big Data projects like ours.}\label{fig:crisp}
 \end{figure}
 
 \section{Exploratory Data Analysis}
 \label{se:eda}
-In this section we will perform Exploratory Data Analysis (EDA). The objective of EDA is to build graphical representations that help us make sense of the data. EDA gives us a bird's eye of the dataset to help us identifying patterns and trends and most importantly, assist us in framing the type of  questions we want to ask.
+In this section we perform Exploratory Data Analysis (EDA). The objective of EDA is to build graphical representations that help us make sense of the data. EDA gives us a bird's eye of the dataset to help us identifying patterns and trends and most importantly, assist us in framing the type of  questions we want to ask.
 But prior to EDA we need to take care of pre-processing of the data which is done in next sections. 
-We will start with data understanding in \ref{sse:biz} plotting charts for the number of visits and basic information like the distribution of conversion and the gender of the participants. In \ref{sse:dp} we discuss transformation that need to be done in the data, for example standarization, to pass to comment on data leakage and feature selection in sections \ref{sse:dl} and \ref{sse:fe}. Finally in Section \ref{sse:vs} we explain the resulting variable selection -\textbf{the vallecas index}- the subset of the input space that will used in the learning algorithms.
+We will start with data understanding in Section \ref{sse:biz}, plotting charts for the number of visits and basic information like the distribution of conversion and the gender of the participants. In Section \ref{sse:dp} we discuss the data transformations that need to be done, for example standarization, to pass to comment on data leakage and feature selection in Sections \ref{sse:dl} and \ref{sse:fe}. Finally in Section \ref{sse:vs} we explain the variable selection -\textbf{Vallecas index}- which is the subset of the input space that will used in the learning algorithms.
 
 %Here we perform Exploratory Data Analysis (EDA). EDA is the first step in the data analysis process and is performed once the pre processing steps have finished. 
 
@@ -232,17 +236,16 @@ We will start with data understanding in \ref{sse:biz} plotting charts for the n
 \label{sse:biz}
 The first pre-processing step is an initial assessment of the dataset in order to achieve a functional understanding of the data collected. Features in the dataset fall into two categories, those that are self-informed, that is, the subject can report herself the value of the variable e.g. age, income level, education, sleep, diet etc. and those that require an expert, for example, APOE genotype, cognitive performance measured in performance tests etc.
 
-The input dataset consists in five years of \emph{Proyecto Vallecas} and the output is whether they convert or not to MCI in any of the future years. Thus, we predict whether a subject that was diagnosed as non MCI in year 1 is diagnosed as MCI in any ulterior year. The total number of visits collected in the 5 years project is 4444. Figure \ref{fig:pv5years} depicts the number of volunteers for every year of the project.
+The input dataset consists in five years of \emph{Proyecto Vallecas} and the output is whether they convert or not to MCI in any of the future years. Thus, we want to predict whether a subject that was diagnosed as non MCI in the first visit (year 1) is diagnosed as MCI in any ulterior year. The total number of visits collected in the 5 years project is 4444. Figure \ref{fig:pv5years} depicts the number of volunteers for every year of the project.
 
-\begin{figure}[h!]
+\begin{figure}[H]
         \centering
         \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/pv5years}
-        \caption{Number of volunteers across five years of \emph{Proyecto Vallecas}. As expected the number of subjects decreases along time. The number of subjects in the basal visit (year 1) was 1213 of which 33 were removed  because were diagnosed with MCI or AD, remaining 1180 in year 1, 965 in year 2, 865 in year 3, 770 in year 4 and  664 in year 5, for a total of 4444.}
-\label{fig:pv5years}
+        \caption{Number of volunteers across five years of \emph{Proyecto Vallecas}. As expected the number of subjects decreases across time. The number of subjects in the basal visit (year 1) was 1213 of which 33 were removed because were diagnosed with MCI or AD, remaining 1180 in year 1, 965 in year 2 ($18\%$ drop rate), 865 in year 3 ($10\%$ drop rate), 770 in year 4 ($11\%$ drop rate) and 664 in year 5 ($14\%$ drop rate), for a total of 4444.} \label{fig:pv5years}
 \end{figure}
 
-Figure \ref{fig:sexmci} shows the distribution of sex and conversion and in 5 years of \emph{Proyecto Vallecas}.
-\begin{figure}[H]
+Figure \ref{fig:sexmci} shows the distribution of sex and conversion in 5 years of \emph{Proyecto Vallecas}.
+\begin{figure}[H] 
     \centering
     \begin{subfigure}[t]{0.49\textwidth}
         \centering
@@ -255,15 +258,23 @@ Figure \ref{fig:sexmci} shows the distribution of sex and conversion and in 5 ye
         \includegraphics[height=2.5in]{figures/convmci}
         \caption{Non converters and MCI converters in 5 years time. Out of a total of 915 subjects with two or more visits, 829 do not convert and 86 convert to MCI at some time after the basal visit. The conversion rate is $10.3\%$}
     \end{subfigure}%\quad
-    \label{fig:sexmci}
-    \caption{Distribution of sex and conversion and in 5 years of \emph{Proyecto Vallecas}}
+    \caption{Distribution of sex and conversion and in 5 years of \emph{Proyecto Vallecas}} \label{fig:sexmci}
+\end{figure}
+
+Figure \ref{fig:age_dx} shows the age distribution of \emph{Proyecto Vallecas}. The oldest volunteer passing a regular visit is 90 years and only 68 undergone a visit when they were 85 or older. 
+In order to study people with long life expectancy the study will require to keep these few older volunteers for the next 7 years which will be particularly challenging. A more likely scenario is recruiting new subjects older than 90.
+
+\begin{figure}[H] 
+        \centering
+        \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/AGE_LastDX}
+        \caption{Histogram of the age distribution in the last visit in \emph{Proyecto Vallecas}. The oldest \emph{Vallecas} volunteer to pay  a visit is 90 years old and the youngest one was 68.83 in her first and last visit. The average age of the volunteers is 78 years old, calculated as the average of the volunteer's ages in the last visit.} \label{fig:age_dx}
 \end{figure}
 
 
 \subsection{Data Preparation} 
 \label{sse:dp}
   
-The dataset we are dealing with here is a longitudinal dataset with 5 time points (from year 1 (basal visit) to year 5).
+The dataset we are dealing with here is a longitudinal dataset with 5 time points, from year 1 (basal visit) to year 5.
 Data preparation is a crucial step in machine learning projects, failure to properly pre-process the dataset will cause suboptimal modeling and error-prone predictions.
 %https://paginas.fe.up.pt/~ec/files_1112/week_03_Data_Preparation.pdf
 Generally speaking, the data preparation stage, takes more than $60\%$ of a data mining project effort \ref{witten2005data}.
@@ -271,8 +282,8 @@ Generally speaking, the data preparation stage, takes more than $60\%$ of a data
 % Transformation including Scaling and discretize continuous variables (binning)
 An obligatory step in pre-processing is transforming the data via scaling. 
 %and discretize continuous variables (binning using hot-coding).
-In general, algorithms that exploit distances or similarities ('nearness') between data samples, such as k-NN and SVM, are sensitive to feature transformation. 
-Scaling the dataset is thus absolutely necessary if we use techniques sensitive to scaling \cite{wu2012foundations}. Although other techniques like naive Bayes, decision trees and tree-based ensemble method are invariant to feature scaling, it is but still a good idea to rescale/standarize the dataset. Scaling will do no harm in techniques invariant to scaling and it is necessary in those that are sensitive to scaling. 
+In general, algorithms that exploit distances or similarities ('nearness') between data samples, such as k-NN and SVM (Sections \ref{se:reskneighbors} and \ref{sse:svm}), are sensitive to feature transformation. 
+Scaling the dataset is thus absolutely necessary if we use techniques sensitive to scaling \cite{wu2012foundations}. Although other techniques like naive Bayes, decision trees and tree-based ensemble method are invariant to feature scaling, it is but still a good idea to rescale/standarize the dataset. In conclusion, scaling will do no harm in techniques invariant to scaling and it is necessary in those that are sensitive to scaling. 
 
 There are two common ways to get all attributes (except the target variable which is rarely scaled) to have the same scale: min-max scaling and standardization.
 Min-max scaling, also called normalization, shifts and rescaled values so that they are between 0 and 1. This is done by subtracting the min value and dividing by the max minus the min. 
@@ -280,60 +291,53 @@ Min-max scaling, also called normalization, shifts and rescaled values so that t
 Standarization, on the other hand, does not bound values to a specific range, it subtracts the mean value (zero mean) and then divides it by the variance. 
 The standarization scaling is performed with \emph{z-scaling}:
 \begin{equation} \label{eq:scaling}
-\prime{x}_i=\frac{x_i -\mu}{\sigma_i}
+z_i = \frac{x_i -\mu}{\sigma_i}
 \end{equation}
-that is, the set of variables $X = x_i, i=1..n$ are scaled to be centered ($\mu=0$) and have the same spread (unit variance) \footnote{Note that we may want to use a lognormal rather than normal as a reasonable distribution. The Benford law is pertinent here: in many naturally occurring collections of numbers, the leading significant digit is likely to be small. This law is reminiscent of Pareto or Zipf law of numbers. For such variables, perform a log transform, $x'_i = \log x_i$}. 
+that is, the set of variables $x_i, i=1..n$ are scaled to be centered ($\mu=0$) and have the same spread ($\sigma=1$) \footnote{Note that we may want to use a lognormal rather than normal as a reasonable distribution. The Benford law is pertinent here: in many naturally occurring collections of numbers, the leading significant digit is likely to be small. This law is reminiscent of Pareto or Zipf law of numbers. For such variables, perform a log transform, $z_i = \log x_i$}. 
 
-The z-scale and log transform are examples of linear transformations but our dataset may need nonlinear transformations as well, for example discretize a continuous variable (discretize the age variable in bins of 5 years $70-75, 75-80, ...$.). 
+The z-scale and log transform are examples of linear transformations but our dataset may need nonlinear transformations as well, for example discretize a continuous variable (discretize the age variable in bins of 5 years $70-75, 75-80, ...$). Although standarization is generally speaking preferred to min-max because because is less affected by outliers, the preferred scaling method -standardization ormin-max- in actual truth depends on the application. In principal component analysis, standarization is usually preferred over min-max scaling since we are interested in the components that maximize the variance.
+On the other hand, min-max is preferred when using neural network algorithm that require data that on a 0-1 scale.
 
-Although standarization is generally speaking preferred to min-max because because is less affected by outliers, the preferred scaling method -standardization or Min-Max- in actual truth depends on the application. In PCA standarization is usually preferred over Min-Max scaling since we are interested in the components that maximize the variance.
-Min-Max is preferred when using neural network algorithm that require data that on a 0-1 scale.
+Another data preparation routine is coding continuous variables. Machine learning techniques are perfectly able to deal with continuous variables but the reason we still may be a good idea to discretize is that in doing so we will be helping the model to learn the relationship between inputs and output. Binning can also provide statistical smoothing and robustness in the modeling process (The cutpoint of the variable can be calculated with the Gini index, entropy, chi squared or KS criteria).
+A good praxis is to always encode the dataset as good as possible in order to simplify the model as much as possible.
 
-Another data preparation routine is coding continuous variables. Machine learning techniques are perfectly able to deal with continuous variable but the reason we still may be a good idea to discretize is that in doing so we will be helping the model to learn the relationship between inputs and output. Binning can also provide statistical smoothing and robustness in the modeling process (The cutpoint of the variable can be calculated with Gini index, entropy, chi squared or KS criteria).
-A good praxis is to always encode the dataset as good as possible to reduce the work of the model as much as possible.
-
-% 
 \subsection{Missing data imputation}
 \label{sse:miss}
-Miguel Angel.
-
+MA
 
 \subsection{Data leakage}
 \label{sse:dl}
-Data leakage describes the situation in which the data you are including to train the machine learning algorithm includes the very thing you are trying to predict. For example, we are trying to predict conversion for any of the 5 years project and conversion in any given year is included as a feature.
-Another example of data leakage is including the neuropsychological test data in the training data set. Since the diagnosis is based on the test results, failing to remove the test scores will lead to overfitting algorithm, that is, the algorithm will learn which combination of test scores result in one diagnosis or another -the output \emph{does the subject converts to mci?} would be already included in the input \emph{eg. MMSE scores}.
+Data leakage describes the situation in which the data you are using to train the machine learning algorithm includes the very thing you are trying to predict. For example, if we are predicting conversion for any of the 5 years project and conversion in any given year is included as a feature.
+Another example of data leakage is including the neuropsychological test data in the training data set. Since the diagnosis is based on the test results, failing to remove the test scores will lead to overfitting algorithm, that is, the algorithm will learn which combination of test scores result in one diagnosis or another -the output \emph{does the subject converts to mci?} would be already included in the input.
 
 %Data leakage can occur in more subtle ways than those just described. For example in time series using features from the future not available for the current prediction using. 
 
-An effective way to eliminate leakage before building the model is to look for features highly correlated with the target.
 %Detection of Multicollinearity
-\textbf{Multicollinearity}, deals with the identification and removal of correlated variables, eliminate redundsant variables is crucial for model building. We can do this in two steps, first remove variables that produce another one, for example if A = B + C + D we can remove B, C and D. 
-In a second step we deal with pair wise collinearity which is not exactly  the same as multicollinearity. For that we calculate the correlation between all pairs (correlation matrix) and remove those with a large value (above some threshold). To do this systematically we can build a graph, in the node note the correlation with the target and in the edges the correlation value with the adjacent components. We will select variables with largest corr with target and remove its correlated variables. (page 211, \cite{wu2012foundations}).
+An effective way to eliminate leakage before building the model is to look for features highly correlated with the target. \textbf{Multicollinearity}, deals with the identification and removal of correlated variables, eliminate redundant variables is crucial for model building. We can do this in two steps, first remove variables that produce another one, for example if A = B + C + D we can remove B, C and D. 
+In a second step we deal with pair wise collinearity which is not exactly the same as multicollinearity. For that we calculate the correlation between all pairs (correlation matrix) and remove those with a large value (above some threshold). To do this systematically, we can build a graph, in the node note the correlation with the target and in the edges the correlation value with the adjacent components. We will select variables with largest correlation with the target and remove its correlated variables. (page 211, \cite{wu2012foundations}).
 
-However, leakage can persist once the model is built, in that case we can look look for surprising feature behavior (e.g. very large information gains). The proof that there is leakage is obtained by comparing the deployment performance versus the train and evaluation performance. 
-Features that are removed to avoid leakage include, of course, the target variable 'conversionMCI' and related variables that contain information about the conversion e.g. time to convert, diagnosis per year and all the neuropsychological tests scores e.g. MMSE, Buschke memory test.
+However, leakage can persist once the model is built, in that case we can look look for surprising feature behavior (e.g. very large information gains). The proof that there is leakage is obtained by comparing the deployment performance versus the train and evaluation performance. Features that are removed to avoid leakage include, of course, the target variable 'conversionMCI' and related variables that contain information about the conversion e.g. time to convert, diagnosis per year and all the neuropsychological tests scores e.g. MMSE, Buschke memory test.
 %Dummy features to remove: id, fecha nacimiento, fecha_visita
 
 \subsection{Feature engineering}
 \label{sse:fe}
-Feature engineering is the process of transforming raw data into features that better represent the problem that we are trying to solve to the model in order to improve its accuracy on unseen data. 
-Put in simple words, feature engineering asks what is the best representation of the sample data to learn a solution to the problem?
-In feature engineering we may create additional features, for example by combining features to feed into the model. The rationale of feature engineering is to bring into the modeling process the domain expertise. Importantly, feature engineering is beneficial to reducing overfitting. As it is also the case of data leakage \ref{sse:dl}, there is no an exact method or recipe to perform feature engineering. Future engineering is more an art than a science and requires a reasonable dose of intuition and a strong dose of experience experience.
+Feature engineering is the process of transforming raw data into features that better represent the problem that we are trying to solve in order to improve the model accuracy on unseen data. 
+Put in simple words, feature engineering asks What is the best representation of the sample data?
+In feature engineering we may create additional features, for example by combining features. The rationale of feature engineering is to bring into the modeling process the domain expertise. Importantly, feature engineering is beneficial to reducing overfitting. As it is also the case of data leakage \ref{sse:dl}, there is no an exact method or recipe to perform feature engineering. Future engineering is more an art than a science and requires a reasonable dose of intuition and a strong dose of experience experience.
 %https://machinelearningmastery.com/discover-feature-engineering-how-to-engineer-features-and-how-to-get-good-at-it/
 
-It is worth noting that success in the predictive model built depends on three things: the model selection, the dataset available and the engineered features. With well engineered features, it is possible to choose suboptimal models, and or suboptimal parameters and still obtain good results. Feature engineering requires domain knowledge in order to make informed decision about the selection of features that should included in the model. The result of this process -\textbf{Vallecas Index}- is described next. 
+Feature selection addresses the problem of selecting a subset that are most useful to the problem. Feature selection algorithms may use a scoring method to rank and choose features, such as correlation or other feature importance methods. Regularization methods like Lasso and Ridge regression which are studied in Section \ref{sse:linreg} may also be considered algorithms with feature selection baked in, as they actively seek to remove or discount the contribution of features as part of the model building process. 
+It is worth noting that success in predictive models depends on three things: the model selection, the dataset available and the engineered features. With well engineered features, it is possible to choose suboptimal models, and or suboptimal parameters and still obtain good results. Feature engineering requires domain knowledge in order to make informed decision about the selection of features that should included in the model. The result of this process -\textbf{Vallecas Index}- is described next. 
 
 
 \subsection{The Vallecas Index}
 \label{sse:vs}
 % Variable Selection:
 Feature engineering is what makes us distinguish attributes from features, attributes is just any column in our tabular dataset, a feature on the other hand is an attribute that is useful or meaningful to your problem. Feature engineering gets us closer to the final selection of features that will be used for prediction. 
-Variable Selection consists of filtering the most important features and remove those that are not needed - Feature selection and wrapper.
+Variable Selection consists of filtering the most important features and remove those that are not needed - feature selection and wrapper.
 Note that it could be always possible to select all the features and let the model do the job of finding the best predictive model, but this is not a good idea in practical terms and the reason is \emph{stability}. Stable solutions require removing features that have spurious or non consistent relationship with the target. Furthermore, the principle of parsimony applies: careful variable selection and elimination tend to produce simpler models, and \emph{ceteris paribus} simple should be preferred to complex.
 
-Feature selection addresses the problem of selecting a subset that are most useful to the problem. Feature selection algorithms may use a scoring method to rank and choose features, such as correlation or other feature importance methods. Regularization methods like LASSO and ridge regression which are studied in Section \ref{} may also be considered algorithms with feature selection baked in, as they actively seek to remove or discount the contribution of features as part of the model building process
-
-The group of features that are we will used for learning are the following 56 \footnote{For a description of the features see the Appendix}: 
+The group of features that we will used for learning are the following 56 \footnote{For a description of the features see the Appendix} .The features have been selected according to the domain expertise of the team of researchers at \emph{Vallecas project} and the data desiderata for machine learning projects that was explained above. The \textbf{Vallecas Index} is a subset of the input space that will be used to build a classifier that predicts the likelihood that a new example will convert to MCI. 
 %\begin{center}
 %\textit{sex, education (nivel educativo),apoe, edad visita, scd (aggregate of 9 features related to subjective cognitive complaints), cognitive complaints (aggregate of 15 features), psychiatric syndromes (aggregate of 5 features), cognitive performance (aggregate of 11 features), quality of life (aggregate of 10 features), social engagement (aggregate of 4 features), physical exercise (aggregate of 2 features), diet(aggregate of 14 features), intellectual activity (aggregate of 14 features), demographics (aggregate of 6 features: married/singles, sons, perceived socioeconomic status), professional life(aggregate of 3 features), health (aggregate of 15 features: smoker, cardiac,lipids, glucose,diabetes, ictus, heart.. ), psychiatric history(aggregate of 15 features: depression and anxiety), sleep (aggregate of 12 features), family dementia history (aggregate of 4 features), sensory disturbances (auditive and visual disturbance) } 
 %\end{center}
@@ -373,12 +377,11 @@ First, we plot longitudinal variables for cognitive test (these are not included
         \includegraphics[keepaspectratio, width=0.9\linewidth]{figures/stai}
         \caption{Self-reported anxiety level by the volunteers for each year. The distribution is right skewed and tends to decrease with time (with a strong increment in the last year) $0.67, 0.62, 0.52, 0.41, 0.74$}
     \end{subfigure}%\quad
-    \label{fig:staigds}
-    \caption{MMSE, Buschke, depression and anxiety levels across five years.}
+    \caption{MMSE, Buschke, depression and anxiety levels across five years.} \label{fig:staigds}
 \end{figure}
 
 Next we study associations between features and the target (\emph{conversion to MCI}). 
-Figure \ref{fig:demosalime} plots the conversion rate for different features: APOE, educational level, familiar AD (father or mother), income level calculated using residency and age and diet. Note that we explore not only features included in the \emph{Vallecas Index} also other features like APE profile. The \emph{Vallecas Index} is a subset of the in put space that will be used to build a classifier that predicts the likelihood that a new example will convert to MCI (Section ). Here, however, we are performing exploratory data analysis, that is, we look for patterns of associations in the dataset without being concerned with prediction per se.
+Figure \ref{fig:demosalime} plots the conversion rate for different features: APOE, educational level, familiar AD (father or mother), income level calculated using residency and age and diet. Note that we explore not only features included in the \emph{Vallecas Index} also other features like APOE profile are included.Of note, here we are performing exploratory data analysis, that is, we look for patterns of associations in the dataset without being concerned with prediction per se.
 
 \begin{figure}[H]
     \centering
@@ -394,28 +397,26 @@ Figure \ref{fig:demosalime} plots the conversion rate for different features: AP
         \includegraphics[width=\linewidth]{figures/alim}
         \caption{Conversion rate for diet related features, ketogenic diet (high in protein and fat low in carbs), glucemic diet (high in carbs) and healthy diet (high in vegetables, fruit and low in fat)}
     \end{subfigure}%\quad
-    
-    \label{fig:demosalime}
-    \caption{Conversion rate for different features, above APOE, familiar AD, income and age, bellow diet.}
+    \caption{Conversion rate for different features, above APOE, familiar AD, income and age, bellow diet.} \label{fig:demosalime}
 \end{figure}
 
+\textbf{Socioeconomic Risk Factors in AD}
+
 There is a growing concern about the impact of AD and other forms of dementia sufferers in low income areas in the world.
-The Alzheimer’s Society estimates that 71 per cent of dementia sufferers in 2050 will be in poor to middle income countries.
+The Alzheimer’s Society estimates that $71\%$ of dementia sufferers in 2050 will be in poor to middle income countries.
 %https://newrepublic.com/article/115936/alzheimers-drastic-rise-low-income-countries
 In \emph{Proyecto Vallecas} we make the most of the dataset addressing prescient issues like the relationship between socioecomic status and health. There are concluding reports from governmental agencies that show an association between wealth and life expectancy. 
 Figure \ref{incomeresidency} shows the income distribution of \emph{Proyecto Vallecas} volunteers as estimated based on their home residency. 
 Educational level also affects positively life expectancy. Even within European countries, life expectancy varies greatly by education level. Life expectancy of males at age 25 with high education level is 10 years longer than for those with low educational level in Poland and the Czech republic \ref{imf2018}. 
-See figure \ref{fig:demosalime} for a conversion rate with education level and income in \emph{Proyecto Vallecas}. The figure indicates that higher rent and educational level reduce the incidence to conversion. This qualitative-based interpretation will be quantitatively analyzed in the further on in the document.
-
+See figure \ref{fig:demosalime} for a conversion rate with education level and income in \emph{Proyecto Vallecas}. The figure indicates that higher rent and educational level reduce the incidence to conversion. 
 \begin{figure}[H]
         \centering
         \includegraphics[keepaspectratio, width=\linewidth]{figures/incomeresidency}
-        \caption{On the left, distribution of home residency by districts of \emph{Proyecto Vallecas} volunteers. All districts of the city of Madrid are represented. Note that there are 156 subjects of a total of 1180 that are not residents in the city of Madrid and are not included here. On the right, we plot the income distribution as estimated based on the home residency, 251 subjects live in low income areas, 769 in medium income areas and 160 in high income areas of Madrid.
-        }
-\label{fig:incomeresidency}
+        \caption{On the left, distribution of home residency by districts of \emph{Proyecto Vallecas} volunteers. All districts of the city of Madrid are represented. Note that there are 156 subjects of a total of 1180 that are not residents in the city of Madrid and are not included here. On the right, we plot the income distribution as estimated based on the home residency, 251 subjects live in low income areas, 769 in medium income areas and 160 in high income neighborhoods of Madrid.
+        } \label{fig:incomeresidency}
 \end{figure}
 
-Figure \ref{fig:multico} shows the Pearson correlation between conversion to MCI and features related to cognitive complaints, depression (positive correlation) and income level-education and use of new technologies (negative correlation).
+The qualitative-based interpretation seen in the Figure \ref{fig:incomeresidency} can be quantitatively analyzed in more detail. Figure \ref{fig:multico} shows the Pearson correlation between conversion to MCI and features related to cognitive complaints, depression (positive correlation) and income level-education and use of new technologies (negative correlation).
 
 \begin{figure}[H]
     \centering
@@ -442,20 +443,19 @@ Figure \ref{fig:multico} shows the Pearson correlation between conversion to MCI
         \includegraphics[height=2.5in]{figures/jointplot_a13conversionmci}
         \caption{Reporting habitual use of new technologies and the internet is negatively correlated to MCI conversion.}
     \end{subfigure}%\quad
-    \label{fig:multico}
-    \caption{Pearson correlation between features correlated with conversion to MCI.}
+   
+    \caption{Pearson correlation between features correlated with conversion to MCI.} \label{fig:multico}
 \end{figure}
 
-Figure \ref{fig:heatmappearson} shows the heatmap with the correlation between conversion to MCI (last row) and features included in the \textbf{Vallecas index} (with the exception of APOE). Cognitive complaints, depression and APOE are positively correlated to conversion and wealth-income and the use of new technologies are negatively correlated. 
-Of note, the Pearson correlation coefficient indicates the strength of a linear relationship between two variables, and is therefore ill-suited to characterize more complex (non-linear) relationships.
-Our goal here is however, to formulate questions based on the data patterns observed. The mathematical apparatus will get more sophisticated as we advance into the Modeling section \ref{se:mod}. 
+Figure \ref{fig:heatmappearson} shows the heatmap with the correlation between conversion to MCI (last row) and features included in the \textbf{Vallecas index} (plus APOE). Cognitive complaints, depression and APOE are positively correlated to conversion and wealth-income and the use of new technologies are negatively correlated. 
+Importantly, the Pearson correlation coefficient indicates the strength of a linear relationship between two variables, and is therefore ill-suited to characterize more complex (non-linear) relationships.
+Since our goal is to formulate questions based on the data patterns observed, the mathematical apparatus will necessarily get more sophisticated as we advance into the Modeling section \ref{se:mod}. 
  
  \begin{figure}[h!]
         \centering
         \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{figures/scd_visita1_corr}
         \caption{Heatmap calculated with the Pearson's correlation for a number of features of \emph{Proyecto Vallecas}.
-        }
-\label{fig:heatmappearson}
+        } \label{fig:heatmappearson}
 \end{figure}
 
 Figure \ref{fig:kendall} shows the Kendall's correlation (Kendall’s tau is a measure of the correspondence between two rankings) 
@@ -465,14 +465,13 @@ for all the variables included in the \textbf{Vallecas index}.
         \centering
         \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{figures/kendallcorr}
         \caption{Heatmap calculated with the Kendall's correlation for a the total of features selected in the \textbf{Vallecas index}.
-        The linear correlation among most features is small, however the heatmap is able to display significant associations and the clustering of features.}
-\label{fig:kendall}
+        The linear correlation among most features is small, however the heatmap is able to display significant associations and the clustering of features.} \label{fig:kendall}
 \end{figure}
 
 \subsection{Statistical inference}
 \label{sse:satinf}
 %ANOVA TESTS
-In this section we study the difference between groups using analysis of variance \footnote{ANOVA is similar to 2-sample t-test but it is more conservative (less type I error)}. In particular we study whether the observed variance for a variable (e.g. age or diet) when partitioned into components can be attributable to conversion.
+In this section we study the difference between groups using analysis of variance \footnote{ANOVA is similar to 2-sample t-test but it is more conservative (less type I error)}. In particular, we study whether the observed variance for a variable (e.g. age or diet) when partitioned into components can be attributable to conversion.
 Table \ref{tab:anova} shows the ANOVA statistical test to determine whether differences between the means are of conversion to MCI and features are statistically significant. The null hypothesis is rejected for depression,  subjective complaints, education level, income, familiar unit, use of new technologies and age.
 
 \begin{tabular}{llr}
@@ -503,7 +502,7 @@ tabac &  2.388573  & 0.122572 \\
 \label{tab:anova}
 \end{tabular}
 
-Figure \ref{fig:anovabox} shows the box plot for features that reject the null hypothesis (cognitive complaints, age,education level and use of new technologies).
+Figure \ref{fig:anovabox} shows the box plot for features that reject the null hypothesis for cognitive complaints, age,education level and use of new technologies.
 
 \begin{figure}[H]
     \centering
@@ -530,8 +529,7 @@ Figure \ref{fig:anovabox} shows the box plot for features that reject the null h
         \includegraphics[height=2.1in]{figures/a13box}
         \caption{Box plot of ANOVA test for differences conversion to MCI and use of new technologies.}
     \end{subfigure}%\quad
-    \label{fig:anovabox}
-    \caption{Box plot of 1-factor ANOVA tests.}
+    \caption{Box plot of 1-factor ANOVA tests.} \label{fig:anovabox}
 \end{figure}
 
 \newpage
@@ -539,16 +537,15 @@ Figure \ref{fig:anovabox} shows the box plot for features that reject the null h
 \section{Predictive analytics with Machine Learning} 
 \label{se:mod}
 
-Machine learning is changing numerous aspects in our lifes. Predictive algorithms perform tasks that only experts could do. The range of domains of applications in which machine learning have shown optimal results is impressive. From natural language translation (Google Neural Machine Translation), lip reading (\cite{suwajanakorn2017synthesizing}) to reconstruction of face aging process using Conditional Generative Adversarial Networks \cite{antipov2017face}, they are just some of the achievements of Artificial Intelligence.
+Machine learning is changing numerous aspects in our lifes. Predictive algorithms perform tasks that only experts could do. The range of domains of applications in which machine learning have shown optimal results is impressive. From natural language translation (Google Neural Machine Translation), lip reading \cite{suwajanakorn2017synthesizing) to reconstruction of face aging process using Conditional Generative Adversarial Networks \cite{antipov2017face}, they are just some of the achievements of Artificial Intelligence.
 The success of recent models to detect abnormalities in medical images better than trained radiologists have caused  great excitement in the AI community. Google and University of Toronto leader researcher Geoffrey Hinton has gone as far as to advocate to stop training radiologists in medical schools.
 %The paper documents how the algorithm detected abnormalities (like fractures, or bone degeneration) better than radiologists in finger and wrist radiographs. However, radiologists were still better at spotting issues in elbows, forearms, hands, upper arms, and shoulders.
 
-Here we are interested in building learning system that accurately predicts that whether a subject will convert to MCI. The input set is the \emph{Vallecas Index} explained above. While at this stage we focus only on capturing the predictive power of the \emph{Vallecas Index} which mainly consists in demographic, cognitive and lifestyles features, the solutions here implemented can be directly extended with additional features, including neuroimaging related features (e.g. gray matter density, connectivity) and others.
+Here we are interested in building learning systems that accurately predicts whether a subject will convert to MCI. The input set is the \emph{Vallecas Index} explained above. While at this stage we focus only on the predictive power of the \emph{Vallecas Index} which mainly consists in demographic, cognitive and lifestyles features, the solutions here implemented can be directly extended with additional features, including neuroimaging related features (e.g. gray matter density, connectivity) and others.
+We will explore a number of different algorithms and we will evaluate the goodness of fit of those algorithms with the problem at hand -predict conversion to MCI from healthy subjects. We are being methodologically speaking promiscuous for a reason. There is no a machine learning algorithm that is universally any better than any other. This is related to the no free lunch theorem in search an optimization \cite{wolpert1997no}. It follows that the goal of machine learning is not to seek an universal learning algorithm, instead the goal must be to understand what kinds of distributions are relevant to the real world that an AI agent is experiencing. Thus, we must develop an algorithm to perform well in a particular task and we do this by adding preference hyperparameters \footnote{Hyperparameter is a parameter whose value is set before the learning process begins. By contrast, the values of other parameters are derived via training.} (e.g. regularization) in the algorithm.  
 
-We will explore a number of different algorithms and we will evaluate the goodness of fit of those algorithms with the problem at hand -predict conversion to MCI from healthy subjects. We are promiscuous for a reason. There is no a machine learning algorithm that is universally any better than any other. This is related to the no free lunch theorem in search an optimization \cite{wolpert1997no}. It follows that the goal of machine learning is not to seek an universal learning algorithm, instead the goal must be to understand what kinds of distributions are relevant to the real world that an AI agent is experiencing. Thus, we must develop an algorithm to perform well in a particular task and we do this by adding preference hyperparameters \footnote{Hyperparameter is a parameter whose value is set before the learning process begins. By contrast, the values of other parameters are derived via training.} (e.g. regularization) in the algorithm.  
-
-This document is self contained and it has been created with the dual objective of being both divulgative about machine learning techniques and informative about the results obtained in the \emph{Vallecas Project} using those techniques.
-In the next section we deal with the divulgative aspect and we provide a short introduction to machine learning, the reader familiarized with the topic can skip and go directly to the next section, where the models implemented in the Vallecas dataset are discussed.
+We have created this document with the dual objective of being both divulgative about machine learning techniques and informative about the results obtained in the \emph{Vallecas Project} using those techniques.
+In the next section we deal with the divulgative aspect and we provide a short introduction to machine learning, the reader familiarized with the topic can skip and go directly to the Results Section (\ref{se:res}), where the models implemented are discussed.
 
 
 \subsection{Introduction to Machine Learning} 
@@ -567,7 +564,7 @@ Formally, we look for the model parameters w that minimize the distance between 
 
 However, in reality what we actually care about is minimizing the test error, that is, how good our model predict the behavior of examples never seen before:
 \begin{equation}
-\argmin_{w'} ||X^{(test)}w' - y^{(test)}||
+\argmin_{w} ||X^{(test)}w - y^{(test)}||
 \end{equation}
 
 But how is it possible to affect performance in the test set when we get only observations on the training set? If training and test sets were collected arbitrarily the whole enterprise of statistical learning would not stand. 
@@ -580,7 +577,7 @@ There are four types of models in Machine Learning, in this document we will dea
 \item Supervised learning: builds a map between input data to known targets (labels, annotations) 
 \item Unsupervised learning: finds interesting transformations of input data (without the help of any target) for the purpose of compression, denoising, visualization or to better understand the correlations in the input data. 
 It is often advisable to perform Unsupervised learning (eg. clustering, dimensionality reduction PCA) before doing Supervised learning.
-\item Self supervised learning: SL without humans in the loop, labels are generated from the input data (eg. autoencoders)
+\item Self supervised learning: without humans in the loop, labels are generated from the input data (eg. autoencoders)
 \item Reinforcement learning: model agent-environment interactions the goal is to learn actions that maximize some reward. For example, a network that looks at a video game screen and outputs the game actions that will maximize the score \cite{mnih2013playing}
 \end{itemize}
 
@@ -596,27 +593,28 @@ Once the estimator is being learned, we need to test it with the predictor. Pred
 % The pipeline is: Read Data -> apply some simple or complex (PCA) transformation -> fit an appropriate model -> predict using the model for unseen data. (iteratively)
 % For model tuning and selection we can use two meta estimators: GridSearchCV and RandomizedSearchCV to search the best parameters. Grid provides a grid of possible parameters and try each possible combination among them to arrive at the best one.. Randomized  optimizes this sampling the parameters to avoid combinatorial explosion of Grid. the also allow different x-validation schemes and score functions to measure performance.
 
-We exhaustively explore a number of models and evaluate their performance on the Vallecas Project dataset.
-The appendix section provides a more in depth description of the models implemented, in this section we will
+We exhaustively explore a number of models and evaluate their performance on the Vallecas Project dataset. Let is start with supervised learning techniques.
+%The appendix section provides a more in depth description of the models implemented, in this section we will
 go through the models and give a layman's description of the models making emphasis in the applicability and pros and cons.
 
 \subsection{Supervised Learning}
 \label{sse:sup}
 Supervised methods can be conceptualized as filters that try to maximize the mutual information between the features and the target.
-Supervised learning model refers to the mathematical object that makes a prediction $y_i$ given $x_i$, one of the easiest incarnations is a linear combination of weighted input features, $y_i = \sum_k w_j x_{ij}$ prediction values have different interpretations depending on the task, i.e. classification, regression. For example, it can be logistic transformed to get the probability of positive class in logistic regression, and it can also be used as a ranking score when we want to rank the outputs \cite{patania2017topological}.
+Supervised learning model refers to the mathematical object that makes a prediction $y_i$ given $x_i$, one of the easiest incarnations is a linear combination of weighted input features, $y_i = \sum_k w_j x_{ij}$. 
+
+Prediction values have different interpretations depending on the task, i.e. classification, regression. For example, a logistic transform to get the probability of positive class in logistic regression, or a ranking score when we want to rank the outputs \cite{patania2017topological}.
 %http://xgboost.readthedocs.io/en/latest/model.html
-The parameters eg $w_j$ in linear model, are the undetermined part that we need to learn from data. To find the best parameters given the training data we need to measure the performance of the model given a certain set of parameters, this is the objective function. Objective functions have two terms, training loss and the regularization.
+The parameters e.g. $w_j$ in a linear model are the undetermined part that we need to learn from data. To find the best parameters given the training data we need to measure the performance of the model given a certain set of parameters, this is the objective function. Objective functions have two terms, training loss and the regularization.
 \begin{equation}
 O(w) = L(w) + R(w)
 \end{equation}
 where L is the training loss and R is the regularization. The training loss measures how predictive our model is on training data, for example if we use mean squared $L(w) = \sum_i (\hat{y_i} - y_i)^2$ but there are many other possible loss functions for example log loss.
-the regularization term, R, controls the complexity of the model which helps to avoid overfitting.
+The regularization term, R, controls the complexity of the model which helps to avoid overfitting.
 
 The most common learning method is called regression, it is then worth spend some time to explain this technique prior to get into more brave waters. 
 %https://www.evernote.com/shard/s263/sh/574750b2-7b4a-4300-8c41-7e8e5150de18/f2c4ffea344f3dd11b3e2f5dcdd25633
 There are two types of regression, linear regression and logistic regression. Logistic regression gives you a discrete output e.g.0,1 while linear regression gives a continuous output. Logistic and Linear Regression can be used as a benchmark (baseline performance) against which more complex techniques can be compared. 
-Both linear regression and logistic regression do work better when you remove attributes that are unrelated to the output variable as well as attributes that are very similar (correlated) to each other. Thus, feature engineering plays (Section \ref{sse:fe}) an important role in regards to the performance of this technique and it is not exception with other methodologies explored further in this document.
-
+Both linear regression and logistic regression do work better when you remove attributes that are unrelated to the output variable as well as attributes that are very similar (correlated) to each other. Thus, feature engineering plays (Section \ref{sse:fe}) an important role in regards to the performance of this technique as well as the rest of methodologies explored further in this document.
 
 \subsection{Linear regression}
 \label{sse:linreg}
@@ -911,7 +909,7 @@ Multilayer perceptron (MLP) can be used for both classification and regression. 
  
 Graphically representations of the architecture of regression models -linear and logistic- are shown in Figure \ref{fig:mich}. 
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \begin{subfigure}[t]{.8\textwidth}
         \centering
@@ -924,8 +922,7 @@ Graphically representations of the architecture of regression models -linear and
         \includegraphics[height=1.7in]{figures/michiganfigure}
         \caption{MLP adds a hidden layer which computes a nonlinear function (activation function) of the weighted sums of the input features. Each hidden unit $h_i$ computes a non linear function of the weighted sum of the inputs, resulting in the intermediate output values $v_i$. The activation function \textit{tanh} is the hyperbolic tangent function which is related to the logistic function, other functions are, \textit{ReLU, logistic} etc. Rectified linear unit (ReLU) are probably the best choice: fast, simple (look like a hockey stick) and propagate gradients more ffectively than sigmoid. The \textit{relu} activation function is the default in sklearn. The output y is the weighted sum of the intermediary outputs $v_i$.}
     \end{subfigure}%\quad
-    \label{fig:mich}
-    \caption{Predicting $y$ in MLP requires the computation of a non linear function in the hidden units, this gives the network more expressive power and allows to perform more accurate predictions than in linear or logistic regression models, especially when the relationship between the inputs $x$ and the target $y$ is complex. On the other hand, more parameters need to be estimated (MLP will likely require more training data than linear/logistic regression).}
+    \caption{Predicting $y$ in MLP requires the computation of a non linear function in the hidden units, this gives the network more expressive power and allows to perform more accurate predictions than in linear or logistic regression models, especially when the relationship between the inputs $x$ and the target $y$ is complex. On the other hand, more parameters need to be estimated (MLP will likely require more training data than linear/logistic regression).} \label{fig:mich}
 \end{figure}
 %https://www.coursera.org/learn/python-machine-learning/lecture/v4cs3/neural-networks  
 
@@ -954,8 +951,7 @@ A schematic representation of the architecture of neural networks is shown in fi
         \centering
         \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/chollet}
         \caption{Neural networks build maps of input data to predictions. The loss function is the feedback signal that tells how good the model is doing. The difference between the prediction and the actual target is the loss value which is used by the optimizer to update the network's weight in order to produce a better prediction in the next iteration.
-        }
-\label{fig:cholletfig}
+        } \label{fig:cholletfig}
 \end{figure}
 
 The optimizer is a stochastic gradient descent (SGD) of some sort of other but the loss function changes depending on the task, for a two-class classification problem use binary crossentropy as loss function. 
@@ -968,8 +964,7 @@ A validation set of for example the $10\%$ of our training set gives us only 73 
         \centering
         \includegraphics[keepaspectratio, width=1\linewidth]{figures/xvalidationchollet}
         \caption{You train on the training data and evaluate your model on the validation data. Once your model is ready for prime time, you test it one final time on the test data. Cross validation  information leaks running one experiment, evaluating on the validation set, and modifying your model as a result—then you’ll leak an increasingly significant amount of information about the validation set into the model At the end of the day, you’ll end up with a model that performs artificially well on the validation data, because that’s what you optimized it for.
-        }
-\label{fig:xvalchollet}
+        } \label{fig:xvalchollet}
 \end{figure}
 
 The results produced by the implementation of deep network using both sklearn and keras are shown in Section \ref{sse:resdeep}.
@@ -1083,34 +1078,8 @@ The t-SNE algorithm works around this problem by using a Cauchy $(0,1)$ distribu
 The results produced by the implementation of manifold learning, in particular t-distributed stochastic neighbor embedding (tSNE) are shown in Section \ref{sse:resmanifold}.
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Topological Data Analysis}
-\label{sse:TDA}
-%https://www.quora.com/Is-there-a-relationship-between-manifold-learning-and-topological-data-analysis
-TDA focuses on identifying global features within the data.
-Manifold learning focuses on reducing dimensionality by finding a good map from the data to a low-dimensional manifold. Topological data analysis could be helpful to analysis (manifold) data before and after dimensionality reduction (i.e. manifold learning). The topology of the manifold should be the same and independent of the dimensionality of the ambient space.
+\newpage
 
-Manifold learning assumes that the data lies on a (usually low) dimensional submanifold and has as a goal to create a representation that faithfully records this local neighborhood structure given in the manifold. 
-TDA, on the other hand, makes very few assumptions about the data and the goal is not to faithfully reconstruct the data - or to fit the data to a model - but to provide (unbiased) summaries of the geometric/topological structure in the data.
-Persistent homology and mapper both take as inputs some kind of "space" (e.g simplicial complex) and both use a function to create a summary. For Mapper the summary is (loosely speaking) a recording of the connectivity of the fibers of the  function while for persistent homology it's the relationship between the homology of sublevel sets of the function. The output is a "barcode" for persistent homology or a simplicial complex in the case of mapper.The main point here is that to create such a summary very little is needed beyond some notion of similarity or proximity in your data.
-
-As we saw in the results (no separation of data points!), the manifold assumption (locally uniform and smooth) is quite strong and outside of scientific contexts have not found data sets that look like manifolds.
-
-%https://jsseely.github.io/notes/TDA/
-TDA involves ‘fitting’ a topological space to data, then perhaps computing topological invariants of that space. TDA is related to two familiar problems: clustering and manifold learning. In some sense, TDA is a generalization of both problems.
-We can view many data analysis problems as ‘fitting a space to data’. E.g. both PCA and linear regression involve fitting a linear subspace to data; the space perspective complements the statistical (least-squares) and algebraic (SVD, pseudoinverse) perspectives of these techniques.
-How do we generalize these linear techniques? A stock answer: manifold learning. But, manifolds are restrictive objects. A consequence of being locally Euclidean is that they cannot contain singularities and must have the same dimension everywhere. A mathematician’s motivation for working with manifolds is that one can do calculus on them. But if this is not the goal, then there may be little reason to assume a restrictive type of space in a data analysis context. Indeed, the singularities of a space are often the interesting points of study (e.g. bifurcation points), and one wants tools to capture these.
-%Simplicial complexes
-Topological spaces are a natural thing to turn to whenever one wants to ‘fit a space to data’. Yet topological spaces, without restriction, are too general. Simplicial complexes, which can be viewed as a convenient middle ground of specificity and generality in modeling spaces. Simplicial complexes lie somewhere between graphs and hypergraphs. All graphs are special kinds of simplicial complexes, and all simplicial complexes are special kinds of hypergraphs. “Most” topological spaces of interest can be discretized (triangulated) and represented as a simplicial complex.
-%Persistent homology
-The workhorse technique of TDA is persistent homology
-%Mapper
-An especially underused TDA technique is “mapper”. I found this particularly useful for visualization, and I wonder why it isn’t as widely applied as, say, t-SNE. Mapper fits a simplicial complex to data (often, just a graph), but in a very flexible way. The goal of mapper is either data visualization or clustering. The key insight offered by this technique is that many interesting “clusters” in real data are not clusters in the classical sense (as disconnected components), but are the branches of some single connected component. 
-We didnt find clusters with SVD nor tSNE, can we find some with Mapper??
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Results}
 \label{se:res}
 
@@ -1208,12 +1177,10 @@ Class & precision & recall & f1-score & support     \\
 
 Figure \ref{fig:logresres} shows the results of the logistic regression model. Remember that it is assumed that the logit transformation of the outcome variable (\emph{conversionMCI}) has a linear relationship with the predictor variables (\emph{Vallecas index}).
 
-
-\begin{figure}[h]
+\begin{figure}[H]
         \centering
         \includegraphics[keepaspectratio, width=0.8\linewidth]{figures/LR_results-balanced}
-        \caption{Logistic regression results L2 regularization, balanced weight option and liblinear solver. The feature about remembering dreams (sue rec) shows a strong negative association.}
-\label{fig:logresres}
+        \caption{Logistic regression results L2 regularization, balanced weight option and liblinear solver. The feature about remembering dreams (sue rec) shows a strong negative association.} \label{fig:logresres}
 \end{figure}
 
 
@@ -1239,8 +1206,7 @@ Figure \ref{fig:lr-cv7} shows the learning curve for the logistic regression cla
         \centering
         \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/LR-CV7}
         \caption{Learning curve for logistic regression, in red the training score and in green the cross-validation ($cv=7$)score. The training score is very high at the beginning and decreases and the cross-validation score stays within the $0.70-0.75$ range. The curve seems to suggest that the validation score could be increased with more training samples, if eventually training and cross-validation have the same score it means that the classifier is not over-fitting (early stopping(stop training). T
-        }
-\label{fig:lr-cv7}
+        } \label{fig:lr-cv7}
 \end{figure}
 
 %Underfitting – Validation and training error high
@@ -1256,7 +1222,7 @@ The algorithm will look for the optimal k among all possible odd values (to avoi
 
 Table \ref{tab:knn} shows the classification metrics for k-nn algorithm. The k-nn algorithm is very good at predicting the 0 class (non converter) but it fails at predicting the positive class (converters).
 \begin{table}[H]
-\caption{Classification metrics for k-nn} \label{tab:knn} 
+\caption{Classification metrics for k-nn} 
 \begin{center} 
 \begin{tabular}{lllll}
 \hline
@@ -1268,7 +1234,7 @@ Class & precision & recall & f1-score & support     \\
 1 & 0.20  &    0.05   &   0.08   &     19 \\
 \hline
 \end{tabular}
-\caption{The table shows  main classification metrics for the k-nn algorithm in the test set with $k=3$ and $cv=5$. The recall recall of the positive class is also known as \emph{sensitivity} is 0.05 the  recall of the negative class (\emph{specificity}) is 0.98. The algorithm suffers from the data unbalanced and it cannot deal with it because the algorithm is based on a majority vote of neighbors which will be on almost always 0, that is, the majority vote will be 0 in a population with $90\%$ of 0s and $10\%$ of 1s.}
+\caption{The table shows  main classification metrics for the k-nn algorithm in the test set with $k=3$ and $cv=5$. The recall recall of the positive class is also known as \emph{sensitivity} is 0.05 the  recall of the negative class (\emph{specificity}) is 0.98. The algorithm suffers from the data unbalanced and it cannot deal with it because the algorithm is based on a majority vote of neighbors which will be on almost always 0, that is, the majority vote will be 0 in a population with $90\%$ of 0s and $10\%$ of 1s.} \label{tab:knn} 
 \end{center}
 \end{table}
 
@@ -1287,8 +1253,7 @@ Figure \ref{fig:knn-cv3} shows the learning curve for the logistic regression cl
         \centering
         \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/KNN3-cv5_curve}
         \caption{Learning curve for k-nn, $k=3$, in red the training score and in green the cross-validation ($cv=5$)score. The algorithm clearly overfits, it perfectly models the training data but fails to generalize for examples of class 1 (converters).
-        }
-\label{fig:knn-cv3}
+        } \label{fig:knn-cv3}
 \end{figure}
 
 
@@ -1303,7 +1268,7 @@ The dataset is again split into training data ($80\%$) and test data ($20\%$). T
 
 Table \ref{tab:svm} shows the classification metrics for SVM.
 \begin{table}[H]
-\caption{Classification metrics for SVM} \label{tab:svm} 
+\caption{Classification metrics for SVM}
 \begin{center} 
 \begin{tabular}{lllll}
 \hline
@@ -1315,7 +1280,7 @@ Class & precision & recall & f1-score & support     \\
 1 & 0.15  &    0.63   &   0.24   &    19 \\
 \hline
 \end{tabular}
-\caption{The table shows the main classification metrics for the SVM classifier (sigmoid kernel) in the test set. The SVM classifier underperforms the previous logit classifier except in \emph{sensitivity} (recall of the positive class.}
+\caption{The table shows the main classification metrics for the SVM classifier (sigmoid kernel) in the test set. The SVM classifier underperforms the previous logit classifier except in \emph{sensitivity} (recall of the positive class.}  \label{tab:svm} 
 \end{center}
 \end{table}
 
@@ -1323,8 +1288,7 @@ Figure \ref{fig:svm-cm} shows the confusion matrix and the Receiver Operating Ch
 \begin{figure}[H]
         \centering
         \includegraphics[keepaspectratio, width=1\linewidth]{figures/SVM-CM}
-        \caption{Confusion matrix and ROC for SVM classifier with sigmoid kernel. The classifier performs better than random luck but worse than the previous logit classifier.}
-\label{fig:svm-cm}
+        \caption{Confusion matrix and ROC for SVM classifier with sigmoid kernel. The classifier performs better than random luck but worse than the previous logit classifier.} \label{fig:svm-cm}
 \end{figure}
 
 Figure \ref{fig:svm-cv7} shows the learning curve for the logistic regression classifier using cross-validation (7 splits).
@@ -1332,8 +1296,7 @@ Figure \ref{fig:svm-cv7} shows the learning curve for the logistic regression cl
         \centering
         \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/SVM-CV7}
         \caption{Learning curve for SVM classifier with sigmoid kernel, in red the training score and in green the cross-validation ($cv=7$) score. SMV roughly converges to a low score ~0.6.
-        }
-\label{fig:svm-cv7}
+        } \label{fig:svm-cv7}
 \end{figure}
 
 \textbf{SVM parameters for non linear SVM}
@@ -1361,7 +1324,7 @@ The best C and $\gamma$ calculated with Grid-Search are $C= 10.0$ and $\gamma= 0
 Table \ref{tab:svmnonlinear} shows the classification metrics for the nonlinear SVM (Radial Basis Function Kernel) and C and $\gamma$.
 
 \begin{table}[H]
-\caption{Classification metrics for SVM} \label{tab:svmnonlinear} 
+\caption{Classification metrics for SVM} 
 \begin{center} 
 \begin{tabular}{lllll}
 \hline
@@ -1373,7 +1336,7 @@ Class & precision & recall & f1-score & support     \\
 1 & 0.20  &    0.47   &   0.29   &    19 \\
 \hline
 \end{tabular}
-\caption{The table shows the main classification metrics for the nonlinear SVM classifier (RBF kernel) in the test set with the best hyperparameters C and $\gamma$. The nonlinear SVM classifier performs better than the linear SVM, in particular in \emph{specificity} (recall of negative class).}
+\caption{The table shows the main classification metrics for the nonlinear SVM classifier (RBF kernel) in the test set with the best hyperparameters C and $\gamma$. The nonlinear SVM classifier performs better than the linear SVM, in particular in \emph{specificity} (recall of negative class).} \label{tab:svmnonlinear} 
 \end{center}
 \end{table}
 
@@ -1382,8 +1345,7 @@ Figure \ref{fig:svm-rbf-cm} shows the confusion matrix and the Receiver Operatin
 \begin{figure}[H]
         \centering
         \includegraphics[keepaspectratio, width=1\linewidth]{figures/SVM-RBF-CM}
-        \caption{Confusion matrix and ROC for nonlinear SVM classifier (RBF kernel). The classifier performs better than the linear SVM (Figure \ref{fig:svm-cm}). The accuracy of SVM classifier on training set is 0.85 and on the test set 0.75}
-\label{fig:svm-rbf-cm}
+        \caption{Confusion matrix and ROC for nonlinear SVM classifier (RBF kernel). The classifier performs better than the linear SVM (Figure \ref{fig:svm-cm}). The accuracy of SVM classifier on training set is 0.85 and on the test set 0.75} \label{fig:svm-rbf-cm}
 \end{figure}
 
 Figure \ref{fig:svm-cv7} shows the learning curve for the logistic regression classifier using cross-validation (7 splits).
@@ -1391,8 +1353,7 @@ Figure \ref{fig:svm-cv7} shows the learning curve for the logistic regression cl
         \centering
         \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/SVM-RBF-CV7}
         \caption{Learning curve for nonlinear SVM classifier with RBF kernel, in red the training score and in green the cross-validation ($cv=7$) score. The nonlinear SMV performs better than the linear SVM (Figure \ref{fig:svm-cv7}) ~0.75 vs. ~0.6. The gap between the training score and the cross validation score suggests high variance, indicating that more data will likely will help improving the results. 
-        }
-\label{fig:svm-cv7}
+        } \label{fig:svm-cv7}
 \end{figure}
 
 \subsection{Naive Bayes}
@@ -1407,7 +1368,7 @@ The dataset is again split into training data ($80\%$) and test data ($20\%$). T
 
 Table \ref{tab:naive} shows the classification metrics for the implemented Gaussian Naive Bayes classifier.
 \begin{table}[H]
-\caption{Classification metrics for Naive Bayes} \label{tab:naive} 
+\caption{Classification metrics for Naive Bayes} 
 \begin{center} 
 \begin{tabular}{lllll}
 \hline
@@ -1419,7 +1380,7 @@ Class & precision & recall & f1-score & support     \\
 1 & 0.13  &    0.47   &   0.20   &    19 \\
 \hline
 \end{tabular}
-\caption{The table shows the main classification metrics for the Gaussian Naive Bayes classifier in the test set.}
+\caption{The table shows the main classification metrics for the Gaussian Naive Bayes classifier in the test set.} \label{tab:naive} 
 \end{center}
 \end{table}
 
@@ -1427,8 +1388,7 @@ Figure \ref{fig:nb-cm} shows the confusion matrix and the Receiver Operating Cha
 \begin{figure}[H]
         \centering
         \includegraphics[keepaspectratio, width=1\linewidth]{figures/NB-CM}
-        \caption{Confusion matrix and ROC for GaussianNB classifier. The classifier performs clearly better than random luck and also better than the SVM classifier. The AUC of GaussianNB and logistic regression (Figure \ref{fig:lr-cm}) for the test set  are very similar (0.62 and 0.63).}
-\label{fig:nb-cm}
+        \caption{Confusion matrix and ROC for GaussianNB classifier. The classifier performs clearly better than random luck and also better than the SVM classifier. The AUC of GaussianNB and logistic regression (Figure \ref{fig:lr-cm}) for the test set  are very similar (0.62 and 0.63).} \label{fig:nb-cm}
 \end{figure}
 
 Figure \ref{fig:nb-cv3} shows the learning curve for the logistic regression classifier using cross-validation (7 splits).
@@ -1436,8 +1396,7 @@ Figure \ref{fig:nb-cv3} shows the learning curve for the logistic regression cla
         \centering
         \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/NB-CV3}
         \caption{Learning curve for Gaussian Naive Bayes, in red the training score and in green the cross-validation ($cv=3$) score. The curves seem to indicate that the model is bias (feeding the the GaussianNB model with more data may not help capturing the underlying relationship)
-        }
-\label{fig:nb-cv3}
+        } \label{fig:nb-cv3}
 \end{figure}
 %https://www.ritchieng.com/machinelearning-learning-curve/
 
@@ -1457,8 +1416,7 @@ The dataset is again split into training data ($80\%$) and test data ($20\%$). F
         \centering
         \includegraphics[keepaspectratio, width=1\linewidth]{figures/DT_depth5-CM}
         \caption{Confusion matrix and ROC for Decision Tree classifier with $max\_depth=5$. The classifier performs poorly for the test set, the AUC is sligthly better than luck, $auc=0.56$.
-        }
-\label{fig:dt-md5}
+        } \label{fig:dt-md5}
 \end{figure}
 
 Figure \ref{fig:dt-md5-learning} shows the learning curve for the Decision Tree using cross-validation (7 splits). 
@@ -1466,8 +1424,7 @@ Figure \ref{fig:dt-md5-learning} shows the learning curve for the Decision Tree 
         \centering
         \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/DT_depth5}
         \caption{Learning curve for Decision Tree classifier with $max\_depth=5$, in red the training score and in green the cross-validation ($cv=3$) score. The curves seem to indicate that the model is bias (feeding the model with more data may not help capturing the underlying relationship)
-        }
-\label{fig:dt-md5-learning}
+        } \label{fig:dt-md5-learning}
 \end{figure}
 
 Figure \ref{fig:dt-md5-features} identifies the most important features, that is to say, the features selected by the CART algorithm to split the tree so that the cost function (Equation \ref{eq:cart}) is minimized. The algorithm will stop when it cannot find a split that reduces the impurity of the node or it reaches the max depth established as it is the case.
@@ -1475,8 +1432,7 @@ Figure \ref{fig:dt-md5-features} identifies the most important features, that is
         \centering
         \includegraphics[keepaspectratio, width=1\linewidth]{figures/DT_depth5-featuresimportance}
         \caption{On the left the ranking of the most important features of the Decision Tree. The three most important features ( purer splits) are cognitive complaints, dyslipidemia and anxiety. On the right it is shown that 14 features are enough to provide $95\%$ of the total information of the tree.   
-        }
-\label{fig:dt-md5-learning}
+        } \label{fig:dt-md5-learning}
 \end{figure}
 
 Finally, Figure \ref{fig:dt-md5-dot} plots the Decision Tree. 
@@ -1484,8 +1440,7 @@ Finally, Figure \ref{fig:dt-md5-dot} plots the Decision Tree.
         \centering
         \includegraphics[keepaspectratio, width=1\linewidth]{figures/decision_tree_depth5}
         \caption{Decision tree for classification of converter to MCI with the \emph{Vallecas Index}. The root node is cognitive complaints (scd), the depth of the tree was set to a maximum of 5.
-        }
-\label{fig:dt-md5-dot}
+        } \label{fig:dt-md5-dot}
 \end{figure}
 
 
@@ -1497,7 +1452,7 @@ We have trained a bunch of classifiers in the previous sections (decision trees,
 
 Table \ref{tab:ensemble} shows the classification metrics for the implemented Gaussian Naive Bayes classifier.
 \begin{table}[H]
-\caption{Classification metrics for Ensemble classifier} \label{tab:ensemble} 
+\caption{Classification metrics for Ensemble classifier}
 \begin{center} 
 \begin{tabular}{lllll}
 \hline
@@ -1511,7 +1466,7 @@ Class & precision & recall & f1-score & support     \\
 \end{tabular}
 \caption{The table shows the main classification metrics for the Ensemble classifier. The metrics for the negative class 0 (non-converter) are excellent but those for the converters are very poor due to the data unbalanced problem in our dataset.
 The accuracy of the VotingClassifier is 0.83, which makes it a stronger learner (accuracy) than the ensemble's components: decision tree acc=0.677, SVM acc=0.75, logit acc=0.67, but not stronger than the k-nn learner, acc=0.88.
-}
+}  \label{tab:ensemble} 
 \end{center}
 \end{table}
 
@@ -1554,8 +1509,8 @@ Figure \ref{fig:rf_cm} shows the confusion matrix and the ROC for random forest.
         \includegraphics[height=1.7in]{figures/RFGrid_CM}
         \caption{Confusion matrix and AUC for random forest classifier with the optimal hyperparameters calculated with the GridSearchCv algorithm. The random forest has excellent accuracy but it entirely fails to detect positives in the test set.}
     \end{subfigure}%\quad
-    \label{fig:rf_cm}
-    \caption{Confusion matrix and AUC for random forest classifier (top) and random forest with optimal hyperparameters that maximize scoring (down)}
+    
+    \caption{Confusion matrix and AUC for random forest classifier (top) and random forest with optimal hyperparameters that maximize scoring (down)} \label{fig:rf_cm}
 \end{figure}
 
 Figure \ref{fig:rf_learning} shows the learning rate for random forest classifier. 
@@ -1572,8 +1527,8 @@ Figure \ref{fig:rf_learning} shows the learning rate for random forest classifie
         \includegraphics[height=2.5in]{figures/RFGrid_learning}
         \caption{Learning curve of the random forest classifier with optimal hyperparameters calculated with the GridSearchCV search algorithm.}
     \end{subfigure}%\quad
-    \label{fig:rf_learning}
-    \caption{Learning curve for random forest classifier, in red the training score and in green the cross-validation ($cv=3$) score. The learner overfits and more data will likely improve the predictions.}
+    
+    \caption{Learning curve for random forest classifier, in red the training score and in green the cross-validation ($cv=3$) score. The learner overfits and more data will likely improve the predictions.} \label{fig:rf_learning}
 \end{figure}
 
 Figure \ref{fig:rf-features} identifies the most important features of the random forest which are cognitive complaints, age, depression and income level.
@@ -1581,8 +1536,7 @@ Figure \ref{fig:rf-features} identifies the most important features of the rando
         \centering
         \includegraphics[keepaspectratio, width=1\linewidth]{figures/DT_depth5-featuresimportance}
         \caption{On the left the ranking of the most important features of the random forest. The four most important features ( purer splits) are cognitive complaints, age, depression and income level. On the right it is shown that 32 features are enough to provide $95\%$ of the total information of the forest (1000 trees).   
-        }
-\label{fig:rf-features}
+        } \label{fig:rf-features}
 \end{figure}
 
 \subsubsection{Boosting}
@@ -1593,12 +1547,13 @@ Boosting is a sequential process that can combine several weak learners into a s
 The most popular boosting methods are AdaBoost (short for Adaptive Boosting) and Gradient Boosting and are studied next.
 
 \textbf{Adaptive Boosting (AdaBoost)}
+
 In Adaptive boosting or AdaBoost, multiple sequential models are created, each correcting the errors from the last model. AdaBoost assigns weights to the observations which are incorrectly predicted and the subsequent model works to predict these values correctly. The AdaBoost algorithm works by initially giving equal weight sot all observations as predictors are built and evaluated 
 higher weights are given to the data points which were predicted incorrectly. This process is repeated until the error function does not change, or the maximum limit of the number of estimators is reached.
 
 Table \ref{tab:ada} shows the classification metrics for the implemented Gaussian Naive Bayes classifier.
 \begin{table}[H]
-\caption{Classification metrics for Ensemble classifier} \label{tab:ada} 
+\caption{Classification metrics for Ensemble classifier} 
 \begin{center} 
 \begin{tabular}{lllll}
 \hline
@@ -1611,7 +1566,7 @@ Class & precision & recall & f1-score & support     \\
 \hline
 \end{tabular}
 \caption{The table shows the main classification metrics for the AdaBoost classifier. The metrics for the negative class 0 (non-converter) are excellent but those for the converters are extremely poor due to the data unbalanced problem in our dataset.
-}
+} \label{tab:ada} 
 \end{center}
 \end{table}
 
@@ -1624,8 +1579,8 @@ Figure \ref{fig:rf_ada} shows the confusion matrix and the ROC for AdaBoost algo
         \caption{Confusion matrix and AUC for AdaBoost algorithm with the hyperparameters set to 20 estimators; learning rate 1 and  $max\_depth=5$}
     \end{subfigure}
 
-    \label{fig:rf_ada}
-    \caption{Confusion matrix and AUC for the AdaBoost algorithm which as we can see clearly learns the perfectly the training set and the test set for non converters but fails to correctly classify the few converters in the test set. }
+    
+    \caption{Confusion matrix and AUC for the AdaBoost algorithm which as we can see clearly learns the perfectly the training set and the test set for non converters but fails to correctly classify the few converters in the test set. } \label{fig:rf_ada}
 \end{figure}
 
 Figure \ref{fig:rf_learning} shows the learning rate for random forest classifier. 
@@ -1637,8 +1592,8 @@ Figure \ref{fig:rf_learning} shows the learning rate for random forest classifie
         \caption{Learning curve of the AdaBoost classifier with  hyperparameters set to 20 estimators; learning rate 1 and  $max\_depth=5$. The algorithm clearly overfits, it will then benefit from more, the other canonical approach for dealing with overfitting -simplifying the model (reduce the number of estimators)- does not help.}
     \end{subfigure}
 
-    \label{fig:rf_learning}
-    \caption{Learning curve of the AdaBoost classifier, in red the training score and in green the cross-validation ($cv=3$) score. The learner clearly overfits and more data will likely improve the predictions.}
+    
+    \caption{Learning curve of the AdaBoost classifier, in red the training score and in green the cross-validation ($cv=3$) score. The learner clearly overfits and more data will likely improve the predictions.} \label{fig:rf_learning}
 \end{figure}
 
 % OJO literal Geron
@@ -1675,7 +1630,7 @@ Figure \ref{fig:mlp_cm} shows the confusion matrix and the ROC for different MLP
 %Size of minibatches for stochastic optimizers. If the solver is ‘lbfgs’, the classifier will not use minibatch. When set to “auto”, batch_size=min(200, n_samples)
 
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \begin{subfigure}[t]{1\textwidth}
         \centering
@@ -1700,13 +1655,13 @@ Figure \ref{fig:mlp_cm} shows the confusion matrix and the ROC for different MLP
         \includegraphics[height=1.7in]{figures/MLP-16-16-32}
         \caption{Confusion matrix and the ROC for MLP with 3 hidden layer with 16,16 and 32 units each. The network overfits, provides perfect results for the training set.}
     \end{subfigure}%\quad
-    \label{fig:mlp_cm}
-    \caption{Confusion matrix and the ROC for different MLPs. All except the first MLP (1 layer 1 unit) overfits, the MLPm 1 layer/100 units and the deep network with 3 layers with 16,16,12 units per layer learn perfectly the training set. MLPs overfit more data will help improve the \emph{sensitivity} (recall of the positive class).}
+    
+    \caption{Confusion matrix and the ROC for different MLPs. All except the first MLP (1 layer 1 unit) overfits, the MLPm 1 layer/100 units and the deep network with 3 layers with 16,16,12 units per layer learn perfectly the training set. MLPs overfit more data will help improve the \emph{sensitivity} (recall of the positive class).} \label{fig:mlp_cm}
 \end{figure}
 
 
 Figure \ref{fig:mlp_learning} shows the learning rate for MLPs.
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \begin{subfigure}[t]{1\textwidth}
         \centering
@@ -1731,8 +1686,8 @@ Figure \ref{fig:mlp_learning} shows the learning rate for MLPs.
         \includegraphics[height=1.7in]{figures/MLP-16-16-32_learning}
         \caption{Learning curve for MLP with 3 hidden layers with 16,16,32 units each.}
     \end{subfigure}%\quad
-    \label{fig:mlp_learning}
-    \caption{Learning curve for  MLPs, in red the training score and in green the cross-validation ($cv=7$) score. MLPs overfit and more data will likely improve the predictions. Interestingly, the deep network (3 hidden layers $16 \times 16 \times 32$ parameters) does not substantially improve the results of the network with one layer and 100 units (100 parameters).}
+    
+    \caption{Learning curve for  MLPs, in red the training score and in green the cross-validation ($cv=7$) score. MLPs overfit and more data will likely improve the predictions. Interestingly, the deep network (3 hidden layers $16 \times 16 \times 32$ parameters) does not substantially improve the results of the network with one layer and 100 units (100 parameters).} \label{fig:mlp_learning}
 \end{figure}
 
 
@@ -1782,12 +1737,11 @@ As it was mentioned in Section \ref{se:deep} the creation of an validation set h
 %figures here
 Figure \ref{fig:kerasmetricsres} shows the validation metrics for k-fold, $k=4$, learning in a deep network with two hidden layers of 16 units each with ReLU activation with drop out regularization, Adam optimizer and binary cross entropy as loss function. The network in order to deal with the unbalanced problem (underrepresentation of positive class) gives 7 times more importance to positive class than to negative class. this will have consequences in precision and recall shown in the figure. The Cophenetic Correlation Coefficient of the Ward linkage is 0.563 and for Centroid linkage is 0.724 (The closer the value is to 1, the better the clustering preserves the original distances).
 
-\begin{figure}[h]
+\begin{figure}[H]
         \centering
         \includegraphics[keepaspectratio, width=1\linewidth]{figures/Keras_KFOLD4}
         \caption{Clockwise: accuracy, loss, precision and recall metrics for a deep network with two layers and 6 units each. The network starts overfitting after 20 epochs. The accuracy is closed to 0.8. Although precision increases the values are very small, the recall is maximum 1. The precision is the proportion of positive identifications correctly identified and the recall tells us what proportion of actual positives was identified correctly. This means that the network identifies all the positive cases but it identifies positive cases in excess which is due to the fact that the network gives 7 times more importance to positive class than to negative class. 
-        }
-\label{fig:kerasmetricsres}
+        } \label{fig:kerasmetricsres}
 \end{figure}
 
 \subsection{Dimensionality reduction and Unsupervised learning}
@@ -1802,8 +1756,7 @@ The dendrogram the and distance matrix are shown in figure \ref{fig:dendrogram}.
         \centering
         \includegraphics[keepaspectratio, width=1\linewidth]{figures/dendrogram}
         \caption{Dendrogram and distance matrix calculated with the Euclidean distance metric and using two different linkage algorithms, centroid and Ward. Both are agglomerative hierarchical clustering methods, that is, each data point is initially a cluster to iteratively combine the existing clusters at each step, resulting always in one final all inclusive cluster. The heatmap depicts the Euclidean distance of the data matrix.
-        }
-\label{fig:dendrogram}
+        } \label{fig:dendrogram}
 \end{figure}
 
 
@@ -1824,7 +1777,7 @@ PCA(copy=True, iterated_power='auto', n_components=None, random_state=None,
 
 Figure \ref{fig:PCA_variance} shows the explained variance with PCA. To explain $70\%$ of the total variance we need 14 dimensions and to explain the $95\%$ we need 37 features for a total dimensional input of 57. PCA could help to improve the results of the machine learning classifiers, replacing the data input by the principal components. 
 
-\begin{figure}[H] \label{fig:PCA_variance}
+\begin{figure}[H] 
     \centering
     \begin{subfigure}[t]{.4\columnwidth}
         \centering
@@ -1837,10 +1790,10 @@ Figure \ref{fig:PCA_variance} shows the explained variance with PCA. To explain 
         \includegraphics[width=\linewidth]{figures/PCA95_variance}
         \caption{With 37 dimensions we can explain $95\%$ of the total variance of the 57 dimensional input.}
     \end{subfigure}%\quad
-    \caption{Dimensionality reduction with PCA shows potential to summarize data. We need only 14 ($24\%$ of the input dimensions) to explain  $70\%$ of the variance of the input space. The PCA explained variance ratio of the three first components is 0.112, 0.093, 0.072 (eigenvectors with the highest variance).}
+    \caption{Dimensionality reduction with PCA shows potential to summarize data. We need only 14 ($24\%$ of the input dimensions) to explain  $70\%$ of the variance of the input space. The PCA explained variance ratio of the three first components is 0.112, 0.093, 0.072 (eigenvectors with the highest variance).} \label{fig:PCA_variance}
 \end{figure}
 
-Before we  calculated PCA using the eigen-decomposition, dimensionality reduction can also be calculated using truncated SVD (aka latent semantic analysis or LSA. We set the number of components to 2 (snippet \ref{svdsnippet}).  SVD is the generalization of the eigen-decomposition of a positive semidefinite normal matrix (seen above) to any matrix via an extension of the polar decomposition. 
+Before we calculated PCA using the eigen-decomposition, dimensionality reduction can also be calculated using truncated SVD (aka latent semantic analysis or LSA. We set the number of components to 2 (snippet \ref{svdsnippet}).  SVD is the generalization of the eigen-decomposition of a positive semidefinite normal matrix (seen above) to any matrix via an extension of the polar decomposition. 
 The SVD represents an expansion of the original data in a coordinate system where the covariance matrix is diagonal. A SVD consists in calculating the matrix of singular values S ( singular values) from the data matrix A, $A = USV$
 Truncated SVD does not need to center the data before computing the decomposition and it can efficiently work with sparse matrices (this is why it is called truncated). 
 
@@ -1851,11 +1804,11 @@ X_reduced = svd.fit_transform(X_all)
 
 Figure \ref{fig:PCASVD} shows the scatter plot of the SVD for 2 dimensions, in yellow the converters and in indigo the non converters. Two dimensions are not enough to identify cluster of converters and non converters. It ought to be emphasized that dimensionality reduction (e.g. PCA or SVD) is distinct from clustering but it still can help clustering high-dimensional data by reducing to a useful low dimensional representation.
 
-\begin{figure}[H] \label{fig:PCASVD}
+\begin{figure}[H] 
         \centering
         \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/SVD_2D}
         \caption{Scatter plot of single value decomposition with two components. The explained variance ratio of the components is 0.1132 and 0.0312, making a total explained variance ratio of  0.144. The singular values of the covariance matrix S are 98.21 20.26. Although the scatter plot is not useful as a clustering method i.e. separate converter from non converter in a 2D space, this dimensionality reduction procedure is however helpful to reduce the original dataset to a useful low dimensional representation to feed a classifier. 
-        }
+        } \label{fig:PCASVD}
 \end{figure}
 
 \subsubsection{Manifold learning}
@@ -1868,27 +1821,22 @@ Here we show the results of implementing the t-SNE algorithm described in Sectio
 
 Figure \ref{fig:TSNE} shows the scatter plot of the tSNE algorithm that creates a two-dimensional maps from original dataset of 57 dimensions. In red the converters and in blue the non converters. The hyperparameters were set to perplexity =30, the learning rate is 200 and the  gradient calculation algorithm is the Barnes-Hut approximation.
 
-\begin{figure}[H] \label{fig:TSNE}
+\begin{figure}[H] 
         \centering
         \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/TSNE}
         \caption{Scatter plot of tSNE algorithm that creates a two-dimensional maps from original dataset of 57 dimensions. 
-        }
+        } \label{fig:TSNE}
 \end{figure}
 
 %class sklearn.manifold.TSNE(n_components=2, perplexity=30.0, early_exaggeration=12.0, learning_rate=200.0, n_iter=1000, n_iter_without_progress=300, min_grad_norm=1e-07, metric=’euclidean’, init=’random’, verbose=0, random_state=None, method=’barnes_hut’, angle=0.5)[source]¶
 
 
 
-
-
-
-
-
-
 \section{Comparative evaluation of models}
+\label{se:compare}
+TO DO
 
-quality of predictions
-
+********
 
 The two factors that tell us how well our machine learning is doing are:
 \begin{itemize}
@@ -1945,6 +1893,11 @@ Other metrics that will be shown in the Results section are:
 
 
 \section{The class imbalance problem}
+\label{se:imbalance}
+TO DO 
+
+********
+
 The class imbalance problem -the number of samples of one class being under represented compared to another class- is predominant in many scenarios, in particular when dealing with anomaly detection, for example, fraudulent transaction, electrical grid fault, electrical theft, conversion to disease  etc. In this situation, a predictive model that does not take into account this could be very unreliable.
 The imbalance problem needs to be addressed in the design phase with an emphasis on improving the identification of the minority class as opposed to achieving higher overall accuracy.
 How rare is our data set can be easily quantified with the balancing ratio, r. Let X be an imbalanced set with $X_{min}$ the subset of the undersampled class and $X_{maj}$ the subset of the majority class. Te balancing ratio r is
@@ -2010,20 +1963,13 @@ Sampling (synthetic data, algorithms are SMOTE, SMOTEBoost and EasyEnsemble)
 
 \section{Discussion and Conclusions}
 \label{se:dis}
+TO DO
 
 Connectionist learning (these days called machine learning), procedures can be divided into three broad classes: Supervised procedures studied in Section \ref{sse:sup}, reinforcement procedures which are not studied here and unsupervised procedures.
 The essential between these three types of approaches is the existence and role of the teacher in the learning.
 While supervised algorithms require a teacher to specify the desired output vector, reinforcement requires only require a single scalar evaluation of the output and finally unsupervised algorithms do not require any teacher nor additional information to  construct internal models that capture regularities in the input vectors  \cite{hinton1990connectionist}. There are often ways of converting one kind of learning procedure into another e.g. self supervised learning can be converted into an unsupervised learning by using the input itself to do the supervision i.e. the desired output vector is identical with the input vector.
 %A learning algorithm for boltzmann machines
-\section{Appendix}
-\label{se:ap}
-Notation:  a dataset is a collection of examples which are in turn collections of features. The design matrix is the most common form of describing a dataset, $X \in R^\{n,m\}$, where n is the number of examples (rows) and m the number of features (columns), so $X^\{i,j\}$ is the value of the feature j for example i
 
-Capacity: a model's capacity is its capacity to fit a wide variety of functions. for example, we we take the linear regression model we can increase its capacity by introducing x as another feature, note that the output is still a linear function of the parameters and it can be solved with the normal equations. MAchine learning algorithms perform best when they have a capacity appropriate for the complexity of the task and the training data available , models with high capacity can solve complex problems but when the capacity exceeds the complexity they may overfit (Occam's razor). 
-
-Complexity: The complexity of a model can be measured with the Vapnik-Chervonenkis dimension (complexity of binary classifier). The discrepancy between training error and generalization error is bounded from above by a quantity that grows as the capacity grows but shrinks as the size of the training set increases. Interestingly, these bounds are the intellectual justification of why machine learning works.
-
-The network or model capacity is the number of learnable parameters -number of layers and units per layer-. A model with more parameters will have more memorization capacity but that does not imply that will generalize well.On the other hand, if the network has limited memorization resources, it won’t be able to learn this mapping as easily; thus, in order to minimize its loss, it will have to resort to learning compressed representations that have predictive power regarding the targets—precisely the type of representations we’re interested in. (Keep inn mind that you should use models that have enough parameters that they don’t underfit: your model shouldn’t be starved for memorization resources). There is a compromise to be found between too much capacity and not enough capacity.
 
 %-------------------------------------------------------------------------------
 % REFERENCES
@@ -2041,6 +1987,43 @@ The network or model capacity is the number of learnable parameters -number of l
 
 
 \section{Appendix}
+\section{Appendix}
+\label{se:ap}
+Notation:  a dataset is a collection of examples which are in turn collections of features. The design matrix is the most common form of describing a dataset, $X \in R^\{n,m\}$, where n is the number of examples (rows) and m the number of features (columns), so $X^\{i,j\}$ is the value of the feature j for example i
+
+Capacity: a model's capacity is its capacity to fit a wide variety of functions. for example, we we take the linear regression model we can increase its capacity by introducing x as another feature, note that the output is still a linear function of the parameters and it can be solved with the normal equations. MAchine learning algorithms perform best when they have a capacity appropriate for the complexity of the task and the training data available , models with high capacity can solve complex problems but when the capacity exceeds the complexity they may overfit (Occam's razor). 
+
+Complexity: The complexity of a model can be measured with the Vapnik-Chervonenkis dimension (complexity of binary classifier). The discrepancy between training error and generalization error is bounded from above by a quantity that grows as the capacity grows but shrinks as the size of the training set increases. Interestingly, these bounds are the intellectual justification of why machine learning works.
+
+The network or model capacity is the number of learnable parameters -number of layers and units per layer-. A model with more parameters will have more memorization capacity but that does not imply that will generalize well.On the other hand, if the network has limited memorization resources, it won’t be able to learn this mapping as easily; thus, in order to minimize its loss, it will have to resort to learning compressed representations that have predictive power regarding the targets—precisely the type of representations we’re interested in. (Keep inn mind that you should use models that have enough parameters that they don’t underfit: your model shouldn’t be starved for memorization resources). There is a compromise to be found between too much capacity and not enough capacity.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Topological Data Analysis}
+\label{sse:TDA}
+%https://www.quora.com/Is-there-a-relationship-between-manifold-learning-and-topological-data-analysis
+TDA focuses on identifying global features within the data.
+Manifold learning focuses on reducing dimensionality by finding a good map from the data to a low-dimensional manifold. Topological data analysis could be helpful to analysis (manifold) data before and after dimensionality reduction (i.e. manifold learning). The topology of the manifold should be the same and independent of the dimensionality of the ambient space.
+
+Manifold learning assumes that the data lies on a (usually low) dimensional submanifold and has as a goal to create a representation that faithfully records this local neighborhood structure given in the manifold. 
+TDA, on the other hand, makes very few assumptions about the data and the goal is not to faithfully reconstruct the data - or to fit the data to a model - but to provide (unbiased) summaries of the geometric/topological structure in the data.
+Persistent homology and mapper both take as inputs some kind of "space" (e.g simplicial complex) and both use a function to create a summary. For Mapper the summary is (loosely speaking) a recording of the connectivity of the fibers of the  function while for persistent homology it's the relationship between the homology of sublevel sets of the function. The output is a "barcode" for persistent homology or a simplicial complex in the case of mapper.The main point here is that to create such a summary very little is needed beyond some notion of similarity or proximity in your data.
+
+As we saw in the results (no separation of data points!), the manifold assumption (locally uniform and smooth) is quite strong and outside of scientific contexts have not found data sets that look like manifolds.
+
+%https://jsseely.github.io/notes/TDA/
+TDA involves ‘fitting’ a topological space to data, then perhaps computing topological invariants of that space. TDA is related to two familiar problems: clustering and manifold learning. In some sense, TDA is a generalization of both problems.
+We can view many data analysis problems as ‘fitting a space to data’. E.g. both PCA and linear regression involve fitting a linear subspace to data; the space perspective complements the statistical (least-squares) and algebraic (SVD, pseudoinverse) perspectives of these techniques.
+How do we generalize these linear techniques? A stock answer: manifold learning. But, manifolds are restrictive objects. A consequence of being locally Euclidean is that they cannot contain singularities and must have the same dimension everywhere. A mathematician’s motivation for working with manifolds is that one can do calculus on them. But if this is not the goal, then there may be little reason to assume a restrictive type of space in a data analysis context. Indeed, the singularities of a space are often the interesting points of study (e.g. bifurcation points), and one wants tools to capture these.
+%Simplicial complexes
+Topological spaces are a natural thing to turn to whenever one wants to ‘fit a space to data’. Yet topological spaces, without restriction, are too general. Simplicial complexes, which can be viewed as a convenient middle ground of specificity and generality in modeling spaces. Simplicial complexes lie somewhere between graphs and hypergraphs. All graphs are special kinds of simplicial complexes, and all simplicial complexes are special kinds of hypergraphs. “Most” topological spaces of interest can be discretized (triangulated) and represented as a simplicial complex.
+%Persistent homology
+The workhorse technique of TDA is persistent homology
+%Mapper
+An especially underused TDA technique is “mapper”. I found this particularly useful for visualization, and I wonder why it isn’t as widely applied as, say, t-SNE. Mapper fits a simplicial complex to data (often, just a graph), but in a very flexible way. The goal of mapper is either data visualization or clustering. The key insight offered by this technique is that many interesting “clusters” in real data are not clusters in the classical sense (as disconnected components), but are the branches of some single connected component. 
+We didnt find clusters with SVD nor tSNE, can we find some with Mapper??
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Instead of building a BaggingClassifier and passing it a DecisionTreeClassifier, you can instead use the RandomForestClassifier class, which is more convenient and optimized for Decision Trees.
 
 
