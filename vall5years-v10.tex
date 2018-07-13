@@ -176,7 +176,7 @@ The objective is to build a system that predicts whether a subject will convert 
 We identify a set of self-informed features with predictive power and we coin it the \textbf{Vallecas Index}. 
 
 %  Thus, Section \ref{} performs exploratory data analysis, including multicollinearity detection among different features and commenting on the feature engineering process used. Section \ref{} explains the different predictive models implemented and Section \ref{} deals with the evaluation of the predictive models that are described in the previous section. Importantly, we weigh on the interpretability side of the results and not only on the prediction side, section \ref{sse:interp}.
-The document is self contained, it provides a painless introduction to machine learning where the emphasis is in the understanding the mechanics of the techniques rather than in their mathematical description. We follow a first principles example-based approach in which the outcome of the algorithms' implementations in the Vallecas dataset is explained and put in context. Or hope with this paper is to accomplish the dual objective of being both divulgative about machine learning techniques and informative about the results obtained in the \emph{Vallecas Project} using those techniques.
+The document is self contained, it provides a painless introduction to machine learning where the emphasis is in understanding the mechanics of the techniques rather than mathematical formalization. We follow a first principles example-based approach in which the outcome of the algorithms' implementations is explained and put in the context of the  \emph{Vallecas} dataset. Our hope is to accomplish the dual objective of being both divulgative about machine learning techniques and informative about the results obtained in the \emph{Vallecas Project} using those techniques.
 
 The structure of the document is as follows. Section \ref{se:crisp} introduces the methodology that we will use use to study the \emph{Vallecas} dataset, namely the CRISP-DM model. In Section \ref{se:eda} we define the \emph{Vallecas Index} and we perform exploratory data analysis, providing descriptive statistics and statistical inference to test hypothesis of the population. Section \ref{se:mod} explains the different machine learning techniques used for predictive analytics. Next, in Section \ref{se:res} we show the results obtained for each one of the techniques within a comparative framework in Section \ref{se:compare}. Section \ref{se:imbalance} proposes solutions to the class imbalance problem that exists in the Vallecas dataset (the converter class is underrepresented). We conclude with the discussion and conclusions Section \ref{se:dis}.
 
@@ -988,15 +988,15 @@ Principal component analysis (PCA) is a method to find the directions (principal
 
 \textbf{Singular Value Decomposition}
 
-Single value decomposition (SVD) is an unsupervised method of feature construction, the goal of SVD is to form a set of features that are liner combinations of the original variables providing the best reconstruction in the least square sense \cite{duda2012pattern}. TruncatedSVD, is the algorithm that will be implemented int he Results Section \ref{sse:resunsupervised}. It is very similar to PCA but differs in that it works on sample matrices X directly instead of their covariance matrices. 
+Eigendecomposition is not the only way to factorize a matrix, Single value decomposition (SVD) can also explore factorize a matrix into singular vectors and singular values. In linear algebra SVD is useful to partially generalize matrix inversion to non-square matrices \cite{goodfellow2016deep}. SVD can be seen also as an unsupervised method of feature construction. In this context, the goal of SVD is to form a set of features that are liner combinations of the original variables providing the best reconstruction in the least square sense \cite{duda2012pattern}. TruncatedSVD, is the algorithm that will be implemented int he Results Section \ref{sse:resunsupervised}. It is very similar to PCA but differs in that it works on sample matrices X directly instead of their covariance matrices. 
 
 Note that when the column-wise (per-feature) means of X are subtracted from the feature values, truncated SVD on the resulting matrix is equivalent to PCA. SVD deals more efficiently with sparse matrices than PCA (this is because it does not center the data before doing SVD) \cite{halko2009finding}. When truncated SVD is applied to term-document matrices, this transformation is known as latent semantic analysis (LSA), because it transforms such matrices to a “semantic” space of low dimensionality (combat the effects of synonymy and polysemy which cause term-document matrices to be overly sparse and exhibit poor similarity under measures such as cosine similarity).
 Mathematically, truncated \footnote{Truncated means just that the algorithm will return matrices with the specified number of columns (k). This is precisely how the dimensionality is reduced.} SVD applied to training samples X produces a low-rank approximation:
 \begin{equation}
-X = \mathbf{U} \Sigma \mathbf{V}^{*}
+X = \mathbf{U} \Sigma \mathbf{V}^{T}
 \label{eq:suv}
 \end{equation}
-where $\mathbf{U}$ is an unitary (orthogonal matrix), $\Sigma$ is a diagonal with non-negative real numbers on the diagonal and $\mathbf{V} ^{*}$ is the  conjugate transpose of the unitary matrix V. The diagonal entries $\Sigma$ are the singular values of the matrix X that we want to factorize. The expression \ref{eq:suv} can be intuitively interpreted as a composition of three geometrical transformations: a rotation ($\mathbf {U}$), a scaling $\Sigma$, and another rotation $\mathbf{V}^{*}$.
+where $\mathbf{U}$ is an unitary (orthogonal matrix), $\Sigma$ is a diagonal square matrix with non-negative real numbers and $\mathbf{V} ^{T}$ is the conjugate transpose of the unitary matrix V. The diagonal entries $\Sigma$ are the singular values of the matrix X that we want to factorize. The expression \ref{eq:suv} can be intuitively interpreted as a composition of three geometrical transformations: a rotation ($\mathbf {U}$), a scaling $\Sigma$, and another rotation $\mathbf{V}^{*}$.
 
 The results produced by the implementation of PCA using both eigen-decomposition and single value decomposition are are shown in Section \ref{sse:resPCA}.
 
@@ -1861,13 +1861,15 @@ then,
 \emph{Specificity} or \emph{false positive rate} is the fraction of all negative instances that the classifier incorrectly identifies as positive (here the smaller the better).
 \emph{Precision} and \emph{Recall} are complementary in the sense that you can increase the precision but at the expense of the recall and viceversa. Biomedical (e.g. tumor detection) applications are \emph{Recall} focused. \emph{Precision} oriented tasks are for example document classification. 
 
-The $F_{\beta}=1$ score combines both precision and recall into a single number computed with the harmonic mean of precision and recall, More generally we can modulate how much emphasis we do to precision versus recall using the parameter $\beta$. Thus, 
+The $F_{\beta}=1$ score combines both precision and recall into a single number computed with the harmonic mean of precision and recall, More generally we can modulate how much emphasis we do to precision versus recall using the parameter $\beta$. 
+If the task is precision oriented, $\beta=0.5$, false positives hurts performance more than false negatives. If recall oriented, $\beta=2$, false negatives hurts performance more than false positives. Formally, 
 \begin{equation*}
 \begin{split}
-F_{\beta} = (1+\beta^2)\frac{\text{precision*recall}}{(\beta^2 * precision)+recall} =\\ \frac{2 * TP}{2TP + FN + FP}
+F_{\beta} = (1+\beta^2)\frac{\text{precision*recall}}{(\beta^2 * precision)+recall} 
 \end{split}
 \end{equation*}
-(precision oriented $\beta=0.5$, false positives hurts performance more than false negatives, recall oriented $\beta=2$, false negatives hurts performance more than false positives).
+%=\\ \frac{2 * TP}{2TP + FN + FP}
+
 %from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report
 %print('Accuracy:{:.2f}'.format(accuracy_score(test, predicted)));precision_score, recall_score;f1_score
 %print(classification_report(test,pred,target_names=['not converter 0', 'converter 1']))
@@ -1909,8 +1911,13 @@ Roughly speaking, there are two factors that tell us how well our machine learni
 
 Ideally, we want to build a classifier that is sufficiently complex to do not underfit but not as complex as to memorize the training set. This trade-off between optimization and generalization is the main issue in machine learning. Optimization refers to the process of adjusting a model to get the best performance possible on the training data (the learning in machine learning), whereas generalization refers to how well the trained model performs on data it has never seen before. Validation is used in order to deal with information leakage that could drive overfitting in the model.
 
-Figure \ref{} shows how the different models perfom on the \emph{Vallecas} dataset.
-
+Figure \ref{fig:dummies} shows how the different models perform, comparing accuracy with three dummy predictors: random predictor, majority predictor and minority predictor on the \emph{Vallecas} dataset.
+\begin{figure}[H] 
+        \centering
+        \includegraphics[keepaspectratio, width=1\linewidth]{figures/compareagainstdummies}
+        \caption{Comparative analysis of the accuracy for the built predictors (in blue) compared against dummy predictors (in red). From left to right: naive Bayes, logistic regression, random forest, extreme gradient boosting, voting majority, random forest with Grid search for optimal parameters, SVM, k-NN, multilayer perceptron and decision tree.
+        } \label{fig:dummies}
+\end{figure}
 
 
 \section{The class imbalance problem}
