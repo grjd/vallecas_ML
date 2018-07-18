@@ -92,7 +92,7 @@
 \setlength\headheight{12pt}
 \fancyhead[L]{Six years of \emph{Proyecto Vallecas}}
 \fancyhead[R]{Gómez-Ramírez et al. Fundaci\'on CIEN}
-\fancyfoot[R]{\small{Page} \thepage\ \small{of} \pageref{LastPage}}
+\fancyfoot[R]{\small{page} \thepage\ \small{of} \pageref{LastPage}}
 %-------------------------------------------------------------------------------
 % TITLE PAGE
 %-------------------------------------------------------------------------------
@@ -221,7 +221,7 @@ The CRISP-DM model is the most popular methodology used in machine learning. CRI
 \begin{figure}[H]
         \centering
         \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/crisp}
-        \caption{\emph{Proyecto Vallecas} adopts CRISP-DM \ref{crispdmwiki} as the methodology of choice for analytics and data mining. CRISP-DM was conceived around 1996 and it is to this day the most important methodology in data science projects. It consists in a 6 high-level iterative phases. The adoption of this kind of methodology is crucial to deal with random and false discoveries, specially in Big Data projects like ours.}\label{fig:crisp}
+        \caption{\emph{Proyecto Vallecas} adopts CRISP-DM \cite{crispdmwiki} as the methodology of choice for analytics and data mining. CRISP-DM was conceived around 1996 and it is to this day the most important methodology in data science projects. It consists in a 6 high-level iterative phases. The adoption of this kind of methodology is crucial to deal with random and false discoveries, specially in Big Data projects like ours.}\label{fig:crisp}
 \end{figure}
 
 \section{Exploratory Data Analysis}
@@ -277,7 +277,7 @@ In order to study people with long life expectancy the study will require to kee
 The dataset we are dealing with here is a longitudinal dataset with 5 time points, from year 1 (basal visit) to year 5.
 Data preparation is a crucial step in machine learning projects, failure to properly pre-process the dataset will cause suboptimal modeling and error-prone predictions.
 %https://paginas.fe.up.pt/~ec/files_1112/week_03_Data_Preparation.pdf
-Generally speaking, the data preparation stage, takes more than $60\%$ of a data mining project effort \ref{witten2005data}.
+Generally speaking, the data preparation stage, takes more than $60\%$ of a data mining project effort \cite{witten2005data}.
 
 % Transformation including Scaling and discretize continuous variables (binning)
 An obligatory step in pre-processing is transforming the data via scaling. 
@@ -407,7 +407,7 @@ The Alzheimer’s Society estimates that $71\%$ of dementia sufferers in 2050 wi
 %https://newrepublic.com/article/115936/alzheimers-drastic-rise-low-income-countries
 In \emph{Proyecto Vallecas} we make the most of the dataset addressing prescient issues like the relationship between socioecomic status and health. There are concluding reports from governmental agencies that show an association between wealth and life expectancy. 
 Figure \ref{fig:incomeresidency} shows the income distribution of \emph{Proyecto Vallecas} volunteers as estimated based on their home residency. 
-Educational level also affects positively life expectancy. Even within European countries, life expectancy varies greatly by education level. Life expectancy of males at age 25 with high education level is 10 years longer than for those with low educational level in Poland and the Czech republic \ref{imf2018}. 
+Educational level also affects positively life expectancy. Even within European countries, life expectancy varies greatly by education level. Life expectancy of males at age 25 with high education level is 10 years longer than for those with low educational level in Poland and the Czech republic \cite{imf2018}. 
 See figure \ref{fig:demosalime} for a conversion rate with education level and income in \emph{Proyecto Vallecas}. The figure indicates that higher rent and educational level reduce the incidence to conversion. Figure \ref{fig:multico} shows the Pearson correlation between conversion to MCI and features related to cognitive complaints, depression (positive correlation) and income level-education and use of new technologies (negative correlation).
 
 \begin{figure}[H]
@@ -710,7 +710,7 @@ The problem of overfitting in SVM is tackle via expanding or narrowing the margi
 %LinearSVC same as SVC(kernel='linear') but SVC is musch slower specially for large datasets  also possible use 
 % GDClassifier(loss="hinge", alpha=1/(m*C)). This applies regular Stochastic Gradient Descent to train a SVM classifier but it doesnt converge as fast as the LinearSVC class
 
-SVM can perform both linear and non linear classification, regression and outlier detection. When the datasets are non linearly separable we can use nonlinear SVM classifiers. One tactic is to add more features so that it result in a linearly separable dataset (pg 259 \cite{geron2017hands}). The \textbf{Kernel trick} makes this possible (for a discussion of the kernel trick see \ref{vapnik2013nature}). SVM is considered a good algorithm for small-medium size datasets. Note also that it scales well with the number of features, especially sparse features. 
+SVM can perform both linear and non linear classification, regression and outlier detection. When the datasets are non linearly separable we can use nonlinear SVM classifiers. One tactic is to add more features so that it result in a linearly separable dataset (pg 259 \cite{geron2017hands}). The \textbf{Kernel trick} makes this possible (for a discussion of the kernel trick see \cite{vapnik2013nature}). SVM is considered a good algorithm for small-medium size datasets. Note also that it scales well with the number of features, especially sparse features. 
 
 The implementation and the results obtained with this kind of classifier are discussed in Section \ref{se:ressvm}.
 
@@ -817,7 +817,7 @@ If we need to rank the votes, that is, some classifiers are more trustworthy tha
 
 %JUST replace voting="hard" with voting="soft" and ensure that all classifiers can estimate class probabilities”
 Ensemble classifiers are almost always a good choice because even if individual classifiers are weak learners (do slightly better than random guessing) the ensemble can still be a strong classifier, provided there are a sufficient number of weak learners and they are sufficiently diverse. % solo no puedes con amigos si   https://www.youtube.com/watch?v=Ds7tje_Y0CM
-The reason why ensemble methods work is the \emph{Law of large numbers}. For example, for a coin that is slightly biased, let us say that has $51\%$ probability of heads and $49\%$ of tails, if you toss the coin 1,000 times chances are that you will get a majority of heads, something close to 510 heads and 490 tails. The (frequentist) probability of heads majority for 1,000 tosses is $75\%$ and the more tosses you do the closer you get to 1, for 10,000 tosses the probability of majority is $97\%$. Thus, the more you toss the coin the closer you will get to 51-49 ratio. In the same vein, you can build 1,000 classifiers that are individually correct let us say $51\%$ of the time, (barely better than random guessing) but if you predict the majority vote class you can hope for a $75\%$ accuracy! Ensemble methods work best when the predictors are as independent from one another as possible. One way to get diversity is using very different algorithms so they will make different types of errors improving the accuracy.\cite{geron2017hands}. 
+The reason why ensemble methods work is the \emph{Law of large numbers}. For example, for a coin that is slightly biased, let us say that has $51\%$ probability of heads and $49\%$ of tails, if you toss the coin 1,000 times chances are that you will get a majority of heads, something close to 510 heads and 490 tails. The (frequentist) probability of heads majority for 1,000 tosses is $75\%$ and the more tosses you do the closer you get to 1, for 10,000 tosses the probability of majority is $97\%$. Thus, the more you toss the coin the closer you will get to 51-49 ratio. In the same vein, you can build 1,000 classifiers that are individually correct let us say $51\%$ of the time, (barely better than random guessing) but if you predict the majority vote class you can hope for a $75\%$ accuracy! Ensemble methods work best when the predictors are as independent from one another as possible. One way to get diversity is using very different algorithms so they will make different types of errors improving the accuracy \cite{geron2017hands}. 
 %YS connec this with utility function Ole Peters
 
 We can distinguish two main types of ensemble methods depending on whether variability is introduced in the models or in the data. An example of the former is a voting classifier (ensemble of different individual classifiers) which is implemented in Section \ref{se:resensemble}. We can also use the same training algorithm for every learner and train them on different subsets of the dataset, when this is the case we can distinguish between bagging (sampling with replacement) or pasting (sampling without replacement). 
@@ -1154,7 +1154,7 @@ Class & precision & recall & f1-score & support     \\
 1 & 0.15  &    0.47   &   0.23   &     19 \\
 \hline
 \end{tabular}
-\caption{The table shows  main classification metrics for the logistic regression classifier in the test set. Note that the recall recall of the positive class is also known as \emph{sensitivity} and recall of the negative class is also called \emph{specificity}. The precision is low due to the unbalanced data.}
+\caption{The table shows  main classification metrics for the logistic regression classifier in the test set. Note that the recall of the positive class is also known as \emph{sensitivity} and recall of the negative class is also called \emph{specificity}. The precision is low due to the unbalanced data.}
 \end{center}
 \end{table}
 
@@ -1408,6 +1408,27 @@ The dataset is again split into training data ($80\%$) and test data ($20\%$). F
         } \label{fig:dt-md5}
 \end{figure}
 
+Table \ref{tab:dectree} shows the classification metrics for the implemented decision tree classifier.
+
+\begin{table}[H]
+\caption{Classification metrics for the decision tree classifier}
+\begin{center} 
+\begin{tabular}{lllll}
+\hline
+\multicolumn{1}{c}{} \\
+%\cline{1}
+Class & precision & recall & f1-score & support     \\
+\hline
+0 & 0.91 &  0.71  &  0.80  & 164 \\
+1 & 0.13 &  0.37  &  0.19  & 19  \\
+\hline
+\end{tabular}
+\caption{The table shows the main classification metrics for the decision tree classifier. The metrics for the negative class 0 (non-converter) are excellent but those for the converters are very poor due to the data unbalanced problem in our dataset. The accuracy of the predictor is 0.68.
+}  \label{tab:dectree} 
+\end{center}
+\end{table}
+
+
 Figure \ref{fig:dt-md5-learning} shows the learning curve for the Decision Tree using cross-validation (7 splits). 
 \begin{figure}[H]
         \centering
@@ -1483,6 +1504,25 @@ We show the results with random forest built with the optimal hyperparameters es
 $max\_features=(10,100,1000), max\_leaf\_nodes=(2,4,8,16), n\_estimators=(8,18,28)$ and  $min\_samples\_leaf=(8,16,32)$.
 \end{quote}
 %parameters = {'n_estimators':10 ** np.arange(1,4), 'max_features':2 ** np.arange(0, 5), 'min_samples_leaf':[8,18,28], 'max_leaf_nodes':[8,16,32]}
+
+Table \ref{tab:rf} shows the classification metrics for the random forest classifier.
+\begin{table}[H]
+\caption{Classification metrics for Ensemble classifier}
+\begin{center} 
+\begin{tabular}{lllll}
+\hline
+\multicolumn{1}{c}{} \\
+%\cline{1}
+Class & precision & recall & f1-score & support     \\
+\hline
+0 & 0.89  &    0.93   &   0.91   &    164 \\
+1 & 0.00  &    0.00   &   0.00   &    19\\
+\hline
+\end{tabular}
+\caption{The table shows the main classification metrics for the random forest classifier using both the original test set and the synthetic balanced set generated with the SMOTE algorithm. The algorithm does not generalizes at all. Different hyperparametrization could improve this situation but the imbalanced problem can not be solved with a different configuration in parameters space. }  \label{tab:rf} 
+\end{center}
+\end{table}
+
 
 Figure \ref{fig:rf_cm} shows the confusion matrix and the ROC for random forest. 
 \begin{figure}[H]
@@ -1823,10 +1863,10 @@ Figure \ref{fig:TSNE} shows the scatter plot of the tSNE algorithm that creates 
 
 \section{Comparative evaluation of models}
 \label{se:compare}
-In this section we will try to construct a coherent view of performance of the different predictive algorithms used in Section \ref{}.
+In this section we will try to construct a coherent view of performance of the different predictive algorithms used in Section \ref{se:res}.
 Prior to try to identify the best model for the task at hand we will comment on the performance metrics and validation procedures used. In particular we will delve into cross validation reduce variance in the validation set and will describe how to interpret the metrics provided in the Results section. The impatient reader can go directly to Section \ref{sse:permets} which contains the comparative analysis for the different models implemented.
 
-As it was noted int the previous section we trained the \emph{Vallecas} dataset using a split of $80\%$ for the training set and 20\%$ for test set of $. The validation set was $10\%$ of the test set which gives us only 73 samples, a small number so the validation scores might have a high variance with regard to the validation split possibly preventing us from reliably evaluating the model. The best practice to deal with this situation is to use K-fold cross validation, split the available data into K partitions (e.g. between 3 and 7) instantiating K identical models and training each one on K-1 partitions while evaluating on the remaining partition. That validations core is the average of the K validation scores. Figure \ref{fig:xvalchollet} represents the cross validation process to effectively deal with high variance in the validation set \ref{chollet2017deep}. 
+As it was noted int the previous section we trained the \emph{Vallecas} dataset using a split of $80\%$ for the training set and $20\%$ for test set. The validation set was $10\%$ of the test set which gives us only 73 samples, a small number so the validation scores might have a high variance with regard to the validation split possibly preventing us from reliably evaluating the model. The best practice to deal with this situation is to use K-fold cross validation, split the available data into K partitions (e.g. between 3 and 7) instantiating K identical models and training each one on K-1 partitions while evaluating on the remaining partition. That validations core is the average of the K validation scores. Figure \ref{fig:xvalchollet} represents the cross validation process to effectively deal with high variance in the validation set \cite{chollet2017deep}. 
 \begin{figure}[H]
         \centering
         \includegraphics[keepaspectratio, width=.8\linewidth]{figures/xvalidationchollet}
@@ -1882,7 +1922,7 @@ Other metrics that will be shown in Section \ref{sse:permets} are:
 	\item Hamming loss: Calculates the Hamming (distance) between two sets
 	\item Jaccard similarity: average of Jaccard similarity coefficients (Jaccard index)
 	\item Hinge loss: computes the average distance between the predictions and the data using hinge loss (only prediction errors) Used in SVM
-	\item Matthews correlation coefficient (phi coefficient): it is regarded as a balance measure useful even if the classes are of very different sizes. [-1,1] +1 is perfect prediction, 0 average random prediction and -1 inverse prediction. %It is also called phi coefficient.
+	\item Matthews correlation coefficient or phi coefficient: it is regarded as a balance measure useful even if the classes are of very different sizes as it is our case here. The range is $[-1,1]$, where +1 is perfect prediction, 0 average random prediction and -1 inverse prediction \cite{boughorbel2017optimal}. %It is also called phi coefficient.
 	%from sklearn import matthews_corrcoef, matthews_corrcoef(y_pred, y_true) # tp*tn - fp*fn/ sqrt()
 	\item Zero one loss: computes the sum or average of the 0-1 classification loss $L_{0-1}$ over n samples. By default normalizes over the sample
 \end{itemize}
@@ -1903,6 +1943,8 @@ The \emph{Vallecas} dataset falls into the third situation: class imbalance, tha
 
 \subsection{Performance metrics for model selection}
 \label{sse:permets}
+
+
 Roughly speaking, there are two factors that tell us how well our machine learning is doing:
 \begin{itemize}
 \item Underfitting: the error on the training set is too large.
@@ -1911,83 +1953,272 @@ Roughly speaking, there are two factors that tell us how well our machine learni
 
 Ideally, we want to build a classifier that is sufficiently complex to do not underfit but not as complex as to memorize the training set. This trade-off between optimization and generalization is the main issue in machine learning. Optimization refers to the process of adjusting a model to get the best performance possible on the training data (the learning in machine learning), whereas generalization refers to how well the trained model performs on data it has never seen before. Validation is used in order to deal with information leakage that could drive overfitting in the model.
 
-Figure \ref{fig:dummies} shows how the different models perform, comparing accuracy with three dummy predictors: random predictor, majority predictor and minority predictor on the \emph{Vallecas} dataset.
+
+Figure \ref{fig:dummies} shows how the different models perform, comparing accuracy with three dummy predictors: random predictor, majority predictor and minority predictor on the \emph{Vallecas} dataset. 
 \begin{figure}[H] 
         \centering
         \includegraphics[keepaspectratio, width=1\linewidth]{figures/compareagainstdummies}
-        \caption{Comparative analysis of the accuracy for the built predictors (in blue) compared against dummy predictors (in red). From left to right: naive Bayes, logistic regression, random forest, extreme gradient boosting, voting majority, random forest with Grid search for optimal parameters, SVM, k-NN, multilayer perceptron and decision tree.
+        \caption{Comparative analysis of the accuracy for the built predictors (in blue) compared against dummy predictors (in red) for accuracy score. From left to right: naive Bayes, logistic regression, random forest, extreme gradient boosting, voting majority, random forest with Grid search for optimal parameters, SVM, k-NN, multilayer perceptron and decision tree. All the classifiers show better accuracy score than random classifier (uniform predictions). However, a dummy predictor that always predict the majority class i.e. non converter has better accuracy than some predictors e.g. logistic regression, naive Bayes and others. k-NN, random forest and extreme boosting (XGBBoost) have the best accuracy score.
         } \label{fig:dummies}
 \end{figure}
 
 
+As it was already mentioned the accuracy score is not the best for imbalanced datasets. In the case that the number of positive and negative classes are very different e.g. not in the same order, a more meaningful measure is Matthew’s Correlation Coefficient which is a balanced measure that can be used even if the classes are of very different sizes. Other measures such as Cohen's kappa, recall, precision, F1, ROCAUC and log loss are explored. Figure \ref{fig:mat4dummy} shows the score for all these measures for different classifiers, the scores are for both the training set (top row) and the test set (bottom row). For clarity, Figure \ref{fig:mat4dummy} shows the scores a first group of predictors (naive Bayes, k-NN, logistic regression and SVM) the scores of the rest of classifiers (decision tree, ensemble methods and deep networks) are depicted in figure \ref{fig:restmat4dummy}.
+
+The best test scores of the four predictors shown in Figure \ref{fig:mat4dummy} is the SVM with non linear kernel. The k-NN has the best accuracy but it clearly overfits(see training (first row) metrics). The nonlinear SVM classifier outperforms the other classifiers in the Matthews coefficient which is considered the best metric for imbalanced datasets like the \emph{Vallecas}. Nonlinear SVM outperforms also the other three classifiers -naive Bayes, logit, k-NN- in Cohen's kappa, precision, F1 and ROC AUC metrics. It is worth noting that these results may be susceptible to change if we change the hyperparameters of the models. For example, in k-NN we used k=3 which is the optimal k for the cross validation implemented of 5 folds. For $k=1$ the Matthews coefficient improves but it is till worse than for SVM and logit.
+\begin{figure}[H] 
+        \centering
+        \includegraphics[keepaspectratio, width=1\linewidth]{figures/allmetrics4}
+        \caption{Comparative analysis of four predictors -naive Bayes, logit, SVM and k-NN- with different classification metrics. In the top row the score for the training set and on the bottom row for the test set. The k-NN has the best accuracy but at the same time has the worst Matthews coefficient. The top row (training metrics) clearly shows that k-NN overfits. Based on the results the best predictor of this group is the SVM with RBF kernel, it has the best scores for Matthews coefficient, Cohen's kappa, precision, F1 and ROC AUC. 
+        } \label{fig:mat4dummy}
+\end{figure}
+
+Figure \ref{fig:allmetricsensemble} shows the test scores for the predictors decision tree and ensemble methods -random forest, XGB, AdaBoost and voting classifier. The predictors shown in this figure are all ensemble methods except the decision tree which is however the basic unit  of random forests. XGB and AdaBosst are both boosting algorithms which in essence combine weak (slightly better than random) learners to create a highly accurate prediction. Random forest is an ensemble of many decision trees and the Voting classifier is an ensemble of the learners shown in figure \ref{fig:mat4dummy} -naive Bayes, logit, SVM and k-NN- implemented using hard voting (soft voting votes have a weight in hard voting votes are binary).
+%An AdaBoost [1] classifier is a meta-estimator that begins by fitting a classifier on the original dataset and then fits additional copies of the classifier on the same dataset but where the weights of incorrectly classified instances are adjusted such that subsequent classifiers focus more on difficult cases.
+
+\begin{figure}[H] 
+        \centering
+        \includegraphics[keepaspectratio, width=1\linewidth]{figures/allmetricsensemble}
+        \caption{Comparative analysis of ensemble predictors -extreme gradient boosting, random forest, AdaBoost, Majority Voting- and decision tree. Of the two boosting classifiers, XGB and Ada, Ada shows better performance. The best Matthews coefficient is for the Majority Voting classifier which is an ensemble of all the classifiers shown in Figure \ref{fig:mat4dummy} (SVM dominates). The hyperparameters of the random forest classifier (red) are \textit{n\_estimators} $= 1000$, \textit{min\_samples\_leaf} $= 8$ and the \textit{max\_features} is set the default i.e. $\sqrt{features}~8$. The extreme gradient boosting algorithm (yellow) has the best accuracy $~0.88$. Note that the boosting algorithms are implemented with the hyperparameters set to \textit{n\_estimators} $= 100$, learning rate $=0.001$ and \textit{max\_depth} $=5$; but it could be possible to find another configuration with improved results.} \label{fig:allmetricsensemble}
+\end{figure}
+
+Finally we evaluate the performance of deep networks (multi layer perceptrons).
+
+
 \section{The class imbalance problem}
 \label{se:imbalance}
-
-TO DO
-
-
-
 The class imbalance problem -the number of samples of one class being under represented compared to another class- is predominant in many scenarios, in particular when dealing with anomaly detection, for example, fraudulent transaction, electrical grid fault, electrical theft, conversion to disease  etc. In this situation, a predictive model that does not take into account this could be very unreliable.
-The imbalance problem needs to be addressed in the design phase with an emphasis on improving the identification of the minority class as opposed to achieving higher overall accuracy.
-How rare is our data set can be easily quantified with the balancing ratio, r. Let X be an imbalanced set with $X_{min}$ the subset of the undersampled class and $X_{maj}$ the subset of the majority class. Te balancing ratio r is
+%The imbalance problem needs to be addressed in the design phase with an emphasis on improving the identification of the minority class as opposed to achieving higher overall accuracy.
+How imbalanced is our data set can be easily quantified with the balancing ratio, r. Let X be an imbalanced set with $X_{min}$ the subset of the undersampled class and $X_{maj}$ the subset of the majority class. The balancing ratio \emph{r} is
 \begin{equation}
 r_X = \frac{X_{min}}{X_{maj}}
 \end{equation}
+%In our dataset the imbalance is around 12:1 which is far from what is more often considered as imbalance with ratios as skewed as 100:1, 1,000:1 or 10,000:1\cite{he2009learning}.
+
+The goal is to have high accuracy in the minority class without jeopardizing the accuracy of the majority class. Using machine learning algorithms off the box when one class dominates the other, as it is the case in the \emph{Vallecas} dataset (the balancing ratio \emph{r}= 9), comes with a warning because any algorithm could just classify everything as non converter and still be right the $90\%$ of the time. Standard classifier algorithms e.g. Logistic Regression, Decision trees etc. have a bias towards the majority class, that is, they tend to only predict the majority class data and the features of the minority class are treated as noise and are often ignored. Note that classifiers can also learn from imbalanced data sets, some studies have found comparable result for imbalanced datasets and the same balanced using sampling techniques \cite{japkowicz2002class}.
 
 %https://www.analyticsvidhya.com/blog/2017/03/imbalanced-classification-problem/
-The balancing process is equivalent to resample X in such a way that the ratio increases, $r_{X_{resampled}} > r_X$, we can do so undersampling the majority class and or over sampling the minority class. Udersampling refers to reducing the number of samples in $X_{maj}$ for example cleaning the majority space by eliminating redundant data points. Oversampling tries to achieve data balancing by generating new points in $X_{min}$.
+The balancing process is equivalent to resample the dataset in such a way that the balancing ratio increases \emph{r}, we can do so under sampling the majority class and or over sampling the minority class. Luckily, there are at least four ways to deal with this problem (there is of course a fifth option which is doing nothing about it). 
+\begin{enumerate}
+	\item Synthesis of new minority class instances, eg. SMOTE algorithm creates artificial data based on the feature similarities between existing minority samples. %Sampling (synthetic data, algorithms are SMOTE, SMOTEBoost and EasyEnsemble)
+	\item Over sampling the minority class to achieve data balancing by generating new points in $X_{min}$.
+	\item Under sampling the majority class to reduce the number of samples in $X_{maj}$, for example cleaning the majority space by eliminating redundant data points.
+	\item Tweak the cost function to make misclassification more costly for the minority class.
+\end{enumerate}
+We used the fourth option (tweak the cost function) with those machine learning algorithms (decision tree, random forest, SVM, SGD, logit) that have the \textit{class\_weight} parameter for unbalanced datasets. The idea is that the cost of misclassifying a minority class instance is worse than misclassifying the majority class. 
+As the Results Section showed this approach is not enough to achieve satisfactory metrics for the converter class (very poor \emph{sensitivity} or recall of the positive class). Although penalizing misclassification of the under sampled class might help, the approach is still lacking, for example using a N-fold cross validation the validation set may contain none or very few instances.of converters.
 
-Standard classifier algorithms e.g. Logistic Regression, Decision trees etc. have a bias towards the majority class, that is, they tend to only predict the majority class data and the features of the minority class are treated as noise and are often ignored. 
+In this section we will address the skewness of the dataset in terms of labels using a different approach, namely creating new minority class instances, implemented using the Synthetic Minority Over-sampling Technique (SMOTE) algorithm. The SMOTE algorithm synthesizes new minority instances of existing (real) minority instances, this new synthetic dataset is used to train the classifier. SMOTE mitigates the problem of overfitting because it does not mimic minority instances it rather generates new ones, another advantage is that the there is no information loss. The disadvantages of SMOTE are that the algorithm does not take into account neighboring examples across classes which could introduce noise, SMOTE is not very effective for high dimensional data and it may suffer from  over generalization and variance \cite{wang2004imbalanced}.
 
-
-Random under sampling: eliminate randomly majority class examples, for example taking out $10\%$ samples without replacement from the majority class to combining them with the minority class. It reduces the training set discarding potentially useful information, this approach is only advisable for really large datasets.
-
-Random over-sampling increases the number of elements in the minority class by randomly replicating. Here, contrary to udersampling, there is no information loss but it may increase the likelihood of overfitting since it replicates the minority class events.
-
-Cluster-Based Over Sampling k-NN algorithm is independently applied to minority and majority class instances to identify clusters in the dataset. Subsequently, each cluster is oversampled such that all clusters of the same class have an equal number of instances and all classes have the same size. The disadvantage of this algorithm, like most oversampling techniques is the possibility of over-fitting the training data.  
-
-Informed Over Sampling: Synthetic Minority Over-sampling Technique (SMOTE): This technique is good at avoiding overfitting which naturally occurs when replicas of the minority set are added. In SMOTE rather than replicas we generate a synthetic subset from the minority class which is used to train the classifier. For example we get 20 instances from $X_{min}$ and similar synthetic instances are generated 20 times for a total of 400 instances. SMOTE mitigates the problem of overfitting because it does not mimic minority instances it rather generates new ones, another advantage is that the there is no information loss.
-The disadvantages of SMOTE are that the algorithm does not take into account neighboring examples across classes which could introduce noise, SMOTE is not very effective for high dimensional data (YS:how ineffective and ho high??)
-SMOTE creates artificial data based on the feature similarities between existing minority samples. To create a synthetic sample, randomly select one of the K-nearest neighbors (eg under Euclidean distance), then multiply the feature vector with a random number between 0 and 1 and finally add this vector to x
+The SMOTE algorithm takes two parameters: \textit{K}, how many of the closest neighbors are considered for synthesis and \textit{dup\_size}, how many times existing data points get reused for synthesis, being zero is a special case leading to balanced classes. The algorithm loops through the existing, real minority instance and at each loop iteration, one of the \textit{K} closest minority class neighbors is chosen and a new minority instance is synthesized somewhere between the minority instance and that neighbor. For example, if \textit{dup\_size} = 20 and we have only 10 minority instances, the SMOTE algorithm will create 200 new data points of the minority class. Specifically, to create a synthetic sample SMOTE randomly selects one of the K-nearest neighbors (eg under Euclidean distance), then multiply the feature vector with a random number between 0 and 1 and finally add this vector to x
 \begin{equation}
 x_{new} =  x_i + \delta * (\hat{x_i} - x_i)
 \end{equation}
-where $x_{new}$ is the synthetic new point, $x_i$ is the minority instance and $\hat{x_i}$ is one of the k nearest neighbors. Thus, the resulting new point is along the line between $x_i$ and the randomly selected neighbor $\hat{x_i}$. The drawbacks of SMOTE include over generalization and variance \cite{wang2004imbalanced}.
-
+where $x_{new}$ is the synthetic new point, $x_i$ is the minority instance and $\hat{x_i}$ is one of the k nearest neighbors. Thus, the resulting new point is along the line between $x_i$ and the randomly selected neighbor $\hat{x_i}$. 
+%Thus, the \textit{dup\_size} parameter is the number of times the algorithm should loop through the existing real minority instances. 
+ 
 %YS: Tomek links
 SMOTE can be complemented with data cleaning techniques, notably Tomek links \cite{tomek1976two} to reduce the overlapping (new instances become 'tied' together leading to overfitting \cite{mease2007boosted}) that is introduced in the sampling methods.
 A Tomek link is a pair if minimally distanced nearest neighbors that belong to different classes. By eliminating the Tomek links (pairs of points that are two close or noise) we cleanup the undesired overlapping that the synthetic sampling may introduce. After the Tomek links are removed all the minimally distanced nearest neighbors belong to the same class. Then, if we remove the overlapping points it could be possible to establish well-defined clusters. 
 
+
+\subsection{Results with the synthetic balanced dataset generated with SMOTE}
+\label{se:resimbalance}
+
+The metrics for the different algorithms applied to the synthetic balanced dataset generated via the SMOTe algorithm as shown bellow.
+Logistic regression in Table \ref{tab:logreg_smote}, k-NN in Table \ref{tab:k-NN_smote}, non linear SVM in Table \ref{tab:svm_smote}, Gaussian naive Bayes in Table \ref{tab:nb_smote}, decision tree in Table \ref{tab:dt_smote}, ensemble (hard voting of the previous predictors) in Table \ref{tab:voting_smote} and Boosting algorithms: AdaBoost in Table \ref{tab:ada_smote} and extreme gradient boosting \ref{tab:xgb_smote}.
+The best results are obtained in the Boosting algorithms , bagging (via SMOTE) and adaptive boosting with the AdaBoost algorithm (Table \ref{tab:ada_smote})or extreme gradient boosting (Table \ref{tab:xgb_smote}). 
+%YS: falta extreme gradient
+
+%logreg
+\begin{table}[H]
+\caption{Classification metrics for logistic regression} \label{tab:logreg_smote} 
+\begin{center} 
+\begin{tabular}{cccccccc}
+\hline
+\multicolumn{1}{c}{} \\
+%\cline{1}
+Class & precision & precision \textit{SMOTE}& recall & recall \textit{SMOTE}& f1-score & f1-score \textit{SMOTE} & support     \\
+\hline
+0 & 0.92  &  0.57 &  0.70  & 0.73 &   0.79   &  0.64 &  164 \\
+1 & 0.15  &  0.62 &  0.47 &  0.45  &  0.23   &  0.52  &  19/164 \\
+\hline
+\end{tabular}
+\caption{The table shows classification metrics for the logistic regression classifier for both the original test set and the synthetic balanced dataset generate with the SMOTE algorithm. Precision of the positive class goes down for the negative class and goes up for the positive class. Recall is mostly unaffected. The 10-fold cross validation average accuracy is 0.796}
+\end{center}
+\end{table}
+
+%kNN
+\begin{table}[H]
+\caption{Classification metrics for k-NN classifier} \label{tab:k-NN_smote} 
+\begin{center} 
+\begin{tabular}{cccccccc}
+\hline
+\multicolumn{1}{c}{} \\
+%\cline{1}
+Class & precision & precision \textit{SMOTE}& recall & recall \textit{SMOTE}& f1-score & f1-score \textit{SMOTE} & support     \\
+\hline
+0 & 0.90  &  0.58 &  0.98  & 0.59 &  0.94   &  0.58 &  164 \\
+1 & 0.20  &  0.58 &  0.05  & 0.57 &  0.08   &  0.57  &  19/164 \\
+\hline
+\end{tabular}
+\caption{The table shows classification metrics for the k-NN classifier for both the original test set and the synthetic balanced dataset generate with the SMOTE algorithm. The k-NN algorithm overfits very clearly in the original dataset, in the new synthetic dataset the algorithms does slightly better than a random classifier, the accuracy of the K-NN (k=5) is 0.579.}
+\end{center}
+\end{table}
+
+%SVM RBF 
+\begin{table}[H]
+\caption{Classification metrics for SVM classifier with RBF kernel} \label{tab:svm_smote} 
+\begin{center} 
+\begin{tabular}{cccccccc}
+\hline
+\multicolumn{1}{c}{} \\
+%\cline{1}
+Class & precision & precision \textit{SMOTE}& recall & recall \textit{SMOTE}& f1-score & f1-score \textit{SMOTE} & support     \\
+\hline
+0 & 0.93  & 0.63  &  0.79  & 0.88 &  0.85    &  0.73 &  164 \\
+1 & 0.20  & 0.80  &  0.47  & 0.48 &  0.29    &  0.60  &  19/164 \\
+\hline
+\end{tabular}
+\caption{The table shows classification metrics for the non linear SVM classifier with RBF kernel. The precision in the synthetic dataset is notably improved, the accuracy in the balanced dataset is 0.68.}
+\end{center}
+\end{table}
+
+%kNN
+\begin{table}[H]
+\caption{Classification metrics for naive Bayes classifier} \label{tab:nb_smote} 
+\begin{center} 
+\begin{tabular}{cccccccc}
+\hline
+\multicolumn{1}{c}{} \\
+%\cline{1}
+Class & precision & precision \textit{SMOTE}& recall & recall \textit{SMOTE}& f1-score & f1-score \textit{SMOTE} & support     \\
+\hline
+0 & 0.91  & 0.74  &  0.63  & 0.54 &  0.74   &  0.63 &  164 \\
+1 & 0.13  & 0.64 &   0.47  & 0.81 &  0.20   &  0.72 &  19/164 \\
+\hline
+\end{tabular}
+\caption{The table shows classification metrics for the naive Bayes classifier in the test set and the synthetic balanced dataset generated via the SMOTE algorithm. The metrics of the positive class are greatly enhanced, on the contrary and as expected the negative class deteriorate in the balanced dataset. The accuracy of the GaussianNB classifier in the balanced test set is 0.68.}
+\end{center}
+\end{table}
+
+%DT
+\begin{table}[H]
+\caption{Classification metrics for decision tree classifier} \label{tab:dt_smote} 
+\begin{center} 
+\begin{tabular}{cccccccc}
+\hline
+\multicolumn{1}{c}{} \\
+%\cline{1}
+Class & precision & precision \textit{SMOTE}& recall & recall \textit{SMOTE}& f1-score & f1-score \textit{SMOTE} & support     \\
+\hline
+0 & 0.91  & 0.74  & 0.71   & 0.73  &  0.80   &  0.73 &  164/164 \\
+1 & 0.13  & 0.73  & 0.37  & 0.74  &   0.19   & 0.74 &   19/164 \\
+\hline
+\end{tabular}
+\caption{The table shows classification metrics for the decision tree in both the original test set and the synthetic balanced dataset generated with the SMOTE algorithm. The metrics of the positive class are greatly enhanced, on the contrary and as expected the negative class deteriorate in the balanced dataset but not as much as it is gained in the positive  class. The accuracy of the decision tree classifier on the balanced test set is 0.73.}
+\end{center}
+\end{table}
+
+%Random forest
+
+
+%RF
+\begin{table}[H]
+\caption{Classification metrics for random forest classifier} \label{tab:rf_smote} 
+\begin{center} 
+\begin{tabular}{cccccccc}
+\hline
+\multicolumn{1}{c}{} \\
+%\cline{1}
+Class & precision & precision \textit{SMOTE}& recall & recall \textit{SMOTE}& f1-score & f1-score \textit{SMOTE} & support     \\
+\hline
+0 & 0.89 & 0.84  &  0.93 & 0.97 &  0.91   & 0.90  &  164 \\
+1 & 0.00  & 0.96  & 0.00   & 0.82 &  0.00   & 0.88   & 19/164 \\
+\hline
+\end{tabular}
+\caption{The table shows classification metrics for the logistic regression classifier in the test set and the synthetic dataset generate with the SMOTE algorithm. Precision, recall and. F1 score for the n¡balanced dataset suffer are tremendously improved eg. from 0 sensitivity to 0.82. Accuracy of Grid-RandomForestClassifier classifier on test set 0.89 with the hyperparameters calculated using GridSearch: estimators:1000 and minimum number of sample in a leaf equals to 8.}
+\end{center}
+\end{table}
+
+%Ensemble Voting
+\begin{table}[H]
+\caption{Classification metrics for Ensemble (hard voting) classifier} \label{tab:voting_smote} 
+\begin{center} 
+\begin{tabular}{cccccccc}
+\hline
+\multicolumn{1}{c}{} \\
+%\cline{1}
+Class & precision & precision \textit{SMOTE}& recall & recall \textit{SMOTE}& f1-score & f1-score \textit{SMOTE} & support     \\
+\hline
+0 & 0.91  & 0.71  &  0.90  & 0.80 &  0.91   &  0.75&  164 \\
+1 & 0.20  & 0.77 &  0.21  & 0.66 &  0.21   &  0.71  & 19/164 \\
+\hline
+\end{tabular}
+\caption{The table shows classification metrics for the  the Ensemble classifier using hard voting for prediction. The metrics for the positive class 1 (converter) strongly improve, while for the negative class 0 (non-converter) decreases moderately. The dominant predictor for the balanced dataset is now the decision tree.}
+\end{center}
+\end{table}
+
+%Ada
+\begin{table}[H]
+\caption{Classification metrics for AdaBoost classifier} \label{tab:ada_smote} 
+\begin{center} 
+\begin{tabular}{cccccccc}
+\hline
+\multicolumn{1}{c}{} \\
+%\cline{1}
+Class & precision & precision \textit{SMOTE}& recall & recall \textit{SMOTE}& f1-score & f1-score \textit{SMOTE} & support     \\
+\hline
+0 & 0.90  & 0.84  & 0.99   & 0.79 &  0.94   & 0.82  &  164 \\
+1 & 0.33  & 0.80 &  0.05  &  0.85 &  0.09   & 0.82   & 19/164 \\
+\hline
+\end{tabular}
+\caption{The table shows classification metrics for the or the AdaBoost classifier for both the test set and the synthetic balanced dataset generate with the SMOTE algorithm. Prediction, recall and F1 score for the positive class 1 (converter) improved very strongly, e.g. from a \emph{sensitivity} of 0.05 in the original dataset to 0.85 in the balanced dataset. The accuracy of the of AdaBoost algorithm in the synthetic balanced dataset is 0.82.}
+\end{center}
+\end{table}
+
+%XBG
+\begin{table}[H]
+\caption{Classification metrics for Extreme Boosting classifier classifier} \label{tab:xgb_smote} 
+\begin{center} 
+\begin{tabular}{cccccccc}
+\hline
+\multicolumn{1}{c}{} \\
+%\cline{1}
+Class & precision & precision \textit{SMOTE}& recall & recall \textit{SMOTE}& f1-score & f1-score \textit{SMOTE} & support     \\
+\hline
+0 & 0.90  & 0.88  & 0.99   & 0.98 &  0.84   & 0.93  &  164 \\
+1 & 0.00  & 0.98 &  0.00  &  0.87 &  0.00   & 0.92   & 19/164 \\
+\hline
+\end{tabular}
+\caption{The table shows classification metrics for the or the Extreme Gradient boosting classifier for both the test set and the synthetic balanced dataset generate with the SMOTE algorithm. Random forest completelly failed to generalize for posivie class 1 (converters), however for the balanced dataset the algorithm generalizes very well, e.g. \emph{sensitivity} from 0.00 in the orginal dataset to 0.87 in the synthetic dataset. The accuracy of XGBClassifier classifier on the balanced synthetic test set is 0.92.}
+\end{center}
+\end{table}
+
+
+We see that the best approach is achieved with the Boosting algorithm, in particular the extreme gradient boosting algorithm (Table \ref{tab:xgb_smote}), bagging plus boosting is then the favored approach. First, bagging, balance the unbalanced dataset using Synthetic Minority oversampling technique (SMOTE) by creating synthetic instances. And train the newly balanced data set using a Gradient Boosting Algorithm. Note that ensemble based methods (eg. gradient tree boosting) are not an alternative to sampling techniques per se – so it is better to use SMOTE first and then  the ensemble algorithm SMOTE+Gradient boosting. However, XG boosting can be applied directly on the imbalanced data, XG Boost is a more advanced form of Boosting and takes care of imbalanced data set by balancing it in itself- so use of sampling techniques may not be necessary. This technique is good at avoiding overfitting which naturally occurs when replicas of the minority set are added. 
 We can also integrate sampling techniques with ensemble learning techniques,  (SMOTE + Adaboost), SMOTE can introduce new synthetic sampling at each boosting iteration and the successive classifier ensemble focus more on the minority class.
 
+%% Deep networks
 
-Modified synthetic minority oversampling technique (MSMOTE): Two approaches: Bagging (Bootstrap Aggregating) and Boosting. In bagging we generate ‘n’ different bootstrap training samples with replacement. And training the algorithm on each bootstrapped algorithm separately and then aggregating the predictions at the end. 
-Boosting is an ensemble technique to combine weak learners (small changes in data induce big changes in the classification model.) to create a strong learner. 
-AdaBoost (Adaptive Boosting) is the first original boosting technique which creates a highly accurate prediction rule by combining many weak and inaccurate rules. 
-Gradient Tree boosting: Decision Trees are used as weak learners. Gradient Boosted trees are harder to fit than random forests
-XGBoost (Extreme Gradient Boosting) is an advanced and more efficient implementation of Gradient Boosting Algorithm. It is 10 times faster than the normal Gradient Boosting as it implements parallel processing. Unlike gradient boosting which stops splitting a node as soon as it encounters a negative loss, XG Boost splits up to the maximum depth specified and prunes the tree backward and removes splits beyond which there is an only negative loss.
+%kNN
+% \begin{table}[H]
+% \caption{Classification metrics for XXX classifier} \label{tab:logreg_smote} 
+% \begin{center} 
+% \begin{tabular}{cccccccc}
+% \hline
+% \multicolumn{1}{c}{} \\
+% %\cline{1}
+% Class & precision & precision \textit{SMOTE}& recall & recall \textit{SMOTE}& f1-score & f1-score \textit{SMOTE} & support     \\
+% \hline
+% 0 &   &   &    &  &     &   &  164 \\
+% 1 &   &   &    &  &     &    &  19 \\
+% \hline
+% \end{tabular}
+% \caption{The table shows classification metrics for the logistic regression classifier in the test set and the synthetic dataset generate with the SMOTE algorithm. Precision of the positive class goes down for the negative class and goes up for the positive class. Recall is mostly unaffected. The predictor k-NN (k=5) accuracy is 0.561}
+% \end{center}
+% \end{table}
 
-The pipeline we will use is bagging plus boosting. First, bagging, balance the unbalanced dataset using Synthetic Minority oversampling technique (SMOTE) by creating synthetic instances. And train the newly balanced data set using a Gradient Boosting Algorithm. Note that ensemble based methods (eg. gradient tree boosting) are not an alternative to sampling techniques per se – so it is better to use SMOTE first and then  the ensemble algorithm SMOTE+Gradient boosting. However, XG boosting can be applied directly on the imbalanced data, XG Boost is a more advanced form of Boosting and takes care of imbalanced data set by balancing it in itself- so use of sampling techniques may not be necessary.
-
-In our dataset the imbalance is around 12:1 which is far from what is more often considered as imbalance with ratios as skewed as 100:1, 1,000:1 or 10,000:1\cite{he2009learning}.
-The goal is to have high accuracy i the minority class without jeopardizing  the accuracy of the majority class.
-
-The two main classes to deal with the imbalance problem are Sampling (random, synthetic and cluster based)and Cost Sensitive (Adaptive boosting, cost sensitive decision trees) 
-Note that classifiers can also learn from imbalanced data sets, some studies have found comparable result for imbalanced datasets and the same balanced using sampling techniques \cite{japkowicz2002class}.
-Cost-sensitive methods for imbalanced consists in including the cost associated with missclassifying examples, that is, instead of creating a balanced data distribution with sampling , cost sensitive penalizes learning that missclassifies wityh the cost matrix. AdaBoost introduces a cost via assigning a weight for the data instances as an updating strategy. Thresholding is another valid forms of cost-sensitive learning (adjust the threshold of predicted probabilities return by the classifier to reduce the misclassified examples).
-
-Weighting is based on the idea that the ‘cost’ of misclassifying the minority class is worse than misclassifying the majority  class. This is applied at the algorithmic level in such algorithms as SVM, ANN, and Random Forest, for example with the weights parameter. So, the limitations here consist of whether the algorithm can deal with weights.
-%https://stackoverflow.com/questions/20082674/unbalanced-classification-using-randomforestclassifier-in-sklearn
-%sample_weight parameter is to balance the target classes in training dataset
-%len(X) == len(y) == len(sample_wight), each element of sample 1-d array represent weight for a corresponding (observation, label) pair. For 5:1 imbalance, if 1 class is represented 5 times as 0 class is, do: sample_weight = np.array([5 if i == 0 else 1 for i in y])
-% scikit-learn 0.17, there is class_weight='balanced' option which you can pass at least to some classifiers:
-%The “balanced” mode uses the values of y to automatically adjust weights inversely proportional to class frequencies in the input data as n_samples / (n_classes * np.bincount(y)).
-
-
-Thresholding can be used if the algorithm return probabilities, for example \textit{predict proba} adopting an appropriate trade-off level, this level can be optimized by generated a curve of the evaluation metric (e.g. F-measure). The limitation here is that you are making absolute trade-offs. Any modification in the cutoff will in turn decrease the accuracy of predicting the other class. If you have exceedingly high probabilities for the majority of your common classes (e.g. most above 0.85) you are more likely to have success with this method. It is also algorithm independent (provided the algorithm returns probabilities).
-Note that the F-measures which combine precision (exactness) and recall (completeness) don’t take into account the true negative rate. Therefore, it is often recommended that in imbalanced settings to use metrics such as Cohen’s kappa metric.
-
-Sampling (synthetic data, algorithms are SMOTE, SMOTEBoost and EasyEnsemble)
 
 
 \section{Discussion and Conclusions}
@@ -2003,6 +2234,14 @@ The essential between these three types of approaches is the existence and role 
 While supervised algorithms require a teacher to specify the desired output vector, reinforcement requires only require a single scalar evaluation of the output and finally unsupervised algorithms do not require any teacher nor additional information to  construct internal models that capture regularities in the input vectors  \cite{hinton1990connectionist}. There are often ways of converting one kind of learning procedure into another e.g. self supervised learning can be converted into an unsupervised learning by using the input itself to do the supervision i.e. the desired output vector is identical with the input vector.
 %A learning algorithm for boltzmann machines
 
+Random under sampling: eliminate randomly majority class examples, for example taking out $10\%$ samples without replacement from the majority class to combining them with the minority class. It reduces the training set discarding potentially useful information, this approach is only advisable for really large datasets.
+
+Random over-sampling increases the number of elements in the minority class by randomly replicating. Here, contrary to udersampling, there is no information loss but it may increase the likelihood of overfitting since it replicates the minority class events.
+
+Cluster-Based Over Sampling k-NN algorithm is independently applied to minority and majority class instances to identify clusters in the dataset. Subsequently, each cluster is oversampled such that all clusters of the same class have an equal number of instances and all classes have the same size. The disadvantage of this algorithm, like most oversampling techniques is the possibility of over-fitting the training data.  
+
+Modified synthetic minority oversampling technique (MSMOTE): Two approaches: Bagging (Bootstrap Aggregating) and Boosting. In bagging we generate ‘n’ different bootstrap training samples with replacement. And training the algorithm on each bootstrapped algorithm separately and then aggregating the predictions at the end. 
+Boosting is an ensemble technique to combine weak learners (small changes in data induce big changes in the classification model.) to create a strong learner. 
 
 %-------------------------------------------------------------------------------
 % REFERENCES
@@ -2022,6 +2261,26 @@ While supervised algorithms require a teacher to specify the desired output vect
 \section{Appendix}
 \section{Appendix}
 \label{se:ap}
+SMOTE
+
+
+AdaBoost (Adaptive Boosting) is the first original boosting technique which creates a highly accurate prediction rule by combining many weak and inaccurate rules. 
+Gradient Tree boosting: Decision Trees are used as weak learners. Gradient Boosted trees are harder to fit than random forests
+XGBoost (Extreme Gradient Boosting) is an advanced and more efficient implementation of Gradient Boosting Algorithm. It is 10 times faster than the normal Gradient Boosting as it implements parallel processing. Unlike gradient boosting which stops splitting a node as soon as it encounters a negative loss, XG Boost splits up to the maximum depth specified and prunes the tree backward and removes splits beyond which there is an only negative loss.
+these four approaches fall into two main classes: Sampling (random, synthetic and cluster based) and Cost Sensitive (Adaptive boosting, cost sensitive decision trees).  
+Cost-sensitive methods for imbalanced consists in including the cost associated with misclassifying examples, that is, instead of creating a balanced data distribution with sampling, cost sensitive penalizes learning that misclassifies with the cost matrix. AdaBoost introduces a cost via assigning a weight for the data instances as an updating strategy. Thresholding is another valid forms of cost-sensitive learning (adjust the threshold of predicted probabilities return by the classifier to reduce the misclassified examples).
+
+
+
+%https://stackoverflow.com/questions/20082674/unbalanced-classification-using-randomforestclassifier-in-sklearn
+%sample_weight parameter is to balance the target classes in training dataset
+%len(X) == len(y) == len(sample_wight), each element of sample 1-d array represent weight for a corresponding (observation, label) pair. For 5:1 imbalance, if 1 class is represented 5 times as 0 class is, do: sample_weight = np.array([5 if i == 0 else 1 for i in y])
+% scikit-learn 0.17, there is class_weight='balanced' option which you can pass at least to some classifiers:
+%The “balanced” mode uses the values of y to automatically adjust weights inversely proportional to class frequencies in the input data as n_samples / (n_classes * np.bincount(y)).
+
+
+Thresholding can be used if the algorithm return probabilities, for example \textit{predict proba} adopting an appropriate trade-off level, this level can be optimized by generated a curve of the evaluation metric (e.g. F-measure). The limitation here is that you are making absolute trade-offs. Any modification in the cutoff will in turn decrease the accuracy of predicting the other class. If you have exceedingly high probabilities for the majority of your common classes (e.g. most above 0.85) you are more likely to have success with this method. It is also algorithm independent (provided the algorithm returns probabilities).
+Note that the F-measures which combine precision (exactness) and recall (completeness) don’t take into account the true negative rate. Therefore, it is often recommended that in imbalanced settings to use metrics such as Cohen’s kappa metric.
 Notation:  a dataset is a collection of examples which are in turn collections of features. The design matrix is the most common form of describing a dataset, $X \in R^\{n,m\}$, where n is the number of examples (rows) and m the number of features (columns), so $X^\{i,j\}$ is the value of the feature j for example i
 
 Capacity: a model's capacity is its capacity to fit a wide variety of functions. for example, we we take the linear regression model we can increase its capacity by introducing x as another feature, note that the output is still a linear function of the parameters and it can be solved with the normal equations. MAchine learning algorithms perform best when they have a capacity appropriate for the complexity of the task and the training data available , models with high capacity can solve complex problems but when the capacity exceeds the complexity they may overfit (Occam's razor). 
