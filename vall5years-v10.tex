@@ -90,7 +90,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \setlength\headheight{12pt}
-\fancyhead[L]{Six years of \emph{Proyecto Vallecas}}
+\fancyhead[L]{Five years of \emph{Proyecto Vallecas}}
 \fancyhead[R]{Gómez-Ramírez et al. Fundaci\'on CIEN}
 \fancyfoot[R]{\small{page} \thepage\ \small{of} \pageref{LastPage}}
 %-------------------------------------------------------------------------------
@@ -158,7 +158,7 @@ The early detection with machine learning algorithms makes possible not only to 
 \section{Introduction}
 
 The Vallecas Project for early detection of AD is the most ambitious population-based study in Spain. The project is carried out at the Queen Sofia Foundation Alzheimer Center by a multidisciplinary team of researchers from the CIEN Foundation. The main objective of the Vallecas Project is to elucidate, through tracking of progression of the cohort, the best combination of features, clinical and others \footnote{Note in the inception of the project only clinical parameters were considered, here we advocate for a more inclusive set of parameters including neuropsychological, and also features related to the lifestyle such as nutrition and physical exercise}, that are informative about developing 
-cognitive impairment in the future. Thus, it intends to identify various \emph{markers} to eventually determine the potential risk that an  individual has to develop the disease in the future. The dataset contains more than 1,000 examples described with $~500$ features that include a wide range of characteristics collected yearly. Importantly, the dimensionality of the dataset grows every year (new features are added) but it shrinks in the number of examples (some volunteers drop the study). Table \ref{fig:tableclustervallecas} shows a non exhaustive list of the features types that are collected in the study.
+cognitive impairment in the future. Thus, it intends to identify various \emph{markers} to eventually determine the potential risk that an  individual has to develop the disease in the future. The dataset contains more than 1,000 examples described with $~500$ features that include a wide range of characteristics collected yearly. Importantly, the dimensionality of the dataset grows every year (new features are added) as it does the number of samples as the subjects keep coming for their yearly visits, however the number of examples collected per year decreases (some volunteers drop the study). Table \ref{fig:tableclustervallecas} shows a non exhaustive list of the features types that are collected in the study.
 
 \begin{figure}[h]
         \centering
@@ -166,31 +166,33 @@ cognitive impairment in the future. Thus, it intends to identify various \emph{m
         \caption{The Vallecas Project collects a longitudinal dataset for over 1,000 volunteers, the number of features collected amounts to more than 500. The table shows some of the most import types of features. Note that some features are collected only during the first year (basal) for example: familiar AD, APOE, level of education etc., but for the most part, features are assessed for every visit by the team of neuropsychologists and neurologists.} \label{fig:tableclustervallecas}
 \end{figure}
 
-The problem we are trying to solve here is prediction and the methodology we use is Artificial intelligence. Prediction is a way to generate information you do not have, that is, a predictive machine gets an input data set and uses it to generate new information. Classification is a quintessential prediction problem, for example, given a dataset of subjects whom have been diagnosed, we aim at building a classifier that can estimate the odds that a new subject will convert. Before going any further it is worth giving some basic definitions. First, we need to understand what Artificial intelligence (AI) is. The term AI was coined in 1956 by John McCarthy, AI studies how human intelligence can be implemented in technical systems. AI is an overarching concept including all sort of intelligent processes done by humans such as planning, problem solving, understanding language, recognizing objects, learning etc. 
-Machine learning is an approach to achieve Artificial intelligence. However, machine learning is more modest in the sense that does not claim to reverse engineer the human mind, it rather deals with making prediction as accurate as possible. Thus, AI tries to build 'intelligent' machines, machine learning, on the other hand, focuses on one aspect of intelligence, prediction.
-Deep learning is the most promising and popular approach to machine learning, other approaches include decision trees, Bayesian network, kernel methods, clustering etc.
-  
-In this study we use machine learning techniques (all the above mentioned and others) to investigate the factors that are most informative for conversion to MCI and dementia. The goal is to build algorithms capable of predicting the next stage (non conversion, conversion) in the cohort of \emph{Proyecto Vallecas}. We pay particular attention to the learning capabilities of our predictive analysis model. Our ambition is build a system that has been tested and validated in the Vallecas dataset and can be fed and deployed in larger scenarios e.g. health insurers, municipal or regional health systems providing comprehensible and accurate predictions for conversion to dementia in early stages.
+The problem we are trying to solve here is \textbf{prediction}, in particular classification. 
+%and the 
+Prediction is a way to generate information you do not have, that is, a predictive machine gets an input data set and uses it to generate new information. Classification is a quintessential prediction problem, for example, given a dataset of subjects whom have been diagnosed, we aim at building a classifier that can estimate the odds that a new subject will convert. 
 
-The objective is to build a system that predicts whether a subject will convert to mild cognitive impairment and we want to do it in the most cost effective way. In order to do so, we will use only as an input of our machine learning algorithms the self-informed features, that is to say, features that require a neurologist or a neuropsychologist are not used (e.g. cognitive performance tests), neither features that require lab tests (e.g APOE gene variant.)
-We identify a set of self-informed features with predictive power and we coin it the \textbf{Vallecas Index}. 
+Before going any further it is worth giving some basic definitions on the methodology we use here. First, we need to understand what \textbf{Artificial Intelligence} (AI) is. The term AI was coined in 1956 by John McCarthy, AI studies how human intelligence can be implemented in technical systems. AI is an overarching concept including all sort of intelligent processes done by humans such as planning, problem solving, understanding language, recognizing objects, learning etc. 
+Machine learning is an approach to achieve Artificial Intelligence. However, machine learning is more modest in the sense that does not claim to reverse engineer the human mind, it rather deals with making prediction as accurate as possible. While AI tries to build 'intelligent' machines, machine learning, on the other hand, focuses on one aspect of intelligence, prediction.
+Finally, \textbf{Deep Learning} is the most promising and popular approach to machine learning, other approaches include decision trees, Bayesian network, kernel methods, clustering etc.
+  
+In this study we use machine learning techniques (all the above mentioned and others) to investigate the factors that are most informative for conversion to MCI and dementia. The goal is to build algorithms capable of predicting the next stage (non conversion, conversion) in the cohort of \emph{Proyecto Vallecas}. We pay particular attention to the learning capabilities of our predictive analysis model. Our ambition is build a system that has been tested and validated in the \textit{Vallecas} dataset and can be fed and deployed in larger scenarios e.g. health insurers, municipal or regional health systems, providing comprehensible and accurate predictions. The objective is to build a system, in the most cost effective way, that predicts whether a subject will convert to mild cognitive impairment. In order to do so, we will use only as an input of our machine learning algorithms self-informed features, that is to say, features that do not require an expert to be collected e.g. neurologist nor a neuropsychologist performing neurological examinations or cognitive performance tests. Features that require lab tests (e.g APOE gene variant.) are also excluded.
+Thus, we identify a set of self-informed features with predictive power called the \textbf{Vallecas Index}. 
 
 %  Thus, Section \ref{} performs exploratory data analysis, including multicollinearity detection among different features and commenting on the feature engineering process used. Section \ref{} explains the different predictive models implemented and Section \ref{} deals with the evaluation of the predictive models that are described in the previous section. Importantly, we weigh on the interpretability side of the results and not only on the prediction side, section \ref{sse:interp}.
-The document is self contained, it provides a painless introduction to machine learning where the emphasis is in understanding the mechanics of the techniques rather than mathematical formalization. We follow a first principles example-based approach in which the outcome of the algorithms' implementations is explained and put in the context of the  \emph{Vallecas} dataset. Our hope is to accomplish the dual objective of being both divulgative about machine learning techniques and informative about the results obtained in the \emph{Vallecas Project} using those techniques.
+The document is self contained, it provides a painless introduction to machine learning where the emphasis is in understanding the mechanics of the techniques used rather than mathematical formalization. We follow a first principles example-based approach in which the outcome of the algorithms' implementations is explained and put in the context of the  \emph{Vallecas} dataset. Our hope is to accomplish the dual objective of being both didactic about machine learning techniques and informative about the results obtained in the \emph{Vallecas Project} using those techniques.
 
-The structure of the document is as follows. Section \ref{se:crisp} introduces the methodology that we will use use to study the \emph{Vallecas} dataset, namely the CRISP-DM model. In Section \ref{se:eda} we define the \emph{Vallecas Index} and we perform exploratory data analysis, providing descriptive statistics and statistical inference to test hypothesis of the population. Section \ref{se:mod} explains the different machine learning techniques used for predictive analytics. Next, in Section \ref{se:res} we show the results obtained for each one of the techniques within a comparative framework in Section \ref{se:compare}. Section \ref{se:imbalance} proposes solutions to the class imbalance problem that exists in the Vallecas dataset (the converter class is underrepresented). We conclude with the discussion and conclusions Section \ref{se:dis}.
+The structure of the document is as follows. Section \ref{se:crisp} introduces the methodology that we will use use to study the \emph{Vallecas} dataset, namely the CRISP-DM model. In Section \ref{se:eda} we define the \emph{Vallecas Index} and we perform exploratory data analysis, providing descriptive statistics and statistical inference to test hypothesis of the population. Section \ref{se:mod} explains the different machine learning techniques used for predictive analytics. Next, in Section \ref{se:res} we show the results obtained for each one of the techniques within a comparative framework described in Section \ref{se:compare}. Section \ref{se:imbalance} proposes a solution to the class imbalance problem that exists in the \emph{Vallecas} dataset (the converter class is underrepresented). We conclude with the discussion of the results and future works in Section \ref{se:dis}.
 
 %focuses on the deployment of the most successful models and argues about the benefits and challenges of deploying our models \emph{extramural}
 \section{CRISP-DM model}
 \label{se:crisp}
 
- The voluminous and complex (heterogeneity and dimensionality) dataset collected in the Vallecas Project make it particularly difficult to build analytics of any kind, let alone predictive analytics \footnote{The datasets that are giving better results with deep learning are very large -tens or even hundreds of thousands of examples- our dataset is more modest in the order of 1,000 thousand examples.}. In order to try to cope with this difficulty, we use a methodology well suited for machine learning analytics called CRoss Industry Standard Process for Data Mining (CRISP-DM model). We will follow the CRISP-DM methodological plan in order to effectively deal with data preparation, modeling, evaluation and deployment.
+ The voluminous and complex (heterogeneity and dimensionality) dataset collected in the \emph{Vallecas Project} make it particularly difficult to build analytics of any kind, let alone predictive analytics \footnote{In Deep Learning data is always a blessing, the more data the better, very large -tens or even hundreds of thousands of examples- are in principle preferred to more modest datasets like ours which is in the order of 1,000 thousand examples.}. In order to try to cope with this difficulty, we use a methodology well suited for machine learning analytics called CRoss Industry Standard Process for Data Mining (CRISP-DM model). We will follow the CRISP-DM methodological plan in order to effectively deal with data preparation, modeling, evaluation and deployment.
 %James Wu, Foundations of predictive analytics
   
 The CRISP-DM model is the most popular methodology used in machine learning. CRISP-DM consists in 6 phases that act upon themselves in an iterative loop depicted in Figure \ref{fig:crisp}.
 \begin{enumerate}
 %1. Problem understanding
-\item \textbf{Business understanding}: Understanding the project objectives and requirements from a 'business' perspective, the 'business' here is no other than prediction. 
+\item \textbf{Business understanding}: Understanding the project objectives and requirements from a 'business' perspective. The 'business' here is no other than prediction. 
 	\begin{itemize}
 		\item Definition of the problem: We have a dataset that contains a number of features and we want to clarify the relationships between those inputs and most importantly, which if any and in which measure have predictive power about conversion to MCI and dementia.
 	\end{itemize}
@@ -198,23 +200,26 @@ The CRISP-DM model is the most popular methodology used in machine learning. CRI
 \item \textbf{Data understanding}: The main resource available are spreadsheets that contain demographic (age, school years...), genetic ( APOE), cognitive performance metrics from neuropsychological tests, together with features related to life style including nutrition and physical exercise among others \footnote{ASL, MRI and fMRI data are also available (for the large majority of the volunteers) but need to be integrated with the above mentioned features. Here we will not deal with neuroimaging data. This is being undertaking in forthcoming work.}
 \item \textbf{Data preparation}: Activities to construct the final dataset from the initial raw data
 	\begin{itemize}
-		\item Data description: format, volume, description of attributes \footnote{Here we will refer indistinctly features, attributes, inputs and dimensions}
-		\item Exploratory data analysis (EDA): charts, plots to visualize data features find associations and correlations. This task comprises: explore and visualize data, select attributes (most important, remove redundant or dependent attributes), test hypothesis about correlations and associations.
-		\item Data quality analysis: Deal with missing values, inconsistent values
+		\item Data description: format, volume, description of attributes. \footnote{Some authors do not make any distinction between features and attributes, we however distinguish between attributes meaning a a column int the dataset and feature meaning an attribute that is useful for prediction.}
+		\item Exploratory data analysis (EDA): charts, plots to visualize data features, find associations and correlations. This task comprises: explore and visualize data, select attributes including remove redundant or dependent attributes, test hypothesis about correlations and associations.
+		\item Data quality analysis: Deal with missing values, inconsistent values.
 		%3. Data preparation
 		\item Clean, wrangle and curate the dataset before the learning machinery is launched to build models. This is the most time consuming phase, $(60\%)$ of the time.
 		\item Data integration : In case of having multiple datasets. This will have to be taken care of when we integrate theis dataset with with the imaging dataset.
 		\item Data wrangling: Handle missing values (remove rows, handle missing values), formatting into csv, json etc.
 	\end{itemize}
-\item \textbf{Modeling}: various modeling techniques are selected and applied.
+\item \textbf{Modeling}: various modeling techniques are selected and applied (Section \ref{se:res}). Specifically:
 	\begin{itemize}
 		\item Logistic regression
 		\item SVM
-		\item ...
+		\item k nearest neighbors
+		\item Naive Bayes
 		\item Decision Trees
+		\item Ensemble Methods (Random Forest, Bagging and Boosting)
 		\item Deep networks
+		\item Clustering methods (Hierarchical clustering, PCA and manifold learning)
 	\end{itemize}
-\item \textbf{Evaluation}: Once the models are built, proceed to evaluate them to identify the best models according with different metrics (accuracy, precision, interpretability etc).
+\item \textbf{Evaluation}: Once the models are built, proceed to evaluate them to identify the best models according with different metrics (accuracy, precision, interpretability etc). This will be shown in Section \ref{se:compare}.
 \item \textbf{Deployment}: Knowledge gained will need to be organized and presented in a way that is useful to the customer or final user.
 \end{enumerate}
 
@@ -227,8 +232,7 @@ The CRISP-DM model is the most popular methodology used in machine learning. CRI
 \section{Exploratory Data Analysis}
 \label{se:eda}
 In this section we perform Exploratory Data Analysis (EDA). The objective of EDA is to build graphical representations that help us make sense of the data. EDA gives us a bird's eye of the dataset to help us identifying patterns and trends and most importantly, assist us in framing the type of  questions we want to ask.
-But prior to EDA we need to take care of pre-processing of the data which is done in next sections. 
-We will start with data understanding in Section \ref{sse:biz}, plotting charts for the number of visits and basic information like the distribution of conversion and the gender of the participants. In Section \ref{sse:dp} we discuss the data transformations that need to be done, for example standarization, to pass to comment on data leakage and feature selection in Sections \ref{sse:dl} and \ref{sse:fe}. Finally in Section \ref{sse:vs} we explain the variable selection -\textbf{Vallecas index}- which is the subset of the input space that will used in the learning algorithms.
+But prior to EDA we need to take care of pre-processing of the data. We will start with data understanding in Section \ref{sse:biz}, plotting charts containing basic information like age distribution, the distribution of conversion conditional to gender and other demographics of the participants. In Section \ref{sse:dp} we discuss the data transformations and in Section \ref{sse:miss} we describe the approach used for handling missing data. In Sections \ref{sse:dl} and \ref{sse:fe} we comment on data leakage and feature selection, respectively. Finally, in Section \ref{sse:vs} we explain variable selection i.e. the \textbf{Vallecas index} or the subset of the input space used in the learning algorithms.
 
 %Here we perform Exploratory Data Analysis (EDA). EDA is the first step in the data analysis process and is performed once the pre processing steps have finished. 
 
@@ -236,12 +240,12 @@ We will start with data understanding in Section \ref{sse:biz}, plotting charts 
 \label{sse:biz}
 The first pre-processing step is an initial assessment of the dataset in order to achieve a functional understanding of the data collected. Features in the dataset fall into two categories, those that are self-informed, that is, the subject can report herself the value of the variable e.g. age, income level, education, sleep, diet etc. and those that require an expert, for example, APOE genotype, cognitive performance measured in performance tests etc.
 
-The input dataset consists in five years of \emph{Proyecto Vallecas} and the output is whether they convert or not to MCI in any of the future years. Thus, we want to predict whether a subject that was diagnosed as non MCI in the first visit (year 1) is diagnosed as MCI in any ulterior year. The total number of visits collected in the 5 years project is 4444. Figure \ref{fig:pv5years} depicts the number of volunteers for every year of the project.
+The input dataset consists in five years of \emph{Proyecto Vallecas} and the output is whether any given subject converts or not to MCI in any of the future years. Thus, we want to predict whether a subject that was diagnosed as non MCI in the first visit (year 1) is diagnosed as MCI in any ulterior year. The total number of visits collected in the 5 years project is 4444. Figure \ref{fig:pv5years} depicts the number of volunteers for the first five years year of the project.
 
 \begin{figure}[H]
         \centering
         \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/pv5years}
-        \caption{Number of volunteers across five years of \emph{Proyecto Vallecas}. As expected the number of subjects decreases across time. The number of subjects in the basal visit (year 1) was 1213 of which 33 were removed because were diagnosed with MCI or AD, remaining 1180 in year 1, 965 in year 2 ($18\%$ drop rate), 865 in year 3 ($10\%$ drop rate), 770 in year 4 ($11\%$ drop rate) and 664 in year 5 ($14\%$ drop rate), for a total of 4444.} \label{fig:pv5years}
+        \caption{Number of volunteers across five years of \emph{Proyecto Vallecas}. As expected, the number of subjects decreases across time. The number of subjects in the basal visit (year 1) was 1213 of which 33 were removed because were diagnosed with MCI or AD. The number subjects participating int the study are 1180 in year 1, 965 in year 2 ($18\%$ drop rate), 865 in year 3 ($10\%$ drop rate), 770 in year 4 ($11\%$ drop rate) and 664 in year 5 ($14\%$ drop rate). The total number of visits in  five years amounts to 4444.} \label{fig:pv5years}
 \end{figure}
 
 Figure \ref{fig:sexmci} shows the distribution of sex and conversion in 5 years of \emph{Proyecto Vallecas}.
@@ -261,7 +265,7 @@ Figure \ref{fig:sexmci} shows the distribution of sex and conversion in 5 years 
     \caption{Distribution of sex and conversion and in 5 years of \emph{Proyecto Vallecas}} \label{fig:sexmci}
 \end{figure}
 
-Figure \ref{fig:age_dx} shows the age distribution of \emph{Proyecto Vallecas}. The oldest volunteer passing a regular visit is 90 years and only 68 undergone a visit when they were 85 or older. 
+Figure \ref{fig:age_dx} shows the age distribution of \emph{Proyecto Vallecas}. The oldest volunteer passing a regular visit is 90 years. Only 68 subjects undergone a visit when they were 85 or older. 
 In order to study people with long life expectancy the study will require to keep these few older volunteers for the next 7 years which will be particularly challenging. A more likely scenario is recruiting new subjects older than 90.
 
 \begin{figure}[H] 
@@ -277,28 +281,34 @@ In order to study people with long life expectancy the study will require to kee
 The dataset we are dealing with here is a longitudinal dataset with 5 time points, from year 1 (basal visit) to year 5.
 Data preparation is a crucial step in machine learning projects, failure to properly pre-process the dataset will cause suboptimal modeling and error-prone predictions.
 %https://paginas.fe.up.pt/~ec/files_1112/week_03_Data_Preparation.pdf
-Generally speaking, the data preparation stage, takes more than $60\%$ of a data mining project effort \cite{witten2005data}.
+Generally speaking, the data preparation stage takes more than $60\%$ of a data mining project effort \cite{witten2005data}.
 
 % Transformation including Scaling and discretize continuous variables (binning)
 An obligatory step in pre-processing is transforming the data via scaling. 
 %and discretize continuous variables (binning using hot-coding).
-In general, algorithms that exploit distances or similarities ('nearness') between data samples, such as k-NN and SVM (Sections \ref{se:reskneighbors} and \ref{sse:svm}), are sensitive to feature transformation. 
-Scaling the dataset is thus absolutely necessary if we use techniques sensitive to scaling \cite{wu2012foundations}. Although other techniques like naive Bayes, decision trees and tree-based ensemble method are invariant to feature scaling, it is but still a good idea to rescale/standarize the dataset. In conclusion, scaling will do no harm in techniques invariant to scaling and it is necessary in those that are sensitive to scaling. 
+In general, algorithms that exploit distances or similarities ('nearness') between data samples, such as k-NN and SVM (Sections \ref{sse:kneighbors} and \ref{sse:svm}), are sensitive to feature transformation. 
+Scaling the dataset is thus absolutely necessary if we use techniques sensitive to scaling \cite{wu2012foundations}. Although other techniques like naive Bayes (Section \ref{sse:naivebayes}), decision trees (Section \ref{sse:dectrees}) and tree-based ensemble (Section \ref{sse:ensemble}) methods are invariant to feature scaling, it is but still a good idea to rescale/standarize the dataset. In conclusion, scaling will do no harm in techniques invariant to scaling and it is necessary in those that are sensitive to scaling. 
 
 There are two common ways to get all attributes (except the target variable which is rarely scaled) to have the same scale: min-max scaling and standardization.
-Min-max scaling, also called normalization, shifts and rescaled values so that they are between 0 and 1. This is done by subtracting the min value and dividing by the max minus the min. 
+
+Min-max scaling, also called normalization, shifts and rescaled values so that they are between 0 and 1 (Equation \ref{eq:minmax}). 
+\begin{equation} \label{eq:minmax}
+z_i = \frac{x_i -min}{max -min}
+\end{equation}
+
 %Scikit-Learn provides a transformer called MinMaxScaler for this. It has a feature_range hyperparameter that lets you change the range if you don’t want 0–1 for some reason.”
-Standarization, on the other hand, does not bound values to a specific range, it subtracts the mean value (zero mean) and then divides it by the variance. 
+Standarization, on the other hand, does not bound values to a specific range, it subtracts the mean value and then divides it by the variance. 
 The standarization scaling is performed with \emph{z-scaling}:
 \begin{equation} \label{eq:scaling}
 z_i = \frac{x_i -\mu}{\sigma_i}
 \end{equation}
-that is, the set of variables $x_i, i=1..n$ are scaled to be centered ($\mu=0$) and have the same spread ($\sigma=1$) \footnote{Note that we may want to use a lognormal rather than normal as a reasonable distribution. The Benford law is pertinent here: in many naturally occurring collections of numbers, the leading significant digit is likely to be small. This law is reminiscent of Pareto or Zipf law of numbers. For such variables, perform a log transform, $z_i = \log x_i$}. 
+the set of variables $x_i, i=1..n$ are scaled to be centered around the mean ($\mu=0$) and have the same spread ($\sigma=1$) \footnote{Note that we may want to use a lognormal rather than normal as a reasonable distribution. The Benford law is pertinent here: in many naturally occurring collections of numbers, the leading significant digit is likely to be small. This law is reminiscent of Pareto or Zipf law of numbers.} %For such variables, perform a log transform, $z_i = \log x_i$}. 
+The z-scale and log transform are examples of linear transformations but our dataset may need nonlinear transformations as well, for example discretize a continuous variable (discretize the age variable in bins of 5 years $70-75, 75-80, ...$). 
 
-The z-scale and log transform are examples of linear transformations but our dataset may need nonlinear transformations as well, for example discretize a continuous variable (discretize the age variable in bins of 5 years $70-75, 75-80, ...$). Although standarization is generally speaking preferred to min-max because because is less affected by outliers, the preferred scaling method -standardization ormin-max- in actual truth depends on the application. In principal component analysis, standarization is usually preferred over min-max scaling since we are interested in the components that maximize the variance.
+Although standarization is generally speaking preferred to min-max because because is less affected by outliers, the preferred scaling method in actual truth depends on the application. In principal component analysis, standarization is usually preferred over min-max scaling since we are interested in the components that maximize the variance.
 On the other hand, min-max is preferred when using neural network algorithm that require data that on a 0-1 scale.
 
-Another data preparation routine is coding continuous variables. Machine learning techniques are perfectly able to deal with continuous variables but the reason we still may be a good idea to discretize is that in doing so we will be helping the model to learn the relationship between inputs and output. Binning can also provide statistical smoothing and robustness in the modeling process (The cutpoint of the variable can be calculated with the Gini index, entropy, chi squared or KS criteria).
+Another data preparation routine is coding continuous variables. Machine learning techniques are perfectly able to deal with continuous variables but the reason we still may be a good idea to discretize is that in doing so we will be helping the model to learn relationships between inputs and output. Binning can also provide statistical smoothing and robustness in the modeling process (The cut point of the variable can be calculated with the Gini index, entropy, chi squared or KS criteria).
 A good praxis is to always encode the dataset as good as possible in order to simplify the model as much as possible.
 
 \subsection{Missing data imputation}
@@ -308,22 +318,25 @@ MA
 \subsection{Data leakage}
 \label{sse:dl}
 Data leakage describes the situation in which the data you are using to train the machine learning algorithm includes the very thing you are trying to predict. For example, if we are predicting conversion for any of the 5 years project and conversion in any given year is included as a feature.
-Another example of data leakage is including the neuropsychological test data in the training data set. Since the diagnosis is based on the test results, failing to remove the test scores will lead to overfitting algorithm, that is, the algorithm will learn which combination of test scores result in one diagnosis or another -the output \emph{does the subject converts to mci?} would be already included in the input.
+Another example of data leakage is including the neuropsychological test data in the training data set. Since the diagnosis is based on the test results, failing to remove the test scores will lead to overfitting algorithm, that is, the algorithm will learn which combination of test scores result in one diagnosis or another. Thus, the output \emph{Does the subject converts to MCI?} would be already included in the input.
 
 %Data leakage can occur in more subtle ways than those just described. For example in time series using features from the future not available for the current prediction using. 
 
 %Detection of Multicollinearity
-An effective way to eliminate leakage before building the model is to look for features highly correlated with the target. \textbf{Multicollinearity}, deals with the identification and removal of correlated variables, eliminate redundant variables is crucial for model building. We can do this in two steps, first remove variables that produce another one, for example if A = B + C + D we can remove B, C and D. 
+An effective way to eliminate leakage before building the model is to look for features highly correlated with the target. Multicollinearity, deals with the identification and removal of correlated variables, eliminate redundant variables is crucial for model building. We can do this in two steps, first remove variables that produce another one, for example if A = B + C + D we can remove B, C and D. 
 In a second step we deal with pair wise collinearity which is not exactly the same as multicollinearity. For that we calculate the correlation between all pairs (correlation matrix) and remove those with a large value (above some threshold). To do this systematically, we can build a graph, in the node note the correlation with the target and in the edges the correlation value with the adjacent components. We will select variables with largest correlation with the target and remove its correlated variables. (page 211, \cite{wu2012foundations}).
 
-However, leakage can persist once the model is built, in that case we can look look for surprising feature behavior (e.g. very large information gains). The proof that there is leakage is obtained by comparing the deployment performance versus the train and evaluation performance. Features that are removed to avoid leakage include, of course, the target variable 'conversionMCI' and related variables that contain information about the conversion e.g. time to convert, diagnosis per year and all the neuropsychological tests scores e.g. MMSE, Buschke memory test.
+%https://www.quora.com/Is-multicollinearity-a-problem-with-gradient-boosted-trees. Multicollinearity is not a real problem for prediction.  using stepwise strategies for selection of features. Here, the algorithm works greedily and it will simply not select at any step any feature that is redundant, so the problem does not arise.
+%Multicollinearity is only a problem for inference in statistics and analysis
+
+However, leakage can persist once the model is built, in that case we can look look for surprising feature behavior (e.g. very large information gains). The proof that there is leakage can be obtained by comparing the deployment performance versus the train and evaluation performance. Features that are removed to avoid leakage include, of course, the target variable (e.g. 'conversionMCI') and related variables that contain information about the conversion e.g. time to convert, diagnosis per year and all the neuropsychological tests scores (e.g. 'MMSE', 'Buschke memory test').
 %Dummy features to remove: id, fecha nacimiento, fecha_visita
 
 \subsection{Feature engineering}
 \label{sse:fe}
 Feature engineering is the process of transforming raw data into features that better represent the problem that we are trying to solve in order to improve the model accuracy on unseen data. 
-Put in simple words, feature engineering asks What is the best representation of the sample data?
-In feature engineering we may create additional features, for example by combining features. The rationale of feature engineering is to bring into the modeling process the domain expertise. Importantly, feature engineering is beneficial to reducing overfitting. As it is also the case of data leakage \ref{sse:dl}, there is no an exact method or recipe to perform feature engineering. Future engineering is more an art than a science and requires a reasonable dose of intuition and a strong dose of experience experience.
+Put in simple words, feature engineering asks: What is the best representation of the sample data?
+In feature engineering we may create additional features, for example by combining features. The rationale of feature engineering is to bring into the modeling process the domain expertise. Importantly, feature engineering is beneficial to reducing overfitting. As it is also the case of data leakage, there is not an exact method to perform feature engineering. Future engineering is more an art than a science and requires a reasonable dose of intuition and a strong dose of experience.
 %https://machinelearningmastery.com/discover-feature-engineering-how-to-engineer-features-and-how-to-get-good-at-it/
 
 Feature selection addresses the problem of selecting a subset that are most useful to the problem. Feature selection algorithms may use a scoring method to rank and choose features, such as correlation or other feature importance methods. Regularization methods like Lasso and Ridge regression which are studied in Section \ref{sse:linreg} may also be considered algorithms with feature selection baked in, as they actively seek to remove or discount the contribution of features as part of the model building process. 
@@ -335,9 +348,13 @@ It is worth noting that success in predictive models depends on three things: th
 % Variable Selection:
 Feature engineering is what makes us distinguish attributes from features, attributes is just any column in our tabular dataset, a feature on the other hand is an attribute that is useful or meaningful to your problem. Feature engineering gets us closer to the final selection of features that will be used for prediction. 
 Variable Selection consists of filtering the most important features and remove those that are not needed - feature selection and wrapper.
-Note that it could be always possible to select all the features and let the model do the job of finding the best predictive model, but this is not a good idea in practical terms and the reason is \emph{stability}. Stable solutions require removing features that have spurious or non consistent relationship with the target. Furthermore, the principle of parsimony applies: careful variable selection and elimination tend to produce simpler models, and \emph{ceteris paribus} simple should be preferred to complex.
 
-The group of features that we will used for learning are the following 56 \footnote{For a description of the features see the Appendix} .The features have been selected according to the domain expertise of the team of researchers at \emph{Vallecas project} and the data desiderata for machine learning projects that was explained above. The \textbf{Vallecas Index} is a subset of the input space that will be used to build a classifier that predicts the likelihood that a new example will convert to MCI. 
+
+Note that it could be always possible to select all the features and let the model do the job of finding the best predictive model, but this is not a good idea in practical terms and the reason is \emph{stability}. Stable solutions require removing features that have spurious or non consistent relationship with the target. Furthermore, the principle of parsimony must apply: careful variable selection and elimination tend to produce simpler models and \emph{ceteris paribus} simple should be preferred to complex.
+
+The group of features that we will use for learning are the following 56 \footnote{For a description of the features see the Appendix} .The features have been selected according to the domain expertise of the team of researchers at \emph{Vallecas project} and the data desiderata for machine learning projects that was explained above. 
+
+The \textbf{Vallecas Index} is a subset of the input space used to build classifiers that predict the likelihood that a new example will convert to MCI. 
 %\begin{center}
 %\textit{sex, education (nivel educativo),apoe, edad visita, scd (aggregate of 9 features related to subjective cognitive complaints), cognitive complaints (aggregate of 15 features), psychiatric syndromes (aggregate of 5 features), cognitive performance (aggregate of 11 features), quality of life (aggregate of 10 features), social engagement (aggregate of 4 features), physical exercise (aggregate of 2 features), diet(aggregate of 14 features), intellectual activity (aggregate of 14 features), demographics (aggregate of 6 features: married/singles, sons, perceived socioeconomic status), professional life(aggregate of 3 features), health (aggregate of 15 features: smoker, cardiac,lipids, glucose,diabetes, ictus, heart.. ), psychiatric history(aggregate of 15 features: depression and anxiety), sleep (aggregate of 12 features), family dementia history (aggregate of 4 features), sensory disturbances (auditive and visual disturbance) } 
 %\end{center}
@@ -348,9 +365,9 @@ The group of features that we will used for learning are the following 56 \footn
 \subsection{Descriptive statistics}
 \label{sse:des}
 
-Once we have identified the set of features we are interested in, we can proceed to study the associations between the features among themselves and more importantly with the target variable. This will give us an idea of the embedded structure in the dataset and will help us address questions in a most effective way. But prior to doing this, since our dataset is longitudinal, it is worth exploring the temporal evolution of features across the 5 years of the project.
+Once we have identified the set of features we are interested in, we can proceed to study the associations between the features among themselves and more importantly with the target variable. This will give us an idea of the embedded structure in the dataset and will help us address questions in a most effective way. But prior to doing this, since our dataset is longitudinal, it is worth exploring the temporal evolution of features across the 5 years of the project. Of note, here we are performing exploratory data analysis, that is, we look for patterns of associations in the dataset without being concerned with prediction per se.
 
-First, we plot longitudinal variables for cognitive test (these are not included in the \emph{Vallecas index} to avoid data leakage) and self reported emotional state (included in the \emph{Vallecas index}). We also calculate the skewness of the distribution across time. For normally distributed data, the skewness should be about 0. The displayed variables are skewed (Figure \ref{fig:staigds}). 
+First, we plot longitudinal variables for cognitive test (these are not included in the \emph{Vallecas index} to avoid data leakage) and self reported emotional state (included in the \emph{Vallecas index}). We also calculate the skewness of the distribution across time. For normally distributed data, the skewness should be about 0, the variables shown in Figure \ref{fig:staigds} are skewed. 
 
 \begin{figure}[H]
     \centering
@@ -381,7 +398,7 @@ First, we plot longitudinal variables for cognitive test (these are not included
 \end{figure}
 
 Next we study associations between features and the target (\emph{conversion to MCI}). 
-Figure \ref{fig:demosalime} plots the conversion rate for different features: APOE, educational level, familiar AD (father or mother), income level calculated using residency and age and diet. Note that we explore not only features included in the \emph{Vallecas Index} also other features like APOE profile are included.Of note, here we are performing exploratory data analysis, that is, we look for patterns of associations in the dataset without being concerned with prediction per se.
+Figure \ref{fig:demosalime} plots the conversion rate for different features: APOE, educational level, familiar AD (father or mother), income level calculated using residency and age and diet. Note that we explore not only features included in the \emph{Vallecas Index} also other features like APOE profile are included. 
 
 \begin{figure}[H]
     \centering
@@ -402,13 +419,8 @@ Figure \ref{fig:demosalime} plots the conversion rate for different features: AP
 
 \textbf{Socioeconomic Risk Factors in AD}
 
-There is a growing concern about the impact of AD and other forms of dementia sufferers in low income areas in the world.
-The Alzheimer’s Society estimates that $71\%$ of dementia sufferers in 2050 will be in poor to middle income countries.
-%https://newrepublic.com/article/115936/alzheimers-drastic-rise-low-income-countries
-In \emph{Proyecto Vallecas} we make the most of the dataset addressing prescient issues like the relationship between socioecomic status and health. There are concluding reports from governmental agencies that show an association between wealth and life expectancy. 
-Figure \ref{fig:incomeresidency} shows the income distribution of \emph{Proyecto Vallecas} volunteers as estimated based on their home residency. 
-Educational level also affects positively life expectancy. Even within European countries, life expectancy varies greatly by education level. Life expectancy of males at age 25 with high education level is 10 years longer than for those with low educational level in Poland and the Czech republic \cite{imf2018}. 
-See figure \ref{fig:demosalime} for a conversion rate with education level and income in \emph{Proyecto Vallecas}. The figure indicates that higher rent and educational level reduce the incidence to conversion. Figure \ref{fig:multico} shows the Pearson correlation between conversion to MCI and features related to cognitive complaints, depression (positive correlation) and income level-education and use of new technologies (negative correlation).
+Figure \ref{fig:demosalime} shows the conversion rate with education level and income in \emph{Proyecto Vallecas}. 
+Figure \ref{fig:incomeresidency} shows the income distribution of \emph{Proyecto Vallecas} volunteers as estimated based on their home residency. The figure indicates that higher rent and educational level reduce the incidence to conversion. Figure \ref{fig:multico} shows the Pearson correlation between conversion to MCI and features related to cognitive complaints, depression (positive correlation) and income level-education and use of new technologies (negative correlation).
 
 \begin{figure}[H]
         \centering
@@ -1172,7 +1184,10 @@ Figure \ref{fig:logresres} shows the results of the logistic regression model. R
 %Lasso regularization: answer two points: what is the baseline prediction of disease progression and  which independent variables are important factors for predicting disease progression.
 %Coefficient of determination R^2 of the prediction of LogReg_Lasso on training set 0.29
 %Coefficient of determination R^2 of the prediction of LogReg_Lasso on test set 0.11
-Figure \ref{fig:lr-cm} shows the confusion matrix and the Receiver Operating Characteristic (ROC) metric. The decision matrix describes the performance of the logistic regression classifier. The confusion matrix tabulates the number of misclassifications. The diagonal elements of the confusion matrix show the number of correct classifications for each class and the off-diagonal elements provides the misclassifications. 
+Figure \ref{fig:lr-cm} shows the confusion matrix and the Receiver Operating Characteristic (ROC) metric. 
+The ROC is a graphical plot that illustrates the performance of a binary classifier as its discriminant threshold is varied. The curve is created by plotting true positive rate (TPR) against false positive rate (FPR) at various threshold values.
+%dangeti -statistics for ml. book page 89
+The decision matrix describes the performance of the logistic regression classifier. The confusion matrix tabulates the number of misclassifications. The diagonal elements of the confusion matrix show the number of correct classifications for each class and the off-diagonal elements provides the misclassifications. 
 ROC curves feature true positive rate on the Y axis, and false positive rate on the X axis. Then, the top left corner of the plot is the “ideal” point - a false positive rate of zero, and a true positive rate of one. 
 Thus, the larger area under the curve (AUC) the better is usually the classifier.
 The steepness of ROC curves is also important, a steep curve -maximize true positive rate while minimizing the false positive rate- is preferred.
@@ -1882,7 +1897,7 @@ Let the confusion matrix M,
 \begin{equation*}
 M=
   \begin{bmatrix}
-    TN & TF  \\
+    TN & FP  \\
     FN & TP 
   \end{bmatrix}
 \end{equation*}
@@ -2224,6 +2239,18 @@ We can also integrate sampling techniques with ensemble learning techniques,  (S
 \section{Discussion and Conclusions}
 \label{se:dis}
 TO DO
+
+There is a growing concern about the impact of AD and other forms of dementia sufferers in low income areas in the world.
+The Alzheimer’s Society estimates that $71\%$ of dementia sufferers in 2050 will be in poor to middle income countries.
+%https://newrepublic.com/article/115936/alzheimers-drastic-rise-low-income-countries
+In \emph{Proyecto Vallecas} we make the most of the dataset addressing prescient issues like the relationship between socioecomic status and health. There are concluding reports from governmental agencies that show an association between wealth and life expectancy. 
+Educational level also affects positively life expectancy. Even within European countries, life expectancy varies greatly by education level. Life expectancy of males at age 25 with high education level is 10 years longer than for those with low educational level in Poland and the Czech republic \cite{imf2018}. 
+
+
+
+What is ML and why we need it? Separation between statistics and ML (CS), ML uses experience for doing a better job each time (feedback, teleology)
+%Literal Tangeti
+Machine learning is a branch of study in which a model can learn automatically from the experiences based on data without exclusively being modeled like in statistical models.
 
 The trade-off between optimization and generalization is the main issue in machine learning. Optimization refers to the process of adjusting a model to get the best performance possible on the training data (the learning in machine learning), whereas generalization refers to how well the trained model performs on data it has never seen before.
 Validation is used in order to deal with information leakage that could drive overfitting in the model.
