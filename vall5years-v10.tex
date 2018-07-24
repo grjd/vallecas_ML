@@ -4,6 +4,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[11pt]{article}
+\usepackage{tabularx}
 %\usepackage[spanish]{babel}
 \usepackage[english]{babel}
 %\usepackage[osf]{mathpazo}
@@ -313,7 +314,16 @@ A good praxis is to always encode the dataset as good as possible in order to si
 
 \subsection{Missing data imputation}
 \label{sse:miss}
-MA
+Missing data is a real challenge for researchers of any field. This challenge is particularly acute for longitudinal datasets in which repeated measures on the same individual are collected across time. 
+
+Multiple Imputation (MI) is a common technique used to imputed values that are missing in the dataset, new data are generated to fill this gap on the basis of existing data. In MI, instead of using a single value for each missing observation (simple or simple imputation), the MI procedure replaces each missing observation with a set of plausible values according to the uncertainty about the variable with missing values. 
+
+Here we perform MI to predict values from a distribution that includes a random error term representing the waste distribution. This underestimates the standard errors, so the imputation is repeated several times in a loop that generates several data sets with different coefficients. Finally, the imputed data sets are combined to produce valid statistical inferences that reflect the uncertainty due to missing observations.
+We used the Multivariate Imputation via Chained Equations (MICE) R Package for our multiple imputations problem with multivariate missing data \cite{buuren2010mice}. The method is based on fully conditional specification, where each incomplete variable is imputed by a separate model. The MICE algorithm is able to impute mixes of continuous, binary, unordered categorical and ordered categorical data. In addition, MICE can also impute continuous two-level data, and maintain consistency between imputations by means of passive imputation. 
+%Additionally, many diagnostic plots can be implemented in order to check the quality of the imputations. Thus, the mice package contains functions to: i) inspect the missing data pattern; ii) impute the missing data m times, resulting in m completed data sets; and iii) diagnose the quality of the imputed values. Missing data can occur anywhere in the data. The mice package generates multiple imputations for incomplete multivariate data by Gibbs sampling. The algorithm imputes an incomplete column (the target column) by generating ’plausible’ synthetic values given other columns in the data. Each incomplete column must act as a target column, and has its own specific set of predictors. The default set of predictors for a given  target  consists  of  all  other  columns  in  the  data. For  predictors that are incomplete themselves, the most recently generated imputations are used to complete the predictors prior to imputation of the target column. A separate univariate imputation model can be specified for each column.  In addition, several other methods are provided and even the user can write their own imputation functions.
+
+Our preliminary analysis allowed us to understand not only the distribution of the main variables but also to explore the nature of missing values. Nearly $10\%$ of data were missed, but no profiles of \emph{missingness}\footnote{Missingness referred to missing values in data collection. Missing data can occur because of nonresponse (no information is provided for one or more items) or attrition, i.e. dropout in longitudinal studies} were identified (i.e. the missingness spread over many individuals, variables and study visits). 
+We conducted a MI procedure with fully conditional specification method implemented by the MICE algorithm in order to impute values as closer as possible to ideal predicted observations. The imputed values were generated on the basis of existing variables through five different databases, one for each study visit; a total of five imputation procedures were thereby conducted. Of note, those individuals who did not attend to any visit were excluded from the corresponding databases. The procedure was repeated up to five times to generate five data sets. The imputed data sets were analyzed using the usual procedure for complete data. Finally, the results of these analyses were combined to produce valid statistical inferences of data.
 
 \subsection{Data leakage}
 \label{sse:dl}
@@ -339,7 +349,7 @@ Put in simple words, feature engineering asks: What is the best representation o
 In feature engineering we may create additional features, for example by combining features. The rationale of feature engineering is to bring into the modeling process the domain expertise. Importantly, feature engineering is beneficial to reducing overfitting. As it is also the case of data leakage, there is not an exact method to perform feature engineering. Future engineering is more an art than a science and requires a reasonable dose of intuition and a strong dose of experience.
 %https://machinelearningmastery.com/discover-feature-engineering-how-to-engineer-features-and-how-to-get-good-at-it/
 
-Feature selection addresses the problem of selecting a subset that are most useful to the problem. Feature selection algorithms may use a scoring method to rank and choose features, such as correlation or other feature importance methods. Regularization methods like Lasso and Ridge regression which are studied in Section \ref{sse:linreg} may also be considered algorithms with feature selection baked in, as they actively seek to remove or discount the contribution of features as part of the model building process. 
+Feature selection addresses the problem of selecting a subset that are most useful to the problem. Feature selection algorithms may use a scoring method to rank and choose features, such as correlation or other feature importance methods. Regularization methods like Lasso and Ridge regression which are studied in Section \ref{sse:logreg} may also be considered algorithms with feature selection baked in, as they actively seek to remove or discount the contribution of features as part of the model building process. 
 It is worth noting that success in predictive models depends on three things: the model selection, the dataset available and the engineered features. With well engineered features, it is possible to choose suboptimal models, and or suboptimal parameters and still obtain good results. Feature engineering requires domain knowledge in order to make informed decision about the selection of features that should included in the model. The result of this process -\textbf{Vallecas Index}- is described next. 
 
 
@@ -367,26 +377,29 @@ The \textbf{Vallecas Index} is a subset of the input space used to build classif
 
 Once we have identified the set of features we are interested in, we can proceed to study the associations between the features among themselves and more importantly with the target variable. This will give us an idea of the embedded structure in the dataset and will help us address questions in a most effective way. But prior to doing this, since our dataset is longitudinal, it is worth exploring the temporal evolution of features across the 5 years of the project. Of note, here we are performing exploratory data analysis, that is, we look for patterns of associations in the dataset without being concerned with prediction per se.
 
-First, we plot longitudinal variables for cognitive test (these are not included in the \emph{Vallecas index} to avoid data leakage) and self reported emotional state (included in the \emph{Vallecas index}). We also calculate the skewness of the distribution across time. For normally distributed data, the skewness should be about 0, the variables shown in Figure \ref{fig:staigds} are skewed. 
+%Test on normality: https://medium.com/@rrfd/testing-for-normality-applications-with-python-6bf06ed646a9
+%formal normality tests always reject on the huge sample sizes we work with today.hen n gets large, even the smallest deviation from perfect normality will lead to a significant result
+
+First, we plot longitudinal variables for cognitive test (these are not included in the \emph{Vallecas index} to avoid data leakage) and self reported emotional state (included in the \emph{Vallecas index}). We also calculate the skewness of the distribution across time. For normally distributed data the skewness should be about 0, the variables shown in Figure \ref{fig:staigds} are skewed. 
 
 \begin{figure}[H]
     \centering
     \begin{subfigure}[t]{\textwidth}
         \centering
         \includegraphics[keepaspectratio, width=0.9\linewidth]{figures/mmse}
-        \caption{Mini–Mental State Examination (MMSE) scores across five years. The distribution is skewed on the right side with values for years 1 to 5: $1.93, 1.96, 1.67, 1.80, 1.75$}
+        \caption{Mini–Mental State Examination (MMSE) scores across five years. The distribution is skewed on the right side with skewness values for years 1 to 5: $1.93, 1.96, 1.67, 1.80, 1.75$}
     \end{subfigure}
     
     \begin{subfigure}[t]{\textwidth}
         \centering
         \includegraphics[keepaspectratio, width=0.9\linewidth]{figures/fcs}
-        \caption{Buschke Immediate Recall score. The distribution is left skewed and increases with time $-0.52, -0.60, -0.92, -1.02, -1.12s$ }
+        \caption{Buschke Immediate Recall score. The distribution is left skewed and increases with time, the skewness values for each year are: $-0.52, -0.60, -0.92, -1.02, -1.12s$ }
     \end{subfigure}%\quad
     
      \begin{subfigure}[t]{\textwidth}
         \centering
         \includegraphics[keepaspectratio, width=0.9\linewidth]{figures/gds}
-        \caption{Self-reported depression level by the volunteers for each year. The distribution is right skewed and tends to decrease with time $1.93, 1.96, 1.67, 1.80, 1.75$ }
+        \caption{Self-reported depression level by the volunteers for each year. The distribution is right skewed and tends to decrease with time, the skewness values for each year are: $1.93, 1.96, 1.67, 1.80, 1.75$ }
     \end{subfigure}
     
     \begin{subfigure}[t]{\textwidth}
@@ -419,8 +432,8 @@ Figure \ref{fig:demosalime} plots the conversion rate for different features: AP
 
 \textbf{Socioeconomic Risk Factors in AD}
 
-Figure \ref{fig:demosalime} shows the conversion rate with education level and income in \emph{Proyecto Vallecas}. 
-Figure \ref{fig:incomeresidency} shows the income distribution of \emph{Proyecto Vallecas} volunteers as estimated based on their home residency. The figure indicates that higher rent and educational level reduce the incidence to conversion. Figure \ref{fig:multico} shows the Pearson correlation between conversion to MCI and features related to cognitive complaints, depression (positive correlation) and income level-education and use of new technologies (negative correlation).
+Figure \ref{fig:demosalime} shows the conversion rate with education level and income in \emph{Proyecto Vallecas}. Top row second on the right indicates that higher rent and educational level reduce the incidence to conversion.
+Figure \ref{fig:incomeresidency} shows the income distribution of \emph{Proyecto Vallecas} volunteers as estimated based on their home residency. Figure \ref{fig:multico} shows the Pearson's correlation between conversion to MCI and the features: cognitive complaints and depression (positive correlation) and income level-education and use of new technologies (negative correlation).
 
 \begin{figure}[H]
         \centering
@@ -452,7 +465,7 @@ Figure \ref{fig:incomeresidency} shows the income distribution of \emph{Proyecto
     \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[height=2.5in]{figures/jointplot_a13conversionmci}
-        \caption{Reporting habitual use of new technologies and the internet is negatively correlated to MCI conversion.}
+        \caption{Reporting habitual use of new technologies and the Internet is negatively correlated to MCI conversion.}
     \end{subfigure}%\quad
    
     \caption{Pearson correlation between features correlated with conversion to MCI.} \label{fig:multico}
@@ -462,28 +475,28 @@ Figure \ref{fig:heatmappearson} shows the heatmap with the correlation between c
 Importantly, the Pearson correlation coefficient indicates the strength of a linear relationship between two variables, and is therefore ill-suited to characterize more complex (non-linear) relationships.
 Since our goal is to formulate questions based on the data patterns observed, the mathematical apparatus will necessarily get more sophisticated as we advance into the Modeling section \ref{se:mod}. 
  
- \begin{figure}[h!]
+ \begin{figure}[H]
         \centering
         \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{figures/scd_visita1_corr}
-        \caption{Heatmap calculated with the Pearson's correlation for a number of features of \emph{Proyecto Vallecas}. Cognitive complaints, depression and APOE are positively correlated to conversion and wealth-income and the use of new technologies are negatively correlated. 
+        \caption{Heatmap calculated with the Pearson's correlation for the features (from bottom to top): conversionmci, imc, remember dreams, use of new technologies, APOE, income level, joint of education and income, depression and cognitive complaints. Cognitive complaints, depression and APOE are positively correlated to conversion and wealth-income and the use of new technologies are negatively correlated. 
         } \label{fig:heatmappearson}
 \end{figure}
 
 Figure \ref{fig:kendall} shows the Kendall's correlation (Kendall’s tau is a measure of the correspondence between two rankings) 
 for all the variables included in the \textbf{Vallecas index}.
 
-\begin{figure}[h!]
+\begin{figure}[H]
         \centering
         \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{figures/kendallcorr}
-        \caption{Heatmap calculated with the Kendall's correlation for a the total of features selected in the \textbf{Vallecas index}.
-        The linear correlation among most features is small, however the heatmap is able to display significant associations and the clustering of features.} \label{fig:kendall}
+        \caption{Heatmap calculated with the Kendall's correlation for a the total of all features selected in the \textbf{Vallecas index}. The heatmap is able to display significant associations (linear correlations) and the clustering of features.} \label{fig:kendall}
 \end{figure}
 
 \subsection{Statistical inference}
 \label{sse:satinf}
 %ANOVA TESTS
-In this section we study the difference between groups using analysis of variance \footnote{ANOVA is similar to 2-sample t-test but it is more conservative (less type I error)}. In particular, we study whether the observed variance for a variable (e.g. age or diet) when partitioned into components can be attributable to conversion.
-Table \ref{tab:anova} shows the ANOVA statistical test to determine whether differences between the means are of conversion to MCI and features are statistically significant. The null hypothesis is rejected for depression,  subjective complaints, education level, income, familiar unit, use of new technologies and age.
+In this section we study the difference between groups using analysis of variance \footnote{ANOVA is similar to 2-sample t-test but it is more conservative (less type I error)}. In particular, we study whether the observed variance for a variable (e.g. age or diet) when partitioned into components can be attributable to conversion. Note that statistical tests such as $\tilde{\chi}^2$ and F-score estimate the degree of linear dependency between two random variables and that it is possible for two variables to be dependent and have zero covariance (linearly independent). Independence is a stronger concept than zero covariance which is only about linear dependency, for two variables to be independent we must exclude nonlinear relationships as well.%goodfellow pg 77
+
+Table \ref{tab:anova} shows the ANOVA statistical test to determine whether differences between the means are of conversion to MCI and features are statistically significant. The null hypothesis is rejected for depression, subjective complaints, education level, income, familiar unit, use of new technologies and age. 
 
 \begin{tabular}{llr}
 \hline
@@ -540,7 +553,7 @@ Figure \ref{fig:anovabox} shows the box plot for features that reject the null h
         \includegraphics[height=2.1in]{figures/a13box}
         \caption{Box plot of ANOVA test for differences conversion to MCI and use of new technologies (a13).}
     \end{subfigure}%\quad
-    \caption{Box plot of 1-factor ANOVA tests.} \label{fig:anovabox}
+    \caption{Box plot of 1-factor ANOVA tests for four features that reject the null hypothesis -cognitive complaints, age, education level and use of new technologies.} \label{fig:anovabox}
 \end{figure}
 
 \newpage
@@ -553,9 +566,10 @@ The success of recent models to detect abnormalities in medical images (outperfo
 %The paper documents how the algorithm detected abnormalities (like fractures, or bone degeneration) better than radiologists in finger and wrist radiographs. However, radiologists were still better at spotting issues in elbows, forearms, hands, upper arms, and shoulders.
 
 Here we are interested in building learning systems that accurately predicts whether a subject will convert to MCI. The input set is the \emph{Vallecas Index} explained above. While at this stage we focus only on the predictive power of the \emph{Vallecas Index} which mainly consists in demographic, cognitive and lifestyles features, the solutions here implemented can be directly extended with additional features, including neuroimaging (e.g. gray matter density, connectivity) and others.
-We will explore a number of different algorithms and we will evaluate the goodness of fit of those algorithms with the problem at hand -predict conversion to MCI from healthy subjects. We are, methodologically speaking, promiscuous for a reason. There is no a machine learning algorithm that is universally any better than any other. This is related to the no free lunch theorem in search an optimization \cite{wolpert1997no}. It follows that the goal of machine learning is not to seek an universal learning algorithm, instead the goal must be to understand what kinds of distributions are relevant to the real world that an AI agent is experiencing. Thus, we must content ourselves to develop algorithms to perform well in a particular task and we do this by adding preference hyperparameters \footnote{Hyperparameter is a parameter whose value is set before the learning process begins. By contrast, the values of other parameters are derived via training.} (e.g. regularization) in the algorithm.  
 
-In the next section we deal with the divulgative aspect and we provide a short introduction to machine learning, the reader familiarized with the topic can skip and go directly to the Results Section (\ref{se:res}), where the models implemented are discussed. 
+We will explore a number of different algorithms and we will evaluate the goodness of fit of those algorithms with the problem at hand -predict conversion to MCI from healthy subjects. We are, methodologically speaking, promiscuous for a reason. There is no a machine learning algorithm that is universally any better than any other. This is related to the \emph{no free lunch theorem} in search and optimization \cite{wolpert1997no}. It follows that the goal of machine learning is not to seek an universal learning algorithm, instead the goal must be to understand what kinds of distributions are relevant to the real world that an AI agent is experiencing. Thus, we must content ourselves to develop algorithms that perform well in a particular task and we do this by adding preference hyperparameters \footnote{Hyperparameter is a parameter whose value is set before the learning process begins. By contrast, the values of other parameters are derived via training.} (e.g. regularization) in the algorithm.  
+
+In the next section we deal with the divulgative aspect and we provide a short introduction to machine learning, the reader familiarized with the topic can skip and go directly to the Results Section \ref{se:res}, where the models are implemented and discussed. 
 
 \subsection{Introduction to Machine Learning} 
 \label{sse:iml}
@@ -577,83 +591,91 @@ However, in reality what we actually care about is minimizing the test error, th
 \end{equation}
 
 But how is it possible to affect performance in the test set when we get only observations on the training set? If training and test sets were collected arbitrarily the whole enterprise of statistical learning would not stand. 
-Let us see this with an example. The simplest case of machine learning is linear regression, in which the model is trained by minimizing the training error \emph{under the premise that both train and test test errors are identically distributed}, that is, both training and test are drawn from the same probability distribution. Thus, if we have a probability distribution $p(X,y)$ and we sample it repeatedly to obtain the training set and the test set, the expected error for either sets should be the same because both expectations are built using identical sampling process. The solution to the previous question must be clear now, the assumption that both the training and test sets are generated by the same data generative process is \emph{conditio sine qua non}.
+Let us see this with the simplest model of machine learning -linear regression. In a linear regression, the model is trained by minimizing the training error \emph{under the premise that both train and test test errors are identically distributed}, that is, both training and test are drawn from the same probability distribution. Thus, if we have a probability distribution $p(X,y)$ and we sample it repeatedly to obtain the training set and the test set, the expected error for either sets should be the same because both expectations are built using identical sampling process. The solution to the previous question must be clear now, the assumption that both the training and test sets come from the same data generative process is \emph{conditio sine qua non}.
 
-There are four types of models in Machine Learning, in this document we will deal with the two most important, supervised and unsupervised learning.  
+There are four types of models in Machine Learning depending on the type of experience that the learning algorithm is exposed to. 
+While the term experience may sound anthropoid the distinctive characteristic of a learning algorithm is precisely to improve its performance via experience. In this document we will deal with the two most important, supervised and unsupervised learning.
+
 \begin{itemize}
-\item Supervised learning: builds a map between input data to known targets (labels, annotations) 
-\item Unsupervised learning: finds interesting transformations of input data (without the help of any target) for the purpose of compression, denoising, visualization or to better understand the correlations in the input data. Unsupervised learning (eg. clustering, dimensionality reduction PCA) can precede supervised learning.
+\item Supervised learning: builds a map between input data to known labeled targets. Labeled targets or annotations act as a teacher.
+\item Unsupervised learning: finds interesting transformations of input data (without the help of any teacher) for the purpose of compression, denoising, visualization or to better understanding the correlations in the input data. Unsupervised learning (eg. clustering, dimensionality reduction PCA) can precede supervised learning.
 \item Self supervised learning: without humans in the loop, labels are generated from the input data (eg. autoencoders)
 \item Reinforcement learning: model agent-environment interactions the goal is to learn actions that maximize some reward. For example, a network that looks at a video game screen and outputs the game actions that will maximize the score \cite{mnih2013playing}
 \end{itemize}
 
-Learning happens in two steps, first we build an estimator and then we fit the model to the data, the model performance can be then studied. The estimator may need to specify parameters and hyperparameters. For instance, a decision tree needs to specify the maximum depth of the tree, other models e.g. Naive Bayes are less dependent on the choice of parameters. However, the easiness of parametrization does not come for free (remember, no free lunch). As a matter of fact, Naive Bayes assumes that each feature is conditionally independent of every other feature given the target category, $p(x_i|C) == p(x_j|C), \forall i,j$ which is quite unrealistic in our dataset. Furthermore, when dealing with continuous data Naive Bayes assumes also a Gaussian or normal distribution. Thus, 
-\begin{equation}
-p(x = a|C_k) = \frac{e^{-\frac{(a-\mu_k)^2}{2\sigma_k^{2}}}} {\sqrt{2\pi\sigma_k^{2}}}
-\label{eq:gauss}
-\end{equation}
+Learning happens in two steps, first we build an estimator and then we fit the model to the data, the model performance can be then studied. The estimator may need to specify parameters and hyperparameters. For instance, a decision tree (Section \ref{sse:dectrees}) needs to specify the maximum depth of the tree, other models e.g. Naive Bayes (Section \ref{sse:naivebayes}) are less dependent on the choice of parameters. However, the easiness of parametrization does not come for free (\emph{no free lunch}). As a matter of fact, Naive Bayes assumes that each feature is conditionally independent of every other feature given the target category, $p(x_i|C) == p(x_j|C), \forall i,j$ which is quite unrealistic in our dataset. Furthermore, when dealing with continuous data Naive Bayes assumes also a Gaussian or normal distribution. 
 
-Once the estimator is being learned, we need to test it with the predictor. Predictors generate forecasts using the learned estimator fed with unknown data, that is data that were not used to train the estimator.
+Once the estimator is being learned, we need to test how good its predictions are. A predictor generates forecasts using the learned estimator fed with unknown data, that is, data that were not used to train the estimator.
 % 0. Transformers : before learning, some are simple: replacing missing data with a contant, taking a log transform ..or some transforms are learning algorithms themselves like PCA
 % The pipeline is: Read Data -> apply some simple or complex (PCA) transformation -> fit an appropriate model -> predict using the model for unseen data. (iteratively)
 % For model tuning and selection we can use two meta estimators: GridSearchCV and RandomizedSearchCV to search the best parameters. Grid provides a grid of possible parameters and try each possible combination among them to arrive at the best one.. Randomized  optimizes this sampling the parameters to avoid combinatorial explosion of Grid. the also allow different x-validation schemes and score functions to measure performance.
 
-We exhaustively explore a number of models and evaluate their performance on the \emph{Vallecas Project} dataset. Let us start with supervised learning techniques.
+In the rest of the section we will exhaustively explore machine learning models and evaluate their performance in the \emph{Vallecas Project} dataset. We start with supervised learning techniques (regression, kernel machine, nearest neighbors, naive Bayes, decision trees, ensemble methods and deep networks) to end the section with unsupervised techniques ()hierarchical clustering, PCA and manifold learning .
 %The appendix section provides a more in depth description of the models implemented, in this section we will
 %go through the models and give a layman's description of the models making emphasis in the applicability and pros and cons.
 
 \subsection{Supervised Learning}
 \label{sse:sup}
-Supervised methods can be conceptualized as filters that try to maximize the mutual information between the features and the target. Prediction values have different interpretations depending on the task, i.e. classification, regression. A regression model can be built with  a logistic transform in order to get the probability of positive class and building a ranking score to rank the outputs is an example of classification \cite{patania2017topological}.
+Supervised methods can be conceptualized as filters that try to maximize the mutual information between the features and the target. Prediction values have different interpretations depending on the task, e.g. classification (discrete target), regression (continuous target). 
 
-Supervised learning model refers to the mathematical object that makes a prediction $y_i$ given $x_i$, one of the easiest incarnations of supervised learning is a linear combination of weighted input features:
+A supervised learning model is a mathematical object that makes a prediction $y$ given $x$, one of the easiest incarnations of supervised learning is a linear combination of weighted input features:
 \begin{equation}
-y_i = \sum_k w_j x_{ij}
+y = w^Tx
 \label{eq:reg1}
 \end{equation}
 %http://xgboost.readthedocs.io/en/latest/model.html
-The parameters $w_j$ in the above linear model are the undetermined part that we need to learn from data. To find the best parameters given the training data we need to measure the performance of the model given a certain set of parameters, this is the objective function. Objective functions have two terms, training loss and the regularization.
+where $w \in R^n$ is a vector of parameters i.e. values that control the behavior of the system. The vector of parameters determine how each features affect the prediction, the input variable $x_i$ has a weight of $w_i$.
+The learning algorithm are the undetermined part that the algorithm needs to learn from data. 
+
+To find the best parameters we need to measure the performance of the model, this is the objective function. Objective functions have two terms, training loss and the regularization:
 \begin{equation}
 O(w) = L(w) + R(w)
 \end{equation}
-where O is the objective function, L is the training loss and R is the regularization. The training loss measures how predictive our model is on training data, for example if we use mean squared $L(w) = \sum_i (\hat{y_i} - y_i)^2$ but there are many other possible loss functions for example the $\log$ loss that will see in Section \ref{se:reslogreg}. The regularization term, R, controls the complexity of the model which helps to avoid overfitting.
+where O is the objective function, L is the training loss and R is the regularization. The training loss, $L()$, measures how predictive our model is on training data, for example if we use mean squared $L(w) = \sum_i (\hat{y_i} - y_i)^2$ but there are many other possible loss functions for example the $\log$ loss that will see in Section \ref{se:reslogreg}. The regularization term, $R()$, controls the complexity of the model which helps to avoid overfitting. Polynomial regression, contrary to linear regression can fit nonlinear datasets. It has more parameters than linear regression and it is therefore more prone to overfitting the training data (Learning curve is the graphical device we have to detect if the model if overfitting), so using regularization is adviced.
 
-The most common learning method is regression, it is then worth spend some time to explain this technique prior to get into more brave waters. 
+\subsection{Regression}
+\label{sse:logreg}
+The most common learning method is regression, it is then worth spending some time to explain this technique prior to get into more brave waters. 
 %https://www.evernote.com/shard/s263/sh/574750b2-7b4a-4300-8c41-7e8e5150de18/f2c4ffea344f3dd11b3e2f5dcdd25633
-There are two types of regression, linear regression and logistic regression. Logistic regression gives you a discrete output e.g.0,1 while linear regression gives a continuous output. Logistic and Linear Regression can be used as a benchmark (baseline performance) against which more complex techniques can be compared. 
-Both linear regression and logistic regression work better when attributes that are unrelated to the output variable are removed, attributes that are very similar (highly correlated) to each other should also be removed to reduce redundancy. Thus, feature engineering plays an important role in regards to the performance of not only regression but also the rest of methodologies explored further in this document. Feature engineering will be explored in detail in Section \ref{sse:fe}.
+There are two types of regression, linear regression and logistic regression. Logistic regression builds a function $f:R^n \to {0,1}$ and linear regression builds a function $f:R^n \to R$, thus a logistic regression is map from the n dimensional input to a discrete set of values e.g. $\{-1,1\}$ or $\{0,1\}$ and logistic maps the input to the set of real numbers. Logistic and Linear Regression can be used as a benchmark (baseline performance) against which more complex techniques can be compared. 
+Both linear regression and logistic regression work better when attributes that are unrelated to the output variable are removed, attributes that are very similar (highly correlated) to each other should also be removed to reduce redundancy. Thus, feature engineering (Section \ref{sse:fe}) plays an important role in regards to the performance of not only regression but also the rest of methodologies explored further in this document. 
 
-\subsection{Linear regression}
-\label{sse:linreg}
+\textbf{Linear regression}
 
-Linear regression attempts to model the relationship between two variables by fitting a linear equation to observed data. In the context of prediction, linear regression aims to predict the continuous output, $\hat{y}$ as a function of the input variables $x$ each weighted by a coefficient $\hat{w}$ plus a bias term $\hat{b}$. Note that the terms $\hat{y}$, $\hat{w}$ and $\hat{b}$ are estimates that can be estimated via different methods. The equation of a linear regression is \ref{eq:linreg}:
+%A regression model can be built with  a logistic transform in order to get the probability of positive class and building a ranking score to rank the outputs is an example of classification \cite{patania2017topological}.
+Linear regression attempts to model the relationship between two variables by fitting a linear equation to observed data. In the context of prediction, linear regression aims to predict the continuous output, $\hat{y}$ as a function of the input variables $x$ each weighted by a coefficient $\hat{w}$ plus a bias term $\hat{b}$. The equation of a linear regression is \ref{eq:linreg}:
 \begin{equation}
 \hat{y} = \sum_i \hat{w_i}x_i + \hat{b_0}
-\label{eq:linreg}
+\label{eq:linreg1}
 \end{equation}
-where $x_i$ explanatory variable, $y$ is the dependent variable and $b_0$ is the bias (or intercept) and gives the slope of the line ($y$ when $x=0$). 
+where x is the vector of explanatory variables, $x_i \in x$, $y$ is the dependent variable and $b_0$ is the bias (or intercept) and gives the slope of the line ($y$ when $x=0$). 
 %Once we have built the model we need to train it which in essence consists in setting its parameters so that the model best fits the training set. Thus, we need to find a measure that tells us whether the model fits well the data, the most common measure is the root mean square error (RSME) but we use the mean square error (MSE) because the value that minimizes a function also minimizes square root.
 %The MSE is a linear regression hypothesis on a training set X is
 
-Note that Equation \ref{eq:linreg} contains estimates. The Maximum Likelihood Estimate (MLE) is a general method to estimate parameters in statistical models including regression. In MLE we maximize the probability that a random input point will be classified correctly. In order to maximize the likelihood we use optimization processes. 
-Technically speaking, any operation in which you are solving for the minimum or maximum of some function can be interpreted as an optimization. Optimization in the case of linear regression is looking for the linear model that provides the "best" fit to the data -minimizing the total amount of unexplained variation in the data.
+The Maximum Likelihood Estimate (MLE) is a general method to estimate parameters in statistical models including regression. In MLE we maximize the probability that a random input point will be classified correctly. In order to maximize the likelihood we use optimization processes. 
+Technically speaking, solving for the minimum or maximum of some function can be interpreted as an optimization, that is, finding 
+\begin{equation*}
+x* = \argmin f(x)
+\end{equation*}
+ 
+Optimization in the case of linear regression is looking for the linear model that provides the "best" fit to the data -minimizing the total amount of unexplained variation in the data.
 Ordinary least squares (OLS) which is a particular instance of MLE is a common method for estimating the unknown parameters in a linear regression model. OLS works by defining the "best" model as the one that minimizes the residuals which are the part of the data that aren't explained by the model. Other optimization techniques are Ridge regression, Lasso regression, Newton's method and gradient descent which will be seen in detail when we study nonlinear techniques.
 %Gradient descent is a first-order iterative optimization algorithm for finding the minimum of a function. To find a local minimum of a function using gradient descent, one takes steps proportional to the negative of the gradient (or approximate gradient) of the function at the current point.
 
-There are two main ways to train a linear regression model (the simplest machine learning method): "closed-form" directly computes the model parameters that best fit the model to the training set \textbf{Normal Equation} and using "gradient-descent" an iterative optimization approach that gradually tweaks the parameters to minimize the cost function over the training set. (eventually giving the same results as in the closed form). Variations of Gradient Descent are Batch GD, Mini batch GD and Stochastic GD are seen bellow.
-Polynomial regression, contrary to linear regression can fit nonlinear datasets. It has more parameters than linear regression and it is therefore more prone to overfitting the training data (Learning curve is the graphical device we have to detect if the model if overfitting), so using regularization is adviced.
+There are two main ways to train a linear regression model (the simplest machine learning method), closed form and numerical form. The closed-form consists in using the Normal Equation to directly compute the model parameters that best fit. In the numerical form, the number of dimensions of the input set is too high to be solve the equation, "gradient-descent" an iterative optimization approach that gradually tweaks the parameters to minimize the cost function over the training set (eventually giving the same results as in the closed form). Variations of Gradient Descent (GD) are Batch GD, Mini batch GD and Stochastic GD.
 
-Conversion and psychological test scores are not continuous but discrete variables so it does not make sense of performing a linear regression. Section \ref{se:reslinreg} shows the results of univariate feature selection based on univariate statistical tests. Note that statistical tests such as $\tilde{\chi}^2$ and F-score estimate the degree of linear dependency between two random variables.
+The task we are trying to solve here, predicting conversion, consists in mapping input features into two labels, 0 non-converter and 1 converter, therefore it does not make sense performing linear regression. However, a linear analysis of the relationship between the target and the input features is easy to implement and provides interesting information. 
 
+The results of the univariate feature selection algorithm are shown in Section \ref{se:reslinreg}. 
+%based on univariate statistical tests
 
-\subsection{Logistic regression}
-\label{sse:logreg}
+\textbf{Logistic regression}
+%\label{sse:logreg}
 
-Logistic regression just like Linear Regression computes a weighted sum of the input features (plus a bias term) but instead of outputting directly the results, it returns the logistic or the sigmoid of the result. The logistic function range is $[0,1]$ so it can be used to estimate the probability that a given instance belong to one class or another. 
+Logistic Regression is a Machine Learning classification algorithm, the most basic, and is used to predict the probability of a categorical dependent variable. For example, a binary variable coded as 1 (e.g. converter) or 0 (e.g. non converter). Logistic regression just like linear regression computes a weighted sum of the input features (plus a bias term) but instead of outputting directly the results, it returns the logistic or the sigmoid of the result. The logistic function range is $[0,1]$ so it can be used to estimate the probability that a given instance belong to one class or another. 
 %Logistic regression takes this a step further by running the output  of the linear combination of w and x through a non linear function (the sigmoid or logistic function $\sigma$). 
-Logistic Regression is a Machine Learning classification algorithm, the most basic, and is used to predict the probability of a categorical dependent variable. For example, a binary variable coded as 1 (e.g. converter) or 0 (e.g. non converter). 
-%Logistic regression applies to a binary dependent variable, in our case the conversion to MCI variable and it therefore fits with our prediction problem.
-Some of the assumptions of this kind of modeling are: the dependent variable needs to be binary, only "meaningful" variables should be included in the model, the independent variables should be independent from each other (this happens very rarely certainly it does not in out dataset) 
+
+Some of the assumptions of logistic regression algorithms are: the dependent variable $y$ needs to be binary, only "meaningful" variables should be included in the model, the independent variables $x_i$ should be independent from each other (this happens very rarely certainly it does not in out dataset). Formally a logistic regression is solving the equation:  
 
 \begin{equation}
 \hat{y} = \sigma(\sum_i \hat{w_i}x_i +\hat{b_0})
@@ -662,16 +684,40 @@ Some of the assumptions of this kind of modeling are: the dependent variable nee
 %\begin{equation}
 %\hat{p} = h_{\theta}(x) = \sigma(\Theta^{T} X)
 %\end{equation}
-In words, Equation \ref{eq:logreg} denotes a logistic model where the log-odds of the probability of an event is a linear combination of independent or predictor variables. The only difference between this and the linear regression in Equation \ref{eq:linreg}) is the sigmoid function. Mathematically, logistic regression estimates a multiple linear regression function defined as:
+Equation \ref{eq:logreg} represents the logistic model where the log-odds of the probability of an event is a linear combination of independent or predictor variables. The only difference between this and the linear regression in Equation \ref{eq:linreg1}) is the sigmoid function $\sigma$:
 \begin{equation}
-\log \frac{\hat{p}(y=1)}{1-(\hat{p}(y=1))} = \hat{b_0} + \hat{b_1w_1} + \hat{b_2w_2} + ...
-\label{eq:logreg2}
+g(z) = \frac{1}{1+e^{-z}}
+\label{eq:sigmoid}
+\end{equation}
+%that is, there is no Normal Equation as it is the case of the MSE and the regularization cost functions
+For ease of calculation the loss function of logistic regression is the \emph{log loss} function. There is no known closed function for the \emph{log loss}, however, the good news is that the \emph{log loss} function is convex, so it is guaranteed that stochastic descent (or any other optimization algorithm) will find a global minimum given that the learning rate is not too large and we have time to wait the model reaches the minimum. \emph{Log loss} quantifies the accuracy of a classifier by penalizing false classifications, thus, minimizing the \emph{log loss} is the same as maximizing the accuracy of the classifier.
+Logistic regression performs binary classification, so let $P(y=1|x)$ be the probability that the binary output y is 1 given the input feature vector x and $P(y=0|x)$ the probability that the binary output y is 0. 
+\begin{equation}
+P(y=1|x) = \frac{1}{1+e^{-w^{T}x]}} \textit{ , } P(y=0|x) = 1 - \frac{1}{1+e^{-w^{T}x]}}
+\label{eq:sigmoid2}
 \end{equation}
 
-Once the logit model has estimated the probability $\hat{p}$ that the input x belongs to the positive class, it can easily make the predictions: $\hat{y} = 0$, if $\hat{p} < 0.5$, $\hat{y} = 1$ otherwise. Adding independent variables to a logistic regression model $w_i$ will always increase the amount of variance explained in the log odds ($R^2$) \footnote{A constant model that always predicts the expected value of y, disregarding the input features, would get a $R^2$ score of 0.0.}. However, adding dimensions in the model can result in overfitting, which reduces the generalizability of the model beyond the data on which the model is fit. Of note, logistic regression models just like any other linear regression model can be regularized using $l_1$ or $l_2$ penalties. 
+Then, the log loss function $J(w)$ is 
 
-A disadvantage of logistic regression is that we can’t solve non-linear problems with logistic regression since it’s decision surface is linear. Logistic Regression separates the input into two "regions" by a linear boundary, one for each class. Therefore it is required that data is linearly separable (See Figure \ref{fig:xor}). Another disadvantage of logistic regression is that it has a high reliance on a proper presentation of the data, that is, which are the really important independent variables need to be known prior to build the model. 
-Another drawback of logistic regression is its vulnerability to overfitting.
+\begin{equation}
+\begin{split}
+J(w) &= \frac{-1}{m}\sum_{i=1}^{m} y^i\log P(y=1) + y^i \log P(y=0) \\
+&  \sum_{i=1}^{m} y^i \log	\frac{1}{1+e^{-w^{T}x]}} + y^i \log 1 - \frac{1}{1+e^{-w^{T}x]}}
+\end{split}
+\label{eq:sigmoid3}
+\end{equation}
+Note that for each instance only the term for the correct class actually contributes to the sum.
+% Logistic regression estimates a multiple linear regression function defined as:
+% \begin{equation}
+% \log \frac{\hat{p}(y=1)}{1-(\hat{p}(y=1))} = \hat{b_0} + \hat{b_1w_1} + \hat{b_2w_2} + ...
+% \label{eq:logreg2}
+% \end{equation}
+% Once the model has estimated the probability $\hat{p}$ that the input x belongs to the positive class, it can easily make the predictions: $\hat{y} = 0$, if $\hat{p} < 0.5$, $\hat{y} = 1$ otherwise. 
+
+Adding independent variables to a logistic regression model will always increase the amount of variance explained in the log odds \footnote{A constant model that always predicts the expected value of y, disregarding the input features, would get a $R^2$ score of 0.0.}. However, adding dimensions in the model can result in overfitting, which reduces the generalizability of the model beyond the data on which the model is fit. Of note, logistic regression models just like any other linear regression model can be regularized using $l_1$ or $l_2$ penalties. 
+
+A disadvantage of logistic regression is that we can’t solve non-linear problems since it’s decision surface is linear. Logistic Regression separates the input into two "regions" by a linear boundary, one for each class. Therefore it is required that data is linearly separable (See Figure \ref{fig:xor}). Another disadvantage of logistic regression is that it has high reliance on a proper presentation of the data, that is, which are the really important independent variables need to be known prior to build the model. 
+
 
 \begin{figure}[H]
         \centering
@@ -686,8 +732,9 @@ The logistic regression model can be generalized to support multiple classes usi
 \end{equation}
 The cost function in Softmax is the cross entropy (for k=2 the cross entropy is the same as the log loss). Cross entropy measures the average number of bits you actually send per option. If your assumption is perfect, cross entropy will just be equal to the entropy (i.e., its intrinsic unpredictability). But if your assumptions are wrong, cross entropy will be greater than the Kullback–Leibler divergence. We mention the \textbf{softmax classifier} for completeness but we will not implement it because we our target is binary (converter-non converter).
 
-The implementation and the results obtained with the logistic classifier are discussed in Section \ref{se:reslogreg}. In Section \ref{se:deep}, we expand on these ideas defining multi layer perceptron model (MLP) and Deep networks, that is, neural networks with at least one hidden later and therefore capable of solving the situation shown in Figure\ref{fig:xor} i.e. classify non linear distribution of data.
-Next, we explain with a very popular classifier, Support Vector Machines (SVM).
+In Section \ref{se:deep}, we expand on these ideas defining multi layer perceptron model (MLP) and Deep networks, that is, neural networks with at least one hidden later and therefore capable of solving the problem of classifying non linear distribution of data shown in Figure\ref{fig:xor}.
+
+The implementation and the results obtained with the logistic classifier are discussed in Section \ref{se:reslogreg}. 
 
 \subsection{Support Vector Machine (SVM)}
 \label{sse:svm}
@@ -1080,15 +1127,12 @@ The results produced by the implementation of manifold learning, in particular t
 \label{se:res}
 
 In this section we provide the results for the machine learning techniques explained in the previous section.
-Evaluating a model always boils down to splitting the available data into three sets: training, validation, and test. You train on the training data and evaluate your model on the validation data. Once your model is ready for prime time, you test it one final time on the test data. 
-But why not just two sets: training and testing? Because adjusting the optimal configuration of the model (parameter and hyperparameters) is a feedback loop, the performance of the model on the validation set is the feedback signal.
-
-Results for each classifier. We will realize that the challenge of fitting the training data differs very drastically from the challenge of finding patterns that generalize to new data \cite{goodfellow2016deep}.
 
 \subsection{Univariate feature selection}
 \label{se:reslinreg}
+%CODE::run_feature_ranking(Xy_df_scaled, formula)
 
-Here we select the features according to the k highest scores. The algorithm used for univariate feature selection is described in the snippet \ref{SelectKBest}. Univariate feature selection works by selecting the best features based on univariate statistical tests (e.g ANOVA F-value between label/feature).
+The algorithm used for univariate feature selection is described in the snippet \ref{SelectKBest}. Univariate feature selection works by selecting the best features based on univariate statistical tests (e.g ANOVA F-value between label/feature).
 
 \begin{code}[caption=SelectKBest, label=SelectKBest]
 from sklearn.feature_selection import SelectKBest
@@ -1126,7 +1170,7 @@ Ranking & Feature     \\
 12 & sue rec (remember dreams) \\
 \hline
 \end{tabular}
-\caption{The table shows the ranking between target/feature using ANOVA F value. Other statistical tests e.g. Chi square, mutual information, are also possible and will produce slightly different results. For example, using the mutual information the ranking is \emph{scd visita1, a08, tce con, renta, gds visita1, preocupacion visita1, arri, nivel educativo, physical exercise, dietaketo, dietasaludable, a11}. Interestingly, when mutual information is used features related to diet and physical exercise show up. Note that mutual information captures also nonlinear dependence between variables.}
+\caption{The table shows the ranking between target/feature using ANOVA F value. Other statistical tests e.g. Chi square, mutual information, are also possible and will produce slightly different results. For example, using the mutual information, the ranking is \emph{scd visita1, a08, tce con, renta, gds visita1, preocupacion visita1, arri, nivel educativo, physical exercise, dietaketo, dietasaludable, a11}. Interestingly, when mutual information is used features related to diet and physical exercise show up. Note that mutual information captures also nonlinear dependence between variables.}
 \end{center}
 \end{table}
 
@@ -1138,20 +1182,32 @@ Ranking & Feature     \\
 
 \subsection{Logistic regression}
 \label{se:reslogreg}
+%CODE 
 
-The logit model is implemented with the \emph{log loss} function. Of note, there is no known closed function for the \emph{log loss}, that is, there is no Normal Equation as it is the case of the MSE and the regularization cost functions. However, the good news is that the \emph{log loss} function is convex, so it is guaranteed that stochastic descent (or any other optimization algorithm)  will find a global minimum given that the learning rate is not too large and we have time to wait the model reaches the minimum.
+The classification loss function used in Logistic regression is the \emph{log loss} previously described in Equation \ref{eq:sigmoid3}. It should be remarked that \emph{log loss} heavily penalizes classifiers that are confident about an incorrect classification, e.g. if the classifier assigns a very small probability to the correct class then the corresponding contribution to the \emph{log loss} will be very large indeed. 
+For example, if the classifier assigns a very small probability to an observation to be the correct class then the corresponding contribution to the \emph{log loss} of the observation will be very large indeed. Mathematically this can be directly deduced from the log loss function: it is very steep as the predicted probability approaches 0, but it smoothly declines as the predicted probability improve, that is, it penalizes heavily being very wrong i.e. assign a probability close to 0 of a true event (Figure \ref{fig:Log-loss-curve}). 
+\begin{figure}[H]
+        \centering
+        \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/Log-loss-curve}
+        \caption{\emph{Log loss} curve, it penalizes heavily classifiers that are confident about an incorrect classification. For example, if the classifier assigns a very small probability to the correct class (close to 0 in the abscissa axis) it yields a large loss value. As the predicted probability improves (moving towards 1 in the  abscissa axis) the slope is smooth. The rationale behind this is that it is better to be somewhat wrong than emphatically wrong. 
+        }
+\label{fig:Log-loss-curve}
+\end{figure}
+%https://datawookie.netlify.com/blog/2015/12/making-sense-of-logarithmic-loss/
 
-Since the dataset is unbalanced, there are 9 non converters for every converter, the classifier will use the \emph{balanced} weight option to give more weight to the underrepresented class, by which it will replicate the smaller class until you have as many samples as in the larger one. 
+The performance of the classifier will be affected by both the properties of the classifier e.g. the loss function mentioned above and the characteristics of the dataset, specifically its unbalanceness, the converters class is under represented vis a vis the class of non converter 10 to 1. In order to deal with this problem the classifier will use the \emph{balanced} weight option to give more weight to examples of the underrepresented class. Unless we say other less, we will use this heuristic in the implementation of classifiers. To know more about the \emph{balanced} weight heuristics see \ref{king2001logistic}. 
 
-The logistic regression is regularized with L2 penalty and uses the \emph{liblinear} solver (liblinear solver supports logistic regression and SVM). 
-The L2-regularized Logistic Regression solves the unconstrained optimization problem indicated below \cite{fan2008liblinear}
+Logistic regression is vulnerability to overfitting, we deal with this problem using regularization ($l_2$ penalty) with the  \emph{liblinear} solver (liblinear solver supports logistic regression and SVM). 
+Formally, the $l_2$-regularized Logistic Regression solves the unconstrained optimization problem indicated below \cite{fan2008liblinear}
 \begin{equation}
 \textit{min}_{w} \frac{1}{2}w^Tw + C \sum_{i=1}^{n}\log(1+ e^{-y_iw^Tx_i})
 \end{equation}
 %https://www.csie.ntu.edu.tw/~cjlin/papers/liblinear.pdf
-where w is the weight vector generated by the logit model, $(x_i,y_i)$ the instances and $C > 0$ a penalty parameter.
+where $w$ is the weight vector argument of the \emph{log loss function}, $(x_i,y_i)$ the instances and $C > 0$ is a penalty parameter (when $C=0$ there is no penalty).
 
-The dataset is split into training data ($80\%$) and test data ($20\%$). Table \ref{tab:logreg}
+The dataset is split into training data ($80\%$) and test data ($20\%$). Table \ref{tab:logreg} shows the classification metrics for logistic regression algorithm with the hyperparameters above mentioned. The table shows the performance of the classifier in generalizing new data in the test test. 
+The recall of the positive class or \emph{sensitivity} is lower than the recall of the negative class or \emph{specificity}, this is due to the unbalanced distribution of the labels i.e. the converters are less frequent (19) than the non converters (164). The table is for $C = 1.0$, C is the inverse of regularization strength. We find that the optimal C is $C = 1000.0$ (very small regularization strength) achieves very small, almost irrelevant gains (precision of 1 class for $C = 1000.0$ is 0.16, for $C = 1.0$ precision of 1 class is 0.15). 
+%Cross-validation is one way to find a good set of hyperparameters
 
 \begin{table}[H]
 \caption{Classification metrics for logistic regression} \label{tab:logreg} 
@@ -1166,17 +1222,16 @@ Class & precision & recall & f1-score & support     \\
 1 & 0.15  &    0.47   &   0.23   &     19 \\
 \hline
 \end{tabular}
-\caption{The table shows  main classification metrics for the logistic regression classifier in the test set. Note that the recall of the positive class is also known as \emph{sensitivity} and recall of the negative class is also called \emph{specificity}. The precision is low due to the unbalanced data.}
+\caption{The table shows main classification metrics for the logistic regression classifier in the test set. The precision and the recall of the positive class is low due to the unbalanced data.}
 \end{center}
 \end{table}
 
-
-Figure \ref{fig:logresres} shows the results of the logistic regression model. Remember that it is assumed that the logit transformation of the outcome variable (\emph{conversionMCI}) has a linear relationship with the predictor variables (\emph{Vallecas index}).
+Figure \ref{fig:logresres} shows the results of the logistic regression model. Remember that it is assumed that the logit transformation of the outcome variable (\emph{conversionMCI}) has a linear relationship with the predictor variables (\emph{Vallecas index}), therefore only the linear relationships between individual features and the target variable are captured.
 
 \begin{figure}[H]
         \centering
         \includegraphics[keepaspectratio, width=0.8\linewidth]{figures/LR_results-balanced}
-        \caption{Logistic regression results L2 regularization, balanced weight option and liblinear solver. The feature about remembering dreams (sue rec) shows a strong negative association.} \label{fig:logresres}
+        \caption{Logistic regression results $l_2$ regularization, balanced weight option and liblinear solver. The feature about remembering dreams (sue rec) shows the strongest negative association with converting. Other features with large weight in absolute value are arrhythmia (arri), head contusions (tce), anxiety (stai) and age (edad)} \label{fig:logresres}
 \end{figure}
 
 
@@ -1185,18 +1240,18 @@ Figure \ref{fig:logresres} shows the results of the logistic regression model. R
 %Coefficient of determination R^2 of the prediction of LogReg_Lasso on training set 0.29
 %Coefficient of determination R^2 of the prediction of LogReg_Lasso on test set 0.11
 Figure \ref{fig:lr-cm} shows the confusion matrix and the Receiver Operating Characteristic (ROC) metric. 
-The ROC is a graphical plot that illustrates the performance of a binary classifier as its discriminant threshold is varied. The curve is created by plotting true positive rate (TPR) against false positive rate (FPR) at various threshold values.
-%dangeti -statistics for ml. book page 89
-The decision matrix describes the performance of the logistic regression classifier. The confusion matrix tabulates the number of misclassifications. The diagonal elements of the confusion matrix show the number of correct classifications for each class and the off-diagonal elements provides the misclassifications. 
-ROC curves feature true positive rate on the Y axis, and false positive rate on the X axis. Then, the top left corner of the plot is the “ideal” point - a false positive rate of zero, and a true positive rate of one. 
+The ROC is a graphical plot that illustrates the performance of a binary classifier as its discriminant threshold is varied. The curve is created by plotting the true positive rate (TPR, y axis) against false positive rate (FPR, x axis) at various threshold values. The top left corner of the plot is the ideal point - a false positive rate of zero, and a true positive rate of one. 
 Thus, the larger area under the curve (AUC) the better is usually the classifier.
 The steepness of ROC curves is also important, a steep curve -maximize true positive rate while minimizing the false positive rate- is preferred.
+%dangeti -statistics for ml. book page 89
+The confusion matrix tabulates the number of misclassifications. The diagonal elements of the confusion matrix show the number of correct classifications for each class and the off-diagonal elements the examples that are misclassified. 
+
 
 \begin{figure}[H]
         \centering
         \includegraphics[keepaspectratio, width=1\linewidth]{figures/LR-CM}
-        \caption{Confusion matrix and ROC for logistic regression classifier. In a confusion matrix the y-axis has the actual values and the x-axis the predicted values, therefore the counts on the diagonal are the number of correct predictions and elements of the diagonal are incorrect predictions.
-        On the left the performance of the training set ($80\%$), center the performance on the test set ($20\%$) and on the right the ROC curves and the area under the curve (AUC). The discontinuous black diagonal line refers to pure 'luck' prediction, the more top left the curve is the better the predictor. In blue the training set and in red the test set.}
+        \caption{Confusion matrix and ROC for logistic regression classifier. In the confusion matrix, the y-axis has the actual values and the x-axis the predicted values, therefore the counts on the diagonal are the number of correct predictions and elements of the diagonal are incorrect predictions.
+        On the left, the confusion matrix of the training set ($80\%$ of example the entire dataset), center the performance on the test set (the remaining $20\%$) and on the right the ROC curves and the area under the curve (AUC). The discontinuous black diagonal line refers to pure 'luck' prediction. In blue the training set and in red the test set.}
 \label{fig:lr-cm}
 \end{figure}
 
@@ -1204,9 +1259,11 @@ Figure \ref{fig:lr-cv7} shows the learning curve for the logistic regression cla
 \begin{figure}[H]
         \centering
         \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/LR-CV7}
-        \caption{Learning curve for logistic regression, in red the training score and in green the cross-validation ($cv=7$)score. The training score is very high at the beginning and decreases and the cross-validation score stays within the $0.70-0.75$ range. The curve seems to suggest that the validation score could be increased with more training samples, if eventually training and cross-validation have the same score it means that the classifier is not over-fitting (early stopping(stop training). T
+        \caption{Learning curve for logistic regression, in red the training score and in green the cross-validation score ($cv=7$). The curve seems to suggest that the validation score could increased adding more examples, if eventually training and cross-validation have the same score it means that the classifier is not over-fitting (early stopping(stop training). Note that the algorithm is maximizing the precision which is close to the $75\%$ a quite satisfactory result. Maximizing for sensitivity (recall of the positive class) will yield much less satisfactory results due to the underepresentation of the positive class.   
         } \label{fig:lr-cv7}
 \end{figure}
+
+%Resumen, no underfit , hyper paraeter no gain
 
 %Underfitting – Validation and training error high
 %Overfitting – Validation error is high, training error low
@@ -1238,7 +1295,7 @@ Class & precision & recall & f1-score & support     \\
 1 & 0.20  &    0.05   &   0.08   &     19 \\
 \hline
 \end{tabular}
-\caption{The table shows  main classification metrics for the k-nn algorithm in the test set with $k=3$ and $cv=5$. The recall recall of the positive class is also known as \emph{sensitivity} is 0.05 the  recall of the negative class (\emph{specificity}) is 0.98. The algorithm suffers from the data unbalanced and it cannot deal with it because the algorithm is based on a majority vote of neighbors which will be on almost always 0, that is, the majority vote will be 0 in a population with $90\%$ of 0s and $10\%$ of 1s.} \label{tab:knn} 
+\caption{The table shows  main classification metrics for the k-nn algorithm in the test set with $k=3$ and $cv=5$. The recall of the positive class is also known as \emph{sensitivity} is 0.05 the  recall of the negative class (\emph{specificity}) is 0.98. The algorithm suffers from the data unbalanced and it cannot deal with it because the algorithm is based on a majority vote of neighbors which will be on almost always 0, that is, the majority vote will be 0 in a population with $90\%$ of 0s and $10\%$ of 1s.} \label{tab:knn} 
 \end{center}
 \end{table}
 
@@ -1878,7 +1935,15 @@ Figure \ref{fig:TSNE} shows the scatter plot of the tSNE algorithm that creates 
 
 \section{Comparative evaluation of models}
 \label{se:compare}
-In this section we will try to construct a coherent view of performance of the different predictive algorithms used in Section \ref{se:res}.
+In this section we will try to construct a coherent view of performance of the different predictive algorithms used in Section \ref{se:res}. 
+%YS change this
+Evaluating a model always boils down to splitting the available data into three sets: training, validation, and test. You train on the training data and evaluate your model on the validation data. Once your model is ready for prime time, you test it one final time on the test data. 
+But why not just two sets: training and testing? Because adjusting the optimal configuration of the model (parameter and hyperparameters) is a feedback loop, the performance of the model on the validation set is the feedback signal.
+
+Results for each classifier. We will realize that the challenge of fitting the training data differs very drastically from the challenge of finding patterns that generalize to new data \cite{goodfellow2016deep}.
+
+
+
 Prior to try to identify the best model for the task at hand we will comment on the performance metrics and validation procedures used. In particular we will delve into cross validation reduce variance in the validation set and will describe how to interpret the metrics provided in the Results section. The impatient reader can go directly to Section \ref{sse:permets} which contains the comparative analysis for the different models implemented.
 
 As it was noted int the previous section we trained the \emph{Vallecas} dataset using a split of $80\%$ for the training set and $20\%$ for test set. The validation set was $10\%$ of the test set which gives us only 73 samples, a small number so the validation scores might have a high variance with regard to the validation split possibly preventing us from reliably evaluating the model. The best practice to deal with this situation is to use K-fold cross validation, split the available data into K partitions (e.g. between 3 and 7) instantiating K identical models and training each one on K-1 partitions while evaluating on the remaining partition. That validations core is the average of the K validation scores. Figure \ref{fig:xvalchollet} represents the cross validation process to effectively deal with high variance in the validation set \cite{chollet2017deep}. 
@@ -2240,6 +2305,41 @@ We can also integrate sampling techniques with ensemble learning techniques,  (S
 \label{se:dis}
 TO DO
 
+\textbf{Satistical modeling vs. Machine learning}
+
+Here we have shown that it is possible to build prediction machines with the \emph{Vallecas dataset} achieving a very satisfactory performance. The \emph{Vallecas dataset} size is around 1,000 labeled examples. Although this far from the rule of thumb to achieve acceptable performance of 5,000 labeled examples per category \cite{goodfellow2016deep}, the major problem of the dataset is its imbalanced, the converter class is underrepresented with a ratio of 10 to 1 in favor of the non conversion class. This situation can be dealt with more data but this is certainly costly and require time, a workaround is to add synthetic data points to create an balanced dataset. The Synthetic Minority Oversampling Technique SMOTE algorithm was used and predictors were fed with the balance dataset. Boosting methods outperformed the other methods achieving precision and recall over 0.85.   
+
+Our goal here is twofold, first and foremost demonstrate the predicting power of machine learning techniques in the \emph{Vallecas dataset}, and second introduce a new set of techniques that go under the umbrella of machine learning that provide a new framework and methodology different form canonical statistical modeling. Since this may not be obvious to researchers not acquainted with Artificial Intelligence and Machine learning, we highlight the main differences between statistical learning and machine learning in  Table \ref{tab:smml}.  
+
+
+
+
+\begin{tabularx}{1\linewidth}{|X | X|}
+\hline
+Statistical modeling    & Machine learning  \\
+\hline
+Statistical modeling is applying statistics on data to find underlying relationships by analyzing the significance of the variables.  & Machine learning is a subset of AI, builds computer programs of statistical techniques that learn from data. \\
+Emphasis is in the significance of the variables and building confidence intervals. & Emphasis is on using computers to estimate functions rather than confidence intervals around these functions.\\
+Statistical models start with assumptions about the variables, perform hypothesis testing. & No prior assumption about input. \\
+Fits the hyperplane with the least errors. & Optimization of parameters that minimize a cost function (e.g. gradient descent: update parameter in the opposite direction to the gradient). \\
+Relationships between the variables are formalized in mathematical equations.& Algorithm rather than a priori equations, patterns are automatically learn from data.\\
+Performs significance tests (Diagnostics of parameters p-value etc.)& Significance tests are not required.\\
+Data split into training and test sets. & Data split into training, validation and test sets. \\ %Cross-validation for model robustness.\\
+\label{tab:smml}
+%\bottomrule
+\end{tabularx}
+
+
+
+
+
+
+
+
+
+
+
+
 There is a growing concern about the impact of AD and other forms of dementia sufferers in low income areas in the world.
 The Alzheimer’s Society estimates that $71\%$ of dementia sufferers in 2050 will be in poor to middle income countries.
 %https://newrepublic.com/article/115936/alzheimers-drastic-rise-low-income-countries
@@ -2310,7 +2410,7 @@ Thresholding can be used if the algorithm return probabilities, for example \tex
 Note that the F-measures which combine precision (exactness) and recall (completeness) don’t take into account the true negative rate. Therefore, it is often recommended that in imbalanced settings to use metrics such as Cohen’s kappa metric.
 Notation:  a dataset is a collection of examples which are in turn collections of features. The design matrix is the most common form of describing a dataset, $X \in R^\{n,m\}$, where n is the number of examples (rows) and m the number of features (columns), so $X^\{i,j\}$ is the value of the feature j for example i
 
-Capacity: a model's capacity is its capacity to fit a wide variety of functions. for example, we we take the linear regression model we can increase its capacity by introducing x as another feature, note that the output is still a linear function of the parameters and it can be solved with the normal equations. MAchine learning algorithms perform best when they have a capacity appropriate for the complexity of the task and the training data available , models with high capacity can solve complex problems but when the capacity exceeds the complexity they may overfit (Occam's razor). 
+Capacity: a model's capacity is its capacity to fit a wide variety of functions. for example, we we take the linear regression model we can increase its capacity by introducing x as another feature, note that the output is still a linear function of the parameters and it can be solved with the normal equations. Machine learning algorithms perform best when they have a capacity appropriate for the complexity of the task and the training data available , models with high capacity can solve complex problems but when the capacity exceeds the complexity they may overfit (Occam's razor). 
 
 Complexity: The complexity of a model can be measured with the Vapnik-Chervonenkis dimension (complexity of binary classifier). The discrepancy between training error and generalization error is bounded from above by a quantity that grows as the capacity grows but shrinks as the size of the training set increases. Interestingly, these bounds are the intellectual justification of why machine learning works.
 
