@@ -690,7 +690,7 @@ g(z) = \frac{1}{1+e^{-z}}
 \label{eq:sigmoid}
 \end{equation}
 %that is, there is no Normal Equation as it is the case of the MSE and the regularization cost functions
-For ease of calculation the loss function of logistic regression is the \emph{log loss} function. There is no known closed function for the \emph{log loss}, however, the good news is that the \emph{log loss} function is convex, so it is guaranteed that stochastic descent (or any other optimization algorithm) will find a global minimum given that the learning rate is not too large and we have time to wait the model reaches the minimum. \emph{Log loss} quantifies the accuracy of a classifier by penalizing false classifications, thus, minimizing the \emph{log loss} is the same as maximizing the accuracy of the classifier.
+For ease of calculation the loss function of logistic regression is the \emph{log loss} function (maximizing the likelihood is the same as maximizing the $\log$ likelihood). There is no known closed function for the \emph{log loss}, however, the good news is that the \emph{log loss} function is convex, so it is guaranteed that stochastic descent (or any other optimization algorithm) will find a global minimum given that the learning rate is not too large and we have time to wait the model reaches the minimum. \emph{Log loss} quantifies the accuracy of a classifier by penalizing false classifications, thus, minimizing the \emph{log loss} is the same as maximizing the accuracy of the classifier.
 Logistic regression performs binary classification, so let $P(y=1|x)$ be the probability that the binary output y is 1 given the input feature vector x and $P(y=0|x)$ the probability that the binary output y is 0. 
 \begin{equation}
 P(y=1|x) = \frac{1}{1+e^{-w^{T}x]}} \textit{ , } P(y=0|x) = 1 - \frac{1}{1+e^{-w^{T}x]}}
@@ -738,17 +738,26 @@ The implementation and the results obtained with the logistic classifier are dis
 
 \subsection{Support Vector Machine (SVM)}
 \label{sse:svm}
-SVM is the linear classifier with the maximum margin \cite{vapnik2013nature}, that is, an SVM model represents the examples as points in space mapped so that the examples of the separate categories are divided by a gap (the "street" in Figure \ref{fig:svmstreet}) as wide as possible. This is called large margin classification. Scaling is required because otherwise it will neglect the small features.
-A support vector is an instance in the street and the decision function is entirely determined by the support vectors. Computing the predictions only involves the support vectors, you could remove the other training points they will not matter for prediction, in other words adding more training instances “off the street” will not affect the decision boundary at all. Thus, prediction with SVM is entirely determined (or “supported”) by the instances located on the edge of the street. The instances (those that touch the street boundaries) are called the support vectors. Importantly, SVM does not return probabilities (contrary to logistic regression) but in the \emph{sklearn} implementation we use it has a confidence score which is the distance between the test instance and the decision boundary. SVM are sensitive to the feature scales therefore it requires that data are standarized or normalized prior to build the classifier. 
+
+The term support vector machine (SVM), as it is commonly used, in reality mean one of three things:
+\begin{itemize}
+	\item Maximum margin classifier: a linear classifier with the maximum margin 
+	\item Support vector classifier: an extension of maximum margin classifier to build more flexible classifier able to separate  non purely separable classes 
+	\item Support vector machines: builds non linear decision boundaries to separate classes that cannot be separated with Support vector classifier  
+\end{itemize}
+Support vector classifier extends maximum margin classifiers and Support vector machines uses the kernel trick to extend Support vector classifiers. Here we will implement Support vector machines both linear and non linear, the working principles of SVMs are described next.
+
+A support vector machine is in essence an hyperplane that maximizes the boundaries between two types of data points. Specifically, a Support vector classifier is a linear classifier with the maximum margin \cite{vapnik2013nature}, that is, it represents points so that the examples of the separate categories are divided by a gap (the "street" in Figure \ref{fig:svmstreet}) as wide as possible. This is called large margin classification. 
+Prediction with SVMs is entirely determined (or “supported”) by the instances located on the edge of the street called the support vectors. Thus, predicting only involves the support vectors and adding more training instances “off the street” will not affect the decision boundary at all. 
 
 \begin{figure}[H]
         \centering
         \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/svmstreet}
-        \caption{The idea behind Support Vector Machine (SVM) is to fit the widest margin "street" between the classes. The optimization algorithm generate the weights for the optimal hyperplane (maximal margin).} \label{fig:svmstreet} %http://web.mit.edu/6.034/wwwbob/svm-notes-long-08.pdf
-        
+        \caption{The idea behind Support Vector Machine (SVM) is to fit the widest margin "street" between the classes. The optimization algorithm generate the weights for the optimal hyperplane (maximal margin). SVMs are sensitive to the feature scales therefore it requires that data are standarized or normalized prior to build the classifier, otherwise large values would define the support vector neglecting the small ones.
+        } \label{fig:svmstreet} %http://web.mit.edu/6.034/wwwbob/svm-notes-long-08.pdf
 \end{figure}
 
-Linear SVM works by simply calculating a decision function $w^Tx +b$ (where $w$ is the parameters vector and b is the bias ($b_0$)). Thus if the result of $f(x) = w_{1} x_{1} + ....+ w_{n}x_{n} + b_0$ is positive the predicted class $\hat{y}$ is the positive class or else is the negative class. We look for a function f as \emph{flat} as possible which means having a small $w$ . One way to ensure this is minimizing the norm of the vector w, $||w||^2$. This minimization problem can be written as:
+Linear SVM works by simply calculating a decision function $w^Tx +b$ (where $w$ is the parameters vector and b is the bias). Thus if the result of $f(x) = w_{1} x_{1} + ....+ w_{n}x_{n} + b_0$ is positive the predicted class $\hat{y}$ is the positive class or else is the negative class. In order to avoid overfitting, SVM looks for a function $f$ as \emph{flat} as possible. One way to ensure this is making the vector $w$ as small as possible e.g. minimizing the norm, $\argmin_{w} ||w||^2$. This minimization problem can be written as:
 
 \begin{equation}\label{eq:svm}
 \begin{aligned}
@@ -762,14 +771,15 @@ Linear SVM works by simply calculating a decision function $w^Tx +b$ (where $w$ 
 \end{equation}
 
 The tacit assumption in Equation \ref{eq:svm} is that a function $f$ that approximates all pairs $(x_i, y_i)$ with precision $\epsilon$ exists.
-Thus, in essence, training a linear SVM classifier means finding the value of $w$ and $b$ that make this margin as wide as possible while avoiding margin violations (hard margin) or limiting them (soft margin). Thus, we do not care about errors as long as they are less than the margin $\epsilon$, but will not accept any deviation larger than this. 
-The problem of overfitting in SVM is tackle via expanding or narrowing the margin 'street' with the C parameter (for large C, margins are narrow we could overfit). The parameter $C > 0$ determines the trade-off between the flatness of f and the amount up to which deviations larger than $\epsilon$ are tolerated \cite{smola2004tutorial}. 
+Thus, in essence, training a linear SVM classifier means finding the value of $w$ and $b$ that make this margin as wide as possible while avoiding margin violations (hard margin) or limiting them (soft margin). Thus, we do not care about errors as long as they are less than the margin $\epsilon$ but not accepting any deviation larger than this. 
+ 
+SVM can perform both linear and non linear classification, regression and outlier detection. When the datasets are non linearly separable we can use nonlinear SVM classifiers. One tactic to separate no linearly separable datasets is is to add features so that the new space yields a linearly separable dataset (pg 259 \cite{geron2017hands}). The \textbf{Kernel trick} makes this possible, for a discussion of this very important concept, see \cite{vapnik2013nature}. 
+
+Overfitting in SVM is tackle via expanding or narrowing the margin 'street' with the parameter $C, C > 0$ which fixes the trade-off between the flatness of $f$ and the amount up to which deviations larger than $\epsilon$ are tolerated \cite{smola2004tutorial} (large C defines a narrow margin and therefore likely overfitting). 
 
 %“If your SVM model is overfitting, you can try regularizing it by reducing C.” large C margins are narrow and we may overfit, C small (C=1) larger margins. “Unlike Logistic Regression classifiers, SVM classifiers do not output probabilities for each class”
 %LinearSVC same as SVC(kernel='linear') but SVC is musch slower specially for large datasets  also possible use 
 % GDClassifier(loss="hinge", alpha=1/(m*C)). This applies regular Stochastic Gradient Descent to train a SVM classifier but it doesnt converge as fast as the LinearSVC class
-
-SVM can perform both linear and non linear classification, regression and outlier detection. When the datasets are non linearly separable we can use nonlinear SVM classifiers. One tactic is to add more features so that it result in a linearly separable dataset (pg 259 \cite{geron2017hands}). The \textbf{Kernel trick} makes this possible (for a discussion of the kernel trick see \cite{vapnik2013nature}). SVM is considered a good algorithm for small-medium size datasets. Note also that it scales well with the number of features, especially sparse features. 
 
 The implementation and the results obtained with this kind of classifier are discussed in Section \ref{se:ressvm}.
 
@@ -1184,7 +1194,12 @@ Ranking & Feature     \\
 \label{se:reslogreg}
 %CODE 
 
-The classification loss function used in Logistic regression is the \emph{log loss} previously described in Equation \ref{eq:sigmoid3}. It should be remarked that \emph{log loss} heavily penalizes classifiers that are confident about an incorrect classification, e.g. if the classifier assigns a very small probability to the correct class then the corresponding contribution to the \emph{log loss} will be very large indeed. 
+The classification loss function used in Logistic regression is the \emph{log loss} previously described in Section \ref{se:logreg}. Logistic regression uses Maximum Likelihood to estimating the parameters given observations, that is, the parameter values that maximize the probability p of event 1 and (1-p) of non-event 0(Equation \ref{eq:sigmoid3}).
+
+
+of making the observation. this means finding parameters that maximize the probability p of event 1 and (1-p) of non-event 0, as you kno
+
+It should be remarked that \emph{log loss} heavily penalizes classifiers that are confident about an incorrect classification, e.g. if the classifier assigns a very small probability to the correct class then the corresponding contribution to the \emph{log loss} will be very large indeed. 
 For example, if the classifier assigns a very small probability to an observation to be the correct class then the corresponding contribution to the \emph{log loss} of the observation will be very large indeed. Mathematically this can be directly deduced from the log loss function: it is very steep as the predicted probability approaches 0, but it smoothly declines as the predicted probability improve, that is, it penalizes heavily being very wrong i.e. assign a probability close to 0 of a true event (Figure \ref{fig:Log-loss-curve}). 
 \begin{figure}[H]
         \centering
@@ -1259,17 +1274,144 @@ Figure \ref{fig:lr-cv7} shows the learning curve for the logistic regression cla
 \begin{figure}[H]
         \centering
         \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/LR-CV7}
-        \caption{Learning curve for logistic regression, in red the training score and in green the cross-validation score ($cv=7$). The curve seems to suggest that the validation score could increased adding more examples, if eventually training and cross-validation have the same score it means that the classifier is not over-fitting (early stopping(stop training). Note that the algorithm is maximizing the precision which is close to the $75\%$ a quite satisfactory result. Maximizing for sensitivity (recall of the positive class) will yield much less satisfactory results due to the underepresentation of the positive class.   
+        \caption{Learning curve for logistic regression, in red the training score and in green the cross-validation score ($cv=7$). The curve seems to suggest that the validation score could increased adding more examples, if eventually training and cross-validation have the same score it means that the classifier is not over-fitting (early stopping(stop training). 
+		The 7-fold cross validation average accuracy is $0.730$, a quite satisfactory result. Maximizing for sensitivity (recall of the positive class) will yield much less satisfactory results due to the underepresentation of the positive class.   
         } \label{fig:lr-cv7}
 \end{figure}
 
-%Resumen, no underfit , hyper paraeter no gain
+Logistic regression shows an acceptable performance, especially given the model's simplicity. 
+The model's behavior does not easily fit into overfitting neither underfitting patterns, the problem, however, resides in data unbalanced. Both training and validation error are larger for the underrepresented class 1 (non converter) than for the more frequent class 0 (non converter). Precision and recall of class 1 metrics are below the random guessing. 
 
 %Underfitting – Validation and training error high
 %Overfitting – Validation error is high, training error low
 %Good fit – Validation error low, slightly higher than the training error
 %Unknown fit - Validation error low, training error 'high'
 %If the training accuracy increases(positive slope) while the validation accuracy steadily decreases(negative slope) then a situation of over fitting may have occurred. Time to stop Training
+
+\subsection{SVM}
+\label{se:ressvm}
+	% #SVM for both linear and non linear kernel
+	% #print('Building a Sigmoid (Linear) svm_estimator.....\n')
+	% #learners['svm_sigmoid_estimator'] = run_svm_classifier(X_train, y_train, X_test, y_test, kernel='sigmoid')
+	% #dict_learners["svm_sigmoid"]=learners['svm_sigmoid_estimator']
+Here we show the implementation of Support vector machines (SVMs) for classification using both linear and non linear boundaries. SVMs are versatile (different kernels can be defined for the decision function), memory efficient and effective classifiers for small-medium size datasets. SVMs scales well with the number of features and they are also effective when n > m (more dimensions than examples). If the number of features is much greater than the number of samples, choosing optimally the Kernel function and the regularization term to avoid over-fitting is crucial. Note that this is not the case in the \emph{Vallecas index}, where $n~50 < m~1000$. Although SVMs do not directly provide probability estimates, these can be calculated using cross-validation (averaging across multiple realizations) \footnote{A "surrogate" for probability estimate can be obtain using distances, We use the \emph{sklearn} SVC algorithm which includes a confidence defined as distance between the test instance and the decision boundary}.
+
+A technical description of SVMs was given in Section ref\ref{sse:svm} here we will explain the choices made in its implementation and the quality of its predictions. 
+The dataset is again split into training data ($80\%$) and test data ($20\%$). 
+
+Table \ref{tab:svm} shows the classification metrics in the test set for linear SVM with a linear kernel. The only hyperparameter that we care of in linear SVM is the soft margin constant constant, $C$. Using Grid-Search we find $C* =100.0$. Remember from Section \ref{se:svm} that C is a regularization parameter that controls the trade-off between maximizing the margin and minimizing the training error \footnote{Small C (by default $C=1$), tends to emphasize the margin, while large C may tend to overfit the training data}.
+
+
+%http://fourier.eng.hmc.edu/e161/lectures/svm/node5.html
+%When the two classes are not linearly separable (e.g., due to noise), the condition for the optimal hyper-plane can be relaxed by including an extra term: 
+% \begin{table}[H]  #Sigmoid kernel C=1
+% \caption{Classification metrics for SVM}
+% \begin{center} 
+% \begin{tabular}{lllll}
+% \hline
+% \multicolumn{1}{c}{} \\
+% %\cline{1}
+% Class & precision & recall & f1-score & support     \\
+% \hline
+% 0 & 0.93  &    0.57   &   0.71   &    164 \\
+% 1 & 0.15  &    0.63   &   0.24   &    19 \\
+% \hline
+% \end{tabular}
+% \caption{The table shows the main classification metrics for the SVM classifier (sigmoid kernel) in the test set. The SVM classifier underperforms the previous logit classifier except in \emph{sensitivity} (recall of the positive class.}  \label{tab:svm} 
+% \end{center}
+% \end{table}
+
+\begin{table}[H]
+\caption{Classification metrics for linear SVM}
+\begin{center} 
+\begin{tabular}{lllll}
+\hline
+\multicolumn{1}{c}{} \\
+%\cline{1}
+Class & precision & recall & f1-score & support     \\
+\hline
+0 & 0.93  &    0.70   &   0.80   &    164 \\
+1 & 0.17  &    0.53   &   0.26   &    19 \\
+\hline
+\end{tabular}
+\caption{The table shows the main classification metrics for the SVM classifier with linear kernel and soft margin $C=100$. The performance of the linear SVM classifier is very similar to the logistic classifier (Table \ref{}). 
+Both linear SVM and logistic classifier have linear decision boundaries, that is to say, the classifier needs the inputs to be linearly separable. Linear SVM only requires the regularization parameter $C$ which trades off misclassification of training examples against simplicity of the decision surface (low C makes the decision surface smooth, while a high $C$ aims at classifying all training examples correctly by giving the model freedom to select more samples as support vectors).}  \label{tab:svm} 
+\end{center}
+\end{table}
+
+Figure \ref{fig:svm-cm} shows the confusion matrix and the Receiver Operating Characteristic (ROC) metric of the SVM implemented which uses a sigmoid kernel and balances the weight of the classes to deal with the unbalanced problem (give more weight to the underrepresented class).
+\begin{figure}[H]
+        \centering
+        \includegraphics[keepaspectratio, width=1\linewidth]{figures/SVM-CM-linear}
+        \caption{Confusion matrix and ROC for SVM classifier with linear kernel and $C=100$. The classifier performs better than random luck and is very similar to the logistic regressor performance.} \label{fig:svm-cm}
+\end{figure}
+
+Figure \ref{fig:svm-cv7} shows the learning curve for the logistic regression classifier using cross-validation (7 splits).
+\begin{figure}[H]
+        \centering
+        \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/SVM-CV7-linear}
+        \caption{Learning curve for SVM classifier with with linear kernel and $C=100$, in red the training score and in green the cross-validation ($cv=7$) score. SMV roughly converges to a score of ~0.7.
+        } \label{fig:svm-cv7}
+\end{figure}
+
+\textbf{SVM parameters for non linear SVM}
+
+%GridSearchCV to perform an exhaustive search over the parameter values for an estimator. The parameters are optimized by cross-validated grid-search over a parameter grid. C and Gamma are the parameters for a nonlinear SVM with a Gaussian radial basis function kernel.
+The above SVM implements linear classification using the dot product (Equation \ref{eq:svm}). If we replace the dot product with a nonlinear kernel function (such as a Gaussian radial basis kernel function (Equation \ref{eq:kernelgamma}) or a polynomial kernel), SVM can classify non linear relationships as well.
+\begin{equation} \label{eq:kernelgamma}
+K(x_i,y_i) = e^{-\gamma ||x_i-x_j||^2}
+\end{equation}
+
+%The gamma parameters can be seen as the inverse of the radius of influence of samples selected by the model as support vectors.
+% the C parameter is the cost of misclassification.  
+In order to make sense of the results that will be shown we must first study the hyperparamerters. In addition to the regularization term $C$, non linear kernel have free parameter $\gamma$ which gives us the influence of single training examples. A small $\gamma$ means a Gaussian with a large variance so the class of the support vector $x_j$ will have influence on deciding the class of the vector $x_i$ even if the distance between them is large. 
+When gamma is very small, the model is too constrained and cannot capture the complexity of the data and the resulting model will behave similarly to a linear model.
+%The region of influence of any selected support vector would include the whole training set. The resulting model will behave similarly to a linear model with a set of hyperplanes that separate the centers of high density of any pair of two classes.
+%literal from http://scikit-learn.org/stable/auto_examples/svm/plot_rbf_parameters.html
+On the other hand, if $\gamma$ is large, it means that the  variance will be small and the support vector does not have wide-spread influence. Technically speaking, large gamma leads to high bias and low variance models, and vice-versa. 
+
+
+%https://www.quora.com/What-are-C-and-gamma-with-regards-to-a-support-vector-machine
+The behavior of the SVM model is very sensitive to the $\gamma$ parameter. If $\gamma$ is too large, the radius of the area of influence of the support vectors only includes the support vector itself and no amount of regularization with C will be able to prevent overfitting.
+%A large C gives you low bias and high variance. Low bias because you penalize the cost of missclasification a lot.
+
+Table \ref{tab:svmnonlinear} shows the classification metrics for the nonlinear SVM (Radial Basis Function Kernel) with $C*= 10.0$ and $\gamma *= 0.03125$
+
+\begin{table}[H]
+\caption{Classification metrics for RBF SVM} 
+\begin{center} 
+\begin{tabular}{lllll}
+\hline
+\multicolumn{1}{c}{} \\
+%\cline{1}
+Class & precision & recall & f1-score & support     \\
+\hline
+0 & 0.93  &    0.79   &   0.85   &    164 \\
+1 & 0.20  &    0.47   &   0.29   &    19 \\
+\hline
+\end{tabular}
+\caption{The table shows the main classification metrics for the nonlinear SVM classifier (RBF kernel) in the test set with the best hyperparameters C and $\gamma$. The nonlinear SVM classifier performs better than the linear SVM, in particular in \emph{specificity} (recall of negative class).} \label{tab:svmnonlinear} 
+\end{center}
+\end{table}
+
+Figure \ref{fig:svm-rbf-cm} shows the confusion matrix and the Receiver Operating Characteristic (ROC) metric of the nonlinear SVM with Radial Basis Function kernel kernel, balanced the weight of the classes to deal with the unbalanced problem and the hyperparameters $C*= 10.0$ and $\gamma *= 0.03125$. The nonlinear SVM classifier produces netter results than the linear SVM classifier.
+
+\begin{figure}[H]
+        \centering
+        \includegraphics[keepaspectratio, width=1\linewidth]{figures/SVM-RBF-CM}
+        \caption{Confusion matrix and ROC for nonlinear SVM classifier (RBF kernel) $C*= 10.0$ and $\gamma *= 0.03125$. The classifier performs similar to the linear SVM (Figure \ref{fig:svm-cm}). Larger C will causes overfitting.} \label{fig:svm-rbf-cm}
+\end{figure}
+
+Figure \ref{fig:svm-cv7} shows the learning curve for the logistic regression classifier using cross-validation (7 splits).
+\begin{figure}[H]
+        \centering
+        \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/SVM-RBF-CV7}
+        \caption{Learning curve for nonlinear SVM classifier with RBF kernel $C*= 10.0$ and $\gamma *= 0.03125$, in red the training score and in green the cross-validation ($cv=7$) score. The nonlinear SMV performs similar to the linear SVM (Figure \ref{fig:svm-cv7}). The gap between the training score and the cross validation score suggests high variance, indicating that more data will likely will help improving the results. 
+        } \label{fig:svm-cv7}
+\end{figure}
+
+SVM with both linear and non linear (RBF) kernel shows an acceptable performance. 
+The model's behavior shows overfitting, especially for $C>10$, the problem, however, resides in the fact that the dataset is  unbalanced. While training error is very low (better than logistic regression), the validation error is still larger for the underrepresented class 1 (non converter) than for the more frequent class 0 (non converter). Precision and recall of class 1 metrics are below the random guessing. 
 
 \subsection{k-nearest neighbors algorithm}
 \label{se:reskneighbors}
@@ -1318,104 +1460,6 @@ Figure \ref{fig:knn-cv3} shows the learning curve for the logistic regression cl
 \end{figure}
 
 
-\subsection{SVM}
-\label{se:ressvm}
-Here we show the implementation of Support vector machines (SVMs) for classification. SVMs are versatile (different kernels can be defined for the decision function), memory efficient and effective classifiers especially when dealing with high dimensional spaces. SVMs are also effective when n > m (more dimensions than examples). Note that this is not the case in example, $n~50 < m ~1000$.
-Although SVMs do not directly provide probability estimates, these can be calculated using cross-validation (averaging across multiple $(cv=5)$ realizations).
-%If the number of features is much greater than the number of samples, avoid over-fitting in choosing Kernel functions and regularization term is crucial.
-A technical description of SVMs was given in Section ref\ref{sse:svm} here we will explain the choices made in its implementation and the quality of its predictions.
-
-The dataset is again split into training data ($80\%$) and test data ($20\%$). Table \ref{tab:svm}
-
-Table \ref{tab:svm} shows the classification metrics for SVM.
-\begin{table}[H]
-\caption{Classification metrics for SVM}
-\begin{center} 
-\begin{tabular}{lllll}
-\hline
-\multicolumn{1}{c}{} \\
-%\cline{1}
-Class & precision & recall & f1-score & support     \\
-\hline
-0 & 0.93  &    0.57   &   0.71   &    164 \\
-1 & 0.15  &    0.63   &   0.24   &    19 \\
-\hline
-\end{tabular}
-\caption{The table shows the main classification metrics for the SVM classifier (sigmoid kernel) in the test set. The SVM classifier underperforms the previous logit classifier except in \emph{sensitivity} (recall of the positive class.}  \label{tab:svm} 
-\end{center}
-\end{table}
-
-Figure \ref{fig:svm-cm} shows the confusion matrix and the Receiver Operating Characteristic (ROC) metric of the SVM implemented which uses a sigmoid kernel and balances the weight of the classes to deal with the unbalanced problem (give more weight to the underrepresented class).
-\begin{figure}[H]
-        \centering
-        \includegraphics[keepaspectratio, width=1\linewidth]{figures/SVM-CM}
-        \caption{Confusion matrix and ROC for SVM classifier with sigmoid kernel. The classifier performs better than random luck but worse than the previous logit classifier.} \label{fig:svm-cm}
-\end{figure}
-
-Figure \ref{fig:svm-cv7} shows the learning curve for the logistic regression classifier using cross-validation (7 splits).
-\begin{figure}[H]
-        \centering
-        \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/SVM-CV7}
-        \caption{Learning curve for SVM classifier with sigmoid kernel, in red the training score and in green the cross-validation ($cv=7$) score. SMV roughly converges to a low score ~0.6.
-        } \label{fig:svm-cv7}
-\end{figure}
-
-\textbf{SVM parameters for non linear SVM}
-
-%GridSearchCV to perform an exhaustive search over the parameter values for an estimator. The parameters are optimized by cross-validated grid-search over a parameter grid. C and Gamma are the parameters for a nonlinear SVM with a Gaussian radial basis function kernel.
-The above SVM implements linear classification using the dot product (Equation \ref{eq:svm}). However, if we replace the dot product with a nonlinear kernel function (such as a Gaussian radial basis kernel function (Equation \ref{eq:kernelgamma}) or Polynomial kernel) SVM can classify non linear relationships as well.
-\begin{equation} \label{eq:kernelgamma}
-K(x_i,y_i) = e^{-\gamma ||x_i-x_j||^2}
-\end{equation}
-
-The free parameter of the Gaussian radial basis function (Equation \ref{eq:kernelgamma}), $\gamma$, gives us the influence of  single training examples. 
-A small  $\gamma$ means a Gaussian with a large variance so the class of the support vector $(x_j)$ will have influence on deciding the class of the vector $x_i$ even if the distance between them is large. If  $\gamma$ is large, then variance is small implying the support vector does not have wide-spread influence. Technically speaking, large gamma leads to high bias and low variance models, and vice-versa.
-%https://www.quora.com/What-are-C-and-gamma-with-regards-to-a-support-vector-machine
-The behavior of the SVM model is very sensitive to the $\gamma$ parameter. If $\gamma$ is too large, the radius of the area of influence of the support vectors only includes the support vector itself and no amount of regularization with C will be able to prevent overfitting.
-When gamma is very small, the model is too constrained and cannot capture the complexity or “shape” of the data. The region of influence of any selected support vector would include the whole training set. The resulting model will behave similarly to a linear model with a set of hyperplanes that separate the centers of high density of any pair of two classes.
-%literal from http://scikit-learn.org/stable/auto_examples/svm/plot_rbf_parameters.html
-
-
-%The gamma parameters can be seen as the inverse of the radius of influence of samples selected by the model as support vectors.
-As it has been already explained in Section \ref{sse:svm}, the C parameter is the cost of misclassification. C trades off misclassification of training examples against simplicity of the decision surface (low C makes the decision surface smooth, while a high C aims at classifying all training examples correctly by giving the model freedom to select more samples as support vectors). 
-
-%A large C gives you low bias and high variance. Low bias because you penalize the cost of missclasification a lot.
-
-The best C and $\gamma$ calculated with Grid-Search are $C= 10.0$ and $\gamma= 0.03125$. %with a score of 0.61
-Table \ref{tab:svmnonlinear} shows the classification metrics for the nonlinear SVM (Radial Basis Function Kernel) and C and $\gamma$.
-
-\begin{table}[H]
-\caption{Classification metrics for SVM} 
-\begin{center} 
-\begin{tabular}{lllll}
-\hline
-\multicolumn{1}{c}{} \\
-%\cline{1}
-Class & precision & recall & f1-score & support     \\
-\hline
-0 & 0.93  &    0.79   &   0.85   &    164 \\
-1 & 0.20  &    0.47   &   0.29   &    19 \\
-\hline
-\end{tabular}
-\caption{The table shows the main classification metrics for the nonlinear SVM classifier (RBF kernel) in the test set with the best hyperparameters C and $\gamma$. The nonlinear SVM classifier performs better than the linear SVM, in particular in \emph{specificity} (recall of negative class).} \label{tab:svmnonlinear} 
-\end{center}
-\end{table}
-
-Figure \ref{fig:svm-rbf-cm} shows the confusion matrix and the Receiver Operating Characteristic (ROC) metric of the nonlinear SVM with Radial Basis Function kernel kernel, balanced the weight of the classes to deal with the unbalanced problem and the hyperparameters $C= 10.0$ and $\gamma= 0.03125$. The nonlinear SVM classifier produces netter results than the linear SVM classifier.
-
-\begin{figure}[H]
-        \centering
-        \includegraphics[keepaspectratio, width=1\linewidth]{figures/SVM-RBF-CM}
-        \caption{Confusion matrix and ROC for nonlinear SVM classifier (RBF kernel). The classifier performs better than the linear SVM (Figure \ref{fig:svm-cm}). The accuracy of SVM classifier on training set is 0.85 and on the test set 0.75} \label{fig:svm-rbf-cm}
-\end{figure}
-
-Figure \ref{fig:svm-cv7} shows the learning curve for the logistic regression classifier using cross-validation (7 splits).
-\begin{figure}[H]
-        \centering
-        \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/SVM-RBF-CV7}
-        \caption{Learning curve for nonlinear SVM classifier with RBF kernel, in red the training score and in green the cross-validation ($cv=7$) score. The nonlinear SMV performs better than the linear SVM (Figure \ref{fig:svm-cv7}) ~0.75 vs. ~0.6. The gap between the training score and the cross validation score suggests high variance, indicating that more data will likely will help improving the results. 
-        } \label{fig:svm-cv7}
-\end{figure}
 
 \subsection{Naive Bayes}
 \label{se:resnaivebayes}
