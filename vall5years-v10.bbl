@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 \providecommand{\url}[1]{{#1}}
 \providecommand{\urlprefix}{URL }
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -6,9 +6,169 @@
   \providecommand{\doi}{DOI~\discretionary{}{}{}\begingroup
   \urlstyle{rm}\Url}\fi
 
-\bibitem{patania2017topological}
-Patania, A., Vaccarino, F., Petri, G.: Topological analysis of data.
-\newblock EPJ Data Science \textbf{6}(1), 7 (2017)
+\bibitem{antipov2017face}
+Antipov, G., Baccouche, M., Dugelay, J.L.: Face aging with conditional
+  generative adversarial networks.
+\newblock arXiv preprint arXiv:1702.01983  (2017)
+
+\bibitem{boughorbel2017optimal}
+Boughorbel, S., Jarray, F., El-Anbari, M.: Optimal classifier for imbalanced
+  data using matthews correlation coefficient metric.
+\newblock PloS one \textbf{12}(6), e0177,678 (2017)
+
+\bibitem{buuren2010mice}
+Buuren, S.v., Groothuis-Oudshoorn, K.: mice: Multivariate imputation by chained
+  equations in r.
+\newblock Journal of statistical software pp. 1--68 (2010)
+
+\bibitem{chollet2017deep}
+Chollet, F.: Deep learning with python.
+\newblock Manning Publications Co. (2017)
+
+\bibitem{duda2012pattern}
+Duda, R.O., Hart, P.E., Stork, D.G.: Pattern classification.
+\newblock John Wiley \& Sons (2012)
+
+\bibitem{fan2008liblinear}
+Fan, R.E., Chang, K.W., Hsieh, C.J., Wang, X.R., Lin, C.J.: Liblinear: A
+  library for large linear classification.
+\newblock Journal of machine learning research \textbf{9}(Aug), 1871--1874
+  (2008)
+
+\bibitem{friedman2001greedy}
+Friedman, J.H.: Greedy function approximation: a gradient boosting machine.
+\newblock Annals of statistics pp. 1189--1232 (2001)
+
+\bibitem{friedman1953essays}
+Friedman, M.: Essays in positive economics.
+\newblock University of Chicago Press (1953)
+
+\bibitem{geron2017hands}
+G{\'e}ron, A.: Hands-on machine learning with Scikit-Learn and TensorFlow:
+  concepts, tools, and techniques to build intelligent systems.
+\newblock " O'Reilly Media, Inc." (2017)
+
+\bibitem{goodfellow2016deep}
+Goodfellow, I., Bengio, Y., Courville, A.: Deep learning (adaptive computation
+  and machine learning series).
+\newblock Adaptive Computation and Machine Learning series p. 800 (2016)
+
+\bibitem{guyon2003introduction}
+Guyon, I., Elisseeff, A.: An introduction to variable and feature selection.
+\newblock Journal of machine learning research \textbf{3}(Mar), 1157--1182
+  (2003)
+
+\bibitem{halko2009finding}
+Halko, N., Martinsson, P.G., Tropp, J.A.: Finding structure with randomness:
+  Stochastic algorithms for constructing approximate matrix decompositions.
+\newblock Arxive  (2009)
+
+\bibitem{he2009learning}
+He, H., Garcia, E.A.: Learning from imbalanced data.
+\newblock IEEE Transactions on knowledge and data engineering \textbf{21}(9),
+  1263--1284 (2009)
+
+\bibitem{hinton2003stochastic}
+Hinton, G.E., Roweis, S.T.: Stochastic neighbor embedding.
+\newblock In: Advances in neural information processing systems, pp. 857--864
+  (2003)
+
+\bibitem{imf2018}
+IMF, I.M.F.: Inequality, your health, and fiscal policy (2018).
+\newblock
+  \urlprefix\url{https://blogs.imf.org/2018/02/05/chart-of-the-week-inequality-your-health-and-fiscal-policy/}
+
+\bibitem{japkowicz2002class}
+Japkowicz, N., Stephen, S.: The class imbalance problem: A systematic study.
+\newblock Intelligent data analysis \textbf{6}(5), 429--449 (2002)
+
+\bibitem{keller1985fuzzy}
+Keller, J.M., Gray, M.R., Givens, J.A.: A fuzzy k-nearest neighbor algorithm.
+\newblock IEEE transactions on systems, man, and cybernetics \textbf{14}(4),
+  580--585 (1985)
+
+\bibitem{king2001logistic}
+King, G., Zeng, L.: Logistic regression in rare events data.
+\newblock Political analysis \textbf{9}(2), 137--163 (2001)
+
+\bibitem{maaten2008visualizing}
+Maaten, L.v.d., Hinton, G.: Visualizing data using t-sne.
+\newblock Journal of machine learning research \textbf{9}(Nov), 2579--2605
+  (2008)
+
+\bibitem{mease2007boosted}
+Mease, D., Wyner, A.J., Buja, A.: Boosted classification trees and class
+  probability/quantile estimation.
+\newblock Journal of Machine Learning Research \textbf{8}(Mar), 409--439 (2007)
+
+\bibitem{mnih2013playing}
+Mnih, V., Kavukcuoglu, K., Silver, D., Graves, A., Antonoglou, I., Wierstra,
+  D., Riedmiller, M.: Playing atari with deep reinforcement learning.
+\newblock arXiv preprint arXiv:1312.5602  (2013)
+
+\bibitem{scikit-learn}
+Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel,
+  O., Blondel, M., Prettenhofer, P., Weiss, R., Dubourg, V., Vanderplas, J.,
+  Passos, A., Cournapeau, D., Brucher, M., Perrot, M., Duchesnay, E.:
+  Scikit-learn: Machine learning in {P}ython.
+\newblock Journal of Machine Learning Research \textbf{12}, 2825--2830 (2011)
+
+\bibitem{schapire1990strength}
+Schapire, R.E.: The strength of weak learnability.
+\newblock Machine learning \textbf{5}(2), 197--227 (1990)
+
+\bibitem{smola2004tutorial}
+Smola, A.J., Sch{\"o}lkopf, B.: A tutorial on support vector regression.
+\newblock Statistics and computing \textbf{14}(3), 199--222 (2004)
+
+\bibitem{steele2009exact}
+Steele, B.M.: Exact bootstrap k-nearest neighbor learners.
+\newblock Machine Learning \textbf{74}(3), 235--255 (2009)
+
+\bibitem{suwajanakorn2017synthesizing}
+Suwajanakorn, S., Seitz, S.M., Kemelmacher-Shlizerman, I.: Synthesizing obama:
+  learning lip sync from audio.
+\newblock ACM Transactions on Graphics (TOG) \textbf{36}(4), 95 (2017)
+
+\bibitem{tishby2015deep}
+Tishby, N., Zaslavsky, N.: Deep learning and the information bottleneck
+  principle.
+\newblock In: Information Theory Workshop (ITW), 2015 IEEE, pp. 1--5. IEEE
+  (2015)
+
+\bibitem{tomek1976two}
+Tomek, I.: Two modifications of cnn.
+\newblock IEEE Trans. Systems, Man and Cybernetics \textbf{6}, 769--772 (1976)
+
+\bibitem{vapnik2013nature}
+Vapnik, V.: The nature of statistical learning theory.
+\newblock Springer science \& business media (2013)
+
+\bibitem{wang2004imbalanced}
+Wang, B., Japkowicz, N.: Imbalanced data set learning with synthetic samples.
+\newblock In: Proc. IRIS Machine Learning Workshop, vol.~19 (2004)
+
+\bibitem{crispdmwiki}
+wikipedia: Cross-industry standard process for data mining.
+\newblock
+  \urlprefix\url{https://en.wikipedia.org/wiki/Cross-industry_standard_process_for_data_mining}
+
+\bibitem{wiki:knn}
+{Wikipedia contributors}: K-nearest neighbors algorithm --- {Wikipedia}{,} the
+  free encyclopedia (2018).
+\newblock
+  \urlprefix\url{https://en.wikipedia.org/w/index.php?title=K-nearest_neighbors_algorithm&oldid=851858439}.
+\newblock [Online; accessed 26-July-2018]
+
+\bibitem{witten2005data}
+Witten, I.H., Frank, E.: Data mining: Practical machine learning tools and
+  techniques, (morgan kaufmann series in data management systems).
+\newblock Morgan Kaufmann, June \textbf{104}, 113 (2005)
+
+\bibitem{wolpert1997no}
+Wolpert, D.H., Macready, W.G.: No free lunch theorems for optimization.
+\newblock IEEE transactions on evolutionary computation \textbf{1}(1), 67--82
+  (1997)
 
 \bibitem{wu2012foundations}
 Wu, J., Coggeshall, S.: Foundations of predictive analytics.

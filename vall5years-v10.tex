@@ -5,6 +5,8 @@
 
 \documentclass[11pt]{article}
 \usepackage{tabularx}
+\newcolumntype{b}{X}
+\newcolumntype{s}{>{\hsize=.5\hsize}X}
 %\usepackage[spanish]{babel}
 \usepackage[english]{babel}
 %\usepackage[osf]{mathpazo}
@@ -104,7 +106,7 @@
 \title{ \normalsize \textsc{Identificación de Factores de Riesgo en Deterioro Cognitivo Level con técnicas de inteligencia artificial: Ayuda al Diagnóstico con datos longitudinales del Proyecto Vallecas}
 		\\ [2.0cm]
 		\HRule{0.5pt} \\
-		\LARGE \textbf{\uppercase{Identification of risk factors in Mild Cognitive Impairment: Artificial intelligence   for early detection in \emph{Vallecas} longitudinal dataset}}
+		\LARGE \textbf{\uppercase{Identification of risk factors in the \emph{Vallecas} longitudinal dataset. Applying Artificial Intelligence in early detection of Mild Cognitive Impairment}}
 		\HRule{2pt} \\ [0.5cm]
 		\normalsize \today \vspace*{5\baselineskip}}
 
@@ -138,15 +140,15 @@
 
 \section*{Resumen}
 
-La multifactorialidad, comorbilidad y el carácter asíntomático en estadio iniciales de la enfermedad de Alzheimer (EA) están dificultando enormemente la obtención de tratamientos efectivos. No debería sorprender pues que el ratio de éxito en la aprobación de fármacos en AD sea un exiguo $0.4\%$, uno de los mas bajos de la industria farmacéutica. 
-La identificación de factores de riesgo, preferentemente de sencilla obtención, se hacen cada vez mas necesarios habida cuenta de que la prevalencia de la EA crece exponencialmente con la edad. 
+La multifactorialidad, comorbilidad y el carácter asíntomático en el estadio iniciales de la enfermedad de Alzheimer (EA) están dificultando enormemente la obtención de tratamientos efectivos. No debería sorprender pues que el ratio de éxito en la aprobación de fármacos en EA sea un exiguo $0.4\%$, uno de los mas bajos de la industria farmacéutica. 
+La identificación de factores de riesgo, preferentemente de sencilla obtención, se hacen cada vez más necesarios habida cuenta que la prevalencia de la EA crece exponencialmente con la edad y la esperanza de vida se prolonga cada vez más en una población cuya natalidad se reduce.
 
-Investigadores del Proyecto Vallecas a lo largo de los últimos 6 años han ido recabando información de voluntarios de mas de 70 años, dicha información incluye entre otros, factores relativos al estilo de vida (dieta, sueño, ejercicio físico etc), demográfica y socioeconómica (lugar de residencia, sexo, educación, estado civil etc.), quejas subjetivas de memoria etc.
+Los investigadores del Proyecto Vallecas a lo largo de los últimos 6 años han ido recabando información de voluntarios de más de 70 años. Dicha información incluye entre otros, factores relativos al estilo de vida (dieta, sueño, ejercicio físico etc), datos demográficos y socioeconómicos (lugar de residencia, sexo, educación, estado civil etc.), presencia de quejas subjetivas de memoria etc.
 
-El objetivo de este estudio es el de identificar un conjunto de factores autoinformados, es decir factores conocidos por el propio sujeto sin necesidad de un experto o procedimiento externo, que sean de ayuda a la hora de clasificar sujetos con riesgo de convertir a estadios de deterioro cognitivo. 
+El objetivo de este estudio es el de identificar un conjunto de factores autoinformados, es decir, factores conocidos por el propio sujeto sin necesidad de un experto o procedimiento externo, que sean de ayuda a la hora de clasificar sujetos con riesgo de padecer/desarrollar un deterioro cognitivo.
 Se reclutaron 921 individuos cognitivamente sanos participantes en el estudio longitudinal enmarcado en el Proyecto Vallecas. Los participantes fueron evaluados anualmente a lo largo de los cinco años del estudio. La evolución clínica clasificó los participantes en dos grupos controles y conversores a deterioro cognitivo level (DCL) $(9,4\%)$. 
 Se utilizaron técnicas de \emph{machine learning} incluyendo, reducción de dimensionalidad y aprendizaje supervisado conducentes a la obtención de modelos predictivos de conversion a DCL. Los algoritmos predictivos utilizados presentaron una precisión y exactitud muy por encima de estimadores aleatorios.
-Este estudio muestra que la base de datos del Proyecto Vallecas, explotada convenientemente con algoritmos capaces de capturar patrones complejos no lineales, puede ayudar a identificar factores de riesgo de conversion a deterioro cognitivo. La detección temprana mediante este tipo de técnicas permite no solo detector factores de riesgo en fases asintomáticas sino además establecer intervenciones personalizadas que incidan en el estilo de vida.
+Este estudio muestra que la base de datos del Proyecto Vallecas, explotada convenientemente con algoritmos capaces de capturar patrones complejos no lineales, puede ayudar a identificar factores de riesgo de conversión a deterioro cognitivo. La detección temprana mediante este tipo de técnicas permite no solo detectar factores de riesgo en fases asintomáticas sino además establecer intervenciones personalizadas que incidan en el estilo de vida.
 
 \section*{Abstract}
 Alzheimer's Disease (AD) is a complex, multifactorial and comorbid condition. The asymptomatic behavior in early stages of the disease is a paramount obstacle to formulate a preclinical and predictive model of AD. Not surprisingly, the AD drug approval rate is one of the lowest in the industry, an exiguous $0.4\%$. The identification of risk factors, preferably obtained by the subject herself, is sorely needed given that the incidence of Alzheimer’s disease grows exponentially with age. 
@@ -174,9 +176,25 @@ Prediction is a way to generate information you do not have, that is, a predicti
 Before going any further it is worth giving some basic definitions on the methodology we use here. First, we need to understand what \textbf{Artificial Intelligence} (AI) is. The term AI was coined in 1956 by John McCarthy, AI studies how human intelligence can be implemented in technical systems. AI is an overarching concept including all sort of intelligent processes done by humans such as planning, problem solving, understanding language, recognizing objects, learning etc. 
 Machine learning is an approach to achieve Artificial Intelligence. However, machine learning is more modest in the sense that does not claim to reverse engineer the human mind, it rather deals with making prediction as accurate as possible. While AI tries to build 'intelligent' machines, machine learning, on the other hand, focuses on one aspect of intelligence, prediction.
 Finally, \textbf{Deep Learning} is the most promising and popular approach to machine learning, other approaches include decision trees, Bayesian network, kernel methods, clustering etc.
-  
-In this study we use machine learning techniques (all the above mentioned and others) to investigate the factors that are most informative for conversion to MCI and dementia. The goal is to build algorithms capable of predicting the next stage (non conversion, conversion) in the cohort of \emph{Proyecto Vallecas}. We pay particular attention to the learning capabilities of our predictive analysis model. Our ambition is build a system that has been tested and validated in the \textit{Vallecas} dataset and can be fed and deployed in larger scenarios e.g. health insurers, municipal or regional health systems, providing comprehensible and accurate predictions. The objective is to build a system, in the most cost effective way, that predicts whether a subject will convert to mild cognitive impairment. In order to do so, we will use only as an input of our machine learning algorithms self-informed features, that is to say, features that do not require an expert to be collected e.g. neurologist nor a neuropsychologist performing neurological examinations or cognitive performance tests. Features that require lab tests (e.g APOE gene variant.) are also excluded.
-Thus, we identify a set of self-informed features with predictive power called the \textbf{Vallecas Index}. 
+
+Our goal here is twofold, first and foremost demonstrate the predicting power of machine learning techniques in the \emph{Vallecas dataset}, and second introduce a new set of techniques that go under the umbrella of machine learning that provide a new framework and methodology different form canonical statistical modeling. Since this may not be obvious to researchers not acquainted with Artificial Intelligence and Machine learning, we highlight the main differences between statistical learning and machine learning in  Table \ref{tab:smml}.  
+
+\begin{table}[htbp]
+    \centering
+    %\begin{tabularx}{\textwidth}{| X | X | X |}
+    \begin{tabularx}{\textwidth}{bb}
+        \hline
+        Statistical modeling     & Machine learning        \\ \hline
+        Statistical modeling is applying statistics on data to find underlying relationships by analyzing the significance of the variables.         & Machine learning is a subset of AI, builds computer programs of statistical techniques that learn from data.                \\ \hline
+        Emphasis is in the significance of the variables and building confidence intervals. & Emphasis is on using computers to estimate functions rather than confidence intervals around these functions.             \\ \hline
+        Statistical models start with assumptions about the variables, perform hypothesis testing. & No prior assumption about input. \\  \hline
+        Fits the hyperplane with the least errors. & Optimization of parameters that minimize a cost function (e.g. gradient descent: update parameter in the opposite direction to the gradient). \\  \hline
+		Relationships between the variables are formalized in mathematical equations.& Algorithm rather than a priori equations, patterns are automatically learn from data.\\  \hline
+		Performs significance tests (Diagnostics of parameters p-value etc.)& Significance tests are not required.\\  \hline
+		Data split into training and test sets. & Data split into training, validation and test sets.\\  \hline	
+    \end{tabularx}
+    \caption{Statistical modeling vs Machine learning}  \label{tab:smml}
+\end{table}
 
 %  Thus, Section \ref{} performs exploratory data analysis, including multicollinearity detection among different features and commenting on the feature engineering process used. Section \ref{} explains the different predictive models implemented and Section \ref{} deals with the evaluation of the predictive models that are described in the previous section. Importantly, we weigh on the interpretability side of the results and not only on the prediction side, section \ref{sse:interp}.
 The document is self contained, it provides a painless introduction to machine learning where the emphasis is in understanding the mechanics of the techniques used rather than mathematical formalization. We follow a first principles example-based approach in which the outcome of the algorithms' implementations is explained and put in the context of the  \emph{Vallecas} dataset. Our hope is to accomplish the dual objective of being both didactic about machine learning techniques and informative about the results obtained in the \emph{Vallecas Project} using those techniques.
@@ -206,7 +224,7 @@ The CRISP-DM model is the most popular methodology used in machine learning. CRI
 		\item Data quality analysis: Deal with missing values, inconsistent values.
 		%3. Data preparation
 		\item Clean, wrangle and curate the dataset before the learning machinery is launched to build models. This is the most time consuming phase, $(60\%)$ of the time.
-		\item Data integration : In case of having multiple datasets. This will have to be taken care of when we integrate theis dataset with with the imaging dataset.
+		\item Data integration : In case of having multiple datasets. This will have to be taken care of when we integrate this dataset with with the imaging dataset.
 		\item Data wrangling: Handle missing values (remove rows, handle missing values), formatting into csv, json etc.
 	\end{itemize}
 \item \textbf{Modeling}: various modeling techniques are selected and applied (Section \ref{se:res}). Specifically:
@@ -557,8 +575,8 @@ Figure \ref{fig:anovabox} shows the box plot for features that reject the null h
 \end{figure}
 
 \newpage
-%\section{Modeling using Machine Learning techniques} 
-\section{Predictive analytics with Machine Learning} 
+%\section{Predictive analytics with Machine Learning techniques} 
+\section{Machine Learning} 
 \label{se:mod}
 
 Machine learning is changing numerous aspects in our lifes. Predictive algorithms are now capable of performing tasks that before would require an expert. The range of domains of applications in which machine learning have shown optimal results is impressive. Natural language translation (Google Neural Machine Translation), lip reading \cite{suwajanakorn2017synthesizing} and face  reconstruction of aging process using Conditional Generative Adversarial Networks \cite{antipov2017face}, to just cite some recent achievements of Artificial Intelligence.
@@ -569,7 +587,7 @@ Here we are interested in building learning systems that accurately predicts whe
 
 We will explore a number of different algorithms and we will evaluate the goodness of fit of those algorithms with the problem at hand -predict conversion to MCI from healthy subjects. We are, methodologically speaking, promiscuous for a reason. There is no a machine learning algorithm that is universally any better than any other. This is related to the \emph{no free lunch theorem} in search and optimization \cite{wolpert1997no}. It follows that the goal of machine learning is not to seek an universal learning algorithm, instead the goal must be to understand what kinds of distributions are relevant to the real world that an AI agent is experiencing. Thus, we must content ourselves to develop algorithms that perform well in a particular task and we do this by adding preference hyperparameters \footnote{Hyperparameter is a parameter whose value is set before the learning process begins. By contrast, the values of other parameters are derived via training.} (e.g. regularization) in the algorithm.  
 
-In the next section we deal with the divulgative aspect and we provide a short introduction to machine learning, the reader familiarized with the topic can skip and go directly to the Results Section \ref{se:res}, where the models are implemented and discussed. 
+In the next section we deal with the didactic aspect and we provide a short introduction to machine learning, the reader familiarized with the topic can skip and go directly to the Results Section \ref{se:res}, where the models are implemented and discussed. 
 
 \subsection{Introduction to Machine Learning} 
 \label{sse:iml}
@@ -783,132 +801,146 @@ Overfitting in SVM is tackle via expanding or narrowing the margin 'street' with
 
 The implementation and the results obtained with this kind of classifier are discussed in Section \ref{se:ressvm}.
 
-\subsection{k-nearest neighbors algorithm}
-\label{sse:kneighbors}
-
-The k-nearest neighbors algorithm (k-NN) is a non-parametric \footnote{KNN makes no explicit assumptions about the functional form of the mapping $h:X->y$ this is contrary to what happens in for example, Naive Bayes where it is assumed that data follow a Gaussian distribution} instance-based supervised learning algorithm used for classification and regression. In classification, a point is classified by a majority vote of its neighbors -the point will belong to the most common class amongst its k neighbors. If $k=1$ the point is simply assigned the same class of ts closest neighbor.
-k-NN is a type of instance-based learning or lazy learning, where the function is only approximated locally and all computation is deferred until classification \cite{keller1985fuzzy}. k-NN breaks the input space into box looking regions. The best choice of k depends upon the data and the empirically optimal k can be calculated with the bootstrap method. Scaling and feature selection must be carefully done because the accuracy of the k-NN algorithm can be severely degraded by the presence of noisy or irrelevant features. In general, larger k reduces effect of the noise on the classification. In binary classification (eg. converter vs non converter) it is helpful to choose k to be an odd number as this avoids tied votes.
-
-k-NN works as follows, given a training set $X_train$ with labels $y_train$ and an instance $x_test$ to be classified, the algorithm first  finds the set of most similar instances to $x_test$ and we call then $X_NN$. Next, it predicts the labels $y_NN$ for $X_NN$ and finally predicts the label for $x_test$ by combining the labels $y_NN$ using simply majority vote. 
-
-k-NN requires minimal training but relies upon expensive testing and can be used as a benchmark for more complex classifiers such as artificial networks which contrary to k-NN  have lengthy training phase albeit a very fast testing phase. k-NN can suffer from skewed class distributions, that is, if a certain class is very frequent in the training set it might perform poorly because the majority voting it will tend to dominate the response. Finally, the accuracy of k-NN can be severely degraded with high-dimension data because there is little difference between the nearest and farthest neighbor.
-
-%https://www.coursera.org/learn/python-machine-learning/lecture/I1cfu/k-nearest-neighbors-classification-and-regression
-One weakness of k-NN  is that it cannot learn whether one feature is more discriminative than another, this as will see later it is an important obstacle because our dataset which is unbalanced (9 times more class 0 than class 1).
-
-The implementation and the results obtained with this kind of classifier are discussed in Section \ref{se:reskneighbors}.
-
 \subsection{Naive Bayes Classifier}
 \label{sse:naivebayes}
+%https://www.deeplearningbook.org/contents/ml.html pg 96
+The ideal model is an oracle that knows the true probability distribution that generates the data, $p(x,y$. But even if we had the oracle we  the distribution will contain noise. For example, the mapping $x \to y$ is inherently stochastic (observation error) or the mapping is deterministic but there are latent variables not included in $X$ that affect $y$. Bayes error is the irreducible error, that is, the lowest possible prediction error incurred by an oracle making predictions from the true distribution $p(x,y)$. For example, we know that the process of flipping a coin can be generated with a binomial distribution but if we are tasked to predict the outcome we will make errors because the process in inherently stochastic \footnote{Tossing a coin is in reality a deterministic process obeying laws of physics, therefore with the "correct" motion equations we could predict the outcome.}
 
-The ideal model is an oracle that knows the true probability distribution that generates the data. But even if we had the oracle we still could incur in errors for example if there is noise in the distribution.
-The mapping $X \to y$ could be inherently stochastic or even if y were deterministic the mapping could still involve variables that are not included in the model. The error incurred by an oracle making predictions from the true distribution is called the Bayes error.
 
 %https://www.evernote.com/shard/s263/nl/33458921/18793f59-d0f8-40c0-b1a5-6f51bab38c60?title=Naive%20Bayes%20Classifier
-The naive Bayes \footnote{Thomas Bayes hardly deserves the glory, Laplace had not only the intuition but provided the mathematical formulation. This unfairness in author attribution is not rare in science and human affairs, e.g. Amerigo Vespucci naming America.} classifier determines to which class a sample belongs to by calculating the posterior probability using the Bayes formula $p(C|X)$ where X is the sample and C the target class.
-The Bayes rules combines two sources of information -prior and likelihood- to calculate the posterior which is the final classification criterion. 
-
-The likelihood of the features is assumed to be Gaussian and the parameters $\sigma_y$ and $\mu_y$ are estimated using maximum likelihood estimation:
+The naive Bayes \footnote{Thomas Bayes hardly deserves the glory, Laplace had not only the intuition but provided the mathematical formulation. This unfairness in author attribution is not rare in science and human affairs, e.g. Amerigo Vespucci naming America.} classifier determines to which class a sample belongs to by calculating the posterior probability using the Bayes formula,
+\begin{equation}
+p(y|x) = \frac{p(y)p(x|y)}{p(x)}
+\label{eq:bayesrule}
+\end{equation}
+where x is the sample and y the target class. The Bayes rules (Equation \ref{eq:bayesrule}) combines two sources of information -the prior $(p(x))$ and the likelihood $(p(y|x))$- to calculate the posterior $(p(x|y))$ which is the final classification criterion. 
+The likelihood of the features $x_i \in x$ is assumed to be Gaussian and the parameters $\sigma_{y}$ and $\mu_{y}$ are estimated using maximum likelihood estimation:
 \begin{equation} 
 P(x_i|y)= \frac{1}{\sqrt{2\pi\sigma_y^{2}}}e^{-\frac{(x_i-\mu_y)^2}{2\sigma_y^2}}
 \label{eq:naiveb}
 \end{equation}
 
-If the posterior (posterior = prior $\times$ likelihood) of X being a converter is larger than the posterior of X being a non converter, then we classify X as a converter ($p(C|X) > p(~C|X)$). Let us see this with an example, given a subject X with the features values 
+If the posterior probability (posterior = prior $\times$ likelihood) of x being a converter is larger than the posterior of x being a non converter, then we classify x as a converter. Let us see this with an example, given a subject \emph{x} with the features values 
 \begin{equation*}
-X_1 = 0, X_2=30, X_3=12
+x_1 = 0, x_2=30, x_3=12
 \end{equation*}
-where $X_1$ is APOE, $X_2$ is the mini-mental score (MMSE) and $X_3$ is the number of school years, then we need to calculate the 
-posterior probability of converting (C):
+where $x_1$ is APOE, $x_2$ is the mini-mental score (MMSE) and $x_3$ is the number of school years, then we need to calculate the 
+posterior probability of converting, $y=1$:
 \begin{equation*}
-p(C|X_1,X_2,X_3) = p(X_1|C) * P(X_2|C) * P(X_3|C) * P(C)
+p(y=1|x_1,x_2,x_3) = p(x_1|y=1) * P(x_2|y=1) * P(x_3|y=1) * P(y=1)
 \end{equation*}
 
-The assumption is that the features (also called predictors or inputs $f_i$) are independent, and this is why we can easily calculate the likelihood (e.g. $P(fi_x|C)$) as a product of conditional probabilities. Note that this assumption is quite strong, it means that the presence of a feature in a class is unrelated to the presence of other feature, for example in the previous example it would imply that having large MMSE and the years of school are uncorrelated.
+The assumption is that the features (also called predictors or inputs $x_i$) are independent, and this is why we can easily calculate the likelihood (e.g. $P(x_i|y_j)$) as a product of conditional probabilities shown in the above equation. Note that this assumption is quite strong, it means that the presence of a feature in a class is unrelated to the presence of other feature, for example in the previous example it would imply that having large MMSE and the years of school are uncorrelated.
 
-When the assumption of independence holds, a Naive Bayes classifier tends to perform better than other models such as logistic regression with the advantage that naive Bayes needs less training data to perform well in case of categorical input variables compared to numerical variable(s). For numerical variables, normal distribution is assumed (bell curve, which is a strong assumption).
+When the assumption of independence holds, a Naive Bayes classifier tends to perform better than other models such as logistic regression with the advantage that naive Bayes needs less training data to perform well in case of categorical input variables compared to numerical variable(s). %For numerical variables, normal distribution is assumed (bell curve, which is a strong assumption).
 Bayes tend to be efficient in learning and prediction but poor in generalization compared with more sophisticated methods.
 
-The implementation and the results obtained with this kind of classifier are discussed in Section \ref{se:resnaivebayes}.
+The implementation and the results obtained with the naive Bayes classifier in the \emph{Vallecas} dataset are discussed in Section \ref{se:resnaivebayes}.
+
+\subsection{k-Nearest Neighbors}
+\label{sse:kneighbors}
+
+The k-nearest neighbors algorithm (k-NN) is a non-parametric \footnote{KNN makes no explicit assumptions about the functional form of the mapping $h:X->y$ this is contrary to what happens in for example, Naive Bayes where it is assumed that data follow a Gaussian distribution} instance-based algorithm used for classification and regression. In classification, a point is classified by a majority vote of its neighbors -the point will belong to the most common class amongst its k neighbors. If $k=1$ the point is simply assigned the same class of ts closest neighbor. The best choice of k depends upon the data and the empirically optimal k can be calculated with the bootstrap method \cite{steele2009exact}. In general, larger k reduces effect of noise on the classification. In binary classification (eg. converter vs non converter) it is helpful to choose k to be an odd number as this avoids tied votes.
+%k-NN breaks the input space into box looking regions.
+
+k-NN is a type of instance-based learning or lazy learning, where the function is only approximated locally and all computation is deferred until classification \cite{keller1985fuzzy}. The k-NN algorithm does not learn during the training phase, it rather works by comparing the given test observations with nearest training observations during the testing/evaluation phase. This learning 'on-the-fly' makes it computationally inefficient especially for large dimensionality datasets.
+It warrants noting that scaling and feature selection must be carefully done because the accuracy of the k-NN algorithm can be severely degraded by the presence of noisy or irrelevant features. 
+
+k-NN works as follows, given a training set $X$ with labels $Y$ and an instance $x \in X$, $y \in Y$ to be classified, the algorithm first finds the set of most similar instances to $x$, called $x_{NN}$. Next, it predicts the labels $y_{NN}$ for $x_{NN}$ and finally predicts the label for $x$ by combining the labels $y_{NN}$ simply using majority vote. See Figure \ref{fig:knnwiki} for an example . 
+
+\begin{figure}[H]
+        \centering
+        \includegraphics[keepaspectratio, width=0.3\linewidth]{figures/KnnClassification}
+        \caption{How the k-NN classifies the green dot depends on the k parameter. If $k=1$, the green dot would be classified as red because the closest neighbor is red. If $k=3$ (solid circle) the green dot will be classified as red for majority vote. If $k=5$ the majority vote of the five nearest neighbors (dashed circle) will yield blue (\cite{wiki:knn}).
+        } \label{fig:knnwiki} 
+\end{figure}
+
+
+k-NN requires minimal training but relies upon expensive testing and can be used as a benchmark for more complex classifiers such as artificial networks, which contrary to k-NN, have lengthy training phase, albeit a fast testing phase. 
+%https://kevinzakka.github.io/2016/07/13/k-nearest-neighbor/
+k-NN can suffer from skewed class distributions, that is, if a certain class is very frequent in the training set it might perform poorly because the majority voting it will tend to dominate the response. Finally, the accuracy of k-NN can be severely degraded with high-dimensional data because with high density there may be very little difference between the nearest and farthest neighbor.
+
+%https://www.coursera.org/learn/python-machine-learning/lecture/I1cfu/k-nearest-neighbors-classification-and-regression
+An important weakness of k-NN is that it cannot learn whether one feature is more discriminative than another. This as will see in the Results section it is an important disadvantage for the k-NN classifier in the \emph{Vallecas} dataset which is unbalanced.
+The implementation and the results obtained with this kind the k-nearest neighbors algorithm classifier are discussed in Section \ref{se:reskneighbors}.
 
 \subsection{Decision trees}
 \label{sse:dectrees}
 
-Decision trees are a popular supervised learning method can be used for both regression and classification.
-In essence, decision trees learn a set of conditional rules (if-then) on features values that result in the prediction, so the idea is to find a set of rules useful to categorize an object (reminiscent to expert systems in the 70s and 80s) but rather than figure out manually the rules for every task the algorithm will learn it for us.
+Decision trees (DT) are a popular supervised learning method can be used for both regression and classification.
+In essence, decision trees learn a set of conditional rules (if-then) on features values that result in predictions, so the idea is to find a set of rules useful to categorize an object. Although this is reminiscent to expert systems developed in the 70s and 80s, expert systems required the human expert's input to specify rules, in a decision tree the algorithm automatically learns the rules for every task.
 
-Contrary to linear models that assume that data are linear, decision trees make very few assumptions.
-DT are nonparametric models. It is worth noting that nonparametric is a misnomer, it does not mean that it does not have parameters, rather the opposite it has a lot, it means that the parameters are not determined prior to training, the model adapts to the data fitting to it (often overfitting). A parametric model (eg linear model) has a predetermined number of parameters reducing thus, the risk of overfitting but increasing the risk of underfitting. In order to avoid overfitting in DT it is important to restrict this adaptive or sticky properties of decision trees (regularization), for example the max depth hyperparameter will reduce the risk of overfitting.
+DT are nonparametric models and contrary to linear models, decision trees make very few assumptions. It is worth noting that nonparametric is a misnomer, it does not mean that a DT does not have parameters, rather the opposite it has a lot, it rather means that the parameters are not determined prior to training. Thus, the tree adapts to the data by fitting to the data samples (often overfitting). A parametric model e.g. a linear model has a predetermined number of parameters reducing thus, the risk of overfitting but increasing the risk of underfitting. In order to avoid overfitting in DT it is important to restrict the adaptive or sticky properties of decision trees using regularization, for example the max depth hyperparameter will reduce the risk of overfitting.
 % (by default is none ie. no limitation, so likely overfit).
 
-Each node in a DT is associated with a region in the input space, space is then divided into non-overlapping regions with a 1-1 correspondence between leaves and input regions. Decision trees require very little preparation, for example they do not need to scale or centering the data, remember than in SVM scaling was critical otherwise the algorithm would neglect small features.
-Importantly, decision trees are \emph{white box} models they can identify the features that are more relevant to predict the target.
-%in contrast with neural networks and random forests. 
-The decision boundaries are calculated with entropy measures such as the Gini coefficient which gives the impurity of a tree node and is calculated as:
+Each node in a DT is associated with a region in input space which is then divided into non-overlapping regions with a 1-1 correspondence between leaves and input regions. The decision boundaries are calculated with entropy measures such as the Gini coefficient which gives the impurity of a tree node and is calculated as:
 
 \begin{equation} 
 G_i = 1- \sum_{k=1}^{n} p_{i,k}^2
 \label{eq:gini}
 \end{equation}
 where $p_{i,k}$, is the ratio of instances of class k in node i. A node is pure if Gini is 0 i.e. all training instances belong to the same class. The Gini coefficient is not the only possible measure, Shannon's entropy can be used and will produce very similar results. Gini is a bit faster than Shannon's entropy but Gini tends to isolate the most frequent class in its own branch of the tree, while entropy tends to produce more balanced trees. %criterion='entropy'
-%DecisionTreeRegressor
+%However, other algorithms such as ID3 can produce Decision Trees with nodes that have more than two children”
+ 
+Decision trees are nonparametric models (the number of parameters is not known in training time) that is to say, the model will have as many parameters as it needs to fit the data. It follows that if left unconstrained, the tree will fit the data very closely, and most likely overfitting. This is an important difference with the previous models seen above (logistic regression, SVM and naive Bayes) which are parametric (limited degree of freedom) models. 
+The main concern in Decision Tree is then to reduce the degrees of freedom to avoid overfitting. The parameter $max\_depth$ regularizes the. model and reduces the risk of overfitting.
 
-We use the \emph{sklearn} learn implementation of decision trees algorithm (CART) which uses binary trees, however there are other algorithms that produce trees with more than two children, eg. ID3. A decision tree can also estimate the probability that an instance belongs to a class (SVMs do not have this feature).
+We use the \emph{sklearn} implementation of decision trees algorithm - the Classification and Regression Tree (CART) algorithm- to produce binary trees (yes/no answers) (Equation \ref{eq:cart}). However there are other algorithms that produce trees with more than two children, e.g. ID3. A decision tree can also estimate the probability that an instance belongs to a class (SVMs do not have this feature).
 % tree_clf.predict_proba
-The CART algorithm is \textbf{greedy}: it looks for the optimum split at the top level but does not care if the split will lead to lower impurity in the downstream levels. It does the optimum split at the top and never thinks twice about the consequences down the road \footnote{Trickle down economics}. CART does not guarantee to find the optimal solution, it splits the training set using feature k and threshold $t_k$, the algorithm chooses then the pair $(k,t_k)$ by looking for the split that produces the purest split weighted by the size, so the cost function that the algorithm minimizes has an impurity term factored by the size term for both right and left side 
+The CART algorithm is \textbf{greedy}: it looks for the optimum split at the top level but does not care if the split will lead to lower impurity in the downstream levels. CART does the optimum split at the top and never thinks twice about the consequences down the road \footnote{Trickle down economics}. 
+CART does not guarantee to find the optimal solution, it splits the training set using feature k and threshold $t_k$, the algorithm chooses then the pair $(k,t_k)$ by looking for the split that produces the purest split weighted by the size, so the cost function that the algorithm minimizes has an impurity term factored by the size term for both right and left side. The cost function is: 
 
 \begin{equation}\label{eq:cart}
 J(k,t_k) = \frac{m_{left}}{m}G_{left} + \frac{m_{right}}{m}G_{right}
 \end{equation}
-where J is the cost function, $G_{L/R}$ measures the impurity of left/right branch and $m_{L/R}$ is the number of instances in the left/right branch 
-The algorithm stops recursing once it reaches the maximum depth (defined by the $max_depth$ hyperparameter), or if it cannot find a split that will reduce impurity. 
+where J is the cost function, $G_{L/R}$ measures the impurity of left/right branch and $m_{L/R}$ is the number of instances in the left/right branch.  
+The algorithm stops recursing once it reaches the maximum depth (defined by the $max\_depth$ hyperparameter) or if it cannot find a split that will reduce impurity. 
 
-Finding the optimal tree is an NP-problem (cannot be solved in polynomial time). Prediction in decision trees is however fast, a prediction requires traversing the tree form the root to a leaf, since the trees are approximately balanced it will go through $\log_{2}m$ nodes and for each node it needs to check only the value of one feature, the overall complexity is $O(\log_{2}m)$ independent of the number of features
+Finding the optimal tree is an NP-problem (cannot be solved in polynomial time). Prediction in decision trees is however fast, a prediction requires traversing the tree form the root to a leaf. Since trees are approximately balanced it will go through $\log_{2}m$ nodes and for each node it needs to check only the value of one feature, the overall complexity is $O(\log_{2}m)$. The complexity is independent of the number of features and therefore decision trees scale very good.
 %“Unfortunately, finding the optimal tree is known to be an NP-Complete problem: it requires O(exp(m)) time, making the problem intractable even for fairly small training sets. This is why we must settle for a “reasonably good” solution.”
 %“Since each node only requires checking the value of one feature, the overall prediction complexity is just $O(\log_{2}(m))$, independent of the number of features. So predictions are very fast, even when dealing with large training sets.”
 %“However, the training algorithm compares all features (or less if $max_features$ is set) on all samples at each node. This results in a training complexity of O(n × m log(m)). For small training sets (less than a few thousand instances), Scikit-Learn can speed up training by presorting the data (set presort=True), but this slows down training considerably for larger training sets.”
 
-% if accuracy on training > acc test we are doing overfitting, one strategy is to keep addin
 When the tree keeps adding rules it may become very complex, the tree can start to memorize rather than learning  and it will overfit \footnote{Overfitting happens in every machine-learning problem, the dialectics of Machine learning is in optimization versus generalization. Optimization refers to adjusting the model in order to get the best possible performance in the training set and generalization is about how well the trained model performs on data never seen before}. To avoid this we can prevent the growth of the tree using the max depth parameter which controls the maximum number of splitting points (eg 3) and minimum-maximum samples leaf which is the number of data instances that a leaf can have to avoid further splitting. In practice, the max depth parameter is enough to deal with overfitting.
 
-The pros are that are simple to understand and interpret, no need of feature normalization or scaling and work well with databases with heterogeneous data types. In the cons side, decision trees, especially complex tree, tend to overfit and instability (DT are very sensitive to small variations in the training data) due to the orthogonality of the boundaries which makes them sensitive to dataset rotation. 
-One solution to this problem is to use PCA which often results in a better orientation of the training data. In the next section (\ref{sse:ensemble}) we show ensemble methods such as Random Forests that might help to alleviate this overfitting problem by averaging predictions over many trees.
+The pros of DTs are that they are simple to understand and interpret, no need of feature normalization or scaling and work well with databases with heterogeneous data types. 
+DTs have at least two weaknesses: overfitting and instability. Decision trees, especially complex trees very deep and/or wide, tend to overfit. The orthogonality of the decision boundaries makes them sensitive to dataset rotation making as as consequence DTs are very sensitive to small variations in the training data.
+One solution to the instability problem is to use PCA which often results in a better orientation of the training data. In the next section (\ref{sse:ensemble}) we show ensemble methods such as Random Forests that might help to alleviate the overfitting problem by averaging predictions over many trees.
 
-The implementation and the results obtained with decision trees are discussed in Section \ref{se:resdectree}.
+The implementation and the results obtained with decision trees are discussed in Section \ref{sse:resdectrees}.
 
 \subsection{Ensemble Methods}
 \label{sse:ensemble}
-The main idea of an ensemble method can be exemplified as ask to a thousand people (experts) and then aggregate their answers, in many cases the aggregate is better than the expert's response. By the same token, aggregating many predictors will give better answers than a single one. \emph{Don't look at the tree it may be lying... but to the forest!}. 
+How ensemble methods work can be understood by analogy as asking to a thousand people (experts) and then aggregate their answers. Likely, the response of the aggregate is better than the individual expert's responses. By the same token, the aggregation of many inaccurate predictors will give better answers than the individual predictions. Or going from analogy to allegory: \emph{Don't look at the tree it may be lying... but to the forest!}. 
 
-Ensemble Learning refers to the learning process in which the predictors define an ensemble. It goes without saying that ensemble methods make sense only once individual methods e.g. decision tree, SVM, logit etc. are available. For example, an ensemble of decision trees or an ensemble of logistic regressors will produce as many individual predictions as elements the ensemble has. the classification problem can be solved by counting votes i.e. the winning class will be the one with the most votes. TA majority vote is the decision process in hard voting classifiers. Hard voting classifiers often achieve higher accuracy than the best individual classifiers in the ensemble. 
-
-If we need to rank the votes, that is, some classifiers are more trustworthy than others and should have more weight in the final decision then we can use soft voting. In soft voting the classifier is able to estimate class probabilities \footnote{SVC does not estimate class probabilities but still you can use the SVC class for soft voting, just set the probability hyperparameter to True (this will make the SVC class use cross validation to estimate class probabilities, slowing down training, and it will add a $predict\_proba()$}. Soft voting often achieves better performance than hard voting because it gives more weight to highly confident votes.
+Ensemble Learning refers to the learning process in which the predictors define an ensemble. It goes without saying that ensemble methods make sense only once individual methods e.g. decision tree, SVM, logit etc. are available. For example, an ensemble of decision trees or an ensemble of logistic regressors will produce as many individual predictions as elements the ensemble has. The classification problem can be solved by counting votes i.e. the winning class will be the one with the most votes. A majority vote is the decision process used in hard voting classifiers. Hard voting classifiers often achieve higher accuracy than the best individual classifiers in the ensemble. 
+Soft voting consists in having some classifiers more trustworthy than others in the ensemble, the votes of the better classifiers will have more weight than the votes of the weaker ones. Thus, soft voting classifiers require to be able to estimate class probabilities.
+%\footnote{SVC does not estimate class probabilities but still you can use the SVC class for soft voting, just set the probability hyperparameter to True (this will make the SVC class use cross validation to estimate class probabilities, slowing down training, and it will add a predict$\_$proba().} 
+Soft voting often achieves better performance than hard voting because it gives more weight to highly confident votes. To sum up, soft voting ensembles are better than hard voting ensembles and these in turn are better than single predictors.
 
 %JUST replace voting="hard" with voting="soft" and ensure that all classifiers can estimate class probabilities”
 Ensemble classifiers are almost always a good choice because even if individual classifiers are weak learners (do slightly better than random guessing) the ensemble can still be a strong classifier, provided there are a sufficient number of weak learners and they are sufficiently diverse. % solo no puedes con amigos si   https://www.youtube.com/watch?v=Ds7tje_Y0CM
-The reason why ensemble methods work is the \emph{Law of large numbers}. For example, for a coin that is slightly biased, let us say that has $51\%$ probability of heads and $49\%$ of tails, if you toss the coin 1,000 times chances are that you will get a majority of heads, something close to 510 heads and 490 tails. The (frequentist) probability of heads majority for 1,000 tosses is $75\%$ and the more tosses you do the closer you get to 1, for 10,000 tosses the probability of majority is $97\%$. Thus, the more you toss the coin the closer you will get to 51-49 ratio. In the same vein, you can build 1,000 classifiers that are individually correct let us say $51\%$ of the time, (barely better than random guessing) but if you predict the majority vote class you can hope for a $75\%$ accuracy! Ensemble methods work best when the predictors are as independent from one another as possible. One way to get diversity is using very different algorithms so they will make different types of errors improving the accuracy \cite{geron2017hands}. 
+The reason why ensemble methods work is the \emph{Law of large numbers}. For example, for a coin that is slightly biased, let us say that has $51\%$ probability of heads and $49\%$ of tails, if you toss the coin 1,000 times chances are that you will get a majority of heads, something close to 510 heads and 490 tails. The (frequentist) probability of heads majority for 1,000 tosses is $75\%$ and the more tosses you do the closer you get to 1, for 10,000 tosses the probability of majority is $97\%$. Thus, the more you toss the coin the closer you will get to 51-49 ratio. In the same vein, you can build 1,000 classifiers that are individually correct let us say $51\%$ of the time, (barely better than random guessing) but if you predict the majority vote class you can hope for a $75\%$ accuracy! Ensemble methods work best when the predictors are as independent from one another as possible. One way to get diversity is using very different algorithms so they will make different types of errors improving the accuracy \cite{geron2017hands}. Generally speaking, aggregation has a similar bias but lower variance than individual predictors.
 %YS connec this with utility function Ole Peters
 
-We can distinguish two main types of ensemble methods depending on whether variability is introduced in the models or in the data. An example of the former is a voting classifier (ensemble of different individual classifiers) which is implemented in Section \ref{se:resensemble}. We can also use the same training algorithm for every learner and train them on different subsets of the dataset, when this is the case we can distinguish between bagging (sampling with replacement) or pasting (sampling without replacement). 
+We can distinguish two main types of ensemble methods depending on whether variability is introduced in the models or in the data. An example of the former is a voting classifier (ensemble of different individual classifiers) (implemented in Section \ref{sse:resmajvot}). We can also use the same training algorithm for every learner and train them on different subsets of the dataset, we can distinguish between bagging (sampling with replacement) or pasting (sampling without replacement) (implemented in Sections \ref{sse:resrf} and \ref{sse:resgradboosting}). 
 %Once all predictors are trained, the ensemble will make a prediction for a new instance by simply aggregating the individual predictions (majority for classifiers or mean for regression). 
-Generally speaking, aggregation has a similar bias but lower variance than individual predictors. An important advantage of bagging and pasting is that the scale very well because predictors can be trained and make predictions in parallel (multicore GPU).
+ An important advantage of ensemble methods i.e. bagging and pasting is that they scale very well because predictors can be trained and make predictions in parallel (multicore GPU).
 %Bagging and Pasting in sklearn is BaggingClassifier (BaggingRegressor) “BaggingClassifier automatically performs soft voting instead of hard voting if the base classifier can estimate class probabilities”
 %“the ensemble’s predictions will likely generalize much better than the single Decision Tree’s predictions: the ensemble has a comparable bias but a smaller variance (it makes roughly the same number of errors on the training set, but the decision boundary is less irregular)” Excerpt From: Aurélien Géron. “Hands-On Machine Learning with Scikit-Learn and TensorFlow: Concepts, Tools, and Techniques to Build Intelligent Systems.” iBooks. 
 %Examples of ensemble methods are bagging, boosting, stacking and random forests.
 
 %Table \ref{tab:ensemblemethods} shows a classification of the ensemble that are implemented in Section \ref{se:resensemble}
 
-\captionof{table}{Ensemble methods. Two types depending on where variability is introduced -in the algorithm (voting) or in the data (bagging)} \label{tab:ensemblemethods} 
-\begin{tabular}{ |p{3cm}||p{3cm}|p{3cm}|p{2cm}| } %\label{tab:ensemblemethods} 
+\captionof{table}{Ensemble methods implemented: majority vote -combination of different learners (logit, SVM etc.) learning on the same dataset and bagging and boosting methods which use the same type of learners lo learn different data chunks. Boosting builds a sequence of learners so that later learners in the chain learn harder problems. An additional ensemble method not implemented here is Stacking, new model is \emph{blent} on top of other predictors defining a meta learner.} \label{tab:ensemblemethods} 
+\begin{tabular}{ |p{5cm}|p{5cm}|p{5cm}| } %\label{tab:ensemblemethods} 
 %\caption{Table}
  \hline
- \multicolumn{4}{|c|}{Ensemble Methods} \\
+ \multicolumn{3}{|c|}{Ensemble Methods} \\
  \hline
-
- Majority Vote & Bagging & Boosting & Stacking\\
+ Majority Vote & Bagging & Boosting \\ %& Stacking
  \hline
- Different type of learners same data & Same type of learner trained with different data chunks (sampled with replacement) Random Forest (\ref{})  & Same type of learner trained with different data chunks (sampled without replacement). Subsets contains elements that were misclassified by previous models &  Builds a new model on top of the predictors (Blending) \\
- Hard voter and Soft voter ( \ref{})			  &                & AdaBoost (\ref{}), XGBT (\ref{})&  \\
+ Different type of learners for the same data. \emph{Majority vote (\ref{sse:resmajvot})}& Same type of learner trained with different data chunks, sampled with replacement. \emph{Random Forest (\ref{sse:resrf})} & Same type of learner trained with different data chunks, sampled without replacement. Subsets contain elements misclassified by previous models. \emph{AdaBoost, XGBT (\ref{sse:resgradboosting})} \\ 
  \hline
 
 \end{tabular}
@@ -916,15 +948,14 @@ Generally speaking, aggregation has a similar bias but lower variance than indiv
 \subsubsection{Bagging (Random Forest)}
 \label{sse:rf}
 %“Instead of building a BaggingClassifier and passing it a DecisionTreeClassifier, you can instead use the RandomForestClassifier class, which is more convenient and optimized for Decision Trees1”
-Bagging (Bootstrap Aggregating) is a way to decrease the variance of your prediction by generating additional data for training from the  original dataset using combinations with repetitions to produce multisets of the same cardinality/size as the original data.
+Bagging short for Bootstrap Aggregating is a way to decrease the variance of the predictions by generating additional data for training using combinations with repetitions to produce multisets of the same cardinality/size as the original data.
 %https://stats.stackexchange.com/questions/18891/bagging-boosting-and-stacking-in-machine-learning
-Random Forest is an ensemble of Decision Trees generally trained via the bagging method (combinations with repetitions), typically with max samples set to the size of the training set.
-Random forest is a bagging algorithm because it tries to "fix" the reliability problem existing in the decision tree model. Decision trees are unreliable in the sense that small changes in your data produce may produce large changes very different decision trees. This is where bagging comes from, we can create a robust model through bagging, that is, create a multiset of data by resampling the original dataset. Each tree will deal with a different set of the data called the bootstrap sample chosen at random with replacement. This means that a bootstrap sample may have missing instances and also repeated instances. We do this N times (one for each tree). Importantly, there is not only randomness in picking from the multiset for each tree but also there is randomness on the features from which to decide to split or not.  
-Thus, the Random Forest algorithm can introduce extra randomness when growing trees; instead of searching for the very best feature when splitting a node, it searches for the best feature among a random subset of features. This results in a greater tree diversity, which trades a higher bias for a lower variance, generally yielding an overall better model \cite{geron2017hands}. 
+Random Forest is an ensemble of decision trees generally trained via the bagging method (combinations with repetitions), typically with max samples set to the size of the training set. Random forest is a bagging algorithm because it tries to "fix" the reliability problem existing in the decision tree model. Decision trees are unreliable or unstable in the sense that small changes in the input  produce may produce very different decision trees. This is where bagging comes from, we can create a robust model through bagging, that is, create a multiset of data by resampling the original dataset. Each tree will deal with a different set of the data called the bootstrap sample chosen at random with replacement. This means that a bootstrap sample may have missing instances and also repeated instances. We do this N times (one for each tree). Importantly, there is not only randomness in picking from the multiset for each tree but also there is randomness on the features from which to decide to split or not.  
+Thus, the Random Forest algorithm can introduce extra randomness when growing trees; instead of searching for the very best feature when splitting a node, it searches for the best feature among a random subset of features. This results in greater tree diversity,  trading a higher bias for a lower variance \cite{geron2017hands}. Once the random forest is trained, the overall prediction is done weighting votes. %, generally yielding an overall better model
 %YS: last sentence kind of literal chnage
 
 %If the max features is 1 we have forests with diverse complex trees and with max features closed to the number of features will lead to similar forests with simpler trees. 
-Once the random forest is trained, the overall prediction is done using weighted vote. Random forest is just the application of bagging to decision trees and solves the stability problem in decision trees. Random forest inherit many of the benefits of decision trees. Pros: widely used with excellent performance on a variety of problems, easily parallelized, does not require careful normalization of features. Cons: it may not be good for very high dimensional problems (text classifiers). 
+Random forest is a solution to the stability problem in decision trees. Not surprisiogly, random forest inherit many of the strengths and weaknesses of decision trees. Pros: widely used with excellent performance on a variety of problems, easily parallelized, does not require careful normalization of features. Cons: it may not be good for very high dimensional problems (text classifiers). 
 %Some of the k parameters are n estimators (default 10) is the number of trees, the max features parameters has a large effect on performance influence the diversity of trees in the forest, the max depth by default is None which means that the tree will continue to split until all nodes (or the min samples which is 2) in the leaf belong to the same class.
 %https://github.com/mapattacker/datascience/blob/master/supervised.rst
 
@@ -933,39 +964,39 @@ Once the random forest is trained, the overall prediction is done using weighted
 %rnd_clf.feature_importances_
 
 
-\subsubsection{Adaptive and Gradient Boosting (AdaBoost)}
-\textbf{Boosting} is any ensemble method that combine weak learners into a strong learner. The idea is to train predictors sequentially each trying to correct its predecessor. It is a two-step approach, first uses subsets of the original data to produce a series of averagely performing models and then "boosts" their performance by combining them together using a particular cost function (majority vote). Unlike bagging, in the classical boosting the subset creation is not random and depends upon the performance of the previous models: every new subsets contains the elements that were (likely to be) misclassified by previous models.
+\subsubsection{Adaptive and Gradient Boosting (AdaBoost,Gradient Boosting)}
+\label{sse:ada}
+
+Boosting is any ensemble method that combines weak learners into a strong learner. The idea is to train predictors sequentially each trying to correct its predecessor. It is a two-step approach, first uses subsets of the original data to produce a series of averagely performing models and then "boosts" their performance by combining them together using a particular cost function (majority vote). Unlike bagging, in boosting the subset creation is not random and depends upon the performance of the previous models: every new subsets contains the elements that were (likely to be) misclassified by previous models.
 %https://stats.stackexchange.com/questions/18891/bagging-boosting-and-stacking-in-machine-learning
 While bagging reduces variability (stability of the classifier) boosting reduces both variance and bias. Boosting reduces variance because it uses multiple models as we do in bagging and it reduces bias by training the subsequent model by telling him what errors the previous models.
 
-Boosting was originally a theoretical invention motivated by the question "can we build a stronger model using weaker models", weak learner here mean shallow trees built in a non random way (different from RF) to create a model that makes fewer and fewer mistakes as these are added (see Schapire The Strength of Weak Learnability). 
-Why do they work? We don't really know, note that Data science is an empirical science, "because it works" is good enough \footnote{The 'As if' argument in economics (Milton Freedman) engineering view of scientific, see the the analogy of the billiard player plays “as if he knew ... complicated mathematical formulas”. For Friedman scientific theory (hypothesis or formula) cannot be tested by testing the realism of its assumptions.  All that matters is the accuracy of a theory’s predictions, not whether or not its assumptions are true. }. %http://www.rweconomics.com/BPA.htm
+Boosting was originally a theoretical invention motivated by the question \emph{Can we build a stronger model using weaker models?}. Note that by weak learner we mean shallow trees built in a non random way (different from RF) to create a model that makes fewer and fewer mistakes as these are added \cite{schapire1990strength}. 
+Why does boosting ensemble work? We don't really know, but we must reckon that data science is an empirical science and "because it works" might be good enough. This is a far from a \emph{boutade}, epistemologists of all sorts have been kept themselves busy for centuries. See for example, the \emph{As if} argument in economics by Milton Freedman using the analogy of the billiard player who plays “as if he knew ... complicated mathematical formulas”. For Friedman a scientific theory (hypothesis or formula) cannot be tested by testing the realism of its assumptions. All that matters is the accuracy of a theory’s predictions, not whether or not its assumptions are true \cite{friedman1953essays}. %http://www.rweconomics.com/BPA.htm
 
-Gradient Boosting are often best off-the-shelf accuracy on many problems, require not much memory and are fast but like random forests the results are hard for humans to interpret, require careful tuning of the learning rate.
+AdaBoost (short for adaptive boosting) and Gradient boosting are the most common boosting, let us briefly see how they work.
 
-% Extreme gradient boosting
-%http://xgboost.readthedocs.io/en/latest/model.html
-%https://github.com/dmlc/xgboost
-The optimization problem of decision trees (forest) is much harder than than traditional optimization problem like back propagation which just do gradient descent. Since it is not easy to train all the trees at once we can use an additive strategy: fix what we have learned, and add one new tree at a time. 
-
-The implementation and the results obtained with Ensemble learning methods including Random Forest are discussed in Section \ref{se:resensemble}.
-
-
-AdaBoost (short for adaptive boosting) and Gradient boosting are the most common algorithms. Adaboost is the original boosting algorithm and is adaptive in the sense that subsequent weak learners are tweaked in favor of those instances misclassified by previous classifiers. The individual learners can be weak, but as long as the performance of each one is slightly better than random guessing, the final model can be proven to converge to a strong learner. Gradient boosting trains each subsequent model using the residuals (the difference between the predicted and true values). The learning rate parameter controls how hard each tree tries to correct the mistakes from previous rounds (high learning rate complex trees, low learning rate simpler trees). 
-
-\textbf{AdaBoost}
+\textbf{AdaBoost algorithm}
+AdaBoost is the original boosting algorithm and is adaptive in the sense that subsequent weak learners are tweaked in favor of those instances misclassified by previous classifiers. 
+The individual learners can be weak, but as long as the performance of each one is slightly better than random guessing, the final model can be proven to converge to a strong learner. Gradient boosting trains each subsequent model using the residuals (the difference between the predicted and true values). The learning rate parameter controls how hard each tree tries to correct the mistakes from previous rounds (high learning rate complex trees, low learning rate simpler trees). 
 
 The idea is having a chain of predictors where deeper in the chain predictors focus on harder instances (instances where the predictor underfit). The difference between AdaBoost and Gradient Descent is that in Ada we don't tweak the hyperparameters of any individual predictor, it rather adds predictors to the ensemble. Once all predictors are trained, the ensemble makes predictions very much like bagging or pasting, except that predictors have different weights depending on their overall accuracy on the weighted training.
 
 The drawback of Boosting is that it is sequential and therefore it can't be parallelized so it does not scale well because we need the previous predictor the train the next one.
 %“If your AdaBoost ensemble is overfitting the training set, you can try reducing the number of estimators or more strongly regularizing the base estimator.”
 
-\textbf{Gradient Boosting}
-
-Gradient Boosting is also sequential like Ada, but rather than tweaking the weights of the instances, Gradient Boosting tries to fit the new predictor to the residual errors.
+\textbf{Gradient Boosting algorithm}
+Gradient Boosting often present the best off-the-shelf accuracy on many problems, require not much memory and are fast but like random forests the results are hard for humans to interpret. Gradient Boosting require careful tuning of the learning rate.
+Gradient Boosting is also sequential, but rather than tweaking the weights of the instances, Gradient Boosting tries to fit the new predictor to the residual errors.
+% Extreme gradient boosting
+%http://xgboost.readthedocs.io/en/latest/model.html
+%https://github.com/dmlc/xgboost
+The optimization problem of decision trees (forest) is much harder than than traditional optimization problem like back propagation which just do gradient descent. Since it is not easy to train all the trees at once we can use an additive strategy: fix what we have learned, and add one new tree at a time. 
 Like Random forest, Gradient Boosting creates an ensemble of decision tree. An interesting property of Gradient Boosting Decision Trees (GBDT) is that it works with different loss functions, even when the derivative is not convex (eg pinball loss function). 
 %https://www.lokad.com/pinball-loss-function-definition
  %There are two main algorithms: Adaboost and Gradient boosting. Adaboost is the original algorithm and what it does is to you tell subsequent models to punish more heavily observations mistaken by the previous models. In Gradient boosting you train each subsequent model using the residuals (the difference between the predicted and true values). The learning rate parameter controls how hard each tree tries to correct the mistakes from previous rounds (high learning rate complex trees, low learning rate simpler trees). 
+
+The implementation and the results obtained with Ensemble learning methods including Random Forest are discussed in Section \ref{sse:resensemble}.
 
 \subsection{Deep networks}
 \label{se:deep}
@@ -1194,7 +1225,7 @@ Ranking & Feature     \\
 \label{se:reslogreg}
 %CODE 
 
-The classification loss function used in Logistic regression is the \emph{log loss} previously described in Section \ref{se:logreg}. Logistic regression uses Maximum Likelihood to estimating the parameters given observations, that is, the parameter values that maximize the probability p of event 1 and (1-p) of non-event 0(Equation \ref{eq:sigmoid3}).
+The classification loss function used in Logistic regression is the \emph{log loss} previously described in Section \ref{sse:logreg}. Logistic regression uses Maximum Likelihood to estimating the parameters given observations, that is, the parameter values that maximize the probability p of event 1 and (1-p) of non-event 0(Equation \ref{eq:sigmoid3}).
 
 
 of making the observation. this means finding parameters that maximize the probability p of event 1 and (1-p) of non-event 0, as you kno
@@ -1210,7 +1241,7 @@ For example, if the classifier assigns a very small probability to an observatio
 \end{figure}
 %https://datawookie.netlify.com/blog/2015/12/making-sense-of-logarithmic-loss/
 
-The performance of the classifier will be affected by both the properties of the classifier e.g. the loss function mentioned above and the characteristics of the dataset, specifically its unbalanceness, the converters class is under represented vis a vis the class of non converter 10 to 1. In order to deal with this problem the classifier will use the \emph{balanced} weight option to give more weight to examples of the underrepresented class. Unless we say other less, we will use this heuristic in the implementation of classifiers. To know more about the \emph{balanced} weight heuristics see \ref{king2001logistic}. 
+The performance of the classifier will be affected by both the properties of the classifier e.g. the loss function mentioned above and the characteristics of the dataset, specifically its unbalanceness, the converters class is under represented vis a vis the class of non converter 10 to 1. In order to deal with this problem the classifier will use the \emph{balanced} weight option to give more weight to examples of the underrepresented class. Unless we say other less, we will use this heuristic in the implementation of classifiers. To know more about the \emph{balanced} weight heuristics see \cite{king2001logistic}. 
 
 Logistic regression is vulnerability to overfitting, we deal with this problem using regularization ($l_2$ penalty) with the  \emph{liblinear} solver (liblinear solver supports logistic regression and SVM). 
 Formally, the $l_2$-regularized Logistic Regression solves the unconstrained optimization problem indicated below \cite{fan2008liblinear}
@@ -1237,7 +1268,7 @@ Class & precision & recall & f1-score & support     \\
 1 & 0.15  &    0.47   &   0.23   &     19 \\
 \hline
 \end{tabular}
-\caption{The table shows main classification metrics for the logistic regression classifier in the test set. The precision and the recall of the positive class is low due to the unbalanced data.}
+\caption{The table shows main classification metrics for the logistic regression classifier in the test set. The precision and the recall of the positive class is low due to the unbalanced data.} \label{tab:logregress}
 \end{center}
 \end{table}
 
@@ -1274,13 +1305,13 @@ Figure \ref{fig:lr-cv7} shows the learning curve for the logistic regression cla
 \begin{figure}[H]
         \centering
         \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/LR-CV7}
-        \caption{Learning curve for logistic regression, in red the training score and in green the cross-validation score ($cv=7$). The curve seems to suggest that the validation score could increased adding more examples, if eventually training and cross-validation have the same score it means that the classifier is not over-fitting (early stopping(stop training). 
-		The 7-fold cross validation average accuracy is $0.730$, a quite satisfactory result. Maximizing for sensitivity (recall of the positive class) will yield much less satisfactory results due to the underepresentation of the positive class.   
+        \caption{Learning curve for logistic regression for cross-validation score ($cv=7$) and scoring = 'accuracy'. In red the training score and in gree . The curve seems to suggest that the validation score could increased adding more examples, if eventually training and cross-validation have the same score it means that the classifier is not over-fitting. 
+		The 7-fold cross validation average accuracy is $0.74$, a quite satisfactory result. Maximizing for sensitivity (recall of the positive class) yields less satisfactory result, average recall $0.58$, due to the underepresentation of the positive class. Note also that the optimal regualarization parameter $C$ (inverse of the regularization strength) has different values depending on he scoring used, maximizing accuracy requires very little regularization, $C*=1,000$ but if we try to maximize recall regularization is stronger $C= 0,1$. 
         } \label{fig:lr-cv7}
 \end{figure}
 
 Logistic regression shows an acceptable performance, especially given the model's simplicity. 
-The model's behavior does not easily fit into overfitting neither underfitting patterns, the problem, however, resides in data unbalanced. Both training and validation error are larger for the underrepresented class 1 (non converter) than for the more frequent class 0 (non converter). Precision and recall of class 1 metrics are below the random guessing. 
+The model's behavior does not easily fit into overfitting neither underfitting patterns, the problem, however, resides in data unbalanced. Both training and validation error are larger for the underrepresented class 1 (non converter) than for the more frequent class 0 (non converter). Precision and recall of class 1 metrics are below the random guessing, even if we maximize for recall rather than accuracy we obtain a slightly better than random guess ($0.58$). 
 
 %Underfitting – Validation and training error high
 %Overfitting – Validation error is high, training error low
@@ -1299,7 +1330,7 @@ Here we show the implementation of Support vector machines (SVMs) for classifica
 A technical description of SVMs was given in Section ref\ref{sse:svm} here we will explain the choices made in its implementation and the quality of its predictions. 
 The dataset is again split into training data ($80\%$) and test data ($20\%$). 
 
-Table \ref{tab:svm} shows the classification metrics in the test set for linear SVM with a linear kernel. The only hyperparameter that we care of in linear SVM is the soft margin constant constant, $C$. Using Grid-Search we find $C* =100.0$. Remember from Section \ref{se:svm} that C is a regularization parameter that controls the trade-off between maximizing the margin and minimizing the training error \footnote{Small C (by default $C=1$), tends to emphasize the margin, while large C may tend to overfit the training data}.
+Table \ref{tab:svm} shows the classification metrics in the test set for linear SVM with a linear kernel. The only hyperparameter that we care of in linear SVM is the soft margin constant constant, $C$. Using Grid-Search we find $C* =100.0$. Remember from Section \ref{sse:svm} that C is a regularization parameter that controls the trade-off between maximizing the margin and minimizing the training error \footnote{Small C (by default $C=1$), tends to emphasize the margin, while large C may tend to overfit the training data}.
 
 
 %http://fourier.eng.hmc.edu/e161/lectures/svm/node5.html
@@ -1334,7 +1365,7 @@ Class & precision & recall & f1-score & support     \\
 1 & 0.17  &    0.53   &   0.26   &    19 \\
 \hline
 \end{tabular}
-\caption{The table shows the main classification metrics for the SVM classifier with linear kernel and soft margin $C=100$. The performance of the linear SVM classifier is very similar to the logistic classifier (Table \ref{}). 
+\caption{The table shows the main classification metrics for the SVM classifier with linear kernel and soft margin $C=100$. The performance of the linear SVM classifier is very similar to the logistic classifier (Table \ref{tab:logregress}). 
 Both linear SVM and logistic classifier have linear decision boundaries, that is to say, the classifier needs the inputs to be linearly separable. Linear SVM only requires the regularization parameter $C$ which trades off misclassification of training examples against simplicity of the decision surface (low C makes the decision surface smooth, while a high $C$ aims at classifying all training examples correctly by giving the model freedom to select more samples as support vectors).}  \label{tab:svm} 
 \end{center}
 \end{table}
@@ -1413,62 +1444,13 @@ Figure \ref{fig:svm-cv7} shows the learning curve for the logistic regression cl
 SVM with both linear and non linear (RBF) kernel shows an acceptable performance. 
 The model's behavior shows overfitting, especially for $C>10$, the problem, however, resides in the fact that the dataset is  unbalanced. While training error is very low (better than logistic regression), the validation error is still larger for the underrepresented class 1 (non converter) than for the more frequent class 0 (non converter). Precision and recall of class 1 metrics are below the random guessing. 
 
-\subsection{k-nearest neighbors algorithm}
-\label{se:reskneighbors}
-Here we show the implementation of the k-nearest neighbors vote algorithm (k-nn). The k-nn algorithm is characterized by minimal training time (the function is approximated locally) but expensive testing (all computation is deferred until classification).
-k-nn doesn't assume normality of data (non-parametric) not it explicitly learns a model (instance-based) the algorithm rather memorizes the entire training set which are subsequently used as “knowledge” for the prediction phase, that is, k-nn works like an on-demand process only when a query to our database is made will the algorithm use the training instances to spit out an answer. 
-
-The algorithm will look for the optimal k among all possible odd values (to avoid voting results in a draw), eg, $(k=1,3,5,7....49)$ and will evaluate the results using cross validation $(cv=5)$, thus we will train the algorithm $50/2*cv$ times. 
-%https://kevinzakka.github.io/2016/07/13/k-nearest-neighbor/
-The algorithm requires the computation of the number of neighbors k, once this parameter is estimated performing cross validation on our dataset using a generated list of an odd number k neighbors (by default 5). For low k neighbor parameter, eg $k=1$ the decision boundaries will be very convoluted (high complexity, over fitting), for large k now the classifier needs to weigh the votes of many neighbors, not juts one, so single training data points will not have the dramatic influences in the prediction as in k=1 and the result is a smoother boundary (model with lower complexity, less variance), so for k equal all the number the prediction will be always the most frequent class (model underfit). The metric distance is the Minkowski distance ($p=1$ Manhattan, $p=2$ Euclidean).
-
-
-Table \ref{tab:knn} shows the classification metrics for k-nn algorithm. The k-nn algorithm is very good at predicting the 0 class (non converter) but it fails at predicting the positive class (converters).
-\begin{table}[H]
-\caption{Classification metrics for k-nn} 
-\begin{center} 
-\begin{tabular}{lllll}
-\hline
-\multicolumn{1}{c}{} \\
-%\cline{1}
-Class & precision & recall & f1-score & support     \\
-\hline
-0 & 0.90  &    0.98   &   0.94   &    164 \\
-1 & 0.20  &    0.05   &   0.08   &     19 \\
-\hline
-\end{tabular}
-\caption{The table shows  main classification metrics for the k-nn algorithm in the test set with $k=3$ and $cv=5$. The recall of the positive class is also known as \emph{sensitivity} is 0.05 the  recall of the negative class (\emph{specificity}) is 0.98. The algorithm suffers from the data unbalanced and it cannot deal with it because the algorithm is based on a majority vote of neighbors which will be on almost always 0, that is, the majority vote will be 0 in a population with $90\%$ of 0s and $10\%$ of 1s.} \label{tab:knn} 
-\end{center}
-\end{table}
-
-Figure \ref{fig:knn-cm} shows the confusion matrix and the Receiver Operating Characteristic (ROC) metric of the k-nn algorithm. 
-
-\begin{figure}[H]
-        \centering
-        \includegraphics[keepaspectratio, width=1\linewidth]{figures/KNN5-cv5_CM}
-        \caption{Confusion matrix and ROC for k-nn classifier. The algorithm clearly overfits, the accuracy of the training set is $100\%$, in the test set the \emph{specificity} is $(160/164)$ and the \emph{sensitivity} is very poor $(1/19)$. The k-nn algorithm fails to predict true positives.
-        }
-\label{fig:knn-cm}
-\end{figure}
-
-Figure \ref{fig:knn-cv3} shows the learning curve for the logistic regression classifier using cross-validation (7 splits).
-\begin{figure}[H]
-        \centering
-        \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/KNN3-cv5_curve}
-        \caption{Learning curve for k-nn, $k=3$, in red the training score and in green the cross-validation ($cv=5$)score. The algorithm clearly overfits, it perfectly models the training data but fails to generalize for examples of class 1 (converters).
-        } \label{fig:knn-cv3}
-\end{figure}
-
-
-
 \subsection{Naive Bayes}
 \label{se:resnaivebayes}
 
-Here we fit a Gaussian Naive Bayes classifier. Although naive Bayes is known as a decent classifier, it is known to be a bad estimator, so the probability outputs are not to be taken too seriously. %from predict_proba
+Here we fit a Gaussian Naive Bayes classifier (NB). NB is a simple and easy to implement algorithm \footnote{The hyperparameter is the prior probabilities of the classes.} extensively used with in document classification, at the same time it is known to be a bad probability estimator, so the probability outputs are not to be taken too seriously \cite{scikit-learn}. %from predict_proba
 %http://scikit-learn.org/stable/modules/naive_bayes.html.  literal
-
-A technical description of Naive Bayes classifier delineating the independence assumption in the distribution of $P(x_i | y)$ was provided in Section \ref{sse:naivebayes}. Here we will show the results of the Naive Bayes classifier.
-
+A technical description of Naive Bayes classifier delineating the independence assumption in the distribution of $p(x| y)$ was provided in Section \ref{sse:naivebayes}.
+ 
 The dataset is again split into training data ($80\%$) and test data ($20\%$). Table \ref{tab:naive}
 
 Table \ref{tab:naive} shows the classification metrics for the implemented Gaussian Naive Bayes classifier.
@@ -1485,7 +1467,7 @@ Class & precision & recall & f1-score & support     \\
 1 & 0.13  &    0.47   &   0.20   &    19 \\
 \hline
 \end{tabular}
-\caption{The table shows the main classification metrics for the Gaussian Naive Bayes classifier in the test set.} \label{tab:naive} 
+\caption{The table shows the main classification metrics for the Gaussian Naive Bayes classifier in the test set. The recall of NB underperforms logistic regression and SVM classifier seen before.} \label{tab:naive} 
 \end{center}
 \end{table}
 
@@ -1493,38 +1475,78 @@ Figure \ref{fig:nb-cm} shows the confusion matrix and the Receiver Operating Cha
 \begin{figure}[H]
         \centering
         \includegraphics[keepaspectratio, width=1\linewidth]{figures/NB-CM}
-        \caption{Confusion matrix and ROC for GaussianNB classifier. The classifier performs clearly better than random luck and also better than the SVM classifier. The AUC of GaussianNB and logistic regression (Figure \ref{fig:lr-cm}) for the test set  are very similar (0.62 and 0.63).} \label{fig:nb-cm}
+        \caption{Confusion matrix and ROC for GaussianNB classifier. The classifier performs better than random luck. The AUC of GaussianNB and the previous classifiers are quite similar.} \label{fig:nb-cm}
 \end{figure}
 
 Figure \ref{fig:nb-cv3} shows the learning curve for the logistic regression classifier using cross-validation (7 splits).
 \begin{figure}[H]
         \centering
         \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/NB-CV3}
-        \caption{Learning curve for Gaussian Naive Bayes, in red the training score and in green the cross-validation ($cv=3$) score. The curves seem to indicate that the model is bias (feeding the the GaussianNB model with more data may not help capturing the underlying relationship)
+        \caption{Learning curve for Gaussian Naive Bayes, in red the training score and in green the cross-validation ($cv=5$) score. The curves seem to indicate that the model is bias, feeding the GaussianNB model with more data may not help capturing the underlying relationship.
         } \label{fig:nb-cv3}
 \end{figure}
 %https://www.ritchieng.com/machinelearning-learning-curve/
 
-\subsection{Decision Trees}
-\label{se:resdectree}
-Like SVMs decision trees are versatile machine learning algorithms that can fit complex datasets. Decision trees are the most important components of Random Forests -a powerful ensemble methods that will bee studied in the next Section.
-One advantage if Decision Trees is that require very little data preparation (no need for centering (MinMax) or scaling (0,1) the data.
-The Gini attribute measures the impurity, if the node is pure, Gini=0, all instances fall into the same class.
-The decision tree implemented here uses the (Classification and Regreession Tree) CART algorithm to produce binary trees (yes/no answers) (Equation \ref{eq:cart}).
-%However, other algorithms such as ID3 can produce Decision Trees with nodes that have more than two children”
- 
-Decision trees are nonparametric models (the number of parameters is not known in training time) that is to say, the model will have as many parameters as it needs to fit the data. It follows that if left unconstrained, the tree will fit the data very closely, and most likely overfitting. This is an important difference with the previous models seen above (logistic regression, SVM and naive Bayes) which are parametric (limited degree of freedom) models. 
-The main concern in Decision Tree is then to reduce the degrees of freedom to avoid overfitting. The parameter $max\_depth$ regularizes the. model and reduces the risk of overfitting.
+\subsection{k-Nearest Neighbors}
+\label{se:reskneighbors}
+%%%CODE
+%run_kneighbors
 
-The dataset is again split into training data ($80\%$) and test data ($20\%$). Figure \ref{fig:dt-md5} shows the confusion matrix and the AUC for the Decision Tree implemented. The hyperparameter $max\_depth$ is set to 5 for better performance and it uses balanced mode to give more weight to the underrepresented class, the rest of parameters are set by default.
+Here we show the implementation of the k-nearest neighbors vote algorithm (k-nn). The algorithm was introduced in Section \ref{sse:kneighbors} its main characteristics are briefly reminded next.
+The k-nn algorithm is characterized by minimal training time (the function is approximated locally) but expensive testing (all computation is deferred until classification). k-nn is non-parametric i.e. doesn't assume normality of data not it explicitly learns a model (instance-based), the algorithm rather memorizes the entire training set which are subsequently used as “knowledge” for the prediction phase.
+%, that is, k-nn works like an on-demand process only when a query to our database is made will the algorithm use the training instances to spit out an answer. 
+
+The algorithm will look for the optimal k among possible odd (to avoid voting results in a draw) values and will evaluate the results using cross validation. For example, $(cv=5)$ and $(k=1,3,5,7....49)$ then the algorithm is trained $\frac{50}{2} \times 5$ times. 
+%https://kevinzakka.github.io/2016/07/13/k-nearest-neighbor/
+For low k, eg $k=1$ the decision boundaries will be very convoluted (high complexity, over fitting), for large k the classifier needs to weigh the votes of many neighbors, not just one, so single training data points will not have the dramatic influences in the prediction as they have in $k=1$, result of a larger k is a smoother boundary (model with lower complexity, low bias error).
+%, so for k equal all the number the prediction will be always the most frequent class (model underfit). 
+
+The metric distance is the Minkowski distance ($p=1$ Manhattan, $p=2$ Euclidean).
+The algorithm requires the computation of the number of neighbors k, once this parameter is estimated performing cross validation on our dataset using a generated list of an odd number k neighbors. The optimal cross validation score for k can be calculated by maximizing accuracy or recall, if the scoring is set to accuracy the, $k*=1$ but the precision, recall and the f1-score are 0. Maximizing instead by recall $k*=1$ with the results shown in Table \ref{tab:knn} 
+
+\begin{table}[H]
+\caption{Classification metrics for k-nn ($k=1$, scoring = 'recall')} 
+\begin{center} 
+\begin{tabular}{lllll}
+\hline
+\multicolumn{1}{c}{} \\
+%\cline{1}
+Class & precision & recall & f1-score & support     \\
+\hline
+0 & 0.90  &    0.93   &   0.93   &    164 \\
+1 & 0.20  &    0.16   &   0.18   &     19 \\
+\hline
+\end{tabular}
+\caption{The table shows main classification metrics for the k-nn algorithm with $k*=1$, scoring='recall' and $cv=5$. The k-nn algorithm fails to predict true positives. The recall of the positive class is also known as \emph{sensitivity} is $0.16$ the recall of the negative class (\emph{specificity}) is $0.93$. The algorithm suffers from the data unbalanced and it cannot deal with it because the algorithm is based on a majority vote of neighbors which will be on almost always $0$, that is, the majority vote will be $0$ in a population with $90\%$ of $0$s and $10\%$ of $1$s.} \label{tab:knn} 
+\end{center}
+\end{table}
+
+Figure \ref{fig:knn-cm} shows the confusion matrix and the Receiver Operating Characteristic (ROC) metric of the k-nn algorithm. 
+
 \begin{figure}[H]
         \centering
-        \includegraphics[keepaspectratio, width=1\linewidth]{figures/DT_depth5-CM}
-        \caption{Confusion matrix and ROC for Decision Tree classifier with $max\_depth=5$. The classifier performs poorly for the test set, the AUC is sligthly better than luck, $auc=0.56$.
-        } \label{fig:dt-md5}
+        \includegraphics[keepaspectratio, width=1\linewidth]{figures/KNN5-cv5_CM-recall}
+        \caption{Confusion matrix and ROC for the k-nn classifier. The k-nn algorithm is very good at predicting the 0 class (non converter) but it fails at predicting the positive class (converters). The accuracy of the training set is $100\%$, in the test set the \emph{specificity} is $(152/164)$ and the \emph{sensitivity} is very poor $(3/19)$. The AUC (0.54) of the test set is as good as random guessing.
+        }
+\label{fig:knn-cm}
 \end{figure}
 
-Table \ref{tab:dectree} shows the classification metrics for the implemented decision tree classifier.
+Figure \ref{fig:knn-cv3} shows the learning curve for the logistic regression classifier using cross-validation (7 splits).
+\begin{figure}[H]
+        \centering
+        \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/KNN3-cv5_curve-recall}
+        \caption{Learning curve for $k*=1$ and scoring='recall', in red the training score and in green the cross-validation ($cv=5$) score. The algorithm clearly overfits.
+        } \label{fig:knn-cv3}
+\end{figure}
+
+
+\subsection{Decision Trees}
+\label{sse:resdectrees}
+Decision trees require very little preparation, for example they do not need to scale or centering the data, remember than in SVM scaling was critical otherwise the algorithm would neglect small features.
+Importantly, decision trees are known as \emph{white box} models they can identify the features that are more relevant to predict the target.
+Like SVMs decision trees are versatile machine learning algorithms that can fit complex datasets. Decision trees are the most important components of Random Forests -a powerful ensemble methods that will bee studied in the next Section.
+
+The dataset is again split into training data ($80\%$) and test data ($20\%$). The hyperparameter max$\_$depth is set to 5 for better performance and it uses balanced mode to give more weight to the underrepresented class, the rest of parameters are set by default in \emph{sklearn} \cite{scikit-learn}. Table \ref{tab:dectree} shows the classification metrics for the implemented decision tree classifier.
 
 \begin{table}[H]
 \caption{Classification metrics for the decision tree classifier}
@@ -1539,44 +1561,56 @@ Class & precision & recall & f1-score & support     \\
 1 & 0.13 &  0.37  &  0.19  & 19  \\
 \hline
 \end{tabular}
-\caption{The table shows the main classification metrics for the decision tree classifier. The metrics for the negative class 0 (non-converter) are excellent but those for the converters are very poor due to the data unbalanced problem in our dataset. The accuracy of the predictor is 0.68.
+\caption{The table shows the main classification metrics for the decision tree classifier. The metrics for the negative class 0 (non-converter) are good but those for the converters are very poor due to the data unbalanced problem.  
 }  \label{tab:dectree} 
 \end{center}
 \end{table}
 
 
-Figure \ref{fig:dt-md5-learning} shows the learning curve for the Decision Tree using cross-validation (7 splits). 
+Figure \ref{fig:dt-md5} shows the confusion matrix and the AUC for the Decision Tree implemented. 
+\begin{figure}[H]
+        \centering
+        \includegraphics[keepaspectratio, width=1\linewidth]{figures/DT_depth5-CM}
+        \caption{Confusion matrix and ROC for Decision Tree classifier with $max\_depth$ =5. The classifier generalizes poorly, the AUC is slightly better than luck, $AUC=0.56$. The sensitivity is $117/164$ and the sensitivity is $(7/19)$.
+        } \label{fig:dt-md5}
+\end{figure}
+
+Figure \ref{fig:dt-md5-learning} shows the learning curve for the Decision Tree using cross-validation $cv=5$ splits. 
 \begin{figure}[H]
         \centering
         \includegraphics[keepaspectratio, width=0.5\linewidth]{figures/DT_depth5}
-        \caption{Learning curve for Decision Tree classifier with $max\_depth=5$, in red the training score and in green the cross-validation ($cv=3$) score. The curves seem to indicate that the model is bias (feeding the model with more data may not help capturing the underlying relationship)
+        \caption{Learning curve for Decision Tree classifier with $max\_depth=5$, in red the training score and in green the cross-validation ($cv=5$) score. The accuracy is $0.66+ -0.14$. The cross validation for scoring = 'recall' and optimal $max\_depth$ =8 gives a recall of $0.33+ -0.17$. For hyperparameter $max\_depth$ $>5$ the decision tree overfits. 
         } \label{fig:dt-md5-learning}
 \end{figure}
 
-Figure \ref{fig:dt-md5-features} identifies the most important features, that is to say, the features selected by the CART algorithm to split the tree so that the cost function (Equation \ref{eq:cart}) is minimized. The algorithm will stop when it cannot find a split that reduces the impurity of the node or it reaches the max depth established as it is the case.
+Figure \ref{fig:dt-md5-features} identifies the most important features, that is to say, the features selected by the CART algorithm to split the tree so that the cost function (Equation \ref{eq:cart}) is minimized. The algorithm will stop when it cannot find a split that reduces the impurity of the node or it reaches the $max\_depth$ as it is the case.
 \begin{figure}[H]
         \centering
         \includegraphics[keepaspectratio, width=1\linewidth]{figures/DT_depth5-featuresimportance}
-        \caption{On the left the ranking of the most important features of the Decision Tree. The three most important features ( purer splits) are cognitive complaints, dyslipidemia and anxiety. On the right it is shown that 14 features are enough to provide $95\%$ of the total information of the tree.   
+        \caption{On the left the ranking of the most important features of the Decision Tree. The three most important features ( purer splits) are cognitive complaints, dyslipidemia and anxiety. On the right it is shown that 14 features are enough to provide $95\%$ of the total information of the tree.
         } \label{fig:dt-md5-features}
 \end{figure}
 
-Finally, Figure \ref{fig:dt-md5-dot} plots the Decision Tree. 
+Finally, Figure \ref{fig:dt-md5-dot} plots the Decision Tree, max$\_$depth $=5$, min$\_$samples$\_$split $=2$ and split$\_$criterion Gini.
 \begin{figure}[H]
         \centering
-        \includegraphics[keepaspectratio, width=1\linewidth]{figures/decision_tree_depth5}
-        \caption{Decision tree for classification of converter to MCI with the \emph{Vallecas Index}. The root node is cognitive complaints (scd), the depth of the tree was set to a maximum of 5.
+        \includegraphics[keepaspectratio, width=1\linewidth]{figures/dt-nospaces}%decision_tree_depth5
+        \caption{Decision tree for classification of converter to MCI with the \emph{Vallecas Index}. The root node is cognitive complaints (scd) gives the best possible split according to the Gini measure (Equation \ref{eq:gini}). The maximum depth of the tree was set to 5.
         } \label{fig:dt-md5-dot}
 \end{figure}
 
-
 \subsection{Ensemble Methods}
-\label{se:resensemble}
+\label{sse:resensemble}
+In the previous sections we have shown the performance of supervised classifiers (decision trees, SVMs, k-nn, logistic regression and Naive Bayes), in this section we will study ensemble of classifiers. Depending on how variety is introduced we can distinguish two types of ensembles -variety is in the classifiers or variety is in the data. The implementation of the former is described in Section \ref{sse:resmajvot} and the last comprises bagging and boosting methods and is implemented in Sections \ref{sse:resrf} and \ref{sse:resgradboosting} respectively. Both approaches rely on the common principle that many weak predictors, in the aggregate, can bring about a strong predictor.
 
-We have trained a bunch of classifiers in the previous sections (decision trees, SVMs, k-nn, logistic regression and Naive Bayes) a simple way to create a better classifier is to aggregate the predictions of each classifier, the predictions of the aggregate classifier is the class with the most votes. The majority-vote classifier is a hard classifier. 
+\subsubsection{Majority vote}
+\label{sse:resmajvot}
 
+We have trained a bunch of classifiers in the previous sections (decision trees, SVMs, k-nn, logistic regression and Naive Bayes) The majority-vote classifier is a hard classifier. 
 
-Table \ref{tab:ensemble} shows the classification metrics for the implemented Gaussian Naive Bayes classifier.
+A simple way to create a better classifier is to aggregate the predictions of different classifiers, for example combining the predictions of a logistic classifier, SVM, decision tree and naive Bayes. The predictions of the aggregate classifier is the class with the most votes. For example if logistic classifier, SVM and decision tree predict class 0 and naive Bayes predicts class 1, the prediction of the aggregate is class 0 (3 votes against 1).
+
+Table \ref{tab:ensemble} shows the classification metrics for the implemented Ensemble classifier.
 \begin{table}[H]
 \caption{Classification metrics for Ensemble classifier}
 \begin{center} 
@@ -1586,44 +1620,45 @@ Table \ref{tab:ensemble} shows the classification metrics for the implemented Ga
 %\cline{1}
 Class & precision & recall & f1-score & support     \\
 \hline
-0 & 0.91  &    0.90   &   0.91   &    164 \\
-1 & 0.20  &    0.21   &   0.21   &    19 \\
+0 & 0.92  &    0.81  &   0.86   &    164 \\
+1 & 0.18  &    0.37   &   0.25   &    19 \\
 \hline
 \end{tabular}
-\caption{The table shows the main classification metrics for the Ensemble classifier. The metrics for the negative class 0 (non-converter) are excellent but those for the converters are very poor due to the data unbalanced problem in our dataset.
-The accuracy of the VotingClassifier is 0.83, which makes it a stronger learner (accuracy) than the ensemble's components: decision tree acc=0.677, SVM acc=0.75, logit acc=0.67, but not stronger than the k-nn learner, acc=0.88.
+\caption{The table shows the main classification metrics for the Ensemble classifier. The metrics for the negative class 0 (non-converter) are excellent but those for the converters are poor due to the data unbalanced problem in our dataset.
+The ensemble classifier components are five predictors: logistic regression, non linear SVM, naive Bayes, k-nn and decision tree.
 }  \label{tab:ensemble} 
 \end{center}
 \end{table}
 
 
-\subsubsection{Bagging}
-\label{se:resrf}
+\subsubsection{Bootstrap aggregation (Bagging)}
+\label{sse:resrf}
 
-Decision trees are sensitive to the specific data on which they are trained (inestability problem mentioned in Section \ref{sse:dectrees}). In a bagged decision tree, first we create many random sub-samples of our dataset with replacement, we train the tree on reach sample to finally calculate the average prediction from each model. The only parameters when bagging decision trees is the number of samples and hence the number of trees to include.
+Decision trees are sensitive to the specific data on which they are trained (instability problem mentioned in Section \ref{sse:dectrees}). In a bagged decision tree, first we create many random sub-samples of our dataset with replacement, then we train the tree on each sample to finally calculate the average prediction from each model. 
+The only parameters that need to be considered in bagging is the number of decision trees included in the ensemble.
 
 \textbf{Random Forest}
 
-Random forest is one of the most successful machine learning algorithms. A Random Forest is an ensemble of Decision Trees, trained via the  Bootstrap Aggregation aka bagging method. 
 %https://machinelearningmastery.com/bagging-and-random-forest-ensemble-algorithms-for-machine-learning/
 %with replacement (meaning we can select the same value multiple times).
 
 %OJO Literal https://machinelearningmastery.com/bagging-and-random-forest-ensemble-algorithms-for-machine-learning/
 %If the training data is changed (e.g. a tree is trained on a subset of the training data) the resulting decision tree can be quite different and in turn the predictions can be quite different.
-Random Forests are an improvement over bagged decision trees. Decision trees are greedy (CART algorithm) are greedy, that is to say, the selected variable to split is the one that minimizes the error without concern of what will happen down the road. As such, even with Bagging, the decision trees can have a lot of structural similarities and in turn have high correlation in their predictions. Combining predictions from multiple models in ensembles works better if the predictions from the sub-models are uncorrelated or at best weakly correlated.
+A random forest is an ensemble of decision trees, trained via the the Bootstrap Aggregation method aka bagging. Random forests are an improvement over bagged decision trees. Decision trees (CART algorithm) are greedy, that is to say, the selected variable to split is the one that minimizes the error without concern of what will happen down the road. As such, even using bagging, the decision trees can have a lot of structural similarities and in turn have high correlation in their predictions. Combining predictions from multiple models in ensembles works better if the predictions from the sub-models are uncorrelated or at best weakly correlated.
 %OJO Literal 
-Random forest changes the algorithm for the way that the sub-trees are learned so that the resulting predictions from all of the subtrees have less correlation. In CART, when selecting a split point, the learning algorithm is allowed to look through all variables and all variable values in order to select the most optimal split-point. The random forest algorithm changes this procedure so that the learning algorithm is limited to a random sample of features of which to search. The number of features that can be searched at each split point (m) must be specified as a parameter to the algorithm. You can try different values and tune it using cross validation (by default $\sqrt(m)$).
+Random forest changes the algorithm for the way that the sub-trees are learned so that the resulting predictions from all of the subtrees have less correlation. The CART algorithm used in decision trees, when selecting a split point, it is allowed to look through all variables and all variable values in order to select the most optimal split-point. The random forest algorithm changes this procedure so that the learning algorithm is limited to a random sample of features of which to search. The number of features that can be searched at each split point (m) must be specified as a parameter to the algorithm. You can try different values and tune it using cross validation (by default $\sqrt(m)$).
 
 We show the results with random forest built with the optimal hyperparameters estimated with the GridSearchCV procedure
 : 
 \begin{quote}
-$max\_features=(10,100,1000), max\_leaf\_nodes=(2,4,8,16), n\_estimators=(8,18,28)$ and  $min\_samples\_leaf=(8,16,32)$.
+max$\_$features=(10,100,1000), max$\_$leaf$\_$nodes=(2,4,8,16), n$\_$estimators=(8,18,28) and min$\_$samples$\_$leaf=(8,16,32).
 \end{quote}
 %parameters = {'n_estimators':10 ** np.arange(1,4), 'max_features':2 ** np.arange(0, 5), 'min_samples_leaf':[8,18,28], 'max_leaf_nodes':[8,16,32]}
 
-Table \ref{tab:rf} shows the classification metrics for the random forest classifier.
+Table \ref{tab:rf} shows the classification metrics for the random forest classifier with the optimal number of max$\_$features, max$\_$leaf$\_$nodes, number of estimators and min$\_$samples$\_$leaf.
+
 \begin{table}[H]
-\caption{Classification metrics for Ensemble classifier}
+\caption{Classification metrics for Random Forest}
 \begin{center} 
 \begin{tabular}{lllll}
 \hline
@@ -1631,28 +1666,27 @@ Table \ref{tab:rf} shows the classification metrics for the random forest classi
 %\cline{1}
 Class & precision & recall & f1-score & support     \\
 \hline
-0 & 0.89  &    0.93   &   0.91   &    164 \\
-1 & 0.00  &    0.00   &   0.00   &    19\\
+0 & 0.91  &    0.90   &   0.90   &    164 \\
+1 & 0.23  &    0.26   &   0.24   &    19\\
 \hline
 \end{tabular}
 \caption{The table shows the main classification metrics for the random forest classifier using both the original test set and the synthetic balanced set generated with the SMOTE algorithm. The algorithm does not generalizes at all. Different hyperparametrization could improve this situation but the imbalanced problem can not be solved with a different configuration in parameters space. }  \label{tab:rf} 
 \end{center}
 \end{table}
 
-
 Figure \ref{fig:rf_cm} shows the confusion matrix and the ROC for random forest. 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[t]{.8\textwidth}
+    \begin{subfigure}[t]{.9\textwidth}
         \centering
         \includegraphics[height=1.7in]{figures/RF_CM}
-        \caption{Confusion matrix and AUC for random forest classifier with the hyperparameters set to 1000 decision trees, $max\_features= 10$, $min\_samples\_leaf=28$ and $max\_leaf_nodes=16$}
+        \caption{Confusion matrix and AUC for random forest classifier with the hyperparameters set to 1000 decision trees, max$\_$features= 10, min$\_$samples$\_$leaf=28 and max$\_$leaf$\_$nodes=16.}
     \end{subfigure}
     ~ 
-    \begin{subfigure}[t]{.8\textwidth}
+    \begin{subfigure}[t]{.9\textwidth}
         \centering
         \includegraphics[height=1.7in]{figures/RFGrid_CM}
-        \caption{Confusion matrix and AUC for random forest classifier with the optimal hyperparameters calculated with the GridSearchCv algorithm. The random forest has excellent accuracy but it entirely fails to detect positives in the test set.}
+        \caption{Confusion matrix and AUC for random forest classifier with the optimal hyperparameters calculated with the GridSearchCv algorithm for maximizing accuracy. The random forest has excellent accuracy but it entirely fails to detect positives in the test set.}
     \end{subfigure}%\quad
     
     \caption{Confusion matrix and AUC for random forest classifier (top) and random forest with optimal hyperparameters that maximize scoring (down)} \label{fig:rf_cm}
@@ -1661,15 +1695,15 @@ Figure \ref{fig:rf_cm} shows the confusion matrix and the ROC for random forest.
 Figure \ref{fig:rf_learning} shows the learning rate for random forest classifier. 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[t]{.8\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
-        \includegraphics[height=2.5in]{figures/RF_learning}
-        \caption{Learning curve of the random forest classifier with the hyperparameters set to 1000 decision trees, $max\_features= 10$, $min\_samples\_leaf=28$ and $max\_leaf_nodes=16$.}
+        \includegraphics[height=2.1in]{figures/RF_learning}
+        \caption{Learning curve of the random forest classifier with the hyperparameters set to 1000 decision trees, max$\_$features= 10, min$\_$samples$\_$leaf =28 and max$\_$leaf$\_$nodes=16.}
     \end{subfigure}
     ~ 
-    \begin{subfigure}[t]{.8\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
-        \includegraphics[height=2.5in]{figures/RFGrid_learning}
+        \includegraphics[height=2.1in]{figures/RFGrid_learning}
         \caption{Learning curve of the random forest classifier with optimal hyperparameters calculated with the GridSearchCV search algorithm.}
     \end{subfigure}%\quad
     
@@ -1685,20 +1719,19 @@ Figure \ref{fig:rf-features} identifies the most important features of the rando
 \end{figure}
 
 \subsubsection{Boosting}
-\label{se:resgradboosting}
+\label{sse:resgradboosting}
 
-Before we saw the bagging (bootstrap aggregating) method Random forest, now we will explore boosting methods.
-Boosting is a sequential process that can combine several weak learners into a strong learner. Bootstrap Aggregation is a general procedure used to reduce the variance for those algorithm that have high variance, for example  decision trees. . The general idea of boosting is to have predictors that are sequentially trained, each trying to correct its predecessor, that is to say, each subsequent model attempts to correct the errors of the previous model.
-The most popular boosting methods are AdaBoost (short for Adaptive Boosting) and Gradient Boosting and are studied next.
+Before, we saw the bagging (bootstrap aggregating) method implemented using a random forest, now we will explore boosting methods.
+Boosting is a sequential process combining several (weak) learners into a strong learner. Bootstrap Aggregation is a general procedure used to reduce the variance in algorithms with high variance, for example decision trees. The general idea of boosting is to have predictors that are sequentially trained, each trying to correct its predecessor, that is to say, if model B follows A, B will attempt to correct the the errors made by the previous model A.
+The most popular boosting methods are \emph{AdaBoost} (short for Adaptive Boosting) and Gradient Boosting, both are studied next.
 
-\textbf{Adaptive Boosting (AdaBoost)}
+\textbf{Adaptive Boosting (\emph{AdaBoost})}
 
-In Adaptive boosting or AdaBoost, multiple sequential models are created, each correcting the errors from the last model. AdaBoost assigns weights to the observations which are incorrectly predicted and the subsequent model works to predict these values correctly. The AdaBoost algorithm works by initially giving equal weight sot all observations as predictors are built and evaluated 
-higher weights are given to the data points which were predicted incorrectly. This process is repeated until the error function does not change, or the maximum limit of the number of estimators is reached.
+In Adaptive boosting or \emph{AdaBoost}, multiple sequential models are created, each correcting the errors from the last model. \emph{AdaBoost} assigns weights to the observations which are incorrectly predicted and the subsequent model works to predict these values correctly. The \emph{AdaBoost} algorithm works by initially giving equal weight to all observations, then as predictors are evaluated higher weights are given to the data points with wrong predictions. This process is repeated until the error function does not change or the maximum limit of the number of estimators is reached.
 
-Table \ref{tab:ada} shows the classification metrics for the implemented Gaussian Naive Bayes classifier.
+Table \ref{tab:ada} shows the classification metrics for the \emph{AdaBoost} classifier.
 \begin{table}[H]
-\caption{Classification metrics for Ensemble classifier} 
+\caption{Classification metrics for \emph{AdaBoost} classifier} 
 \begin{center} 
 \begin{tabular}{lllll}
 \hline
@@ -1710,7 +1743,7 @@ Class & precision & recall & f1-score & support     \\
 1 & 0.33  &    0.05   &   0.09   &    19 \\
 \hline
 \end{tabular}
-\caption{The table shows the main classification metrics for the AdaBoost classifier. The metrics for the negative class 0 (non-converter) are excellent but those for the converters are extremely poor due to the data unbalanced problem in our dataset.
+\caption{The table shows the main classification metrics for the \emph{AdaBoost} classifier. The metrics for the negative class 0 (non-converter) are excellent but those for the converters are extremely poor due to the data unbalanced problem in our dataset.
 } \label{tab:ada} 
 \end{center}
 \end{table}
@@ -1741,6 +1774,29 @@ Figure \ref{fig:rf_learning} shows the learning rate for random forest classifie
     \caption{Learning curve of the AdaBoost classifier, in red the training score and in green the cross-validation ($cv=3$) score. The learner clearly overfits and more data will likely improve the predictions.} \label{fig:rf_learning}
 \end{figure}
 
+Table \ref{tab:adaimp} shows the ranking of the 10 most important features.
+\begin{tabular}{ll}
+\hline
+\multicolumn{2}{c}{AdaBosst most important features for conversionMCI} \\
+\cline{1-2}
+Feature    & Gini Importance  \\
+\hline
+dietaketo      & 0.148133         \\
+edad$\_$ultimodx  & 0.093430        \\
+imc        & 0.087666      \\
+eq5deva$\_$visita1 & 0.059781         \\
+gds$\_$visita1 & 0.046132           \\
+stai$\_$visita1 & 0.039684               \\
+a08 & 0.039355             \\
+dietaglucemica & 0.036256          \\
+renta &  0.034612           \\
+numhij & 0.032114     \\
+
+\hline
+\label{tab:adaimp}
+\end{tabular}
+
+
 % OJO literal Geron
 %One way for a new predictor to improve its predecessor is to try to correct those instances that the predecessor uderfitted. Thus, we can imagine a chain of predictors, one attached to the next, if the first classifier gets many instances wrong, their weight get boosted (initially each predictor has a weight $1/m$, m number of predictors) and the second classifier therefore does a better job on these instances and so on. Once all predictors are trained, the ensemble makes predictions very much like bagging or pasting, except that predictors have different weights depending on their overall accuracy on the weighted training set. This sequential structure of predictors in the the AdaBoost algorithm makes impossible (as it was the case in bagging) to parallelize predictors.
 %
@@ -1752,7 +1808,49 @@ Figure \ref{fig:rf_learning} shows the learning rate for random forest classifie
 %ada_clf.fit(X_train, y_train)”
 
 
-%\textbf{Gradient Boosting}
+\textbf{Gradient Boosting (GDB)}
+The idea of gradient boosting originated with Leo Breiman's interpretation of boosting as an optimization algorithm on a suitable cost function. Gradient Descent Boosting optimizes a cost function over function space by iteratively choosing a function (weak hypothesis) that points in the negative gradient direction \cite{friedman2001greedy}. 
+
+Table \ref{tab:gbc} shows the classification metrics for the Gradient Boosting classifier.
+\begin{table}[H]
+\caption{Classification metrics for GradientBoosting classifier} 
+\begin{center} 
+\begin{tabular}{lllll}
+\hline
+\multicolumn{1}{c}{} \\
+%\cline{1}
+Class & precision & recall & f1-score & support     \\
+\hline
+0 & 0.90  &    0.99   &   0.94   &  164 \\
+1 & 0.0  &    0.0   &   0.0   &   19 \\
+\hline
+\end{tabular}
+\caption{The metrics for the negative class 0 (non-converter) are excellent but the algorithm fails to predict class 1 example due to data unbalanced.
+} \label{tab:gbc} 
+\end{center}
+\end{table}
+
+Figure \ref{fig:rf_gbc} shows the confusion matrix and the ROC for GradientBoosting algorithm. 
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{.8\textwidth}
+        \centering
+        \includegraphics[height=1.7in]{figures/GBC_CM}
+        \caption{Confusion matrix and AUC for GradientBoosting algorithm with the hyperparameters set to $100$ estimators; learning rate $0.1$ and max$\_$depth=5}
+    \end{subfigure}
+    \caption{Confusion matrix and AUC for the GradientBoosting algorithm which as we can see clearly learns the perfectly the training set and the test set for non converters but fails to correctly classify the few converters in the test set. } \label{fig:rf_gbc}
+\end{figure}
+
+Figure \ref{fig:gbc_learning} shows the learning rate for random forest classifier. 
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{.8\textwidth}
+        \centering
+        \includegraphics[height=2.5in]{figures/GBC_learning}
+        \caption{Learning curve of the GradientBoosting classifier with  hyperparameters set to 100 estimators; learning rate $0.1$ and max$\_$depth=3. The algorithm overfits very strongly, it will then benefit from more data. The other canonical approach for dealing with overfitting -simplifying the model (reduce the number of estimators)- does not help here.}
+    \end{subfigure}
+    \caption{Learning curve of the GradientBoosting classifier, in red the training score and in green the cross-validation ($cv=3$) score. The learner clearly overfits and more data will likely improve the predictions.} \label{fig:gbc_learning}
+\end{figure}
 
 
 \subsection{Deep Networks}
@@ -1808,35 +1906,37 @@ Figure \ref{fig:mlp_cm} shows the confusion matrix and the ROC for different MLP
 Figure \ref{fig:mlp_learning} shows the learning rate for MLPs.
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[t]{1\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
-        \includegraphics[height=1.7in]{figures/MLP-1-1_learning}
+        \includegraphics[height=2.1in]{figures/MLP-1-1_learning}
         \caption{Learning curve for MLP with 1 hidden layer with only 1 unit.}
     \end{subfigure}
-
-    \begin{subfigure}[t]{1\textwidth}
+ 	~   
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
-        \includegraphics[height=1.7in]{figures/MLP-1-10_learning}
+        \includegraphics[height=2.1in]{figures/MLP-1-10_learning}
         \caption{Learning curve for MLP with 1 hidden layer with 10 units.}
     \end{subfigure}%\quad
-
-    \begin{subfigure}[t]{1\textwidth}
+    
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
-        \includegraphics[height=1.7in]{figures/MLP-1-100_learning}
+        \includegraphics[height=2.1in]{figures/MLP-1-100_learning}
         \caption{Learning curve for MLP with 1 hidden layer with 100 units.}
     \end{subfigure}%\quad
-
-    \begin{subfigure}[t]{1\textwidth}
+    ~
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
-        \includegraphics[height=1.7in]{figures/MLP-16-16-32_learning}
+        \includegraphics[height=2.1in]{figures/MLP-16-16-32_learning}
         \caption{Learning curve for MLP with 3 hidden layers with 16,16,32 units each.}
     \end{subfigure}%\quad
-    
     \caption{Learning curve for  MLPs, in red the training score and in green the cross-validation ($cv=7$) score. MLPs overfit and more data will likely improve the predictions. Interestingly, the deep network (3 hidden layers $16 \times 16 \times 32$ parameters) does not substantially improve the results of the network with one layer and 100 units (100 parameters).} \label{fig:mlp_learning}
 \end{figure}
 
 
+
+
 \textbf{Keras}
+
 In Keras, deep learning models are built by putting together compatible layers to form an useful data-transformation pipeline. The snippet \ref{deepkeras} creates a three-layer network, the first and second layers have both 16 units with \emph{ReeLU} activation and the last layer is one neuron with a \emph{sigmoid} activation function to approximate a probability.
 
 %from keras import losses
@@ -1977,18 +2077,16 @@ Figure \ref{fig:TSNE} shows the scatter plot of the tSNE algorithm that creates 
 
 %class sklearn.manifold.TSNE(n_components=2, perplexity=30.0, early_exaggeration=12.0, learning_rate=200.0, n_iter=1000, n_iter_without_progress=300, min_grad_norm=1e-07, metric=’euclidean’, init=’random’, verbose=0, random_state=None, method=’barnes_hut’, angle=0.5)[source]¶
 
-\section{Comparative evaluation of models}
+\subsection{Comparative evaluation of models}
 \label{se:compare}
-In this section we will try to construct a coherent view of performance of the different predictive algorithms used in Section \ref{se:res}. 
+In this section we will try to construct a coherent view of the performance of the different predictive algorithms shown above. 
 %YS change this
-Evaluating a model always boils down to splitting the available data into three sets: training, validation, and test. You train on the training data and evaluate your model on the validation data. Once your model is ready for prime time, you test it one final time on the test data. 
-But why not just two sets: training and testing? Because adjusting the optimal configuration of the model (parameter and hyperparameters) is a feedback loop, the performance of the model on the validation set is the feedback signal.
-
-Results for each classifier. We will realize that the challenge of fitting the training data differs very drastically from the challenge of finding patterns that generalize to new data \cite{goodfellow2016deep}.
-
-
-
 Prior to try to identify the best model for the task at hand we will comment on the performance metrics and validation procedures used. In particular we will delve into cross validation reduce variance in the validation set and will describe how to interpret the metrics provided in the Results section. The impatient reader can go directly to Section \ref{sse:permets} which contains the comparative analysis for the different models implemented.
+
+Evaluating a model always boils down to splitting the available data into three sets: training, validation, and test. The learner is  trained on the training data and the model is evaluated on the validation set. The last step is ot test the model with the test set.  
+Why not just two sets: training and testing? Because adjusting the optimal configuration of the model (parameter and hyperparameters) is a feedback loop, the performance of the model on the validation set is the feedback signal.
+%Results for each classifier. We will realize that the challenge of fitting the training data differs very drastically from the challenge of finding patterns that generalize to new data \cite{goodfellow2016deep}.
+
 
 As it was noted int the previous section we trained the \emph{Vallecas} dataset using a split of $80\%$ for the training set and $20\%$ for test set. The validation set was $10\%$ of the test set which gives us only 73 samples, a small number so the validation scores might have a high variance with regard to the validation split possibly preventing us from reliably evaluating the model. The best practice to deal with this situation is to use K-fold cross validation, split the available data into K partitions (e.g. between 3 and 7) instantiating K identical models and training each one on K-1 partitions while evaluating on the remaining partition. That validations core is the average of the K validation scores. Figure \ref{fig:xvalchollet} represents the cross validation process to effectively deal with high variance in the validation set \cite{chollet2017deep}. 
 \begin{figure}[H]
@@ -1999,6 +2097,14 @@ As it was noted int the previous section we trained the \emph{Vallecas} dataset 
 \end{figure}
 
 Once we have clarified the need of the k-fold cross validation shown in the Results Section we will comment on the evaluation criteria and the challenges of adopting criteria for the \emph{Vallecas} dataset.
+
+Roughly speaking, there are two factors that tell us how well our machine learning is doing:
+\begin{itemize}
+\item Underfitting: the error on the training set is too large.
+\item Overfitting: the gap between the error in the training and test sets is too large. 
+\end{itemize}
+
+Ideally, we want to build a classifier that is sufficiently complex to do not underfit but not as complex as to memorize the training set. This trade-off between optimization and generalization is the main issue in machine learning. Optimization refers to the process of adjusting a model to get the best performance possible on the training data (the learning in machine learning), whereas generalization refers to how well the trained model performs on data it has never seen before. Validation is used in order to deal with information leakage that could drive overfitting in the model.
 
 In the Results section we make extensive use of the \textbf{confusion matrix}, a very helpful mathematical object to study model performance. For a binary prediction task the confusion is a $2 \times 2$ matrix where rows represent the true values and the columns the predicted values. Thus, the values in the diagonal are true predictions and those off-diagonal are predictions that the model got wrong. From the confusion matrix \emph{accuracy, recall, precision} and $F_\beta$ metrics are easily computed.
 %from sklearn.metrics import confusion_matrix
@@ -2062,32 +2168,22 @@ Dummy classifiers provide a null metric and work as a sanity check on the model'
 \end{itemize}
 %Scoring objects take care of that, as a rule,  higher return value better than lower return values.
 
-The \emph{Vallecas} dataset falls into the third situation: class imbalance, that is, the converter class is underepresented (1-9). We will deal with the class imbalance problem specifically in Section \ref{se:imbalance}.
+The \emph{Vallecas} dataset falls into the third situation: class imbalance, that is, the converter class is underepresented. We will deal with the class imbalance problem specifically in Section \ref{se:imbalance}.
 
-
-\subsection{Performance metrics for model selection}
+\subsubsection{Model selection in \emph{Vallecas} dataset}
 \label{sse:permets}
-
-
-Roughly speaking, there are two factors that tell us how well our machine learning is doing:
-\begin{itemize}
-\item Underfitting: the error on the training set is too large.
-\item Overfitting: the gap between the error in the training and test sets is too large. 
-\end{itemize}
-
-Ideally, we want to build a classifier that is sufficiently complex to do not underfit but not as complex as to memorize the training set. This trade-off between optimization and generalization is the main issue in machine learning. Optimization refers to the process of adjusting a model to get the best performance possible on the training data (the learning in machine learning), whereas generalization refers to how well the trained model performs on data it has never seen before. Validation is used in order to deal with information leakage that could drive overfitting in the model.
-
 
 Figure \ref{fig:dummies} shows how the different models perform, comparing accuracy with three dummy predictors: random predictor, majority predictor and minority predictor on the \emph{Vallecas} dataset. 
 \begin{figure}[H] 
         \centering
-        \includegraphics[keepaspectratio, width=1\linewidth]{figures/compareagainstdummies}
-        \caption{Comparative analysis of the accuracy for the built predictors (in blue) compared against dummy predictors (in red) for accuracy score. From left to right: naive Bayes, logistic regression, random forest, extreme gradient boosting, voting majority, random forest with Grid search for optimal parameters, SVM, k-NN, multilayer perceptron and decision tree. All the classifiers show better accuracy score than random classifier (uniform predictions). However, a dummy predictor that always predict the majority class i.e. non converter has better accuracy than some predictors e.g. logistic regression, naive Bayes and others. k-NN, random forest and extreme boosting (XGBBoost) have the best accuracy score.
+        \includegraphics[keepaspectratio, width=1\linewidth]{figures/compareagainstdummies2}
+        \caption{Comparative analysis of the accuracy for the built predictors (in blue) compared against dummy predictors (in red) for accuracy score. From left to right: naive Bayes, logistic regression, extreme gradient boosting, random forest, AdaBoost, SVM, k-NN and decision tree. All the classifiers show better accuracy score than random classifier (uniform predictions). However, a dummy predictor that always predict the majority class i.e. non converter has better accuracy than some predictors e.g. logistic regression, naive Bayes and others. Ensemble methods -random forest, extreme gradient boosting and AdaBoost have the best accuracy score.
         } \label{fig:dummies}
 \end{figure}
 
-
-As it was already mentioned the accuracy score is not the best for imbalanced datasets. In the case that the number of positive and negative classes are very different e.g. not in the same order, a more meaningful measure is Matthew’s Correlation Coefficient which is a balanced measure that can be used even if the classes are of very different sizes. Other measures such as Cohen's kappa, recall, precision, F1, ROCAUC and log loss are explored. Figure \ref{fig:mat4dummy} shows the score for all these measures for different classifiers, the scores are for both the training set (top row) and the test set (bottom row). For clarity, Figure \ref{fig:mat4dummy} shows the scores a first group of predictors (naive Bayes, k-NN, logistic regression and SVM) the scores of the rest of classifiers (decision tree, ensemble methods and deep networks) are depicted in figure \ref{fig:restmat4dummy}.
+As it was already mentioned the accuracy score is suboptimal for imbalanced datasets. In the case that the number of positive and negative classes are very different e.g. not in the same order, more meaningful measure is the Matthew’s Correlation Coefficient. Other measures such as Cohen's kappa, recall, precision, F1, ROCAUC and log loss are explored. 
+Figure \ref{fig:mat4dummy} shows the score for all these measures for different classifiers, the scores are for both the training set (top row) and the test set (bottom row). 
+%For clarity, Figure \ref{fig:mat4dummy} shows the scores a first group of predictors (naive Bayes, k-NN, logistic regression and SVM) the scores of the rest of classifiers (decision tree, ensemble methods and deep networks) are depicted in figure \ref{fig:restmat4dummy}.
 
 The best test scores of the four predictors shown in Figure \ref{fig:mat4dummy} is the SVM with non linear kernel. The k-NN has the best accuracy but it clearly overfits(see training (first row) metrics). The nonlinear SVM classifier outperforms the other classifiers in the Matthews coefficient which is considered the best metric for imbalanced datasets like the \emph{Vallecas}. Nonlinear SVM outperforms also the other three classifiers -naive Bayes, logit, k-NN- in Cohen's kappa, precision, F1 and ROC AUC metrics. It is worth noting that these results may be susceptible to change if we change the hyperparameters of the models. For example, in k-NN we used k=3 which is the optimal k for the cross validation implemented of 5 folds. For $k=1$ the Matthews coefficient improves but it is till worse than for SVM and logit.
 \begin{figure}[H] 
@@ -2103,23 +2199,24 @@ Figure \ref{fig:allmetricsensemble} shows the test scores for the predictors dec
 \begin{figure}[H] 
         \centering
         \includegraphics[keepaspectratio, width=1\linewidth]{figures/allmetricsensemble}
-        \caption{Comparative analysis of ensemble predictors -extreme gradient boosting, random forest, AdaBoost, Majority Voting- and decision tree. Of the two boosting classifiers, XGB and Ada, Ada shows better performance. The best Matthews coefficient is for the Majority Voting classifier which is an ensemble of all the classifiers shown in Figure \ref{fig:mat4dummy} (SVM dominates). The hyperparameters of the random forest classifier (red) are \textit{n\_estimators} $= 1000$, \textit{min\_samples\_leaf} $= 8$ and the \textit{max\_features} is set the default i.e. $\sqrt{features}~8$. The extreme gradient boosting algorithm (yellow) has the best accuracy $~0.88$. Note that the boosting algorithms are implemented with the hyperparameters set to \textit{n\_estimators} $= 100$, learning rate $=0.001$ and \textit{max\_depth} $=5$; but it could be possible to find another configuration with improved results.} \label{fig:allmetricsensemble}
+        \caption{Comparative analysis of ensemble predictors -extreme gradient boosting, random forest, AdaBoost, Majority Voting- and decision tree. Of the two boosting classifiers, XGB and Ada, Ada shows better performance. The best Matthews coefficient is for the Majority Voting classifier which is an ensemble of all the classifiers shown in Figure \ref{fig:mat4dummy} (SVM dominates). The hyperparameters of the random forest classifier (red) are n$\_$estimators $= 1000$, min$\_$samples$\_$leaf $= 8$ and the max$\_$features is set the default i.e. $\sqrt{features} \sim 8$. The extreme gradient boosting algorithm (yellow) has the best accuracy $\sim 0.88$. Note that the boosting algorithms are implemented with the hyperparameters set to n$\_$estimators $= 100$, learning rate $=0.001$ and max$\_$depth $=5$; but it could be possible to find another configuration with improved results.} \label{fig:allmetricsensemble}
 \end{figure}
 
-Finally we evaluate the performance of deep networks (multi layer perceptrons).
+Finally we evaluate the performance of deep networks (multi layer perceptrons). TO DO
+%YS
 
 
 \section{The class imbalance problem}
 \label{se:imbalance}
-The class imbalance problem -the number of samples of one class being under represented compared to another class- is predominant in many scenarios, in particular when dealing with anomaly detection, for example, fraudulent transaction, electrical grid fault, electrical theft, conversion to disease  etc. In this situation, a predictive model that does not take into account this could be very unreliable.
+The class imbalance problem -the number of samples of one class being under represented compared to another class- is predominant in many scenarios, in particular when dealing with anomaly detection, for example, fraudulent transaction, electrical grid fault, electrical theft, conversion to disease  etc. In this situation, a predictive model that does not take into account this could be very unreliable \cite{he2009learning}.
 %The imbalance problem needs to be addressed in the design phase with an emphasis on improving the identification of the minority class as opposed to achieving higher overall accuracy.
-How imbalanced is our data set can be easily quantified with the balancing ratio, r. Let X be an imbalanced set with $X_{min}$ the subset of the undersampled class and $X_{maj}$ the subset of the majority class. The balancing ratio \emph{r} is
+How imbalanced is our data set can be easily quantified with the balancing ratio, r. Let X be an imbalanced set with $X_{min}$ the subset of the undersampled class and $X_{maj}$ the subset of the majority class. The balancing ratio \emph{r}:
 \begin{equation}
-r_X = \frac{X_{min}}{X_{maj}}
+r_X = \frac{X_{min}}{X_{maj}} \sim 0.1
 \end{equation}
-%In our dataset the imbalance is around 12:1 which is far from what is more often considered as imbalance with ratios as skewed as 100:1, 1,000:1 or 10,000:1\cite{he2009learning}.
+%Our dataset the imbalance is around 0.1 which is far from what is more often considered as imbalance with ratios as skewed as 100:1, 1,000:1 or 10,000:1.
 
-The goal is to have high accuracy in the minority class without jeopardizing the accuracy of the majority class. Using machine learning algorithms off the box when one class dominates the other, as it is the case in the \emph{Vallecas} dataset (the balancing ratio \emph{r}= 9), comes with a warning because any algorithm could just classify everything as non converter and still be right the $90\%$ of the time. Standard classifier algorithms e.g. Logistic Regression, Decision trees etc. have a bias towards the majority class, that is, they tend to only predict the majority class data and the features of the minority class are treated as noise and are often ignored. Note that classifiers can also learn from imbalanced data sets, some studies have found comparable result for imbalanced datasets and the same balanced using sampling techniques \cite{japkowicz2002class}.
+The goal is to have high accuracy in the minority class without jeopardizing the accuracy of the majority class. Using machine learning algorithms off the box when one class dominates the other, as it is the case in the \emph{Vallecas} dataset (the balancing ratio \emph{r}), comes with a warning because any algorithm could just classify everything as non converter and still be right the $90\%$ of the time. Standard classifier algorithms e.g. Logistic Regression, Decision trees etc. have a bias towards the majority class, that is, they tend to only predict the majority class data and the features of the minority class are treated as noise and are often ignored. Note that classifiers can also learn from imbalanced data sets, some studies have found comparable result for imbalanced datasets and the same balanced using sampling techniques \cite{japkowicz2002class}.
 
 %https://www.analyticsvidhya.com/blog/2017/03/imbalanced-classification-problem/
 The balancing process is equivalent to resample the dataset in such a way that the balancing ratio increases \emph{r}, we can do so under sampling the majority class and or over sampling the minority class. Luckily, there are at least four ways to deal with this problem (there is of course a fifth option which is doing nothing about it). 
@@ -2149,9 +2246,27 @@ A Tomek link is a pair if minimally distanced nearest neighbors that belong to d
 \subsection{Results with the synthetic balanced dataset generated with SMOTE}
 \label{se:resimbalance}
 
-The metrics for the different algorithms applied to the synthetic balanced dataset generated via the SMOTe algorithm as shown bellow.
-Logistic regression in Table \ref{tab:logreg_smote}, k-NN in Table \ref{tab:k-NN_smote}, non linear SVM in Table \ref{tab:svm_smote}, Gaussian naive Bayes in Table \ref{tab:nb_smote}, decision tree in Table \ref{tab:dt_smote}, ensemble (hard voting of the previous predictors) in Table \ref{tab:voting_smote} and Boosting algorithms: AdaBoost in Table \ref{tab:ada_smote} and extreme gradient boosting \ref{tab:xgb_smote}.
-The best results are obtained in the Boosting algorithms , bagging (via SMOTE) and adaptive boosting with the AdaBoost algorithm (Table \ref{tab:ada_smote})or extreme gradient boosting (Table \ref{tab:xgb_smote}). 
+Figure \ref{fig:dummiesSMOTE} shows how the different models perform, comparing accuracy with three dummy predictors: random predictor, majority predictor and minority predictor on the synthetic (balanced) \emph{Vallecas} dataset using the SMOTE algorithm. This figure needs to be compared with the performance in the original (unbalanced) dataset shown in Figure \ref{fig:dummies}.
+\begin{figure}[H] 
+        \centering
+        \includegraphics[keepaspectratio, width=1\linewidth]{figures/compareagainstdummies2-SMOTE}
+        \caption{Comparative analysis of the accuracy for the built predictors (in blue) compared against dummy predictors (in red) for accuracy score. The SMOTE algorithm created a balanced dataset adding minority class points.   
+        From left to right: naive Bayes, logistic regression, extreme gradient boosting, random forest, AdaBoost, SVM, k-NN and decision tree. All the classifiers show better accuracy score than all the dummy classifiers (contant '0', constant '1' and uniform predictions). The boosting classifiers (extreme gradient boosting and AdaBoost) are the best ones. Note that this also happened in the original (unbalanced) dataset.
+        } \label{fig:dummiesSMOTE}
+\end{figure}
+
+
+Figure \ref{fig:allmetricsensembleSMOTE} shows the test scores for the predictors in the synthetic balanced dataset created with the SMOTE algorithm. The Extreme Gradient boosting is the best classifier having the best performance in all metrics with the only exception of log loss, closely followed by the other two ensemble classifiers: AdaBoost and Random Forest. 
+
+\begin{figure}[H] 
+        \centering
+        \includegraphics[keepaspectratio, width=1\linewidth]{figures/allmetrics_last_SMOTE}
+        \caption{Comparative analysis of ensemble predictors in the synthetic balanced dataset created with the SMOTE algorithm. The top row shows the performance in the training set and the bottom row in the test test. The learners are shown in different colors, form left to right: random forest, Gaussian naive Bayes, AdaBoost, SVM, k-NN, extreme gradient boosting, decision tree and logistic regression. The ensemble learners dominate, in particular  extreme gradient boosting reaching an impressive 0.85 in all metrics (except log loss)} \label{fig:allmetricsensembleSMOTE}
+\end{figure}
+
+The metrics for the different algorithms applied to the synthetic balanced dataset generated via the SMOTE algorithm as shown bellow.
+Logistic regression in Table \ref{tab:logreg_smote}, k-NN in Table \ref{tab:k-NN_smote}, non linear SVM in Table \ref{tab:svm_smote}, Gaussian naive Bayes in Table \ref{tab:nb_smote}, decision tree in Table \ref{tab:dt_smote} and ensemble algorithms: random forest \ref{tab:rf_smote}, AdaBoost in Table \ref{tab:ada_smote} and extreme gradient boosting \ref{tab:xgb_smote}.
+The best results are obtained in the Boosting algorithms, bagging (via SMOTE) and adaptive boosting with the AdaBoost algorithm (Table \ref{tab:ada_smote}) or extreme gradient boosting (Table \ref{tab:xgb_smote}). 
 %YS: falta extreme gradient
 
 %logreg
@@ -2246,8 +2361,6 @@ Class & precision & precision \textit{SMOTE}& recall & recall \textit{SMOTE}& f1
 
 %Random forest
 
-
-%RF
 \begin{table}[H]
 \caption{Classification metrics for random forest classifier} \label{tab:rf_smote} 
 \begin{center} 
@@ -2266,22 +2379,22 @@ Class & precision & precision \textit{SMOTE}& recall & recall \textit{SMOTE}& f1
 \end{table}
 
 %Ensemble Voting
-\begin{table}[H]
-\caption{Classification metrics for Ensemble (hard voting) classifier} \label{tab:voting_smote} 
-\begin{center} 
-\begin{tabular}{cccccccc}
-\hline
-\multicolumn{1}{c}{} \\
-%\cline{1}
-Class & precision & precision \textit{SMOTE}& recall & recall \textit{SMOTE}& f1-score & f1-score \textit{SMOTE} & support     \\
-\hline
-0 & 0.91  & 0.71  &  0.90  & 0.80 &  0.91   &  0.75&  164 \\
-1 & 0.20  & 0.77 &  0.21  & 0.66 &  0.21   &  0.71  & 19/164 \\
-\hline
-\end{tabular}
-\caption{The table shows classification metrics for the  the Ensemble classifier using hard voting for prediction. The metrics for the positive class 1 (converter) strongly improve, while for the negative class 0 (non-converter) decreases moderately. The dominant predictor for the balanced dataset is now the decision tree.}
-\end{center}
-\end{table}
+% \begin{table}[H]
+% \caption{Classification metrics for Ensemble (hard voting) classifier} \label{tab:voting_smote} 
+% \begin{center} 
+% \begin{tabular}{cccccccc}
+% \hline
+% \multicolumn{1}{c}{} \\
+% %\cline{1}
+% Class & precision & precision \textit{SMOTE}& recall & recall \textit{SMOTE}& f1-score & f1-score \textit{SMOTE} & support     \\
+% \hline
+% 0 & 0.91  & 0.71  &  0.90  & 0.80 &  0.91   &  0.75&  164 \\
+% 1 & 0.20  & 0.77 &  0.21  & 0.66 &  0.21   &  0.71  & 19/164 \\
+% \hline
+% \end{tabular}
+% \caption{The table shows classification metrics for the  the Ensemble classifier using hard voting for prediction. The metrics for the positive class 1 (converter) strongly improve, while for the negative class 0 (non-converter) decreases moderately. The dominant predictor for the balanced dataset is now the decision tree.}
+% \end{center}
+% \end{table}
 
 %Ada
 \begin{table}[H]
@@ -2320,10 +2433,11 @@ Class & precision & precision \textit{SMOTE}& recall & recall \textit{SMOTE}& f1
 \end{table}
 
 
-We see that the best approach is achieved with the Boosting algorithm, in particular the extreme gradient boosting algorithm (Table \ref{tab:xgb_smote}), bagging plus boosting is then the favored approach. First, bagging, balance the unbalanced dataset using Synthetic Minority oversampling technique (SMOTE) by creating synthetic instances. And train the newly balanced data set using a Gradient Boosting Algorithm. Note that ensemble based methods (eg. gradient tree boosting) are not an alternative to sampling techniques per se – so it is better to use SMOTE first and then  the ensemble algorithm SMOTE+Gradient boosting. However, XG boosting can be applied directly on the imbalanced data, XG Boost is a more advanced form of Boosting and takes care of imbalanced data set by balancing it in itself- so use of sampling techniques may not be necessary. This technique is good at avoiding overfitting which naturally occurs when replicas of the minority set are added. 
+We see that the best approach is achieved with the ensemble algorithms, in particular the extreme gradient boosting algorithm (Table \ref{tab:xgb_smote}), AdaBoost (Table \ref{tab:ada_smote}) and random forest (Table \ref{tab:rf_smote}). Bagging plus boosting is then the favored approach. First, bagging, balance the unbalanced dataset using Synthetic Minority oversampling technique (SMOTE) by creating synthetic instances. And train the newly balanced data set using a Gradient Boosting Algorithm. Note that ensemble based methods (eg. gradient tree boosting) are not an alternative to sampling techniques per se – so it is better to use SMOTE first and then  the ensemble algorithm SMOTE+Gradient boosting. However, XG boosting can be applied directly on the imbalanced data, XG Boost is a more advanced form of Boosting and takes care of imbalanced data set by balancing it in itself- so use of sampling techniques may not be necessary. This technique is good at avoiding overfitting which naturally occurs when replicas of the minority set are added. 
 We can also integrate sampling techniques with ensemble learning techniques,  (SMOTE + Adaboost), SMOTE can introduce new synthetic sampling at each boosting iteration and the successive classifier ensemble focus more on the minority class.
 
-%% Deep networks
+%YS
+Deep networks TO DO
 
 %kNN
 % \begin{table}[H]
@@ -2347,72 +2461,26 @@ We can also integrate sampling techniques with ensemble learning techniques,  (S
 
 \section{Discussion and Conclusions}
 \label{se:dis}
-TO DO
-
-\textbf{Satistical modeling vs. Machine learning}
-
-Here we have shown that it is possible to build prediction machines with the \emph{Vallecas dataset} achieving a very satisfactory performance. The \emph{Vallecas dataset} size is around 1,000 labeled examples. Although this far from the rule of thumb to achieve acceptable performance of 5,000 labeled examples per category \cite{goodfellow2016deep}, the major problem of the dataset is its imbalanced, the converter class is underrepresented with a ratio of 10 to 1 in favor of the non conversion class. This situation can be dealt with more data but this is certainly costly and require time, a workaround is to add synthetic data points to create an balanced dataset. The Synthetic Minority Oversampling Technique SMOTE algorithm was used and predictors were fed with the balance dataset. Boosting methods outperformed the other methods achieving precision and recall over 0.85.   
-
-Our goal here is twofold, first and foremost demonstrate the predicting power of machine learning techniques in the \emph{Vallecas dataset}, and second introduce a new set of techniques that go under the umbrella of machine learning that provide a new framework and methodology different form canonical statistical modeling. Since this may not be obvious to researchers not acquainted with Artificial Intelligence and Machine learning, we highlight the main differences between statistical learning and machine learning in  Table \ref{tab:smml}.  
-
-
-
-
-\begin{tabularx}{1\linewidth}{|X | X|}
-\hline
-Statistical modeling    & Machine learning  \\
-\hline
-Statistical modeling is applying statistics on data to find underlying relationships by analyzing the significance of the variables.  & Machine learning is a subset of AI, builds computer programs of statistical techniques that learn from data. \\
-Emphasis is in the significance of the variables and building confidence intervals. & Emphasis is on using computers to estimate functions rather than confidence intervals around these functions.\\
-Statistical models start with assumptions about the variables, perform hypothesis testing. & No prior assumption about input. \\
-Fits the hyperplane with the least errors. & Optimization of parameters that minimize a cost function (e.g. gradient descent: update parameter in the opposite direction to the gradient). \\
-Relationships between the variables are formalized in mathematical equations.& Algorithm rather than a priori equations, patterns are automatically learn from data.\\
-Performs significance tests (Diagnostics of parameters p-value etc.)& Significance tests are not required.\\
-Data split into training and test sets. & Data split into training, validation and test sets. \\ %Cross-validation for model robustness.\\
-\label{tab:smml}
-%\bottomrule
-\end{tabularx}
-
-
-
-
-
-
-
-
-
-
-
 
 There is a growing concern about the impact of AD and other forms of dementia sufferers in low income areas in the world.
 The Alzheimer’s Society estimates that $71\%$ of dementia sufferers in 2050 will be in poor to middle income countries.
 %https://newrepublic.com/article/115936/alzheimers-drastic-rise-low-income-countries
+
 In \emph{Proyecto Vallecas} we make the most of the dataset addressing prescient issues like the relationship between socioecomic status and health. There are concluding reports from governmental agencies that show an association between wealth and life expectancy. 
 Educational level also affects positively life expectancy. Even within European countries, life expectancy varies greatly by education level. Life expectancy of males at age 25 with high education level is 10 years longer than for those with low educational level in Poland and the Czech republic \cite{imf2018}. 
 
+Here we show that it is possible to build prediction machines with very satisfactory performance in a subset of the \emph{Vallecas} dataset specifically comprising self-informed features, i.e. variables that can be reported by the subject herself e.g. age, income level, education, sleep, diet etc. 
+We aimed at building systems, in the most cost effective way, that predict whether a subject will convert to mild cognitive impairment. Features that require lab tests (e.g APOE gene variant.) and or require an expert to be collected e.g. neurologist, neuropsychologist were excluded. We identified a set of self-informed features with predictive power called the \textbf{Vallecas Index}. The \textbf{Vallecas Index} should not be considered in any way a minimal or complete list of features. Interestingly we find using two different methoda -PCA and random forest- that the dimension of the index can be reduced from 56 to less than 20. 
+How prediction is affected by dropping features in the \textbf{Vallecas Index} via elimination or grouping of features needs to be systematically studied.
 
+The size of the subset of the \emph{Vallecas} dataset used here is 1,000 labeled examples which falls short to be qualified as Big Data. Admittedly, taking into consideration the heterogeneity and complexity of the data collected, the \emph{Vallecas} dataset does not lend itself either to traditional database modeling. The necessity of using artificial intelligence and machine learning techniques to extract knowledge in the \emph{Vallecas} dataset is, nevertheless, self-evident.
+In machine learning, the rule of thumb to achieve acceptable performance is 5,000 labeled examples per category \cite{goodfellow2016deep}. Although our dataset is only a portion of that our results show that the size of the dataset is not the major impediment. The main difficulty is that the dataset is imbalanced: the converter class is underrepresented with a ratio of 10 to 1 in favor of the non conversion class. This situation can be dealt with getting more data, this is certainly the best option but it is costly and require time. A workaround is to add synthetic data points to create a balanced dataset. We opted for this solution using the Synthetic Minority Oversampling Technique (SMOTE) algorithm to add class 1 (converters) data points to build a balanced dataset
+Ensemble methods, in particular Boosting, outperformed the other methods achieving precision and recall over $85\%$ of correct prediction of conversion to MCI in the synthetic (balanced) dataset. 
 
-What is ML and why we need it? Separation between statistics and ML (CS), ML uses experience for doing a better job each time (feedback, teleology)
-%Literal Tangeti
-Machine learning is a branch of study in which a model can learn automatically from the experiences based on data without exclusively being modeled like in statistical models.
-
-The trade-off between optimization and generalization is the main issue in machine learning. Optimization refers to the process of adjusting a model to get the best performance possible on the training data (the learning in machine learning), whereas generalization refers to how well the trained model performs on data it has never seen before.
-Validation is used in order to deal with information leakage that could drive overfitting in the model.
-
-
-Connectionist learning (these days called machine learning), procedures can be divided into three broad classes: Supervised procedures studied in Section \ref{sse:sup}, reinforcement procedures which are not studied here and unsupervised procedures.
-The essential between these three types of approaches is the existence and role of the teacher in the learning.
-While supervised algorithms require a teacher to specify the desired output vector, reinforcement requires only require a single scalar evaluation of the output and finally unsupervised algorithms do not require any teacher nor additional information to  construct internal models that capture regularities in the input vectors  \cite{hinton1990connectionist}. There are often ways of converting one kind of learning procedure into another e.g. self supervised learning can be converted into an unsupervised learning by using the input itself to do the supervision i.e. the desired output vector is identical with the input vector.
-%A learning algorithm for boltzmann machines
-
-Random under sampling: eliminate randomly majority class examples, for example taking out $10\%$ samples without replacement from the majority class to combining them with the minority class. It reduces the training set discarding potentially useful information, this approach is only advisable for really large datasets.
-
-Random over-sampling increases the number of elements in the minority class by randomly replicating. Here, contrary to udersampling, there is no information loss but it may increase the likelihood of overfitting since it replicates the minority class events.
-
-Cluster-Based Over Sampling k-NN algorithm is independently applied to minority and majority class instances to identify clusters in the dataset. Subsequently, each cluster is oversampled such that all clusters of the same class have an equal number of instances and all classes have the same size. The disadvantage of this algorithm, like most oversampling techniques is the possibility of over-fitting the training data.  
-
-Modified synthetic minority oversampling technique (MSMOTE): Two approaches: Bagging (Bootstrap Aggregating) and Boosting. In bagging we generate ‘n’ different bootstrap training samples with replacement. And training the algorithm on each bootstrapped algorithm separately and then aggregating the predictions at the end. 
-Boosting is an ensemble technique to combine weak learners (small changes in data induce big changes in the classification model.) to create a strong learner. 
+%The goal is to build algorithms capable of predicting the next stage (non conversion, conversion) in the cohort of \emph{Proyecto Vallecas}. 
+We approached the problem of conversion prediction from an engineering point of view, training prediction systems that are capable to generalize when they experience new data. Our results constitutes a proof of work that demographic, socioeconomic and life style factors (i.e. the \textbf{Vallecas Index}) collected systematically in large scale and exploited with artificial intelligence techniques holds promise to identifying modifiable risk factors to conversion to MCI. 
+Our long term ambition is building systems tested and validated in the \textit{Vallecas} dataset to be deployed in larger scenarios e.g. health insurers, municipal or regional health systems, that provide comprehensible and accurate predictions. 
+The results obtained here makes us very optimistic about the future. 
 
 %-------------------------------------------------------------------------------
 % REFERENCES
@@ -2434,6 +2502,27 @@ Boosting is an ensemble technique to combine weak learners (small changes in dat
 \label{se:ap}
 SMOTE
 
+% What is ML and why we need it? Separation between statistics and ML (CS), ML uses experience for doing a better job each time (feedback, teleology)
+% %Literal Tangeti
+% Machine learning is a branch of study in which a model can learn automatically from the experiences based on data without exclusively being modeled like in statistical models.
+
+% The trade-off between optimization and generalization is the main issue in machine learning. Optimization refers to the process of adjusting a model to get the best performance possible on the training data (the learning in machine learning), whereas generalization refers to how well the trained model performs on data it has never seen before.
+% Validation is used in order to deal with information leakage that could drive overfitting in the model.
+
+
+% Connectionist learning (these days called machine learning), procedures can be divided into three broad classes: Supervised procedures studied in Section \ref{sse:sup}, reinforcement procedures which are not studied here and unsupervised procedures.
+% The essential between these three types of approaches is the existence and role of the teacher in the learning.
+% While supervised algorithms require a teacher to specify the desired output vector, reinforcement requires only require a single scalar evaluation of the output and finally unsupervised algorithms do not require any teacher nor additional information to  construct internal models that capture regularities in the input vectors  \cite{hinton1990connectionist}. There are often ways of converting one kind of learning procedure into another e.g. self supervised learning can be converted into an unsupervised learning by using the input itself to do the supervision i.e. the desired output vector is identical with the input vector.
+% %A learning algorithm for boltzmann machines
+
+% Random under sampling: eliminate randomly majority class examples, for example taking out $10\%$ samples without replacement from the majority class to combining them with the minority class. It reduces the training set discarding potentially useful information, this approach is only advisable for really large datasets.
+
+% Random over-sampling increases the number of elements in the minority class by randomly replicating. Here, contrary to udersampling, there is no information loss but it may increase the likelihood of overfitting since it replicates the minority class events.
+
+% Cluster-Based Over Sampling k-NN algorithm is independently applied to minority and majority class instances to identify clusters in the dataset. Subsequently, each cluster is oversampled such that all clusters of the same class have an equal number of instances and all classes have the same size. The disadvantage of this algorithm, like most oversampling techniques is the possibility of over-fitting the training data.  
+
+% Modified synthetic minority oversampling technique (MSMOTE): Two approaches: Bagging (Bootstrap Aggregating) and Boosting. In bagging we generate ‘n’ different bootstrap training samples with replacement. And training the algorithm on each bootstrapped algorithm separately and then aggregating the predictions at the end. 
+% Boosting is an ensemble technique to combine weak learners (small changes in data induce big changes in the classification model.) to create a strong learner. 
 
 AdaBoost (Adaptive Boosting) is the first original boosting technique which creates a highly accurate prediction rule by combining many weak and inaccurate rules. 
 Gradient Tree boosting: Decision Trees are used as weak learners. Gradient Boosted trees are harder to fit than random forests
